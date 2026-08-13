@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 10, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 13, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -532,12 +532,16 @@ If more than one default resource exists, the Operator marks the affected resour
 Delete or update the extra default resource to resume reconciliation.</p>
 <p>To prevent the Helm chart from creating the default resource, specify the
 <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.nvidiaDriverCRD.deployDefaultCR=false</span></code> argument when you install or upgrade the Operator.
-Use this setting only if your user-defined resources select every GPU node that the Operator should manage,
-or if leaving some GPU nodes without an Operator-managed driver is intentional.</p>
+This setting can help you meet any of the following goals:</p>
+<ul class="simple">
+<li><p>You will add user-defined resources that select every GPU node that the Operator should manage.</p></li>
+<li><p>You will add a default resource–by specifying <code class="docutils literal notranslate"><span class="pre">spec.default:</span> <span class="pre">true</span></code>–as a fallback.</p></li>
+<li><p>Or, leaving some GPU nodes without an Operator-managed driver is intentional.</p></li>
+</ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>A user-defined resource without a node selector matches all GPU nodes.
-The resource takes precedence over the default resource and conflicts with any other resource
+<p>A user-defined <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> custom resource without a node selector matches all GPU nodes.
+Such a resource takes precedence over the default custom resource and conflicts with any other
 that selects one of the same nodes.</p>
 </div>
 </section>
@@ -574,10 +578,15 @@ For more information, refer to <a class="reference internal" href="custom-driver
 the controlled driver upgrade flow.
 During the migration, the Operator assigns each GPU node to an NVIDIA driver custom resource and uses the
 driver upgrade controller to replace the previous cluster policy managed driver pod on each node.</p>
-<p>When you migrate from a GPU Operator release earlier than v26.7.0, perform two Helm upgrades.
-First, upgrade to v26.7.0 while retaining cluster policy driver management.
-Then, upgrade the same release again to enable NVIDIA driver custom resource management.
-This sequence starts the controller that supports controlled migration before changing driver ownership.
+<p>When you migrate from a GPU Operator release earlier than v26.7.0, perform two Helm upgrades:</p>
+<ul>
+<li><p>First, upgrade to v26.7.0 while retaining cluster policy driver management.</p></li>
+<li><p>Afterward, upgrade to the same release again.
+This time, enable NVIDIA driver custom resource management.</p>
+<p>The exact commands and arguments are shown in the following procedure.</p>
+</li>
+</ul>
+<p>This sequence starts the controller that supports controlled migration before changing driver ownership.
 Do not upgrade from an earlier release and enable NVIDIA driver custom resource management in the same
 Helm operation because the old controller can remove the existing driver pods before the new controller
 can take ownership.</p>
@@ -602,7 +611,8 @@ For more information, refer to <a class="reference internal" href="gpu-driver-up
 </pre></div>
 </div>
 </li>
-<li><p>If your current GPU Operator release is earlier than v26.7.0, upgrade to the target release while
+<li><p>If your current GPU Operator release is earlier than v26.7.0 and the cluster does not already use
+<code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resources, upgrade to the target release while
 retaining cluster policy driver management:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade &lt;release-name&gt; nvidia/gpu-operator <span class="se">\</span>
     -n gpu-operator <span class="se">\</span>
