@@ -112,13 +112,16 @@ Delete or update the extra default resource to resume reconciliation.
 
 To prevent the Helm chart from creating the default resource, specify the
 ``--set driver.nvidiaDriverCRD.deployDefaultCR=false`` argument when you install or upgrade the Operator.
-Use this setting only if your user-defined resources select every GPU node that the Operator should manage,
-or if leaving some GPU nodes without an Operator-managed driver is intentional.
+This setting can help you meet any of the following goals:
+
+- You will add user-defined resources that select every GPU node that the Operator should manage.
+- You will add a default resource--by specifying ``spec.default: true``--as a fallback.
+- Or, leaving some GPU nodes without an Operator-managed driver is intentional.
 
 .. note::
 
-   A user-defined resource without a node selector matches all GPU nodes.
-   The resource takes precedence over the default resource and conflicts with any other resource
+   A user-defined ``NVIDIADriver`` custom resource without a node selector matches all GPU nodes.
+   Such a resource takes precedence over the default custom resource and conflicts with any other
    that selects one of the same nodes.
 
 
@@ -165,9 +168,14 @@ the controlled driver upgrade flow.
 During the migration, the Operator assigns each GPU node to an NVIDIA driver custom resource and uses the
 driver upgrade controller to replace the previous cluster policy managed driver pod on each node.
 
-When you migrate from a GPU Operator release earlier than v26.7.0, perform two Helm upgrades.
-First, upgrade to v26.7.0 while retaining cluster policy driver management.
-Then, upgrade the same release again to enable NVIDIA driver custom resource management.
+When you migrate from a GPU Operator release earlier than v26.7.0, perform two Helm upgrades:
+
+* First, upgrade to v26.7.0 while retaining cluster policy driver management.
+* Afterward, upgrade to the same release again.
+  This time, enable NVIDIA driver custom resource management.
+
+  The exact commands and arguments are shown in the following procedure.
+
 This sequence starts the controller that supports controlled migration before changing driver ownership.
 Do not upgrade from an earlier release and enable NVIDIA driver custom resource management in the same
 Helm operation because the old controller can remove the existing driver pods before the new controller
@@ -194,7 +202,8 @@ Before you begin, verify the following requirements:
 
       $ helm list -n gpu-operator
 
-#. If your current GPU Operator release is earlier than v26.7.0, upgrade to the target release while
+#. If your current GPU Operator release is earlier than v26.7.0 and the cluster does not already use
+   ``NVIDIADriver`` resources, upgrade to the target release while
    retaining cluster policy driver management:
 
    .. code-block:: console
