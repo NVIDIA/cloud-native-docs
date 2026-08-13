@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 05, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 13, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -574,7 +574,7 @@ The supported hook names are <code class="docutils literal notranslate"><span cl
 <code class="docutils literal notranslate"><span class="pre">disable-device-node-modification</span></code>, <code class="docutils literal notranslate"><span class="pre">enable-cuda-compat</span></code>,
 <code class="docutils literal notranslate"><span class="pre">update-application-profile</span></code>, and <code class="docutils literal notranslate"><span class="pre">update-ldcache</span></code>.
 Use <code class="docutils literal notranslate"><span class="pre">all</span></code> to disable every hook.</p>
-<p>The following command disables the application-profile and dynamic-linker cache
+<p>The following command disables the update-application-profile and update-ldcache
 hooks. Separate multiple values with a colon:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk config --in-place <span class="se">\</span>
     --set nvidia-container-runtime.modes.jit-cdi.nvcdi-disable-hooks<span class="o">=</span>update-application-profile:update-ldcache
