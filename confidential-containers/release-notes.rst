@@ -116,3 +116,15 @@ Limitations and Restrictions
 * All GPUs on the host must be configured for Confidential Computing.
   Configuring only a subset of GPUs on a node is not supported.
   For multi-GPU passthrough, all GPUs must be assigned to a single confidential VM.
+
+.. _coco-ea:
+
+Early Access Release
+====================
+
+Release Date: December 22, 2025
+
+
+The documentation for the early access release was published as part of the GPU Operator v25.10 release.
+Refer to `Deploy Confidential Containers with NVIDIA GPU Operator <http://docs.nvidia.com/datacenter/cloud-native/gpu-operator/25.10/confidential-containers-deploy.html>`__.
+
