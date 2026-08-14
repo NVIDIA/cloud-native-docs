@@ -31,6 +31,8 @@ This document describes the new features and known issues for the NVIDIA Confide
 1.1.0
 =====
 
+Release Date: August 11, 2026
+
 This release expands hardware coverage and updates the validated software stack.
 
 New Features
@@ -69,6 +71,8 @@ Changes include:
 *****
 1.0.0
 *****
+
+Release Date: April 29, 2026
 
 This is the initial general availability (GA) release of the NVIDIA Confidential Containers Reference Architecture, a validated deployment model for running GPU-accelerated AI workloads inside hardware-enforced Trusted Execution Environments (TEEs).
 It is designed for organizations in regulated industries that require strong isolation and cryptographic verification to protect model intellectual property and sensitive data on untrusted infrastructure.
