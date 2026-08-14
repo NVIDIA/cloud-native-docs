@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.19.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.20';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 10, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 14, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -474,7 +474,7 @@ TODO:
 -->
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.19.1-1
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.20-1
 <span class="go">  sudo apt-get install -y \</span>
 <span class="go">      nvidia-container-toolkit=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
 <span class="go">      nvidia-container-toolkit-base=${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
@@ -509,7 +509,7 @@ TODO:
 </div>
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.19.1-1
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.20-1
 <span class="go">  sudo dnf install -y \</span>
 <span class="go">      nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
 <span class="go">      nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
@@ -533,7 +533,7 @@ TODO:
 </div>
 </li>
 <li><p>Install the NVIDIA Container Toolkit packages:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$  </span><span class="nb">export</span> <span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.19.1-1
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$  </span><span class="nb">export</span> <span class="nv">NVIDIA_CONTAINER_TOOLKIT_VERSION</span><span class="o">=</span><span class="m">1</span>.20-1
 <span class="go">   sudo zypper --gpg-auto-import-keys install -y \</span>
 <span class="go">      nvidia-container-toolkit-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
 <span class="go">      nvidia-container-toolkit-base-${NVIDIA_CONTAINER_TOOLKIT_VERSION} \</span>
@@ -553,6 +553,40 @@ TODO:
 <li><p>You installed a supported container engine (Docker, Containerd, CRI-O, Podman).</p></li>
 <li><p>You installed the NVIDIA Container Toolkit.</p></li>
 </ul>
+</section>
+<section id="managing-config-toml">
+<h3>Managing <code class="docutils literal notranslate"><span class="pre">config.toml</span></code><a class="headerlink" href="#managing-config-toml" title="Permalink to this headline">#</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">nvidia-ctk</span> <span class="pre">config</span></code> command reads
+<code class="docutils literal notranslate"><span class="pre">/etc/nvidia-container-runtime/config.toml</span></code> by default. Without <code class="docutils literal notranslate"><span class="pre">--in-place</span></code> or
+<code class="docutils literal notranslate"><span class="pre">--output</span></code>, the command writes the updated configuration to standard output and
+does not change the source file.</p>
+<p>Preview a change before you write it to the host:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk config <span class="se">\</span>
+    --set nvidia-container-runtime.log-level<span class="o">=</span>debug
+</pre></div>
+</div>
+<p>Review the output. Then, add <code class="docutils literal notranslate"><span class="pre">--in-place</span></code> to update the source file:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk config --in-place <span class="se">\</span>
+    --set nvidia-container-runtime.log-level<span class="o">=</span>debug
+</pre></div>
+</div>
+<p>You can specify <code class="docutils literal notranslate"><span class="pre">--set</span></code> more than once. The following command configures a log
+level and a log file in one update:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk config --in-place <span class="se">\</span>
+    --set nvidia-container-runtime.log-level<span class="o">=</span>debug <span class="se">\</span>
+    --set nvidia-container-runtime.debug<span class="o">=</span>/var/log/nvidia-container-runtime.log
+</pre></div>
+</div>
+<p>For a list setting, separate elements with a colon. The following command makes
+<code class="docutils literal notranslate"><span class="pre">crun</span></code> the first low-level runtime candidate and retains <code class="docutils literal notranslate"><span class="pre">runc</span></code> as a fallback:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk config --in-place <span class="se">\</span>
+    --set nvidia-container-runtime.runtimes<span class="o">=</span>crun:runc
+</pre></div>
+</div>
+<p>When the same key appears more than once, the last value takes effect. The
+command preserves existing settings when you change a different setting. Review
+the preview before every production update, especially when you use a custom
+file with <code class="docutils literal notranslate"><span class="pre">--config-file</span></code>.</p>
 </section>
 <section id="configuring-docker">
 <span id="setting-up-docker"></span><h3>Configuring Docker<a class="headerlink" href="#configuring-docker" title="Permalink to this headline">#</a></h3>
@@ -711,6 +745,7 @@ TODO:
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuration">Configuration</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Prerequisites</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#managing-config-toml">Managing <code class="docutils literal notranslate"><span class="pre">config.toml</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-docker">Configuring Docker</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#rootless-mode">Rootless Mode</a></li>
 </ul>

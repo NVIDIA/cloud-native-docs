@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 10, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 14, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -465,6 +465,210 @@ This page describes how to use the GPU Operator to install and manage DRA Driver
 <p>GPU Operator management of the DRA enablement stack is available as a technology preview.
 Technology preview features are not supported in production environments and are not functionally complete.</p>
 </div>
+<section id="comparison-dra-and-device-plugin">
+<h2>Comparison: DRA and Device Plugin<a class="headerlink" href="#comparison-dra-and-device-plugin" title="Permalink to this headline">#</a></h2>
+<p>The DRA Driver for NVIDIA GPUs and the NVIDIA Kubernetes Device Plugin are alternative GPU allocation mechanisms.
+They do not have one-to-one feature parity, and the GPU Operator does not support running both managed stacks in the same cluster.</p>
+<p>Choose DRA when you:</p>
+<ul class="simple">
+<li><p>Need ComputeDomains for Multi-Node NVLink workloads.</p></li>
+<li><p>Want Kubernetes-native <code class="docutils literal notranslate"><span class="pre">ResourceClaim</span></code>, <code class="docutils literal notranslate"><span class="pre">ResourceClaimTemplate</span></code>, and <code class="docutils literal notranslate"><span class="pre">DeviceClass</span></code> APIs,
+including attribute-based device selection and reusable or shared claims.</p></li>
+<li><p>Want claim-scoped device configuration instead of node-wide Device Plugin configuration.</p></li>
+<li><p>Want to evaluate alpha capabilities such as dynamic MIG reconfiguration, MPS, time-slicing configuration,
+or VFIO passthrough and can accept their maturity and feature-gate constraints.</p></li>
+</ul>
+<p>Choose the Device Plugin when you:</p>
+<ul class="simple">
+<li><p>Need existing workloads and tools that request <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> or MIG extended resources without modification.</p></li>
+<li><p>Need time-slicing or MPS replicas that the scheduler accounts for as independent resources for separate pods.</p></li>
+<li><p>Need the broader <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> stack, including Container Toolkit configuration, GPU Feature Discovery,
+MIG Manager, sandboxed workloads, Kata Containers, KubeVirt, vGPU, or confidential computing.</p></li>
+<li><p>Rely on established Device Plugin health reporting, standard extended-resource scheduling,
+or pod-priority preemption for GPU workloads.</p></li>
+</ul>
+<section id="capability-comparison">
+<h3>Capability Comparison<a class="headerlink" href="#capability-comparison" title="Permalink to this headline">#</a></h3>
+<p>The following table compares the GPU Operator-managed DRA and Device Plugin stacks.
+The maturity of individual DRA driver features is described separately in the next table.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 22%" />
+<col style="width: 39%" />
+<col style="width: 39%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Capability</p></th>
+<th class="head"><p>DRA with <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code></p></th>
+<th class="head"><p>Device Plugin with <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Workload API</p></td>
+<td><p>Uses <code class="docutils literal notranslate"><span class="pre">ResourceClaim</span></code>, <code class="docutils literal notranslate"><span class="pre">ResourceClaimTemplate</span></code>, and <code class="docutils literal notranslate"><span class="pre">DeviceClass</span></code> resources.
+A claim can be created before a pod, created from a template for a pod, or shared deliberately by multiple workloads.</p></td>
+<td><p>Uses scalar extended-resource requests such as <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> and <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig-*</span></code> directly in a pod specification.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Device selection and configuration</p></td>
+<td><p>Supports structured, attribute-based selection and claim-scoped configuration.</p></td>
+<td><p>Selects a resource name and count.
+Sharing and MIG behavior are primarily configured at the node or cluster level.</p></td>
+</tr>
+<tr class="row-even"><td><p>Full GPU and MIG allocation</p></td>
+<td><p>Can allocate full GPUs and existing MIG devices.
+Alpha <code class="docutils literal notranslate"><span class="pre">DynamicMIG</span></code> can create MIG devices on demand for a claim.</p></td>
+<td><p>Allocates full GPUs or MIG devices that are prepared ahead of time.
+GPU Operator can use MIG Manager to apply a static MIG geometry to nodes.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Time-slicing and MPS</p></td>
+<td><p>Provides alpha feature gates for time-slicing settings and MPS.
+Sharing across workloads is claim-oriented and does not advertise independent replicas like the Device Plugin.</p></td>
+<td><p>Provides replica-based time-slicing and experimental MPS sharing.
+Replicas are independent schedulable resources, but do not provide the isolation of separate physical GPUs.</p></td>
+</tr>
+<tr class="row-even"><td><p>Multi-Node NVLink</p></td>
+<td><p>Provides the ComputeDomain API and controller for coordinated MNNVL workloads.</p></td>
+<td><p>Does not provide ComputeDomains.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Health handling</p></td>
+<td><p>Provides alpha, disabled-by-default <code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code> allocation health checking.
+The kubelet-plugin gRPC probe checks plugin liveness, not GPU health.</p></td>
+<td><p>Reports unhealthy devices through the Kubernetes Device Plugin API and prevents new allocations of those advertised devices.</p></td>
+</tr>
+<tr class="row-even"><td><p>Runtime device injection</p></td>
+<td><p>Requires a CDI-capable container runtime that is configured to use CDI.</p></td>
+<td><p>Supports environment-variable, volume-mount, CDI annotation, and CDI CRI injection strategies.</p></td>
+</tr>
+<tr class="row-odd"><td><p>GPU discovery</p></td>
+<td><p>Publishes device attributes through DRA for use by <code class="docutils literal notranslate"><span class="pre">DeviceClass</span></code> selectors.</p></td>
+<td><p>Uses GPU Feature Discovery to publish node labels used by workloads and cluster services.</p></td>
+</tr>
+<tr class="row-even"><td><p>Virtual machines and passthrough</p></td>
+<td><p>Provides alpha VFIO passthrough through the <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> feature gate.</p></td>
+<td><p>The broader <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> stack supports sandbox device discovery, Kata Containers, KubeVirt, and vGPU workflows.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Monitoring and validation</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> can deploy DCGM, DCGM Exporter, and a DRA allocation validator.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> can deploy DCGM, DCGM Exporter, the Device Plugin validator, and other Operator operands.</p></td>
+</tr>
+<tr class="row-even"><td><p>Scheduling compatibility</p></td>
+<td><p>Uses DRA-aware scheduling.
+Kubernetes does not support preemption for pods that use DRA claims.</p></td>
+<td><p>Uses the established extended-resource scheduling model, including normal pod-priority preemption behavior.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Coexistence and migration</p></td>
+<td><p>Cannot be managed alongside a Device Plugin <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> stack.
+In-place migration from <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> is not supported.</p></td>
+<td><p>Cannot be managed alongside a DRA <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> stack.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="dra-driver-feature-maturity">
+<h3>DRA Driver Feature Maturity<a class="headerlink" href="#dra-driver-feature-maturity" title="Permalink to this headline">#</a></h3>
+<p>GPU Operator support for deploying a DRA stack and the maturity of capabilities in the upstream DRA driver are separate considerations.
+For DRA driver v0.4.1, upstream uses the term <em>officially supported</em> for ComputeDomains rather than <em>GA</em>.
+The following table treats <em>officially supported</em> as GA and otherwise preserves the upstream feature-gate maturity.
+<code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> can disable ComputeDomains and can pass DRA feature-gate settings through <code class="docutils literal notranslate"><span class="pre">draDriver.featureGates</span></code>,
+but it always enables the base GPU allocation capability.
+Enabling an alpha or beta gate does not change that feature’s upstream maturity or compatibility constraints.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 20%" />
+<col style="width: 20%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>DRA driver capability</p></th>
+<th class="head"><p>Upstream maturity</p></th>
+<th class="head"><p>Default with <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code></p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>ComputeDomains</p></td>
+<td><p>Officially supported (GA)</p></td>
+<td><p>Enabled</p></td>
+<td><p>Can be disabled with <code class="docutils literal notranslate"><span class="pre">draDriver.computeDomains.enabled=false</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Full GPU and existing MIG device allocation</p></td>
+<td><p>Not officially supported</p></td>
+<td><p>Enabled</p></td>
+<td><p>This is the base GPU allocation capability and is not controlled by a feature gate.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">TimeSlicingSettings</span></code></p></td>
+<td><p>Alpha</p></td>
+<td><p>Disabled</p></td>
+<td><p>Adds configurable time-slicing intervals to a claim.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">MPSSupport</span></code></p></td>
+<td><p>Alpha</p></td>
+<td><p>Disabled</p></td>
+<td><p>Adds MPS-based GPU sharing.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">DynamicMIG</span></code></p></td>
+<td><p>Alpha</p></td>
+<td><p>Disabled</p></td>
+<td><p>Creates and deletes MIG devices dynamically to satisfy claims.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code></p></td>
+<td><p>Alpha</p></td>
+<td><p>Disabled</p></td>
+<td><p>Advertises VFIO devices for passthrough use cases.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code></p></td>
+<td><p>Alpha</p></td>
+<td><p>Disabled</p></td>
+<td><p>Adds NVML-based device health checking to GPU allocation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code></p></td>
+<td><p>Alpha</p></td>
+<td><p>Disabled</p></td>
+<td><p>Publishes additional device metadata and requires <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ComputeDomainCliques</span></code>, <code class="docutils literal notranslate"><span class="pre">IMEXDaemonsWithDNSNames</span></code>, and <code class="docutils literal notranslate"><span class="pre">CrashOnNVLinkFabricErrors</span></code></p></td>
+<td><p>Beta</p></td>
+<td><p>Enabled</p></td>
+<td><p>Control ComputeDomain clique handling, IMEX daemon addressing, and behavior after NVLink fabric errors.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Refer to the <a class="reference external" href="https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/blob/v0.4.1/README.md#overview">DRA driver v0.4.1 overview</a>,
+<a class="reference external" href="https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v0.4.1">release notes</a>,
+and <a class="reference external" href="https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/blob/v0.4.1/pkg/featuregates/featuregates.go">feature-gate definitions</a>
+for the authoritative support status, maturity, and default values.</p>
+</section>
+<section id="dra-driver-limitations">
+<h3>DRA Driver Limitations<a class="headerlink" href="#dra-driver-limitations" title="Permalink to this headline">#</a></h3>
+<p>Consider the following limitations before selecting DRA driver v0.4.1:</p>
+<ul class="simple">
+<li><p>Upstream does not yet classify full GPU and MIG device allocation as officially supported.
+ComputeDomains are the only capability classified as officially supported.</p></li>
+<li><p>GPU allocation health checking is limited.
+<code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code> is alpha and disabled by default, and it cannot be enabled with <code class="docutils literal notranslate"><span class="pre">DynamicMIG</span></code> or <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code>.
+The optional gRPC health probe only verifies that the driver container responds;
+DCGM and DCGM Exporter provide telemetry, but do not replace allocation health handling.</p></li>
+<li><p>Scheduler-accounted sharing among independent <code class="docutils literal notranslate"><span class="pre">ResourceClaim</span></code> resources is not available in this driver version.
+To share a device across workloads, the workloads must deliberately share a claim.
+This does not provide the Device Plugin replica model used for independently scheduled pods.</p></li>
+<li><p>Alpha features have compatibility constraints.
+<code class="docutils literal notranslate"><span class="pre">DynamicMIG</span></code> cannot be combined with <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code>, <code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code>, or <code class="docutils literal notranslate"><span class="pre">MPSSupport</span></code>;
+<code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> cannot be combined with <code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code>;
+<code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code> requires <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code>;
+and <code class="docutils literal notranslate"><span class="pre">ComputeDomainCliques</span></code> requires <code class="docutils literal notranslate"><span class="pre">IMEXDaemonsWithDNSNames</span></code>.</p></li>
+<li><p>Kubernetes does not preempt pods to make DRA devices available for a higher-priority pending pod.</p></li>
+<li><p>The GPU Operator-managed <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com</span></code> <code class="docutils literal notranslate"><span class="pre">DeviceClass</span></code> does not map the legacy <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> extended resource name.
+Existing manifests must use DRA claims, the generic <code class="docutils literal notranslate"><span class="pre">deviceclass.resource.kubernetes.io/gpu.nvidia.com</span></code> extended resource on supported Kubernetes versions,
+or an administrator-provided <code class="docutils literal notranslate"><span class="pre">DeviceClass</span></code> that explicitly maps an extended resource name.</p></li>
+<li><p>DRA device injection requires CDI.
+Unlike the Device Plugin stack, <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> does not install or configure NVIDIA Container Toolkit;
+a CDI-capable runtime must already be available and configured.</p></li>
+</ul>
+</section>
+</section>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
 <p>The GPU Operator manages the DRA enablement stack through the <code class="docutils literal notranslate"><span class="pre">nvidia.com/v1alpha1</span></code> <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> custom resource.
@@ -487,8 +691,8 @@ ComputeDomain support is enabled by default and can be disabled.</p></li>
 <p>The <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource does not manage the NVIDIA GPU driver.
 Use an <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resource to install a containerized driver or use a driver that is pre-installed on the host.
 The Operator automatically assigns the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.deploy.*</span></code> labels that control operand placement.</p>
-<section id="limitations">
-<h3>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">#</a></h3>
+<section id="gpucluster-limitations">
+<h3>GPUCluster Limitations<a class="headerlink" href="#gpucluster-limitations" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>Use this workflow for a new installation.
 An in-place migration from a standalone DRA driver Helm release or from <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> to <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> is not supported.</p></li>
@@ -514,9 +718,11 @@ This page does not provide a managed DRA installation procedure for GKE.</p></li
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>To use traditional extended resource requests such as <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> with the DRA driver,
-enable the <a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#extended-resource">DRAExtendedResource</a> feature gate.
-This feature gate is enabled by default in Kubernetes v1.36.0 and later.</p>
+<p>To use an extended-resource request with the DRA driver, enable the
+<a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#extended-resource">DRAExtendedResource</a> feature gate.
+This feature gate is enabled by default in Kubernetes v1.36.0 and later.
+Request <code class="docutils literal notranslate"><span class="pre">deviceclass.resource.kubernetes.io/gpu.nvidia.com</span></code> to use the managed <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com</span></code> <code class="docutils literal notranslate"><span class="pre">DeviceClass</span></code>.
+The legacy name <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> requires a separate <code class="docutils literal notranslate"><span class="pre">DeviceClass</span></code> that sets <code class="docutils literal notranslate"><span class="pre">spec.extendedResourceName</span></code> to that value.</p>
 </div>
 <p id="computedomain-prereqs">For ComputeDomain support, verify the following additional prerequisites:</p>
 <ul>
@@ -887,8 +1093,14 @@ Use this option only during recovery when no DRA workloads are running.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-dra-and-device-plugin">Comparison: DRA and Device Plugin</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#capability-comparison">Capability Comparison</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dra-driver-feature-maturity">DRA Driver Feature Maturity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dra-driver-limitations">DRA Driver Limitations</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#limitations">Limitations</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpucluster-limitations">GPUCluster Limitations</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
