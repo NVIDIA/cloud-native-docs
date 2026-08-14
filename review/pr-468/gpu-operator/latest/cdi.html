@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.7';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 13, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 14, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -646,6 +646,81 @@ This means that on platforms that configure containerd in a non-standard way, li
 </div>
 <p>After disabling the NRI Plugin, the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class will be created.</p>
 </section>
+<section id="requesting-cdi-devices-with-the-nri-plugin">
+<span id="nri-cdi-devices"></span><h2>Requesting CDI Devices with the NRI Plugin<a class="headerlink" href="#requesting-cdi-devices-with-the-nri-plugin" title="Permalink to this headline">#</a></h2>
+<p>When the NRI Plugin is enabled, a pod can request that the NRI Plugin inject specific CDI devices into one of its containers.
+Add an annotation of the following form to the pod specification:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">nvidia.cdi.k8s.io/container.&lt;container-name&gt;</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;cdi-device&gt;&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">&lt;container-name&gt;</span></code> with the name of the container in the pod that the device is injected into, and replace <code class="docutils literal notranslate"><span class="pre">&lt;cdi-device&gt;</span></code> with the CDI device to request.
+The NRI Plugin supports two kinds of CDI devices: non-management devices and management devices.</p>
+<section id="requesting-a-non-management-cdi-device">
+<h3>Requesting a Non-Management CDI Device<a class="headerlink" href="#requesting-a-non-management-cdi-device" title="Permalink to this headline">#</a></h3>
+<p>A non-management CDI device injects a single GPU, identified by its GPU UUID, into a container.
+Pods can request a non-management CDI device from <strong>any</strong> namespace.</p>
+<p>Retrieve the GPU UUID from the <code class="docutils literal notranslate"><span class="pre">/var/run/cdi/k8s.device-plugin.nvidia.com-gpu.json</span></code> file on the GPU node.</p>
+<p>Request the device with an annotation of the form <code class="docutils literal notranslate"><span class="pre">k8s.device-plugin.nvidia.com/gpu=&lt;GPU-UUID&gt;</span></code>.
+The following pod specification requests a specific GPU for the <code class="docutils literal notranslate"><span class="pre">ubuntu</span></code> container:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu</span><span class="w"></span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu</span><span class="w"></span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">nvidia.cdi.k8s.io/container.ubuntu</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;k8s.device-plugin.nvidia.com/gpu=GPU-1d7f7c5b-b2f6-148d-ff9a-d8bc4941885c&quot;</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu</span><span class="w"></span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;sleep&quot;</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="s">&quot;604800&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
+<span class="w">  </span><span class="nt">restartPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+<section id="requesting-a-management-cdi-device">
+<h3>Requesting a Management CDI Device<a class="headerlink" href="#requesting-a-management-cdi-device" title="Permalink to this headline">#</a></h3>
+<p>A management CDI device provides management-level access to all GPUs on the node, bypassing GPU allocation through the Device Plugin or DRA Driver for GPUs.
+This is the access that a GPU Management Container requires.
+Request a management device with the <code class="docutils literal notranslate"><span class="pre">management.nvidia.com/gpu=all</span></code> annotation value.</p>
+<p>By default, only pods in the namespace where the GPU Operator is installed, which is the namespace where the NVIDIA Container Toolkit runs, are permitted to request management CDI devices.
+To permit pods in other namespaces to request management CDI devices, add those namespaces to the <code class="docutils literal notranslate"><span class="pre">NRI_MANAGEMENT_CDI_DEVICE_NAMESPACES</span></code> environment variable on the NVIDIA Container Toolkit.
+The value is a comma-separated list of namespaces.</p>
+<p>Set the environment variable through the <code class="docutils literal notranslate"><span class="pre">toolkit.env</span></code> Helm value at installation time, or by modifying the cluster policy on an existing installation:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;replace&quot;, &quot;path&quot;: &quot;/spec/toolkit/env&quot;, &quot;value&quot;: [{&quot;name&quot;: &quot;NRI_MANAGEMENT_CDI_DEVICE_NAMESPACES&quot;, &quot;value&quot;: &quot;test-namespace&quot;}]}]&#39;</span>
+</pre></div>
+</div>
+<p>The following pod specification, in <code class="docutils literal notranslate"><span class="pre">test-namespace</span></code>, requests a management CDI device for the <code class="docutils literal notranslate"><span class="pre">ctr</span></code> container.
+For this pod to start, <code class="docutils literal notranslate"><span class="pre">test-namespace</span></code> must be included in the <code class="docutils literal notranslate"><span class="pre">NRI_MANAGEMENT_CDI_DEVICE_NAMESPACES</span></code> environment variable.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Pod</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cdi-nri-test</span><span class="w"></span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">test-namespace</span><span class="w"></span>
+<span class="w">  </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">app</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cdi-nri-test</span><span class="w"></span>
+<span class="w">  </span><span class="nt">annotations</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">nvidia.cdi.k8s.io/container.ctr</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;management.nvidia.com/gpu=all&quot;</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">containers</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ctr</span><span class="w"></span>
+<span class="w">    </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu</span><span class="w"></span>
+<span class="w">    </span><span class="nt">imagePullPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">IfNotPresent</span><span class="w"></span>
+<span class="w">    </span><span class="nt">command</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">bash</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">-c</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sleep infinity</span><span class="w"></span>
+</pre></div>
+</div>
+</section>
+</section>
 <section id="known-issues">
 <h2>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h2>
 <p>Pod specifications that set <code class="docutils literal notranslate"><span class="pre">spec.hostUsers:</span> <span class="pre">false</span></code> to enable Kubernetes user namespaces are not supported.
@@ -725,6 +800,11 @@ are managed by the GPU Operator.</p>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-the-nri-plugin">Disabling the NRI Plugin</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#requesting-cdi-devices-with-the-nri-plugin">Requesting CDI Devices with the NRI Plugin</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#requesting-a-non-management-cdi-device">Requesting a Non-Management CDI Device</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#requesting-a-management-cdi-device">Requesting a Management CDI Device</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#known-issues">Known Issues</a></li>
 </ul>
   </nav></div>

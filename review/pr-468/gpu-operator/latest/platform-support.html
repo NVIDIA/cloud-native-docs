@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.7';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 13, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 14, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -1365,6 +1365,19 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/datacen
 </tbody>
 </table>
 </div>
+<p>Starting with version 26.7.0, the Operator can render driver workloads for nodes when Node Feature Discovery
+reports <code class="docutils literal notranslate"><span class="pre">feature.node.kubernetes.io/system-os_release.ID=ol</span></code>.
+The Operator combines <code class="docutils literal notranslate"><span class="pre">ol</span></code> with the major component of the <code class="docutils literal notranslate"><span class="pre">VERSION_ID</span></code> label to form the operating system tag.
+For example, <code class="docutils literal notranslate"><span class="pre">VERSION_ID=9.7</span></code> produces <code class="docutils literal notranslate"><span class="pre">ol9</span></code>.
+For tag-based driver images, the Operator appends the operating system tag to the configured driver
+version, so a version such as <code class="docutils literal notranslate"><span class="pre">580.126.20</span></code> resolves to an image tag that ends in <code class="docutils literal notranslate"><span class="pre">580.126.20-ol9</span></code>.
+The Operator also mounts custom yum repository configuration in <code class="docutils literal notranslate"><span class="pre">/etc/yum.repos.d</span></code> and custom certificate
+configuration in <code class="docutils literal notranslate"><span class="pre">/etc/pki/ca-trust/extracted/pem</span></code> on these nodes.</p>
+<p>This behavior provides operating system tag selection and manifest rendering only.
+The change does not add an NVIDIA-published Oracle Linux driver container image or qualify Oracle Linux for the validated operating
+system and container runtime support matrices on this page.
+You are responsible for building, validating, publishing, and maintaining a custom driver image with the tag that the Operator constructs.
+NVIDIA provides limited support for custom driver container images.</p>
 </section>
 </section>
 <section id="supported-precompiled-drivers">
@@ -1504,10 +1517,7 @@ To report an issue with the GPU Operator on one of these configurations, open an
 <tbody>
 <tr class="row-even"><td><p>Ubuntu 26.04 LTS</p></td>
 <td><p>Yes</p></td>
-<td><ul class="simple">
-<li></li>
-</ul>
-</td>
+<td><p>–</p></td>
 </tr>
 <tr class="row-odd"><td><p>Ubuntu 24.04 LTS</p></td>
 <td><p>Yes</p></td>
