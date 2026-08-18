@@ -79,7 +79,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 12, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 18, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -496,10 +496,7 @@ When left empty, the GPU Operator uses <code class="docutils literal notranslate
 <li><p>Added support for configuring the namespace that the GPU Operator uses for its leader election <code class="docutils literal notranslate"><span class="pre">Lease</span></code> object.
 When unset, the operator continues to use the namespace that it runs in.
 (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/1333">PR #1333</a>)</p></li>
-<li><p>Changed RHEL driver container image tag selection to use only the operating system major version,
-matching the existing Rocky Linux behavior.
-The Operator selects NVIDIA-published conventional driver images with major-version operating system tags
-for RHEL and Rocky Linux 8, 9, and 10, whether you configure the driver through <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> or <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code>.
+<li><p>Changed the RHEL-specific driver container image tags to use only the major RHEL version instead of the full <code class="docutils literal notranslate"><span class="pre">major.minor</span></code> version.
 (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2497">PR #2497</a>)</p></li>
 <li><p>Added the <code class="docutils literal notranslate"><span class="pre">NRI_MANAGEMENT_CDI_DEVICE_NAMESPACES</span></code> environment variable for the NVIDIA Container Toolkit.
 When the NRI Plugin is enabled, this variable holds the list of namespaces whose pods are permitted to request management CDI devices.

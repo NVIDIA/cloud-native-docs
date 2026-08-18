@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.19.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.20';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 12, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 18, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -517,6 +517,29 @@ want enumerated to the container. For example, <code class="docutils literal not
 </li>
 </ol>
 </section>
+<section id="requesting-imex-channels">
+<span id="id1"></span><h3>Requesting IMEX Channels<a class="headerlink" href="#requesting-imex-channels" title="Permalink to this headline">#</a></h3>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_IMEX_CHANNELS</span></code> environment variable to request NVIDIA IMEX
+channels for a container. Specify one or more numeric channel IDs as a
+comma-separated list.</p>
+<p>The following command requests channels 0 and 1:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm --runtime<span class="o">=</span>nvidia <span class="se">\</span>
+    -e <span class="nv">NVIDIA_VISIBLE_DEVICES</span><span class="o">=</span>all <span class="se">\</span>
+    -e <span class="nv">NVIDIA_IMEX_CHANNELS</span><span class="o">=</span><span class="m">0</span>,1 <span class="se">\</span>
+    &lt;image&gt; &lt;command&gt;
+</pre></div>
+</div>
+<p>In CDI and JIT-CDI mode, each channel ID must meet both requirements:</p>
+<ul class="simple">
+<li><p>The ID is in the range from 0 through 1,048,575.</p></li>
+<li><p>The corresponding <code class="docutils literal notranslate"><span class="pre">/dev/nvidia-caps-imex-channels/channel&lt;ID&gt;</span></code> device exists
+on the host.</p></li>
+</ul>
+<p>If either requirement is not met, container creation fails with an error that
+identifies the invalid or missing channel. Inspect
+<code class="docutils literal notranslate"><span class="pre">/dev/nvidia-caps-imex-channels/</span></code> on the host and request only the channel IDs
+that are present.</p>
+</section>
 <section id="driver-capabilities">
 <h3>Driver Capabilities<a class="headerlink" href="#driver-capabilities" title="Permalink to this headline">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">NVIDIA_DRIVER_CAPABILITIES</span></code> variable controls which driver libraries and binaries are mounted inside the container.</p>
@@ -557,13 +580,14 @@ want enumerated to the container. For example, <code class="docutils literal not
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">compute</span></code></p></td>
-<td><p>required for CUDA and OpenCL applications.</p></td>
+<td><p>Required for CUDA and OpenCL applications. When present on the host,
+the NVIDIA OpenCL ICD file is also available in the container.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">compat32</span></code></p></td>
 <td><p>required for running 32-bit applications.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">graphics</span></code></p></td>
-<td><p>required for running OpenGL and Vulkan applications.</p></td>
+<td><p>Required for running OpenGL, EGL, and Vulkan applications.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">utility</span></code></p></td>
 <td><p>required for using <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> and NVML.</p></td>
@@ -590,6 +614,22 @@ want enumerated to the container. For example, <code class="docutils literal not
 </pre></div>
 </div>
 </div></blockquote>
+<p>To run an OpenGL, EGL, or Vulkan application on a selected GPU, include the
+<code class="docutils literal notranslate"><span class="pre">graphics</span></code> capability. The following command makes GPU 0 and the graphics and
+utility driver components available to the container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm --runtime<span class="o">=</span>nvidia <span class="se">\</span>
+    -e <span class="nv">NVIDIA_VISIBLE_DEVICES</span><span class="o">=</span><span class="m">0</span> <span class="se">\</span>
+    -e <span class="nv">NVIDIA_DRIVER_CAPABILITIES</span><span class="o">=</span>graphics,utility <span class="se">\</span>
+    &lt;image&gt; &lt;command&gt;
+</pre></div>
+</div>
+<p>Legacy mode limits EGL and Vulkan visibility to the physical GPUs assigned to
+a container when the <code class="docutils literal notranslate"><span class="pre">graphics</span></code> or <code class="docutils literal notranslate"><span class="pre">display</span></code> driver capability is enabled.
+The 1.20.0 release adds the same behavior to CDI and JIT-CDI modes through the
+<code class="docutils literal notranslate"><span class="pre">update-application-profile</span></code> hook. This change provides feature parity across
+the modes.</p>
+<p>If the application-profile hook conflicts with an application, refer to
+<a class="reference internal" href="cdi-support.html#disabling-hooks-in-jit-cdi-mode"><span class="std std-doc">Disabling Hooks in JIT-CDI Mode</span></a>.</p>
 </section>
 <section id="constraints">
 <h3>Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline">#</a></h3>
@@ -707,6 +747,7 @@ set the environment variables inside the Dockerfile, you do not need to set them
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-variables-oci-spec">Environment Variables (OCI Spec)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-enumeration">GPU Enumeration</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#requesting-imex-channels">Requesting IMEX Channels</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#driver-capabilities">Driver Capabilities</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints">Constraints</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-require-constraints">NVIDIA_REQUIRE_* Constraints</a></li>
