@@ -459,18 +459,12 @@ This page describes how to use the GPU Operator to install and manage DRA Driver
 <li><p><a class="reference external" href="https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/">Dynamic Resource Allocation</a> in the Kubernetes documentation.</p></li>
 <li><p><a class="reference external" href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/">DRA Driver for NVIDIA GPUs documentation</a>.</p></li>
 </ul>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>GPU Operator supports the DRA Driver as a more recent alternative to the Device Plugin for Kubernetes.
-However, some features of the DRA driver are alpha maturity and not fully supported.
-The driver does not provide feature parity with the device plugin.
-Refer to the following section regarding the features that are not yet implemented or fully supported before selecting the driver for production use.</p>
-</div>
 <section id="comparison-dra-and-device-plugin">
 <h2>Comparison: DRA and Device Plugin<a class="headerlink" href="#comparison-dra-and-device-plugin" title="Permalink to this headline">#</a></h2>
-<p>The DRA Driver for NVIDIA GPUs and the NVIDIA Device Plugin for Kubernetes provide alternative mechanisms for allocating NVIDIA GPU resources.
-The mechanisms do not provide feature parity.
-A cluster can have either a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource for DRA or a <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource for the Device Plugin, but not both.</p>
+<p>GPU Operator supports the DRA Driver as a more recent alternative to the NVIDIA Device Plugin for Kubernetes.
+However, some features of the DRA driver are alpha maturity and not fully supported.
+The driver does not provide feature parity with the device plugin.</p>
+<p>A cluster can have either a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource for DRA or a <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource for the Device Plugin, but not both.</p>
 <p>Use DRA for workloads that have the following requirements:</p>
 <ul class="simple">
 <li><p>Coordinate Multi-Node NVLink workloads by using ComputeDomains.</p></li>
@@ -556,7 +550,7 @@ gRPC health probes report kubelet plugin availability only.</p></td>
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Capability</p></th>
-<th class="head"><p>Maturity</p></th>
+<th class="head"><p>Support Status</p></th>
 <th class="head"><p>Default</p></th>
 <th class="head"><p>Operator Control</p></th>
 </tr>
@@ -853,10 +847,18 @@ The DRA validator and enabled telemetry operands run one pod on each GPU node.</
 <p>The ComputeDomain DeviceClasses are present only when ComputeDomain support is enabled.</p>
 </li>
 </ol>
-<p>Additional validation procedures are available in the upstream DRA Driver documentation:</p>
+</section>
+<section id="running-a-sample-workload">
+<h2>Running a Sample Workload<a class="headerlink" href="#running-a-sample-workload" title="Permalink to this headline">#</a></h2>
+<p>Refer to <a class="reference external" href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/gpu-allocation/allocating-gpus/">Request full GPUs</a>
+in the DRA driver documentation for information about the following workload-related tasks:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/install/#run-a-sample-computedomain-workload">Run a sample ComputeDomain workload</a>.</p></li>
-<li><p><a class="reference external" href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/install/#run-a-sample-gpu-allocation-workload">Run a sample GPU allocation workload</a>.</p></li>
+<li><p>Request any GPU</p></li>
+<li><p>Request multiple GPUs in one pod</p></li>
+<li><p>Share a GPU across containers in a pod</p></li>
+<li><p>Select a GPU by product name</p></li>
+<li><p>Select a GPU by memory size</p></li>
+<li><p>Combine attribute and capacity selectors</p></li>
 </ul>
 </section>
 <section id="telemetry">
@@ -1044,6 +1046,7 @@ Use this option only during recovery when no DRA workloads are running.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install">Install</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-dra-components">Configure DRA Components</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#validate-installation">Validate Installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-sample-workload">Running a Sample Workload</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#telemetry">Telemetry</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#upgrade">Upgrade</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uninstall">Uninstall</a></li>
