@@ -240,7 +240,7 @@ Sample of ``values.yaml`` for GPU Operator v1.9.0:
 DRA Driver Image
 ================
 
-If you deploy the technology preview ``GPUCluster`` custom resource definition, mirror the DRA Driver for NVIDIA GPUs image in addition to the other GPU Operator images:
+If you deploy the ``GPUCluster`` custom resource definition, mirror the DRA Driver for NVIDIA GPUs image in addition to the other GPU Operator images:
 
 .. code-block:: console
 

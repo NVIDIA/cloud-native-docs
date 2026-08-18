@@ -480,7 +480,6 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``draDriver.computeDomains.enabled``
      - When set to ``true``, the ``GPUCluster`` stack deploys the ComputeDomain controller and kubelet plugin.
-       GPU allocation through DRA is always enabled when a ``GPUCluster`` is deployed.
        Refer to :doc:`DRA Driver for NVIDIA GPUs <dra-intro-install>` for more information.
      - ``true``
 
@@ -489,7 +488,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``v${dra_version}``
 
    * - ``gpuCluster.deployCR``
-     - When set to ``true``, the chart creates the technology preview ``GPUCluster`` resource for the DRA enablement stack.
+     - When set to ``true``, the chart creates the ``GPUCluster`` resource for the DRA enablement stack.
        Set ``clusterPolicy.deployCR=false`` and refer to :doc:`DRA Driver for NVIDIA GPUs <dra-intro-install>` for the complete installation procedure.
      - ``false``
 
