@@ -28,19 +28,14 @@ Before using the DRA Driver for NVIDIA GPUs, familiarize yourself with the follo
 * `Dynamic Resource Allocation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_ in the Kubernetes documentation.
 * `DRA Driver for NVIDIA GPUs documentation <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/>`__.
 
-.. important::
-
-   GPU Operator supports the DRA Driver as a more recent alternative to the Device Plugin for Kubernetes.
-   However, some features of the DRA driver are alpha maturity and not fully supported.
-   The driver does not provide feature parity with the device plugin.
-   Refer to the following section regarding the features that are not yet implemented or fully supported before selecting the driver for production use.
-
 *********************************
 Comparison: DRA and Device Plugin
 *********************************
 
-The DRA Driver for NVIDIA GPUs and the NVIDIA Device Plugin for Kubernetes provide alternative mechanisms for allocating NVIDIA GPU resources.
-The mechanisms do not provide feature parity.
+GPU Operator supports the DRA Driver as a more recent alternative to the NVIDIA Device Plugin for Kubernetes.
+However, some features of the DRA driver are alpha maturity and not fully supported.
+The driver does not provide feature parity with the device plugin.
+
 A cluster can have either a ``GPUCluster`` resource for DRA or a ``ClusterPolicy`` resource for the Device Plugin, but not both.
 
 Use DRA for workloads that have the following requirements:
@@ -117,7 +112,7 @@ The following table groups the DRA driver capabilities by maturity:
    :widths: 34 22 18 26
 
    * - Capability
-     - Maturity
+     - Support Status
      - Default
      - Operator Control
 
@@ -432,10 +427,19 @@ During reconciliation, the STATUS column progresses from empty to `notReady` to 
 
    The ComputeDomain DeviceClasses are present only when ComputeDomain support is enabled.
 
-Additional validation procedures are available in the upstream DRA Driver documentation:
+*************************
+Running a Sample Workload
+*************************
 
-* `Run a sample ComputeDomain workload <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/install/#run-a-sample-computedomain-workload>`__.
-* `Run a sample GPU allocation workload <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/install/#run-a-sample-gpu-allocation-workload>`__.
+Refer to `Request full GPUs <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/gpu-allocation/allocating-gpus/>`__
+in the DRA driver documentation for information about the following workload-related tasks:
+
+* Request any GPU
+* Request multiple GPUs in one pod
+* Share a GPU across containers in a pod
+* Select a GPU by product name
+* Select a GPU by memory size
+* Combine attribute and capacity selectors
 
 *********
 Telemetry
