@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 14, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 18, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -452,8 +452,7 @@
                   
   <section id="dra-driver-for-nvidia-gpus">
 <h1>DRA Driver for NVIDIA GPUs<a class="headerlink" href="#dra-driver-for-nvidia-gpus" title="Permalink to this headline">#</a></h1>
-<p>Dynamic Resource Allocation (DRA) is a Kubernetes API for flexibly requesting,
-configuring, and sharing specialized devices such as GPUs.
+<p>Dynamic Resource Allocation (DRA) is a Kubernetes API for flexibly requesting, configuring, and sharing specialized devices such as GPUs.
 This page describes how to use the GPU Operator to install and manage DRA Driver for NVIDIA GPUs v0.4.1.</p>
 <p>Before using the DRA Driver for NVIDIA GPUs, familiarize yourself with the following documentation:</p>
 <ul class="simple">
@@ -462,12 +461,14 @@ This page describes how to use the GPU Operator to install and manage DRA Driver
 </ul>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>GPU Operator management of DRA is available as a technology preview.
-Technology preview features are not supported in production environments and are not functionally complete.</p>
+<p>GPU Operator supports the DRA Driver as a more recent alternative to the Device Plugin for Kubernetes.
+However, some features of the DRA driver are alpha maturity and not fully supported.
+The driver does not provide feature parity with the device plugin.
+Refer to the following section regarding the features that are not yet implemented or fully supported before selecting the driver for production use.</p>
 </div>
 <section id="comparison-dra-and-device-plugin">
 <h2>Comparison: DRA and Device Plugin<a class="headerlink" href="#comparison-dra-and-device-plugin" title="Permalink to this headline">#</a></h2>
-<p>The DRA Driver for NVIDIA GPUs and the NVIDIA Kubernetes Device Plugin provide alternative mechanisms for allocating NVIDIA GPU resources.
+<p>The DRA Driver for NVIDIA GPUs and the NVIDIA Device Plugin for Kubernetes provide alternative mechanisms for allocating NVIDIA GPU resources.
 The mechanisms do not provide feature parity.
 A cluster can have either a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource for DRA or a <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource for the Device Plugin, but not both.</p>
 <p>Use DRA for workloads that have the following requirements:</p>
@@ -502,19 +503,22 @@ or Kubernetes Pod priority and preemption.</p></li>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>API and Device Selection</p></td>
-<td><p>Uses DRA API objects for structured device selection and per-claim configuration.</p></td>
+<td><p>Uses DRA API to select GPUs by attributes—model, architecture, memory, compute capability, UUID, addressing mode, PCI/topology information—using CEL expressions.</p>
+<p>With Kubernetes v1.36, the driver also supports the extended resource names for backward compatibility.</p>
+</td>
 <td><p>Uses Kubernetes extended resource names and counts.
-Configuration applies at the node or cluster level.</p></td>
+Node labeling or other external mechanisms required for structured selection.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Full GPU and MIG Device Allocation</p></td>
-<td><p>Allocates full GPU devices and existing MIG devices.
+<td><p>Allocates full GPU devices and preconfigured MIG devices.
 Alpha <code class="docutils literal notranslate"><span class="pre">DynamicMIG</span></code> creates MIG devices for a claim.</p></td>
 <td><p>Allocates full GPU devices or preconfigured MIG devices.
 MIG Manager configures MIG geometry before allocation.</p></td>
 </tr>
 <tr class="row-even"><td><p>GPU Sharing</p></td>
-<td><p>Alpha <code class="docutils literal notranslate"><span class="pre">TimeSlicingSettings</span></code> and <code class="docutils literal notranslate"><span class="pre">MPSSupport</span></code> configure sharing through DRA claims.</p></td>
-<td><p>Advertises time-slicing replicas and experimental MPS replicas as independent extended resources.</p></td>
+<td><p>Supports time-slicing through a shared DRA claim. Custom time-slice intervals require the Alpha <code class="docutils literal notranslate"><span class="pre">TimeSlicingSettings</span></code> feature gate.
+MPS requires the Alpha <code class="docutils literal notranslate"><span class="pre">MPSSupport</span></code> gate.</p></td>
+<td><p>Advertises time-slicing replicas and experimental MPS replicas for all GPUs on a node.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Multi-Node NVLink</p></td>
 <td><p>Provides the ComputeDomain API and controller for coordinated workloads.</p></td>
@@ -532,9 +536,8 @@ gRPC health probes report kubelet plugin availability only.</p></td>
 <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> manages NVIDIA Container Toolkit, GPU Feature Discovery, MIG Manager, the sandbox device plugin, Kata Containers, KubeVirt, and NVIDIA vGPU Manager.</p></td>
 </tr>
 <tr class="row-even"><td><p>Kubernetes Scheduling</p></td>
-<td><p>Uses <code class="docutils literal notranslate"><span class="pre">ResourceClaim</span></code> objects and DRA scheduler integration.
-Kubernetes does not support preemption for DRA resources.</p></td>
-<td><p>Uses Kubernetes extended resource scheduling and supports Kubernetes Pod priority and preemption.</p></td>
+<td><p>Allocation through a <code class="docutils literal notranslate"><span class="pre">ResourceClaim</span></code>, which can be referenced by multiple containers or Pods.</p></td>
+<td><p>Allocation through the resource limits specified for the container.</p></td>
 </tr>
 </tbody>
 </table>
@@ -542,10 +545,6 @@ Kubernetes does not support preemption for DRA resources.</p></td>
 </section>
 <section id="dra-driver-feature-maturity">
 <h3>DRA Driver Feature Maturity<a class="headerlink" href="#dra-driver-feature-maturity" title="Permalink to this headline">#</a></h3>
-<p>GPU Operator support for deploying DRA components and the maturity of capabilities in the upstream DRA driver are separate considerations.
-Upstream describes ComputeDomains as <em>officially supported</em> rather than <em>generally available (GA)</em>.
-For this comparison, the table treats the terms as equivalent.
-<code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> always enables GPU allocation, can disable ComputeDomains, and passes <code class="docutils literal notranslate"><span class="pre">draDriver.featureGates</span></code> values to the DRA driver.</p>
 <p>The following table groups the DRA driver capabilities by maturity:</p>
 <div class="pst-scrollable-table-container"><table class="colwidths-given table" id="id3">
 <caption><span class="caption-text">DRA Driver Capability Maturity</span><a class="headerlink" href="#id3" title="Permalink to this table">#</a></caption>
@@ -564,17 +563,17 @@ For this comparison, the table treats the terms as equivalent.
 </thead>
 <tbody>
 <tr class="row-even"><td><p>ComputeDomains</p></td>
-<td><p>Officially supported (GA)</p></td>
+<td><p>Generally Available</p></td>
 <td><p>Enabled</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">draDriver.computeDomains.enabled</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p>Full GPU and existing MIG device allocation</p></td>
-<td><p>Not officially supported</p></td>
+<td><p>Generally Available</p></td>
 <td><p>Enabled</p></td>
 <td><p>Always enabled</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ComputeDomainCliques</span></code>, <code class="docutils literal notranslate"><span class="pre">CrashOnNVLinkFabricErrors</span></code>, <code class="docutils literal notranslate"><span class="pre">IMEXDaemonsWithDNSNames</span></code></p></td>
-<td><p>Beta</p></td>
+<td><p>Generally Available</p></td>
 <td><p>Enabled</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">draDriver.featureGates</span></code></p></td>
 </tr>
@@ -594,7 +593,6 @@ for the authoritative support status, maturity, and default values.</p>
 <h3>DRA Driver Limitations<a class="headerlink" href="#dra-driver-limitations" title="Permalink to this headline">#</a></h3>
 <p>Consider the following limitations before selecting DRA driver v0.4.1:</p>
 <ul class="simple">
-<li><p>ComputeDomains are officially supported, but full GPU and MIG allocation are not yet officially supported upstream.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code> is alpha and disabled by default.
 The gRPC health probe reports kubelet plugin availability, and DCGM provides telemetry.
 Neither provides DRA allocation health status.</p></li>
@@ -611,7 +609,7 @@ The managed <code class="docutils literal notranslate"><span class="pre">gpu.nvi
 </section>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">#</a></h2>
-<p>The GPU Operator manages DRA components through the <code class="docutils literal notranslate"><span class="pre">nvidia.com/v1alpha1</span></code> <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> custom resource.
+<p>The GPU Operator manages DRA components through the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> custom resource.
 <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> is a cluster-scoped singleton and its name must be <code class="docutils literal notranslate"><span class="pre">gpu-cluster</span></code>.
 The Helm chart creates this resource when you set <code class="docutils literal notranslate"><span class="pre">gpuCluster.deployCR=true</span></code>.</p>
 <p>A cluster can have either a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> or a <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource, but not both.
@@ -620,7 +618,7 @@ and <code class="docutils literal notranslate"><span class="pre">GPUCluster</spa
 <p>For <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code>, the GPU Operator manages the following components:</p>
 <ul class="simple">
 <li><p>The DRA driver GPU capability for <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com</span></code>, <code class="docutils literal notranslate"><span class="pre">mig.nvidia.com</span></code>, and <code class="docutils literal notranslate"><span class="pre">vfio.gpu.nvidia.com</span></code> devices.
-This capability is always enabled.</p></li>
+This capability is always enabled, although VFIO passthrough is unusable without the Alpha <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> feature gate which is off by default.</p></li>
 <li><p>The ComputeDomain controller and kubelet plugin for Multi-Node NVLink (MNNVL).
 ComputeDomain support is enabled by default and can be disabled.</p></li>
 <li><p>A DRA validator that allocates a GPU by using a <code class="docutils literal notranslate"><span class="pre">ResourceClaim</span></code> and verifies that the device is usable.</p></li>
@@ -636,7 +634,7 @@ The Operator automatically assigns the <code class="docutils literal notranslate
 <li><p>Use this workflow for a new installation.
 An in-place migration from a standalone DRA driver Helm release or from <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> to <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> is not supported.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> does not expose the controller affinity, priority class, toleration,
-and kubelet-plugin node selector overrides that were used by the previous standalone DRA driver procedure for Google Kubernetes Engine.
+and kubelet-plugin node selector overrides that were used by the previous standalone DRA driver procedure for Google Kubernetes Engine (GKE).
 This page does not provide a managed DRA installation procedure for GKE.</p></li>
 </ul>
 </section>
