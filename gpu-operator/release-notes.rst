@@ -54,6 +54,10 @@ Fixed Issues
   The GPU Operator now infers these feature flags dynamically from the kernel modules that are loaded on each node, rather than enabling them unconditionally.
   (`PR #2525 <https://github.com/NVIDIA/gpu-operator/pull/2525>`__, `k8s-device-plugin PR #1837 <https://github.com/NVIDIA/k8s-device-plugin/pull/1837>`__)
 
+Post-Release Documentation Updates
+----------------------------------
+
+* Added 580.178.04, 595.91.97, and 610.57.04 to the supported driver versions in the :ref:`operator-component-matrix`.
 
 ----
 
