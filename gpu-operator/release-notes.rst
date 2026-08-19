@@ -43,12 +43,19 @@ New Features
 
 * Updated software component versions:
 
-  - NVIDIA GPU Driver 595.71.05
+  - NVIDIA GPU Driver 595.91.07
+  - NVIDIA Driver Manager for Kubernetes v0.12.0
   - NVIDIA Container Toolkit v1.20.0
-  - NVIDIA DCGM 4.6.0-1
-  - NVIDIA MIG Manager for Kubernetes v0.14.3
-  - NVIDIA GDRCopy Driver v2.6
+  - NVIDIA Device Plugin for Kubernetes v0.20.0
+  - NVIDIA DCGM Exporter v4.6.0-4.8.3
+  - NVIDIA DCGM 4.6.1-1
+  - NVIDIA MIG Manager for Kubernetes v0.15.0
   - Node Feature Discovery v0.19.0
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.19.4
+  - NVIDIA GDS Driver v2.29.4
+  - NVIDIA Confidental Computing Manager for Kubernetes v0.4.2
+  - NVIDIA GDRCopy Driver v2.6
+  - NVIDIA Kata Sandbox Device Plugin v0.0.4
 
 * Added a ``nvidia.com/gpu.deploy.client`` node label that lets the GPU Operator manage third-party GPU client pods during driver upgrades and MIG configuration changes.
   Advanced users who run their own GPU client workloads that hold GPU device handles (for example, a standalone NVIDIA DRA driver) can add ``nvidia.com/gpu.deploy.client=true`` to the ``nodeSelector`` of the workload's DaemonSet, Deployment, StatefulSet, or Job.
