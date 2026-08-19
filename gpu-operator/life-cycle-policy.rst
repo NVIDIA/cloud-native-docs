@@ -93,22 +93,26 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - NVIDIA GPU Driver |ki|_
      - | `580.95.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-95-05/index.html>`_ (**D**, **R**)
-       | `580.82.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html>`_ 
+       | `580.82.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html>`_
        | `575.57.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html>`_
        | `570.195.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-195-03/index.html>`_
        | `550.163.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-550-163-01/index.html>`_
        | `535.274.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-274-02/index.html>`_
-     - | `595.71.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-71-05/index.html>`_
+
+     - | `610.57.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-610-57-04/index.html>`_
+       | `595.91.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-91-07/index.html>`_
+       | `595.71.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-71-05/index.html>`_
        | `595.58.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-58-03/index.html>`_
        | `590.48.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-590-48-01/index.html>`_
-       | `580.167.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-167-08/index.html>`_ (**R**)
+       | `580.178.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-178-04/index.html>`_ (**R**)
+       | `580.167.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-167-08/index.html>`_
        | `580.159.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-159-04/index.html>`_
        | `580.159.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-159-03/index.html>`_
        | `580.126.16 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-16/index.html>`_
-       | `580.126.09 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-09/index.html>`_ 
+       | `580.126.09 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-126-09/index.html>`_
        | `580.105.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-105-08/index.html>`_ (**D**)
-       | `580.95.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-95-05/index.html>`_ 
-       | `580.82.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html>`_ 
+       | `580.95.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-95-05/index.html>`_
+       | `580.82.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-82-07/index.html>`_
        | `575.57.08 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-575-57-08/index.html>`_
        | `570.211.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-211-01/index.html>`_
        | `570.195.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-195-03/index.html>`_
@@ -174,8 +178,8 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    :sup:`1`
    Known Issue: For drivers 570.124.06, 570.133.20, 570.148.08, and 570.158.01,
-   GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs. 
-   This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state. 
+   GPU workloads cannot be scheduled on nodes that have a mix of MIG slices and full GPUs.
+   This manifests as GPU pods getting stuck indefinitely in the ``Pending`` state.
    NVIDIA recommends that you upgrade the driver to version 580.65.06 or later to resolve this issue.
    For more detailed information, see GitHub issue https://github.com/NVIDIA/gpu-operator/issues/1361.
 
@@ -185,7 +189,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    :sup:`2`
    This release of the GDS driver requires that you use the NVIDIA Open GPU Kernel module driver for the GPUs.
    Refer to :doc:`gpu-operator-rdma` for more information.
-   
+
 .. note::
 
    - Driver version could be different with NVIDIA vGPU, as it depends on the driver
@@ -193,4 +197,3 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    - The GPU Operator is supported on all active NVIDIA data center production drivers.
      Refer to `Supported Drivers and CUDA Toolkit Versions <https://docs.nvidia.com/datacenter/tesla/drivers/index.html#supported-drivers-and-cuda-toolkit-versions>`_
      for more information.
-

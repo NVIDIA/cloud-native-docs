@@ -98,9 +98,10 @@ Known Issues
         value: "true"
 
 
-Post-Release Updates
---------------------
+Post-Release Documentation Updates
+----------------------------------
 
+* Added 580.178.04, 595.91.97, and 610.57.04 to the supported driver versions in the :ref:`operator-component-matrix`.
 * The :ref:`Supported Container Runtimes` table is updated from containerd versions 1.7 - 2.1 to 1.7 - 2.2.
 
 .. _v25.10.0:
