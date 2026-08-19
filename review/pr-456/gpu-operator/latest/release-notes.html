@@ -79,7 +79,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 18, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 19, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -468,12 +468,18 @@
 <ul class="simple">
 <li><p>Updated software component versions:</p>
 <ul>
-<li><p>NVIDIA GPU Driver 595.71.05</p></li>
+<li><p>NVIDIA GPU Driver 595.91.07</p></li>
 <li><p>NVIDIA Container Toolkit v1.20.0</p></li>
-<li><p>NVIDIA DCGM 4.6.0-1</p></li>
-<li><p>NVIDIA MIG Manager for Kubernetes v0.14.3</p></li>
-<li><p>NVIDIA GDRCopy Driver v2.6</p></li>
+<li><p>NVIDIA Device Plugin for Kubernetes v0.19.3</p></li>
+<li><p>NVIDIA DCGM Exporter v4.6.0-4.8.3</p></li>
+<li><p>NVIDIA DCGM 4.6.1-1</p></li>
+<li><p>NVIDIA MIG Manager for Kubernetes v0.14.5</p></li>
 <li><p>Node Feature Discovery v0.19.0</p></li>
+<li><p>NVIDIA GPU Feature Discovery for Kubernetes v0.19.4</p></li>
+<li><p>NVIDIA GDS Driver v2.29.4</p></li>
+<li><p>NVIDIA Confidental Computing Manager for Kubernetes v0.4.2</p></li>
+<li><p>NVIDIA GDRCopy Driver v2.6</p></li>
+<li><p>NVIDIA Kata Sandbox Device Plugin v0.0.4</p></li>
 </ul>
 </li>
 <li><p>Added a <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.deploy.client</span></code> node label that lets the GPU Operator manage third-party GPU client pods during driver upgrades and MIG configuration changes.
@@ -567,6 +573,12 @@ The GPU Operator no longer configures these mounts when NRI is enabled.
 This caused all <code class="docutils literal notranslate"><span class="pre">ibverbs</span></code> device nodes on a node to be injected into GPU workload containers, disrupting RDMA and NCCL workloads by exposing network interfaces that were not intended for the workload.
 The GPU Operator now infers these feature flags dynamically from the kernel modules that are loaded on each node, rather than enabling them unconditionally.
 (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2525">PR #2525</a>, <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/pull/1837">k8s-device-plugin PR #1837</a>)</p></li>
+</ul>
+</section>
+<section id="post-release-documentation-updates">
+<h3>Post-Release Documentation Updates<a class="headerlink" href="#post-release-documentation-updates" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Added 580.178.04, 595.91.97, and 610.57.04 to the supported driver versions in the <a class="reference internal" href="platform-support.html#operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>.</p></li>
 </ul>
 <hr class="docutils" />
 </section>
@@ -3497,6 +3509,7 @@ would not be available after reboot.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v26-3-3">26.3.3</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">New Features</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Fixed Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-release-documentation-updates">Post-Release Documentation Updates</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v26-3-2">26.3.2</a><ul class="nav section-nav flex-column">
