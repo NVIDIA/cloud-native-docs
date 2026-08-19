@@ -574,5 +574,6 @@ Additional Documentation
 
 For more details on the DRA Driver for NVIDIA GPUs, refer to the following resources:
 
-* `DRA Driver for NVIDIA GPUs documentation <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/>`__.
-* `DRA Driver v${dra_version} release notes <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v${dra_version}>`__.
+* `DRA Driver for NVIDIA GPUs documentation <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/>`__
+* `DRA Driver v${dra_version} release notes <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v${dra_version}>`__
+* :ref:`gpu-operator-kubevirt-dra`

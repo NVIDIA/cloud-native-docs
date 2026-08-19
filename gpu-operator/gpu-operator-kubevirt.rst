@@ -11,6 +11,9 @@ GPU Operator with KubeVirt
 .. tip::
    For information about using the GPU Operator with Red Hat OpenShift Virtualization, refer to the :ref:`NVIDIA GPU Operator with OpenShift Virtualization <nvidia-gpu-operator-openshift-virtualization-vgpu-enablement>` page.
 
+   This page describes passthrough with the sandbox device plugin and NVIDIA vGPU mediated devices.
+   For VFIO passthrough with Dynamic Resource Allocation, refer to :ref:`gpu-operator-kubevirt-dra`.
+
 .. _gpu-operator-kubevirt-introduction:
 
 About the Operator with KubeVirt

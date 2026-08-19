@@ -55,7 +55,8 @@
    :titlesonly:
    :hidden:
 
-      KubeVirt <gpu-operator-kubevirt.rst>
+      KubeVirt GPU Passthrough and vGPU <gpu-operator-kubevirt.rst>
+      KubeVirt with DRA <gpu-operator-kubevirt-dra.rst>
       Kata Containers <deploy-kata-containers.rst>
       Confidential Containers <confidential-containers-deploy.rst>
    
