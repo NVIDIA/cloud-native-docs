@@ -110,7 +110,7 @@ project_build_order = [
 docs_root = "${root}/container-toolkit"
 project = "container-toolkit"
 name = "NVIDIA Container Toolkit"
-version = "1.20"
+version = "1.20.0"
 source_substitutions = {version = "1.20.0"}
 copyright_start = 2020
 redirects = [
