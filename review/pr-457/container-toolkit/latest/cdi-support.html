@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.19.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.20.0';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 10, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 20, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -556,6 +556,52 @@ directly:</p>
 </div>
 </section>
 </section>
+<section id="jit-cdi-mode">
+<h2>JIT-CDI Mode<a class="headerlink" href="#jit-cdi-mode" title="Permalink to this headline">#</a></h2>
+<p>Just-in-time CDI (JIT-CDI) mode generates an in-memory CDI specification for the
+NVIDIA devices that a container requests. The NVIDIA Container Runtime uses this
+specification to update the container configuration. JIT-CDI mode does not write
+a persistent specification to <code class="docutils literal notranslate"><span class="pre">/var/run/cdi</span></code> or <code class="docutils literal notranslate"><span class="pre">/etc/cdi</span></code>.</p>
+<p>When <code class="docutils literal notranslate"><span class="pre">nvidia-container-runtime.mode</span></code> is set to <code class="docutils literal notranslate"><span class="pre">auto</span></code>, the runtime selects JIT-CDI
+mode on systems that use the NVIDIA Management Library (NVML) or Windows
+Subsystem for Linux 2 (WSL2). Native CDI-enabled runtimes still use the
+persistent specifications described in
+<a class="reference internal" href="#id1"><span class="std std-doc">Automatic CDI Specification Generation</span></a>.</p>
+<section id="disabling-hooks-in-jit-cdi-mode">
+<h3>Disabling Hooks in JIT-CDI Mode<a class="headerlink" href="#disabling-hooks-in-jit-cdi-mode" title="Permalink to this headline">#</a></h3>
+<p>You can prevent JIT-CDI mode from adding specific hooks to an in-memory specification.
+The supported hook names are <code class="docutils literal notranslate"><span class="pre">create-symlinks</span></code>,
+<code class="docutils literal notranslate"><span class="pre">disable-device-node-modification</span></code>, <code class="docutils literal notranslate"><span class="pre">enable-cuda-compat</span></code>,
+<code class="docutils literal notranslate"><span class="pre">update-application-profile</span></code>, and <code class="docutils literal notranslate"><span class="pre">update-ldcache</span></code>.
+Use <code class="docutils literal notranslate"><span class="pre">all</span></code> to disable every hook.</p>
+<p>The following command disables the update-application-profile and update-ldcache
+hooks. Separate multiple values with a colon:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk config --in-place <span class="se">\</span>
+    --set nvidia-container-runtime.modes.jit-cdi.nvcdi-disable-hooks<span class="o">=</span>update-application-profile:update-ldcache
+</pre></div>
+</div>
+<p>The resulting configuration contains the following settings:</p>
+<div class="highlight-toml notranslate"><div class="highlight"><pre><span></span><span class="k">[nvidia-container-runtime.modes.jit-cdi]</span><span class="w"></span>
+<span class="n">nvcdi-disable-hooks</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="s">&quot;update-application-profile&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;update-ldcache&quot;</span><span class="p">]</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Disable only the hook that conflicts with your environment. Hooks configure
+libraries, links, device behavior, and GPU visibility in the container. Disabling
+a required hook can prevent an application from starting or can expose more GPUs
+to EGL and Vulkan applications than the container requested.</p>
+</div>
+<p>For a persistent specification, pass <code class="docutils literal notranslate"><span class="pre">--disable-hook</span></code> once for each hook when you
+<a class="reference internal" href="#manual-cdi-specification-generation"><span class="std std-doc">generate the CDI specification manually</span></a>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-ctk cdi generate <span class="se">\</span>
+    --disable-hook update-application-profile <span class="se">\</span>
+    --disable-hook update-ldcache <span class="se">\</span>
+    --output<span class="o">=</span>/var/run/cdi/nvidia.yaml
+</pre></div>
+</div>
+</section>
+</section>
 <section id="running-a-workload-with-cdi">
 <h2>Running a Workload with CDI<a class="headerlink" href="#running-a-workload-with-cdi" title="Permalink to this headline">#</a></h2>
 <p>Using CDI to inject NVIDIA devices can conflict with using the NVIDIA Container Runtime hook.
@@ -579,6 +625,13 @@ You can request these by specifying their names when launching a container, such
 </div>
 <p>The preceding sample command requests the full GPU with index 0 and the first MIG device on GPU 1.
 The output should show only the UUIDs of the requested devices.</p>
+<section id="imex-channels">
+<h3>IMEX Channels<a class="headerlink" href="#imex-channels" title="Permalink to this headline">#</a></h3>
+<p>Containers can request specific NVIDIA IMEX channels with the
+<code class="docutils literal notranslate"><span class="pre">NVIDIA_IMEX_CHANNELS</span></code> environment variable. For supported values, an example,
+and validation errors, refer to
+<a class="reference internal" href="docker-specialized.html#id1"><span class="std std-doc">Requesting IMEX Channels</span></a>.</p>
+</section>
 </section>
 <section id="using-cdi-with-non-cdi-enabled-runtimes">
 <h2>Using CDI with Non-CDI-Enabled Runtimes<a class="headerlink" href="#using-cdi-with-non-cdi-enabled-runtimes" title="Permalink to this headline">#</a></h2>
@@ -685,7 +738,14 @@ The NVIDIA Container Toolkit performs the configuration for you.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#manual-cdi-specification-generation">Manual CDI Specification Generation</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-workload-with-cdi">Running a Workload with CDI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#jit-cdi-mode">JIT-CDI Mode</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-hooks-in-jit-cdi-mode">Disabling Hooks in JIT-CDI Mode</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-workload-with-cdi">Running a Workload with CDI</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#imex-channels">IMEX Channels</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-cdi-with-non-cdi-enabled-runtimes">Using CDI with Non-CDI-Enabled Runtimes</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-the-cdi-mode-explicitly">Setting the CDI Mode Explicitly</a></li>
 </ul>

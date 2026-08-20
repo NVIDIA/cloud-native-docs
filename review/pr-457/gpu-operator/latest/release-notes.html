@@ -79,7 +79,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 10, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 20, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -481,6 +481,12 @@
 This caused all <code class="docutils literal notranslate"><span class="pre">ibverbs</span></code> device nodes on a node to be injected into GPU workload containers, disrupting RDMA and NCCL workloads by exposing network interfaces that were not intended for the workload.
 The GPU Operator now infers these feature flags dynamically from the kernel modules that are loaded on each node, rather than enabling them unconditionally.
 (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2525">PR #2525</a>, <a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/pull/1837">k8s-device-plugin PR #1837</a>)</p></li>
+</ul>
+</section>
+<section id="post-release-documentation-updates">
+<h3>Post-Release Documentation Updates<a class="headerlink" href="#post-release-documentation-updates" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Added 580.178.04, 595.91.97, and 610.57.04 to the supported driver versions in the <a class="reference internal" href="platform-support.html#operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a>.</p></li>
 </ul>
 <hr class="docutils" />
 </section>
@@ -3420,6 +3426,7 @@ would not be available after reboot.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v26-3-3">26.3.3</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-features">New Features</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-issues">Fixed Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-release-documentation-updates">Post-Release Documentation Updates</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v26-3-2">26.3.2</a><ul class="nav section-nav flex-column">
