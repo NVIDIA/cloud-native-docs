@@ -676,7 +676,7 @@ The GPU Operator will deploy and manage NFD in the next step.</p>
 </div>
 </li>
 <li><p>Verify that the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> pod is running:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl -n kata-system <span class="p">|</span> grep kata-deploy
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n kata-system <span class="p">|</span> grep kata-deploy
 </pre></div>
 </div>
 <p><em>Example Output:</em></p>

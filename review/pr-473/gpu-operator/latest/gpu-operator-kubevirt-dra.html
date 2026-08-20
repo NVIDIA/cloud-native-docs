@@ -483,28 +483,29 @@ Use one named request for each GPU, as shown in this procedure.</p></li>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <p>Before you begin, verify the following prerequisites:</p>
-<ul class="simple">
-<li><p>Follow <a class="reference internal" href="dra-intro-install.html#dra-driver-for-nvidia-gpus"><span class="std std-ref">DRA Driver for NVIDIA GPUs</span></a> to install GPU Operator with the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> workflow and validate the installation.
+<ul>
+<li><p>Follow <a class="reference internal" href="dra-intro-install.html#dra-driver-for-nvidia-gpus"><span class="std std-ref">DRA Driver for NVIDIA GPUs</span></a> to install GPU Operator with the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> custom resource and validate the installation.
 The <code class="docutils literal notranslate"><span class="pre">gpu-cluster</span></code> resource must be ready, and no <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource can exist in the cluster.</p></li>
 <li><p>Use Kubernetes v1.34.2 or later, an NVIDIA GPU driver version 580 or later,
-and a Container Device Interface-compatible container runtime, as described in the regular DRA procedure.</p></li>
-<li><p>Use DRA Driver for NVIDIA GPUs v0.4.0 or later.</p></li>
-<li><p>Use KubeVirt v1.8.0 or later.
+and a Container Device Interface-compatible container runtime, as described in the DRA driver procedure.</p></li>
+<li><p>Install KubeVirt v1.8.0 or later.
 KubeVirt v1.8.x requires the <code class="docutils literal notranslate"><span class="pre">GPUsWithDRA</span></code> feature gate.
-The gate is enabled by default in KubeVirt v1.9.0 and later.</p></li>
+The gate is enabled by default in KubeVirt v1.9.0 and later.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On Kubernetes v1.34, KubeVirt’s <code class="docutils literal notranslate"><span class="pre">ImageVolume</span></code> feature can prevent <code class="docutils literal notranslate"><span class="pre">containerDisk</span></code>-backed virtual machines, including the example in this procedure, from starting.
+Disable <code class="docutils literal notranslate"><span class="pre">ImageVolume</span></code> in the KubeVirt custom resource, or use Kubernetes v1.35 or later.
+For more information, refer to <a class="reference external" href="https://github.com/kubevirt/kubevirt/issues/17460">KubeVirt issue #17460</a>.</p>
+</div>
+</li>
 <li><p>Use bare-metal GPU worker nodes with CPU virtualization and IOMMU enabled in the firmware.
 Boot the hosts with <code class="docutils literal notranslate"><span class="pre">intel_iommu=on</span></code> or <code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code>, as appropriate.</p></li>
-<li><p>Install KubeVirt and the <code class="docutils literal notranslate"><span class="pre">virtctl</span></code> command-line tool.</p></li>
-<li><p>Ensure that you can install a compatible NVIDIA driver in the guest operating system.</p></li>
+<li><p>Install the <code class="docutils literal notranslate"><span class="pre">virtctl</span></code> command-line tool for troubleshooting.</p></li>
+<li><p>Ensure that you use a guest operating system that has a supported NVIDIA driver.</p></li>
 </ul>
 <p>Fabric Manager partitioning is optional and hardware-specific.
 It applies only to supported HGX or single-node NVL systems with an NVSwitch-managed fabric and a supported partition topology.
-The optional partitioning steps in this procedure apply to the HGX H200 NVSwitch and HGX B200 NVLink 5 or later systems evaluated for this workflow.
-On other hardware, skip the Fabric Manager configuration and do not enable <code class="docutils literal notranslate"><span class="pre">FabricManagerPartitioning</span></code>.</p>
-<p>Before using partitioning, confirm the supported hardware, driver, and Fabric Manager configuration in the
-<a class="reference external" href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/gpu-allocation/fabric-manager-partitioning/">Fabric Manager partitioning documentation</a>.
-The selected GPUs must advertise the required partition attribute in their <code class="docutils literal notranslate"><span class="pre">ResourceSlice</span></code> entries.
-For example, a two-GPU partition is advertised as <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com/partition2</span></code>.</p>
+The optional partitioning steps in this procedure apply to the systems with NVLink 5 or later.</p>
 </section>
 <section id="optional-configure-fabric-manager-partitioning">
 <h2>Optional: Configure Fabric Manager Partitioning<a class="headerlink" href="#optional-configure-fabric-manager-partitioning" title="Permalink to this headline">#</a></h2>
@@ -576,33 +577,28 @@ The driver container configures and starts Fabric Manager.</p>
 <h2>Enable VFIO Support with DRA<a class="headerlink" href="#enable-vfio-support-with-dra" title="Permalink to this headline">#</a></h2>
 <p>Enable <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> and <code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code> in the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource.</p>
 <ol class="arabic">
-<li><p>Edit the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl edit gpucluster gpu-cluster
+<li><p>Isolate GPU consumers that would keep NVIDIA clients open during VFIO rebinding:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch gpucluster gpu-cluster --type<span class="o">=</span>merge -p <span class="s1">&#39;{&quot;spec&quot;:{&quot;dcgmExporter&quot;:{&quot;enabled&quot;:false}}}&#39;</span>
 </pre></div>
 </div>
 </li>
 <li><p>Add the feature gates under <code class="docutils literal notranslate"><span class="pre">spec.draDriver.featureGates</span></code>.
 Preserve any other DRA driver settings:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">draDriver</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">DeviceMetadata</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">      </span><span class="nt">PassthroughSupport</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch gpucluster gpu-cluster <span class="se">\</span>
+    --type<span class="o">=</span>merge -p <span class="err">&#39;</span><span class="o">{</span>
+<span class="go">        &quot;spec&quot;:{</span>
+<span class="go">          &quot;draDriver&quot;:{</span>
+<span class="go">            &quot;computeDomains&quot;:{&quot;enabled&quot;:false},</span>
+<span class="go">            &quot;featureGates&quot;:{</span>
+<span class="go">              &quot;PassthroughSupport&quot;:true,</span>
+<span class="go">              &quot;DeviceMetadata&quot;:true,</span>
+<span class="go">              &quot;FabricManagerPartitioning&quot;:true  # For NVLink 5 or later systems with NVSwitch-managed fabric.</span>
+<span class="go">            }}}}&#39;</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> enables allocation with <code class="docutils literal notranslate"><span class="pre">VfioDeviceConfig</span></code>.
 <code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code> provides KubeVirt with the PCI address for each allocated device and exposes the VFIO API device to the <code class="docutils literal notranslate"><span class="pre">virt-launcher</span></code> pod.
-GPU Operator continues to own the DRA driver, DeviceClasses, RBAC, and operand lifecycle.</p>
-</li>
-<li><p>If you configured Fabric Manager partitioning on supported hardware, also enable <code class="docutils literal notranslate"><span class="pre">FabricManagerPartitioning</span></code>:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">draDriver</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">FabricManagerPartitioning</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Preserve <code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code>, <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code>, and any other existing feature gates in the map.
-<code class="docutils literal notranslate"><span class="pre">FabricManagerPartitioning</span></code> publishes Fabric Manager partition attributes and prepares allocations that match a reported partition.</p>
+GPU Operator continues to manage the DRA driver, DeviceClasses, RBAC, and operand lifecycle.</p>
 </li>
 <li><p>Wait until GPU Operator finishes reconciling the change:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get gpucluster gpu-cluster
@@ -616,14 +612,13 @@ GPU Operator continues to own the DRA driver, DeviceClasses, RBAC, and operand l
 <h2>Configure KubeVirt for DRA GPUs<a class="headerlink" href="#configure-kubevirt-for-dra-gpus" title="Permalink to this headline">#</a></h2>
 <ol class="arabic">
 <li><p>For KubeVirt v1.8.x, add <code class="docutils literal notranslate"><span class="pre">GPUsWithDRA</span></code> to the existing feature-gate list in the <code class="docutils literal notranslate"><span class="pre">KubeVirt</span></code> custom resource:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">configuration</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">developerConfiguration</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GPUsWithDRA</span><span class="w"></span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch kubevirt kubevirt <span class="se">\</span>
+    --namespace kubevirt <span class="se">\</span>
+    --type<span class="o">=</span>json <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/configuration/developerConfiguration/featureGates/-&quot;, &quot;value&quot;: &quot;GPUsWithDRA&quot;}]&#39;</span>
 </pre></div>
 </div>
-<p>Do not remove other feature gates that your KubeVirt installation requires.
+<p>The JSON patch appends <code class="docutils literal notranslate"><span class="pre">GPUsWithDRA</span></code> and leaves other feature gates unchanged.
 Skip this step with KubeVirt v1.9.0 and later, where <code class="docutils literal notranslate"><span class="pre">GPUsWithDRA</span></code> is enabled by default.</p>
 </li>
 <li><p>Wait for KubeVirt to become available:</p>
@@ -647,11 +642,28 @@ in the KubeVirt documentation.</p>
 </pre></div>
 </div>
 </li>
-<li><p>Inspect the VFIO devices advertised by the DRA driver.
-The command includes a two-GPU partition column for the optional Fabric Manager path:</p>
+<li><p>List the ResourceSlices advertised by the DRA driver:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get resourceslices
 </pre></div>
 </div>
+<p>Confirm that the target GPU node has a ResourceSlice for the <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com</span></code>
+driver. The claim allocation later in this procedure verifies that the
+<code class="docutils literal notranslate"><span class="pre">vfio.gpu.nvidia.com</span></code> DeviceClass can select devices from the node.</p>
+</li>
+<li><p>Optional: If you enabled Fabric Manager partitioning on the target node,
+inspect the ResourceSlice in YAML format:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get resourceslice &lt;slice-name&gt; -o yaml
+</pre></div>
+</div>
+<p>Confirm that devices with the <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com/type</span></code> attribute set to
+<code class="docutils literal notranslate"><span class="pre">vfio</span></code> include a <code class="docutils literal notranslate"><span class="pre">gpuModuleID</span></code> attribute and the <code class="docutils literal notranslate"><span class="pre">partitionN</span></code> attributes
+reported for the hardware. For the two-GPU example in this procedure, at
+least two VFIO devices must advertise the same <code class="docutils literal notranslate"><span class="pre">partition2</span></code> value.</p>
+<p>Nodes without a supported NVSwitch-managed fabric do not advertise these
+attributes and do not require the remaining Fabric Manager-specific checks.
+If the target node has supported hardware and is configured for Fabric Manager
+partitioning, missing attributes indicate a configuration problem. Verify the
+Fabric Manager service, socket, and DRA kubelet-plugin logs before continuing.</p>
 </li>
 </ol>
 </section>
@@ -806,6 +818,8 @@ Use persistent guest storage for a long-running virtual machine.</p>
 <p>The host driver and guest driver are separate installations.
 Follow the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/fedora.html">NVIDIA Driver Installation Guide for Fedora</a>
 to select a driver that is compatible with the guest kernel and the assigned GPUs.</p>
+<section id="install-the-guest-driver">
+<h3>Install the Guest Driver<a class="headerlink" href="#install-the-guest-driver" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
 <li><p>For the Fedora 44 image in the example, run the following commands in the guest:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo dnf -y install kernel-devel-matched kernel-headers dnf-plugins-core
@@ -817,15 +831,62 @@ to select a driver that is compatible with the guest kernel and the assigned GPU
 </pre></div>
 </div>
 </li>
-<li><p>Reconnect to the console after the virtual machine reboots and verify GPU enumeration and topology:</p>
+</ol>
+</section>
+<section id="verify-the-gpus-on-any-supported-host">
+<h3>Verify the GPUs on Any Supported Host<a class="headerlink" href="#verify-the-gpus-on-any-supported-host" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Verify that the generated claim is allocated and reserved:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get resourceclaims
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">STATE</span></code> column must show <code class="docutils literal notranslate"><span class="pre">allocated,reserved</span></code>.</p>
+</li>
+<li><p>Reconnect to the console after the virtual machine reboots and verify GPU
+enumeration and topology:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi -L
 <span class="gp">$ </span>nvidia-smi topo -m
 </pre></div>
 </div>
 <p>The first command must list both assigned GPUs.
-If you used Fabric Manager partitioning, the topology output must show the connection expected for the selected partition.</p>
+The topology output depends on the hardware and can show a PCIe connection on
+systems without NVLink or NVSwitch.</p>
+<p>This verification applies to every supported host. If you did not configure
+Fabric Manager partitioning, skip the Fabric Manager-specific verification
+that follows.</p>
 </li>
-<li><p>Optional: For an additional connectivity demonstration, install a guest-compatible build of
+</ol>
+</section>
+<section id="optional-verify-fabric-manager-partitioning">
+<h3>Optional: Verify Fabric Manager Partitioning<a class="headerlink" href="#optional-verify-fabric-manager-partitioning" title="Permalink to this headline">#</a></h3>
+<p>Perform these steps only when the target node has a supported NVSwitch-managed
+fabric, Fabric Manager partitioning is configured, and the ResourceSlice
+advertises the required <code class="docutils literal notranslate"><span class="pre">partitionN</span></code> attribute.</p>
+<ol class="arabic">
+<li><p>Inspect the generated claim’s allocation:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get resourceclaim &lt;claim-name&gt; -o yaml
+</pre></div>
+</div>
+<p>Compare the devices under <code class="docutils literal notranslate"><span class="pre">status.allocation.devices.results</span></code> with the
+target node’s ResourceSlice. For the example in this procedure, the devices
+allocated for <code class="docutils literal notranslate"><span class="pre">gpu0</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu1</span></code> must have the same <code class="docutils literal notranslate"><span class="pre">partition2</span></code> value.</p>
+</li>
+<li><p>On the host, list the Fabric Manager partitions and their status:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>/run/nvidia/fmpm <span class="se">\</span>
+    --unix-domain-socket /run/nvidia-fabricmanager/socket <span class="se">\</span>
+    -l
+</pre></div>
+</div>
+<p>Confirm that the partition selected for the claim reports <code class="docutils literal notranslate"><span class="pre">isActive:</span> <span class="pre">1</span></code>.</p>
+</li>
+<li><p>In the guest, verify that the topology output shows the NVLink connection
+expected for the selected partition:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi topo -m
+</pre></div>
+</div>
+</li>
+<li><p>Optional: For an additional connectivity demonstration, install a
+guest-compatible build of
 <a class="reference external" href="https://github.com/NVIDIA/nvbandwidth/releases/tag/v0.8">nvbandwidth v0.8</a> and run:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./nvbandwidth -t device_to_device_memcpy_read_sm
 </pre></div>
@@ -833,6 +894,7 @@ If you used Fabric Manager partitioning, the topology output must show the conne
 <p>A successful run reports device-to-device bandwidth for both GPUs without a CUDA peer-access error.</p>
 </li>
 </ol>
+</section>
 </section>
 <section id="troubleshooting-and-operational-guidance">
 <h2>Troubleshooting and Operational Guidance<a class="headerlink" href="#troubleshooting-and-operational-guidance" title="Permalink to this headline">#</a></h2>
@@ -951,7 +1013,12 @@ refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-dra-resources">Verify DRA Resources</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-gpu-claim-template">Create a GPU Claim Template</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-vm-that-uses-the-gpu-claim">Create a VM That Uses the GPU Claim</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-guest-driver-and-verify-gpus">Install the Guest Driver and Verify GPUs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-guest-driver-and-verify-gpus">Install the Guest Driver and Verify GPUs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-guest-driver">Install the Guest Driver</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-gpus-on-any-supported-host">Verify the GPUs on Any Supported Host</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-verify-fabric-manager-partitioning">Optional: Verify Fabric Manager Partitioning</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-and-operational-guidance">Troubleshooting and Operational Guidance</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vm-remains-pending">VM Remains Pending</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vfio-deviceclass-is-unavailable">VFIO DeviceClass Is Unavailable</a></li>
