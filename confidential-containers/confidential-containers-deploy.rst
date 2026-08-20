@@ -208,7 +208,7 @@ The minimum required version is ${kata_version}.
 
    .. code-block:: console
 
-      $ kubectl -n kata-system | grep kata-deploy
+      $ kubectl get pods -n kata-system | grep kata-deploy
 
    *Example Output:*
 
