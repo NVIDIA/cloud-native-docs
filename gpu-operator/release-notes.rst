@@ -164,6 +164,14 @@ Fixed Issues
   The GPU Operator no longer configures these mounts when NRI is enabled.
   (`PR #2514 <https://github.com/NVIDIA/gpu-operator/pull/2514>`__)
 
+Known Issues
+------------
+
+* With DRA passthrough enabled, the driver initially advertises each eligible physical GPU as both a container GPU and a VFIO device.
+  If a container GPU claim and a VFIO passthrough claim for the same physical GPU are allocated before either device is prepared, the scheduler can allocate both claims.
+  The device that is prepared first succeeds, and preparation of the other device fails.
+
+  To avoid conflicting allocations, submit the workloads serially and wait for device preparation to complete, or dedicate separate nodes to container and VFIO workloads.
 
 ----
 
