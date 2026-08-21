@@ -41,15 +41,12 @@ Limitations and Restrictions
 ============================
 
 * Support for deploying the driver containers with precompiled drivers is limited to
-  hosts with the x86_64 architecture and operating system versions listed in the :ref:`supported-precompiled-drivers` table.
+  operating system, kernel version, and driver versions listed in the :ref:`supported-precompiled-drivers` table.
 
   For information about using precompiled drivers with OpenShift Container Platform,
   refer to :external+ocp:doc:`gpu-operator-with-precompiled-drivers`.
 
-* NVIDIA supports precompiled driver containers for the most recently released long-term
-  servicing branch (LTSB) driver branch.
-
-* NVIDIA builds images for the ``aws``, ``azure``, ``generic``, ``nvidia``, and ``oracle`` kernel variants.
+* NVIDIA builds images for the ``aws``, ``azure``, ``azure-fde``, ``generic``, ``nvidia``, and ``oracle`` kernel variants.
   If your hosts run a different kernel variant, you can build a precompiled driver image
   and use your own container registry.
 

@@ -25,11 +25,6 @@
 Install NVIDIA GPU Operator in Air-Gapped Environments
 ######################################################
 
-.. contents::
-   :local:
-   :backlinks: none
-   :depth: 2
-
 ******************************
 About Air-Gapped Installations
 ******************************
@@ -92,11 +87,11 @@ Before proceeding to the next sections, get the ``values.yaml`` file used for GP
 
 .. code-block:: console
 
-  $ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v1.7.0/deployments/gpu-operator/values.yaml
+  $ curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/${version}/deployments/gpu-operator/values.yaml
 
 .. note::
 
-   Replace ``v1.7.0`` in the above command with the version you want to use.
+   Replace ``${version}`` in the preceding command with the version you want to use.
 
 
 ********************
@@ -267,14 +262,6 @@ local mirror repository for their OS distribution and make the following package
        linux-image-${KERNEL_VERSION}
        linux-modules-${KERNEL_VERSION}
 
-    centos:
-       elfutils-libelf.x86_64
-       elfutils-libelf-devel.x86_64
-       kernel-headers-${KERNEL_VERSION}
-       kernel-devel-${KERNEL_VERSION}
-       kernel-core-${KERNEL_VERSION}
-       gcc-${GCC_VERSION}
-
     rhel/rhcos:
        kernel-headers-${KERNEL_VERSION}
        kernel-devel-${KERNEL_VERSION}
@@ -284,8 +271,6 @@ local mirror repository for their OS distribution and make the following package
 For example, for Ubuntu, these packages can be found at ``archive.ubuntu.com``.
 This is the mirror to be replicate locally for your cluster.
 You can use ``apt-mirror`` to mirror these packages to your local package repository server.
-
-For CentOS, ``reposync`` can be used to create the local mirror.
 
 After all the required packages are mirrored to the local repository, repo lists need to be created following
 distribution specific documentation. A ``ConfigMap`` containing the repo list file needs to be created in
@@ -310,30 +295,6 @@ An example of repo list is shown below for Ubuntu 24.04 (access to local package
    deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu noble main universe
    deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu noble-updates main universe
    deb [arch=amd64] http://<local pkg repository>/ubuntu/mirror/archive.ubuntu.com/ubuntu noble-security main universe
-
-An example of repo list is shown below for CentOS 8 (access to local package repository via HTTP):
-
-``custom-repo.repo``:
-
-.. code-block::
-
-   [baseos]
-   name=CentOS Linux $releasever - BaseOS
-   baseurl=http://<local pkg repository>/repos/centos/$releasever/$basearch/os/baseos/
-   gpgcheck=0
-   enabled=1
-
-   [appstream]
-   name=CentOS Linux $releasever - AppStream
-   baseurl=http://<local pkg repository>/repos/centos/$releasever/$basearch/os/appstream/
-   gpgcheck=0
-   enabled=1
-
-   [extras]
-   name=CentOS Linux $releasever - Extras
-   baseurl=http://<local pkg repository>/repos/centos/$releasever/$basearch/os/extras/
-   gpgcheck=0
-   enabled=1
 
 Create a ``ConfigMap`` object from the file:
 
