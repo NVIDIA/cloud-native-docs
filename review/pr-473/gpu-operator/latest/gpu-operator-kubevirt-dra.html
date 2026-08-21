@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 20, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 21, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -552,7 +552,6 @@ The driver container configures and starts Fabric Manager.</p>
 </li>
 <li><p>In the Fabric Manager configuration file, configure the following settings:</p>
 <div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">FABRIC_MODE</span><span class="o">=</span><span class="s">1</span><span class="w"></span>
-<span class="na">FABRIC_MODE_RESTART</span><span class="o">=</span><span class="s">1</span><span class="w"></span>
 <span class="na">FM_CMD_UNIX_SOCKET_PATH</span><span class="o">=</span><span class="s">/run/nvidia-fabricmanager/socket</span><span class="w"></span>
 </pre></div>
 </div>
@@ -871,27 +870,32 @@ advertises the required <code class="docutils literal notranslate"><span class="
 target node’s ResourceSlice. For the example in this procedure, the devices
 allocated for <code class="docutils literal notranslate"><span class="pre">gpu0</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu1</span></code> must have the same <code class="docutils literal notranslate"><span class="pre">partition2</span></code> value.</p>
 </li>
-<li><p>On the host, list the Fabric Manager partitions and their status:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>/run/nvidia/fmpm <span class="se">\</span>
-    --unix-domain-socket /run/nvidia-fabricmanager/socket <span class="se">\</span>
-    -l
-</pre></div>
-</div>
-<p>Confirm that the partition selected for the claim reports <code class="docutils literal notranslate"><span class="pre">isActive:</span> <span class="pre">1</span></code>.</p>
-</li>
 <li><p>In the guest, verify that the topology output shows the NVLink connection
 expected for the selected partition:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi topo -m
 </pre></div>
 </div>
 </li>
-<li><p>Optional: For an additional connectivity demonstration, install a
-guest-compatible build of
+<li><p>Optional: Verification that relies on additional software.</p>
+<ol class="arabic">
+<li><p>Refer to the <a class="reference external" href="https://github.com/NVIDIA/Fabric-Manager-Client">Fabric-Manager-Client</a> repository
+for information about building the <cite>fmpm</cite> utility.</p>
+<p>You can use the <cite>fmpm</cite> utility to list the partitions and verify the partition status.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>/run/nvidia/fmpm <span class="se">\</span>
+    --unix-domain-socket /run/nvidia-fabricmanager/socket <span class="se">\</span>
+   -l
+</pre></div>
+</div>
+<p>Confirm that the partition selected for the claim reports <code class="docutils literal notranslate"><span class="pre">isActive:</span> <span class="pre">1</span></code>.</p>
+</li>
+<li><p>For an additional connectivity demonstration, install a guest-compatible build of
 <a class="reference external" href="https://github.com/NVIDIA/nvbandwidth/releases/tag/v0.8">nvbandwidth v0.8</a> and run:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./nvbandwidth -t device_to_device_memcpy_read_sm
 </pre></div>
 </div>
 <p>A successful run reports device-to-device bandwidth for both GPUs without a CUDA peer-access error.</p>
+</li>
+</ol>
 </li>
 </ol>
 </section>
