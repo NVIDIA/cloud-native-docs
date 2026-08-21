@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.7';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -470,7 +470,7 @@ On supported systems, Fabric Manager partitioning can additionally constrain a m
 </section>
 <section id="assumptions-constraints-and-dependencies">
 <h2>Assumptions, Constraints, and Dependencies<a class="headerlink" href="#assumptions-constraints-and-dependencies" title="Permalink to this headline">#</a></h2>
-<ul class="simple">
+<ul>
 <li><p>The examples allocate full GPUs from the <code class="docutils literal notranslate"><span class="pre">vfio.gpu.nvidia.com</span></code> DeviceClass.
 MIG device allocation is outside the scope of this procedure.</p></li>
 <li><p>An allocated GPU cannot be used by another workload until the claim is unprepared.</p></li>
@@ -479,6 +479,14 @@ MIG device allocation is outside the scope of this procedure.</p></li>
 Use one named request for each GPU, as shown in this procedure.</p></li>
 <li><p>Do not mix DRA and device-plugin GPU entries in the same virtual machine.</p></li>
 <li><p>Virtual machines with passthrough GPUs cannot be live migrated.</p></li>
+<li><p>With <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> enabled, the DRA driver initially advertises each eligible physical GPU as both a GPU device and a VFIO device.
+These entries represent the same hardware.</p>
+<p>If a container GPU claim and a VFIO claim for the same GPU are allocated before either claim is prepared, Kubernetes can allocate both.
+The first preparation succeeds and the other fails.</p>
+<p>To avoid this race, submit container and VM workloads serially and wait for device preparation, or dedicate separate nodes to container and VFIO workloads.
+You could also use labels and node selectors to avoid the race condition.
+Refer to <a class="reference external" href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/gpu-allocation/kubevirt-vfio-gpu-passthrough/#limitations-and-considerations">Limitations and Considerations</a> in the DRA driver documentation for more information.</p>
+</li>
 <li><p>DCGM and DGCM-Exporter cannot be enabled on the KubeVirt nodes.</p></li>
 <li><p>GPU Operator does not install the NVIDIA driver in the guest operating system.</p></li>
 </ul>

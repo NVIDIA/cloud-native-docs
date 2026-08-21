@@ -60,7 +60,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.7';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -494,23 +494,37 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.</p>
 <p>With this procedure, all existing GPU Operator resources are updated inline and the cluster policy resource is patched with updates from <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
 <ol class="arabic">
 <li><p>Specify the Operator release tag in an environment variable:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v26.3.3
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v26.7.0
 </pre></div>
 </div>
 </li>
-<li><p>Apply the custom resource definitions for the cluster policy and NVIDIA driver:</p>
+<li><p>Apply the custom resource definitions for the cluster policy, NVIDIA driver, and GPU cluster:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
     https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/nvidia.com_clusterpolicies.yaml
 
 <span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
     https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
+
+<span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
+    https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/nvidia.com_gpuclusters.yaml
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
 <div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">customresourcedefinition.apiextensions.k8s.io/clusterpolicies.nvidia.com configured</span>
 <span class="go">customresourcedefinition.apiextensions.k8s.io/nvidiadrivers.nvidia.com created</span>
+<span class="go">customresourcedefinition.apiextensions.k8s.io/gpuclusters.nvidia.com created</span>
 </pre></div>
 </div>
+</li>
+<li><p>If you use <a class="reference internal" href="dra-intro-install.html"><span class="doc">DRA Driver for NVIDIA GPUs</span></a>, apply the ComputeDomain custom resource definitions:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
+    https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/resource.nvidia.com_computedomains.yaml
+
+<span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
+    https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/<span class="nv">$RELEASE_TAG</span>/deployments/gpu-operator/crds/resource.nvidia.com_computedomaincliques.yaml
+</pre></div>
+</div>
+<p>Apply both definitions before upgrading, including when ComputeDomain support is currently disabled.</p>
 </li>
 <li><p>Apply the custom resource definition for Node Feature Discovery:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f <span class="se">\</span>
@@ -560,9 +574,15 @@ you can upgrade the GPU Operator chart manually or by enabling a Helm hook.</p>
 <h3>Option 2: Automatically Upgrading CRDs Using a Helm Hook<a class="headerlink" href="#option-2-automatically-upgrading-crds-using-a-helm-hook" title="Permalink to this headline">#</a></h3>
 <p>Starting with GPU Operator v22.09, a <code class="docutils literal notranslate"><span class="pre">pre-upgrade</span></code> Helm <a class="reference external" href="https://helm.sh/docs/topics/charts_hooks/#the-available-hooks">hook</a> can automatically upgrade to latest CRD.</p>
 <p>Starting with GPU Operator v24.9.0, the upgrade CRD Helm hook is enabled by default and runs an upgrade CRD job when you upgrade using Helm.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>For a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> installation, manually apply the <code class="docutils literal notranslate"><span class="pre">computedomains.resource.nvidia.com</span></code> and
+<code class="docutils literal notranslate"><span class="pre">computedomaincliques.resource.nvidia.com</span></code> custom resource definitions by using the commands in Option 1 before you upgrade.
+The automatic hook upgrades the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> custom resource definition but does not upgrade the ComputeDomain custom resource definitions.</p>
+</div>
 <ol class="arabic">
 <li><p>Specify the Operator release tag in an environment variable:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v26.3.3
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">RELEASE_TAG</span><span class="o">=</span>v26.7.0
 </pre></div>
 </div>
 </li>

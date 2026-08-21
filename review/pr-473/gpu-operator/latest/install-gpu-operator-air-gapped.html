@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.7';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -453,14 +453,6 @@
                   
   <section id="install-nvidia-gpu-operator-in-air-gapped-environments">
 <span id="install-gpu-operator-air-gapped"></span><h1>Install NVIDIA GPU Operator in Air-Gapped Environments<a class="headerlink" href="#install-nvidia-gpu-operator-in-air-gapped-environments" title="Permalink to this headline">#</a></h1>
-<div class="contents local topic" id="contents">
-<ul class="simple">
-<li><p><a class="reference internal" href="#about-air-gapped-installations" id="id1">About Air-Gapped Installations</a></p></li>
-<li><p><a class="reference internal" href="#local-image-registry" id="id2">Local Image Registry</a></p></li>
-<li><p><a class="reference internal" href="#local-package-repository" id="id3">Local Package Repository</a></p></li>
-<li><p><a class="reference internal" href="#deploy-gpu-operator" id="id4">Deploy GPU Operator</a></p></li>
-</ul>
-</div>
 <section id="about-air-gapped-installations">
 <h2>About Air-Gapped Installations<a class="headerlink" href="#about-air-gapped-installations" title="Permalink to this headline">#</a></h2>
 <p>This page describes how to successfully deploy the GPU Operator in clusters with restricted internet access.
@@ -558,12 +550,12 @@ Public name resolution for image registry and package repositories are
 mandatory for use cases 1 and 2.</p>
 </div>
 <p>Before proceeding to the next sections, get the <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code> file used for GPU Operator configuration.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v1.7.0/deployments/gpu-operator/values.yaml
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -sO https://raw.githubusercontent.com/NVIDIA/gpu-operator/v26.7.0/deployments/gpu-operator/values.yaml
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Replace <code class="docutils literal notranslate"><span class="pre">v1.7.0</span></code> in the above command with the version you want to use.</p>
+<p>Replace <code class="docutils literal notranslate"><span class="pre">v26.7.0</span></code> in the preceding command with the version you want to use.</p>
 </div>
 </section>
 <section id="local-image-registry">
@@ -580,11 +572,11 @@ Search for an image, such as <code class="docutils literal notranslate"><span cl
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">operator</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
 <span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-operator</span><span class="w"></span>
-<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;v26.3.3&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;v26.7.0&quot;</span><span class="w"></span>
 </pre></div>
 </div>
-<p>For instance, to pull the gpu-operator image version v26.3.3, use the following instruction:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker pull nvcr.io/nvidia/gpu-operator:v26.3.3
+<p>For instance, to pull the gpu-operator image version v26.7.0, use the following instruction:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker pull nvcr.io/nvidia/gpu-operator:v26.7.0
 </pre></div>
 </div>
 <p>There is one caveat with regards to the driver image. The version field must be appended by the OS name running on the worker node.</p>
@@ -600,12 +592,12 @@ Search for an image, such as <code class="docutils literal notranslate"><span cl
 </div>
 <p>To push the images to the local registry, simply tag the pulled images by prefixing the image with the image registry information.</p>
 <p>Using the above examples, this will result in:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker tag nvcr.io/nvidia/gpu-operator:v26.3.3 &lt;local-registry&gt;/&lt;local-path&gt;/gpu-operator:v26.3.3
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker tag nvcr.io/nvidia/gpu-operator:v26.7.0 &lt;local-registry&gt;/&lt;local-path&gt;/gpu-operator:v26.7.0
 <span class="gp">$ </span>docker tag nvcr.io/nvidia/driver:580.173.02-ubuntu22.04 &lt;local-registry&gt;/&lt;local-path&gt;/driver:580.173.02-ubuntu22.04
 </pre></div>
 </div>
 <p>Finally, push the images to the local registry:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker push &lt;local-registry&gt;/&lt;local-path&gt;/gpu-operator:v26.3.3
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker push &lt;local-registry&gt;/&lt;local-path&gt;/gpu-operator:v26.7.0
 <span class="gp">$ </span>docker push &lt;local-registry&gt;/&lt;local-path&gt;/driver:580.173.02-ubuntu22.04
 </pre></div>
 </div>
@@ -686,6 +678,23 @@ Search for an image, such as <code class="docutils literal notranslate"><span cl
 <span class="w">   </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
 </pre></div>
 </div>
+<section id="dra-driver-image">
+<h3>DRA Driver Image<a class="headerlink" href="#dra-driver-image" title="Permalink to this headline">#</a></h3>
+<p>If you deploy the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> custom resource definition, mirror the DRA Driver for NVIDIA GPUs image in addition to the other GPU Operator images:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker pull registry.k8s.io/dra-driver-nvidia/dra-driver-nvidia-gpu:v0.4.1
+</pre></div>
+</div>
+<p>Tag and push this image to the local registry, then configure its location in <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">draDriver</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;repo.example.com:port&gt;/&lt;local-path&gt;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dra-driver-nvidia-gpu</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v0.4.1</span><span class="w"></span>
+<span class="w">  </span><span class="nt">imagePullSecrets</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Use the remaining <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> installation settings from <a class="reference internal" href="dra-intro-install.html"><span class="doc">DRA Driver for NVIDIA GPUs</span></a>.
+The <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> and ComputeDomain custom resource definitions are packaged in the GPU Operator chart and do not require a separate download during installation.</p>
+</section>
 </section>
 <section id="local-package-repository">
 <h2>Local Package Repository<a class="headerlink" href="#local-package-repository" title="Permalink to this headline">#</a></h2>
@@ -705,14 +714,6 @@ can run <a class="reference internal" href="precompiled-drivers.html"><span clas
 <span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">linux-image-${KERNEL_VERSION}</span><span class="w"></span>
 <span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">linux-modules-${KERNEL_VERSION}</span><span class="w"></span>
 
-<span class="nt">centos</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">elfutils-libelf.x86_64</span><span class="w"></span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">elfutils-libelf-devel.x86_64</span><span class="w"></span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">kernel-headers-${KERNEL_VERSION}</span><span class="w"></span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">kernel-devel-${KERNEL_VERSION}</span><span class="w"></span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">kernel-core-${KERNEL_VERSION}</span><span class="w"></span>
-<span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">gcc-${GCC_VERSION}</span><span class="w"></span>
-
 <span class="nt">rhel/rhcos</span><span class="p">:</span><span class="w"></span>
 <span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">kernel-headers-${KERNEL_VERSION}</span><span class="w"></span>
 <span class="w">   </span><span class="l l-Scalar l-Scalar-Plain">kernel-devel-${KERNEL_VERSION}</span><span class="w"></span>
@@ -723,7 +724,6 @@ can run <a class="reference internal" href="precompiled-drivers.html"><span clas
 <p>For example, for Ubuntu, these packages can be found at <code class="docutils literal notranslate"><span class="pre">archive.ubuntu.com</span></code>.
 This is the mirror to be replicate locally for your cluster.
 You can use <code class="docutils literal notranslate"><span class="pre">apt-mirror</span></code> to mirror these packages to your local package repository server.</p>
-<p>For CentOS, <code class="docutils literal notranslate"><span class="pre">reposync</span></code> can be used to create the local mirror.</p>
 <p>After all the required packages are mirrored to the local repository, repo lists need to be created following
 distribution specific documentation. A <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> containing the repo list file needs to be created in
 the namespace where the GPU Operator gets deployed.</p>
@@ -739,27 +739,6 @@ the namespace where the GPU Operator gets deployed.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">deb [arch=amd64] http://&lt;local pkg repository&gt;/ubuntu/mirror/archive.ubuntu.com/ubuntu noble main universe</span>
 <span class="go">deb [arch=amd64] http://&lt;local pkg repository&gt;/ubuntu/mirror/archive.ubuntu.com/ubuntu noble-updates main universe</span>
 <span class="go">deb [arch=amd64] http://&lt;local pkg repository&gt;/ubuntu/mirror/archive.ubuntu.com/ubuntu noble-security main universe</span>
-</pre></div>
-</div>
-<p>An example of repo list is shown below for CentOS 8 (access to local package repository via HTTP):</p>
-<p><code class="docutils literal notranslate"><span class="pre">custom-repo.repo</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">[baseos]</span>
-<span class="go">name=CentOS Linux $releasever - BaseOS</span>
-<span class="go">baseurl=http://&lt;local pkg repository&gt;/repos/centos/$releasever/$basearch/os/baseos/</span>
-<span class="go">gpgcheck=0</span>
-<span class="go">enabled=1</span>
-
-<span class="go">[appstream]</span>
-<span class="go">name=CentOS Linux $releasever - AppStream</span>
-<span class="go">baseurl=http://&lt;local pkg repository&gt;/repos/centos/$releasever/$basearch/os/appstream/</span>
-<span class="go">gpgcheck=0</span>
-<span class="go">enabled=1</span>
-
-<span class="go">[extras]</span>
-<span class="go">name=CentOS Linux $releasever - Extras</span>
-<span class="go">baseurl=http://&lt;local pkg repository&gt;/repos/centos/$releasever/$basearch/os/extras/</span>
-<span class="go">gpgcheck=0</span>
-<span class="go">enabled=1</span>
 </pre></div>
 </div>
 <p>Create a <code class="docutils literal notranslate"><span class="pre">ConfigMap</span></code> object from the file:</p>
@@ -791,13 +770,13 @@ Similarly, the certificate file format and suffix, such as <code class="docutils
 <h2>Deploy GPU Operator<a class="headerlink" href="#deploy-gpu-operator" title="Permalink to this headline">#</a></h2>
 <p>Download and deploy GPU Operator Helm Chart with the updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
 <p>Fetch the chart from the NGC repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v26.3.3.tgz
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v26.7.0.tgz
 </pre></div>
 </div>
 <p>Install the GPU Operator with the customized <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
-     gpu-operator-v26.3.3.tgz <span class="se">\</span>
+     gpu-operator-v26.7.0.tgz <span class="se">\</span>
      -f values.yaml
 </pre></div>
 </div>
@@ -858,7 +837,10 @@ Similarly, the certificate file format and suffix, such as <code class="docutils
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-air-gapped-installations">About Air-Gapped Installations</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-image-registry">Local Image Registry</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-image-registry">Local Image Registry</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#dra-driver-image">DRA Driver Image</a></li>
+</ul>
+</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#local-package-repository">Local Package Repository</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy-gpu-operator">Deploy GPU Operator</a></li>
 </ul>
