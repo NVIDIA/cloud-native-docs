@@ -31,14 +31,19 @@ to specify the NVIDIA GPU driver type and driver version to configure on specifi
 You can specify labels in the node selector field to control which NVIDIA driver configuration is applied to specific nodes.
 
 
-Limitations
-===========
+Driver Management Modes
+=======================
 
-* This feature is recommended for new cluster installations only.
-  Upgrades from ClusterPolicy managed drivers to NVIDIA driver custom resource managed drivers are not supported.
-  Switching from ClusterPolicy to the NVIDIA driver custom resource will cause all existing driver pods to be terminated immediately and redeployed using the new NVIDIADriver configuration.
-* You must either use the default NVIDIA driver custom resource that the Helm chart creates or create and manage your own custom NVIDIA driver custom resource.
-* You can't use ClusterPolicy and the NVIDIA driver custom resource at the same time. You can only use one or the other in a cluster.
+To use NVIDIA driver custom resources with a cluster policy custom resource, set
+``spec.driver.useNvidiaDriverCRD`` to ``true``.
+The cluster policy controller continues to manage the other GPU Operator operands, but delegates
+driver management to the NVIDIA driver custom resource controller.
+If ``spec.driver.useNvidiaDriverCRD`` is ``false``, the Operator does not reconcile
+NVIDIA driver custom resources.
+
+You can migrate a Helm installation from managing the driver with the cluster policy custom resource
+to managing it with NVIDIA driver custom resources.
+For the supported procedure, refer to `Migrating from Cluster Policy Driver Management`_.
 
 Comparison: Managing the Driver with CRD versus the Cluster Policy
 ==================================================================
@@ -87,26 +92,37 @@ About the Default NVIDIA Driver Custom Resource
 ===============================================
 
 By default, the Helm chart configures a default NVIDIA driver custom resource during installation.
-This custom resource does not include a node selector and as a result, the custom resource applies to every node in your cluster
-that has an NVIDIA GPU.
+The resource has ``spec.default: true`` and does not include a node selector.
+It acts as a fallback and applies to every GPU node that does not match the node selector of another
+NVIDIA driver custom resource.
 The Operator starts a driver daemon set and pods for each operating system version in your cluster.
 
-If you plan to configure your own driver custom resources to specify driver versions, types, and so on, then
-you might prefer to avoid installing the default custom resource.
-By preventing the installation, you can avoid node selector conflicts due to the default custom resource
-matching all nodes and your custom resources matching some of the same nodes.
+You can use the default resource and additional user-defined resources at the same time.
+A user-defined resource takes precedence on nodes that match its node selector, and the default resource
+continues to manage the remaining GPU nodes.
+User-defined resources must not select the same node.
+If they do, the affected resources report ``notReady`` with a ``ConflictingNodeSelector`` condition,
+and the Operator retains the existing driver ownership labels until you resolve the conflict.
 
-To prevent configuring the default custom resource, specify the ``--set driver.nvidiaDriverCRD.deployDefaultCR=false``
-argument when you install the Operator with Helm.
+Only one NVIDIA driver custom resource can have ``spec.default: true``.
+A default resource cannot specify ``spec.nodeSelector`` because it would not be able to act as a fallback.
+If more than one default resource exists, the Operator marks the affected resources ``notReady`` with a
+``ReconcileFailed`` condition and does not change the existing driver ownership labels on nodes.
+Delete or update the extra default resource to resume reconciliation.
 
-If the Operator is already installed with the default custom resource and you want to create your own
-driver custom resources and apply them to specific nodes, delete the default custom resource.
+To prevent the Helm chart from creating the default resource, specify the
+``--set driver.nvidiaDriverCRD.deployDefaultCR=false`` argument when you install or upgrade the Operator.
+This setting can help you meet any of the following goals:
+
+- You will add user-defined resources that select every GPU node that the Operator should manage.
+- You will add a default resource--by specifying ``spec.default: true``--as a fallback.
+- Or, leaving some GPU nodes without an Operator-managed driver is intentional.
 
 .. note::
 
-   After you delete the default custom resource, your custom resources might not reconcile
-   automatically due to a known issue. Refer to the :ref:`v26.3.0 known issues <v26.3.0-known-issues>`
-   for the workaround.
+   A user-defined ``NVIDIADriver`` custom resource without a node selector matches all GPU nodes.
+   Such a resource takes precedence over the default custom resource and conflicts with any other
+   that selects one of the same nodes.
 
 
 Feature Compatibility
@@ -140,6 +156,122 @@ Custom Driver Parameters
   Each NVIDIA driver custom resource can specify custom kernel module parameters by using a ConfigMap.
   For more information, refer to :doc:`Customizing NVIDIA GPU Driver Parameters during Installation <custom-driver-params>`.
 
+
+.. _migrate-clusterpolicy-to-nvidiadriver:
+
+***********************************************
+Migrating from Cluster Policy Driver Management
+***********************************************
+
+You can migrate an existing Helm installation to NVIDIA driver custom resource management through
+the controlled driver upgrade flow.
+During the migration, the Operator assigns each GPU node to an NVIDIA driver custom resource and uses the
+driver upgrade controller to replace the previous cluster policy managed driver pod on each node.
+
+When you migrate from a GPU Operator release earlier than v26.7.0, perform two Helm upgrades:
+
+* First, upgrade to v26.7.0 while retaining cluster policy driver management.
+* Afterward, upgrade to the same release again.
+  This time, enable NVIDIA driver custom resource management.
+
+  The exact commands and arguments are shown in the following procedure.
+
+This sequence starts the controller that supports controlled migration before changing driver ownership.
+Do not upgrade from an earlier release and enable NVIDIA driver custom resource management in the same
+Helm operation because the old controller can remove the existing driver pods before the new controller
+can take ownership.
+
+Before you begin, verify the following requirements:
+
+* The Helm values under ``driver`` represent the driver configuration that you want the chart-created
+  default NVIDIA driver custom resource to use.
+  The Operator does not copy changes made directly to the ``spec.driver`` field of the cluster policy
+  custom resource into the new resource.
+* Any existing non-default NVIDIA driver custom resources have non-overlapping node selectors.
+  These resources become active when you enable NVIDIA driver custom resource management.
+* ``driver.upgradePolicy.autoUpgrade`` is ``true`` so that the upgrade controller can perform the
+  controlled replacement of the previous driver pods.
+  Nodes with the ``nvidia.com/gpu-driver-upgrade.skip=true`` label are not migrated until you remove
+  the label.
+* Your workloads can tolerate the disruption configured by the driver upgrade policy.
+  For more information, refer to :ref:`gpu-driver-upgrades`.
+
+#. Identify the Helm release name:
+
+   .. code-block:: console
+
+      $ helm list -n gpu-operator
+
+#. If your current GPU Operator release is earlier than v26.7.0 and the cluster does not already use
+   ``NVIDIADriver`` resources, upgrade to the target release while
+   retaining cluster policy driver management:
+
+   .. code-block:: console
+
+      $ helm upgrade <release-name> nvidia/gpu-operator \
+          -n gpu-operator \
+          --version=${version} \
+          --reuse-values \
+          --disable-openapi-validation \
+          --set operator.upgradeCRD=true \
+          --set driver.nvidiaDriverCRD.enabled=false \
+          --set driver.nvidiaDriverCRD.deployDefaultCR=false \
+          --wait
+
+   This operation updates the custom resource definitions, starts the controller that supports
+   controlled migration, and leaves the existing cluster policy managed driver pods in place.
+   For more information about manually updating the custom resource definitions instead of using
+   the Helm hook, refer to :doc:`Upgrading the GPU Operator <upgrade>`.
+
+   Wait for the cluster policy custom resource to return to the ``ready`` state.
+
+#. Upgrade the Helm release and enable NVIDIA driver custom resource management:
+
+   .. code-block:: console
+
+      $ helm upgrade <release-name> nvidia/gpu-operator \
+          -n gpu-operator \
+          --version=${version} \
+          --reuse-values \
+          --set driver.nvidiaDriverCRD.enabled=true \
+          --set driver.nvidiaDriverCRD.deployDefaultCR=true \
+          --set driver.upgradePolicy.autoUpgrade=true \
+          --wait
+
+   The chart sets ``spec.driver.useNvidiaDriverCRD`` to ``true`` in the cluster policy custom resource
+   and creates a default NVIDIA driver custom resource from the Helm driver values.
+   The cluster policy custom resource continues to manage the other GPU Operator operands.
+   If the controlled rollout can exceed the default Helm timeout, specify an appropriate duration
+   with the ``--timeout`` option.
+
+#. Confirm that exactly one default resource exists:
+
+   .. code-block:: console
+
+      $ kubectl get nvidiadrivers
+
+   The output includes ``true`` in the ``DEFAULT`` column for the chart-created resource.
+   The resource can report ``notReady`` while the migration is in progress.
+
+#. Monitor node ownership and the controlled upgrade:
+
+   .. code-block:: console
+
+      $ kubectl get nodes -l nvidia.com/gpu.present=true \
+          -L nvidia.com/gpu-operator.driver.owner \
+          -L nvidia.com/gpu-driver-upgrade-state
+
+   The migration is complete when each managed node has an NVIDIA driver owner and reports
+   ``upgrade-done``, and the NVIDIA driver and cluster policy custom resources report ``ready``.
+
+After the migration, you can create additional NVIDIA driver custom resources with node selectors.
+Those resources take ownership of their matching nodes, while the default resource remains the
+fallback for the other GPU nodes.
+If you do not want the upgrade controller to manage later driver updates automatically, set
+``driver.upgradePolicy.autoUpgrade`` to ``false`` in the Helm values for the chart-created default
+resource after the migration completes.
+For a user-created resource, set ``spec.upgradePolicy.autoUpgrade`` to ``false``.
+
 ***************************************
 About the NVIDIA Driver Custom Resource
 ***************************************
@@ -168,6 +300,12 @@ The following table describes some of the fields in the custom resource.
    * - ``annotations``
      - Specifies a map of key and value pairs to add as custom annotations to the driver pod.
      - None
+
+   * - ``default``
+     - Specifies whether the resource is the fallback driver configuration for GPU nodes that do not
+       match a non-default resource.
+       Only one resource can be the default, and a default resource cannot specify ``nodeSelector``.
+     - ``false``
 
    * - ``driverType``
      - Specifies one of the following:
@@ -218,8 +356,16 @@ The following table describes some of the fields in the custom resource.
    * - ``nodeSelector``
      - Specifies one or more node labels to match.
        The driver container is scheduled to nodes that match all the labels.
+       Do not specify the Operator-managed ``nvidia.com/gpu-operator.driver.owner`` label.
      - None.
-       When you do not specify this field, the driver custom resource selects all nodes.
+       When you do not specify this field on a non-default resource, the resource selects all GPU nodes.
+
+   * - ``upgradePolicy``
+     - Specifies how the upgrade controller upgrades the nodes managed by this resource.
+       Each NVIDIA driver custom resource can have a different policy.
+       Refer to :ref:`gpu-driver-upgrades`.
+     - Automatic upgrades are enabled, with one node upgraded at a time and a maximum of 25 percent
+       of the managed nodes unavailable.
 
    * - ``priorityClassName``
      - Specifies the priority class for the driver pod.
@@ -294,6 +440,8 @@ Perform the following steps to install the GPU Operator and use the NVIDIA drive
 
      By default, Helm configures a ``default`` NVIDIA driver custom resource during installation.
      To prevent configuring the default custom resource, also specify ``--set driver.nvidiaDriverCRD.deployDefaultCR=false``.
+     You do not need to disable or delete the default resource before you add non-default resources
+     with node selectors.
 
 #. Apply NVIDIA driver custom resources manifests to install the NVIDIA GPU driver version, type, and so on for your nodes.
    Refer to the sample manifests.
@@ -423,33 +571,10 @@ Precompiled Driver Container on Some Nodes
 Upgrading the NVIDIA GPU Driver
 *******************************
 
-You can upgrade the driver version by editing or patching the NVIDIA driver custom resource.
-
-When you update the custom resource, the Operator performs a rolling update of the pods in the affected daemon set.
-
-#. Update the ``driver.version`` field in the driver custom resource:
-
-   .. code-block:: console
-
-      $ kubectl patch nvidiadriver/demo-silver --type='json' \
-          -p='[{"op": "replace", "path": "/spec/version", "value": "525.125.06"}]'
-
-#. Optional: Monitor the progress:
-
-   .. code-block:: console
-
-      $ kubectl get pods -n gpu-operator -l app.kubernetes.io/component=nvidia-driver
-
-   *Example Output*
-
-   .. code-block:: output
-
-      NAME                                             READY   STATUS        RESTARTS   AGE
-      nvidia-gpu-driver-ubuntu24.04-788484b9bb-6zhd9   1/1     Running       0          5m1s
-      nvidia-gpu-driver-ubuntu22.04-8896c4bf7-7s68q    1/1     Terminating   0          37m
-      nvidia-gpu-driver-ubuntu22.04-8896c4bf7-jm74l    1/1     Running       0          37m
-
-Eventually, the Operator replaces the pods that used the previous driver version with pods that use the updated driver version.
+To upgrade a driver managed by an NVIDIA driver custom resource, update the ``spec.version`` field.
+The upgrade controller applies the resource's ``spec.upgradePolicy`` to the nodes that it manages.
+For the upgrade procedure, configuration options, and monitoring guidance, refer to
+:ref:`gpu-driver-upgrades`.
 
 
 .. _nvd-troubleshooting:
@@ -470,11 +595,15 @@ If the driver daemon sets and pods are not running as you expect, perform the fo
 
    .. code-block:: output
 
-      NAME           STATUS     AGE
-      default        notReady   2023-10-13T14:03:24Z
-      demo-precomp   notReady   2023-10-13T14:21:55Z
+      NAME           STATUS     DEFAULT   AGE
+      default        ready      true      20m
+      demo-precomp   notReady   false     2m
 
    It is normal for the status to report not ready shortly after modifying the resource.
+   If more than one row reports ``true`` in the ``DEFAULT`` column, update or delete the extra
+   default resource.
+   Duplicate default resources report ``notReady`` with a ``ReconcileFailed`` condition, and the
+   Operator retains the existing node ownership until the conflict is resolved.
 
 #. If the status is not ready, describe the resource:
 
