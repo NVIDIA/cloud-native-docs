@@ -508,18 +508,45 @@ advertises the required ``partitionN`` attribute.
 
 #. Optional: Verification that relies on additional software.
 
-   #. Refer to the `Fabric-Manager-Client <https://github.com/NVIDIA/Fabric-Manager-Client>`__ repository
-      for information about building the `fmpm` utility.
+   #. Build and run the ``list-partitions`` binary.
 
-      You can use the `fmpm` utility to list the partitions and verify the partition status.
+      Perform the build on a Linux system with Go 1.24 or later and the same CPU
+      architecture as the target GPU node.
 
-      .. code-block:: console
+      #. Clone the `go-nvfm <https://github.com/NVIDIA/go-nvfm/tree/main/examples/list-partitions>`__ repository and build the example:
 
-         $ /run/nvidia/fmpm \
-             --unix-domain-socket /run/nvidia-fabricmanager/socket \
-            -l
+         .. code-block:: console
 
-      Confirm that the partition selected for the claim reports ``isActive: 1``.
+            $ git clone --depth 1 https://github.com/NVIDIA/go-nvfm.git
+            $ cd go-nvfm
+            $ make example-list-partitions
+
+      #. Identify the driver pod on the node that owns the allocated GPUs:
+
+         .. code-block:: console
+
+            $ kubectl get pods --namespace gpu-operator \
+                --selector app.kubernetes.io/component=nvidia-driver \
+                --field-selector spec.nodeName=<node-name>
+
+      #. Copy the ``list-partitions`` executable to the driver container:
+
+         .. code-block:: console
+
+            $ kubectl cp --namespace gpu-operator \
+                --container nvidia-driver-ctr \
+                ./list-partitions <driver-pod>:/run/nvidia/list-partitions
+
+      #. List the Fabric Manager partitions:
+
+         .. code-block:: console
+
+            $ kubectl exec --namespace gpu-operator \
+                --container nvidia-driver-ctr \
+                <driver-pod> -- bash -c \
+                "NVFM_UNIX_SOCKET_PATH=/run/nvidia-fabricmanager/socket /run/nvidia/list-partitions"
+
+         Confirm that the partition selected for the claim reports ``"isActive": 1``.
 
    #. For an additional connectivity demonstration, install a guest-compatible build of
       `nvbandwidth v0.8 <https://github.com/NVIDIA/nvbandwidth/releases/tag/v0.8>`__ and run:
