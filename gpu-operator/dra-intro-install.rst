@@ -33,24 +33,9 @@ Comparison: DRA and Device Plugin
 *********************************
 
 GPU Operator supports the DRA Driver as a more recent alternative to the NVIDIA Device Plugin for Kubernetes.
-However, some features of the DRA driver are alpha maturity and not fully supported.
-The driver does not provide feature parity with the device plugin.
+However, some features of the DRA driver have alpha support status.
 
 A cluster can have either a ``GPUCluster`` resource for DRA or a ``ClusterPolicy`` resource for the Device Plugin, but not both.
-
-Use DRA for workloads that have the following requirements:
-
-* Coordinate Multi-Node NVLink workloads by using ComputeDomains.
-* Use attribute-based GPU selection or allocation-specific device configuration instead of node-wide configuration.
-* Configure dynamic NVIDIA Multi-Instance GPU (MIG), CUDA Multi-Process Service (MPS),
-  CUDA time-slicing, or Virtual Function I/O (VFIO) passthrough for individual allocations.
-
-Use the Device Plugin for workloads that have the following requirements:
-
-* Request ``nvidia.com/gpu`` or MIG extended resources from existing Pod specifications and tools.
-* Schedule CUDA time-slicing or MPS replicas as independent extended resources.
-* Use the broader set of components managed through ``ClusterPolicy``, Device Plugin health reporting,
-  or Kubernetes Pod priority and preemption.
 
 Capability Comparison
 =====================
@@ -79,7 +64,9 @@ The following table compares the GPU allocation capabilities of the two mechanis
        MIG Manager configures MIG geometry before allocation.
 
    * - GPU Sharing
-     - Supports time-slicing through a shared DRA claim. Custom time-slice intervals require the Alpha ``TimeSlicingSettings`` feature gate.
+     - Alpha ``ConsumableShares`` feature gate implements Kubernetes consumable capacity for scheduler-accounted sharing among independent ``ResourceClaim`` objects for full GPUs and MIG devices.
+       The driver also supports time-slicing through a shared DRA claim.
+       Custom time-slice intervals require the Alpha ``TimeSlicingSettings`` feature gate.
        MPS requires the Alpha ``MPSSupport`` gate.
      - Advertises time-slicing replicas and experimental MPS replicas for all GPUs on a node.
 
@@ -131,7 +118,7 @@ The following table groups the DRA driver capabilities by maturity:
      - Enabled
      - ``draDriver.featureGates``
 
-   * - ``DeviceMetadata``, ``DynamicMIG``, ``MPSSupport``, ``NVMLDeviceHealthCheck``, ``PassthroughSupport``, ``TimeSlicingSettings``
+   * - ``ConsumableShares``, ``DeviceMetadata``, ``DynamicMIG``, ``MPSSupport``, ``NVMLDeviceHealthCheck``, ``PassthroughSupport``, ``TimeSlicingSettings``
      - Alpha
      - Disabled
      - ``draDriver.featureGates``
@@ -148,8 +135,13 @@ Consider the following limitations before selecting DRA driver v${dra_version}:
 * ``NVMLDeviceHealthCheck`` is alpha and disabled by default.
   The gRPC health probe reports kubelet plugin availability, and DCGM provides telemetry.
   Neither provides DRA allocation health status.
-* This release does not provide scheduler-accounted capacity sharing among independent ``ResourceClaim`` objects.
-  Workloads must share one claim instead of requesting independent replicas.
+* Consumable capacity is available through the alpha ``ConsumableShares`` feature gate, which is disabled by default.
+  When enabled, the feature provides scheduler-accounted capacity sharing among independent ``ResourceClaim`` objects for full GPUs and MIG devices.
+  Kubernetes v1.34 and v1.35 require enabling the ``DRAConsumableCapacity`` feature gate.
+  Kubernetes v1.36 and later enable the feature by default.
+  You must also set the ``CONSUMABLE_SHARES`` environment variable for the DRA GPU kubelet plugin to ``memory``, ``unlimited``, or a positive integer.
+  Set the environment variable through ``draDriver.gpus.kubeletPlugin.env``.
+  MPS cannot be used when consumable capacity is configured through ``ConsumableShares``.
 * Alpha feature gates have compatibility constraints.
   ``DynamicMIG`` conflicts with ``PassthroughSupport``, ``NVMLDeviceHealthCheck``, and ``MPSSupport``.
   ``PassthroughSupport`` conflicts with ``NVMLDeviceHealthCheck``, and ``DeviceMetadata`` requires ``PassthroughSupport``.
