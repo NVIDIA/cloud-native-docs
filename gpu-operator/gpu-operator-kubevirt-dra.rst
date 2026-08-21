@@ -55,6 +55,16 @@ Assumptions, Constraints, and Dependencies
   Use one named request for each GPU, as shown in this procedure.
 * Do not mix DRA and device-plugin GPU entries in the same virtual machine.
 * Virtual machines with passthrough GPUs cannot be live migrated.
+* With ``PassthroughSupport`` enabled, the DRA driver initially advertises each eligible physical GPU as both a GPU device and a VFIO device.
+  These entries represent the same hardware.
+
+  If a container GPU claim and a VFIO claim for the same GPU are allocated before either claim is prepared, Kubernetes can allocate both.
+  The first preparation succeeds and the other fails.
+
+  To avoid this race, submit container and VM workloads serially and wait for device preparation, or dedicate separate nodes to container and VFIO workloads.
+  You could also use labels and node selectors to avoid the race condition.
+  Refer to `Limitations and Considerations <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/gpu-allocation/kubevirt-vfio-gpu-passthrough/#limitations-and-considerations>`__ in the DRA driver documentation for more information.
+
 * DCGM and DGCM-Exporter cannot be enabled on the KubeVirt nodes.
 * GPU Operator does not install the NVIDIA driver in the guest operating system.
 
