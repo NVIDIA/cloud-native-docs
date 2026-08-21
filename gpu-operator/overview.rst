@@ -162,4 +162,4 @@ By installing and using the GPU Operator, you accept the terms and conditions of
    * - NVIDIA GDRCopy Driver
      - Image
      - |pstai|_
-     - --
+     - `Third-Party Notices <https://catalog.ngc.nvidia.com/orgs/nvidia/cloud-native/containers/gdrdrv/->`__
