@@ -362,6 +362,11 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - When set to ``true``, the Operator deploys NVIDIA Confidential Computing Manager for Kubernetes.
      - ``false``
 
+   * - ``clusterPolicy.deployCR``
+     - When set to ``true``, the chart creates the ``ClusterPolicy`` resource for the NVIDIA Kubernetes Device Plugin enablement stack.
+       Set this value to ``false`` when using ``gpuCluster.deployCR=true``.
+     - ``true``
+
    * - ``cdi.enabled``
      - When set to ``true`` (default), the Container Device Interface (CDI) will be used for
        injecting GPUs into workload containers. 
@@ -416,6 +421,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - When set to ``true``, Kubernetes pod labels are added as Prometheus label dimensions on the GPU metrics.
        Enabling this option causes the Operator to provision a cluster-scoped ClusterRole and ClusterRoleBinding
        (``nvidia-dcgm-exporter-read-pods``) that grants the DCGM Exporter service account ``get``, ``list``, and ``watch`` access to pods.
+       For a ``GPUCluster`` installation, enabling this option also enables DRA attribution and grants read access to ``ResourceSlice`` objects.
        Use ``dcgmExporter.podLabelAllowlistRegex`` to limit which labels are emitted.
      - ``false``
 
@@ -423,6 +429,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - When set to ``true``, the Kubernetes pod UID is added as a Prometheus label dimension on the GPU metrics.
        Like ``dcgmExporter.enablePodLabels``, this provisions a cluster-scoped ClusterRole and ClusterRoleBinding that grants the DCGM Exporter
        service account ``get``, ``list``, and ``watch`` access to pods.
+       For a ``GPUCluster`` installation, enabling this option also enables DRA attribution and grants read access to ``ResourceSlice`` objects.
      - ``false``
 
    * - ``dcgmExporter.podLabelAllowlistRegex``
@@ -470,6 +477,20 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - The images are downloaded from NGC. Specify another image repository when using
        custom driver images.
      - ``nvcr.io/nvidia``
+
+   * - ``draDriver.computeDomains.enabled``
+     - When set to ``true``, the ``GPUCluster`` stack deploys the ComputeDomain controller and kubelet plugin.
+       Refer to :doc:`DRA Driver for NVIDIA GPUs <dra-intro-install>` for more information.
+     - ``true``
+
+   * - ``draDriver.version``
+     - Version of the DRA Driver for NVIDIA GPUs deployed by the ``GPUCluster`` stack.
+     - ``v${dra_version}``
+
+   * - ``gpuCluster.deployCR``
+     - When set to ``true``, the chart creates the ``GPUCluster`` resource for the DRA enablement stack.
+       Set ``clusterPolicy.deployCR=false`` and refer to :doc:`DRA Driver for NVIDIA GPUs <dra-intro-install>` for the complete installation procedure.
+     - ``false``
 
    * - ``driver.rdma.enabled``
      - Controls whether the driver daemon set builds and loads the legacy ``nvidia-peermem`` kernel module.
@@ -877,6 +898,7 @@ After verifying the installation, you can configure the GPU Operator for your wo
 - :doc:`gpu-sharing` — Share a single GPU across multiple pods using time-slicing or MPS.
 - :doc:`gpu-operator-mig` — Configure Multi-Instance GPU (MIG) partitioning on supported GPUs.
 - :doc:`gpu-operator-rdma` — Enable GPUDirect RDMA for high-performance networking.
+- :doc:`dra-intro-install` — Allocate GPUs by using Kubernetes Dynamic Resource Allocation (DRA).
 - :doc:`gpu-driver-configuration` — Use the NVIDIA GPU Driver Custom Resource Definition to manage drivers per node.
 - :doc:`precompiled-drivers` — Speed up driver deployments with precompiled kernel modules.
 - :doc:`cdi` — Learn about Container Device Interface (CDI) and NRI Plugin mode.

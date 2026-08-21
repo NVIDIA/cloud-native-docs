@@ -46,6 +46,10 @@ The GPU Operator supports several methods for managing and automating this drive
    The GPU Operator only manages the lifecycle of containerized drivers.
    Drivers which are pre-installed on the host are not managed by the GPU Operator.
 
+For the ``GPUCluster`` DRA stack, the Operator treats pods with an allocated
+``gpu.nvidia.com`` ResourceClaim as GPU workloads during a driver upgrade.
+The configured pod deletion policy applies to these workloads before the driver is reloaded.
+The DRA kubelet plugin remains available while terminating pods unprepare their claims.
 
 ************************************
 Upgrades with the Upgrade Controller

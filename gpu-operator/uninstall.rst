@@ -22,7 +22,27 @@ Uninstalling the GPU Operator
 
 Perform the following steps to uninstall the Operator.
 
+#. If a ``GPUCluster`` resource exists, delete user workloads and user-created ResourceClaims for NVIDIA GPUs.
+   Wait for the workload pods to terminate and the claims to be unprepared.
+
+   .. code-block:: console
+
+      $ kubectl get gpucluster gpu-cluster
+      $ kubectl get resourceclaim --all-namespaces
+
+   The Helm uninstall command later in this procedure runs a ``pre-delete`` hook that deletes ``gpu-cluster``.
+   The hook waits for the GPUCluster finalizer to remove Operator-managed ResourceClaim consumers before Helm removes the Operator.
+
 #. Optional: List and delete NVIDIA driver custom resources.
+
+   If you use ``GPUCluster``, skip this optional step unless you first delete ``gpu-cluster`` and wait for its finalizer to complete:
+
+   .. code-block:: console
+
+      $ kubectl delete gpucluster gpu-cluster
+      $ kubectl wait --for=delete gpucluster/gpu-cluster --timeout=5m
+
+   The chart-managed default ``NVIDIADriver`` resource does not need to be deleted separately.
 
    .. code-block:: console
 
@@ -67,15 +87,26 @@ By default, Helm does not `support deleting existing CRDs <https://helm.sh/docs/
 when you delete the chart.
 As a result, the ``clusterpolicy`` CRD and ``nvidiadrivers`` CRD will still remain, by default.
 
+The ``gpuclusters.nvidia.com``, ``computedomains.resource.nvidia.com``, and
+``computedomaincliques.resource.nvidia.com`` CRDs also remain after a ``GPUCluster`` installation.
+
 .. code-block:: console
 
    $ kubectl get crd clusterpolicies.nvidia.com
 
-To overcome this, the Operator uses a `post-delete hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`__
+To overcome this, the Operator uses a `pre-delete hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`__
 to perform the CRD cleanup.
 The ``operator.cleanupCRD`` chart parameter is added to enable this hook.
 This parameter is disabled by default.
 You can enable the hook by specifying ``--set operator.cleanupCRD=true`` during install or upgrade to perform automatic CRD cleanup on chart deletion.
+
+The cleanup hook removes the ``gpuclusters.nvidia.com`` CRD, but does not remove the two ComputeDomain CRDs.
+After verifying that no ComputeDomain resources remain, you can remove those definitions manually:
+
+.. code-block:: console
+
+   $ kubectl delete crd computedomains.resource.nvidia.com
+   $ kubectl delete crd computedomaincliques.resource.nvidia.com
 
 Alternatively, you can delete the custom resource definition:
 
@@ -95,3 +126,7 @@ Alternatively, you can delete the custom resource definition:
    * Helm hooks used with the GPU Operator use the Operator image itself.
      If the Operator image cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
      In this case, delete the chart and specify the ``--no-hooks`` argument to avoid hanging on hook failures.
+
+     If a ``GPUCluster`` resource exists, do not specify ``--no-hooks``.
+     Doing so can remove the Operator before the GPUCluster finalizer completes ordered teardown of ResourceClaim-consuming operands.
+     First resolve the hook failure, or delete ``gpu-cluster`` and wait for it to disappear while the Operator is still running.

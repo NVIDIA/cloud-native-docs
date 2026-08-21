@@ -65,7 +65,7 @@ With this procedure, all existing GPU Operator resources are updated inline and 
 
       $ export RELEASE_TAG=${version}
 
-#. Apply the custom resource definitions for the cluster policy and NVIDIA driver:
+#. Apply the custom resource definitions for the cluster policy, NVIDIA driver, and GPU cluster:
 
    .. code-block:: console
 
@@ -75,12 +75,28 @@ With this procedure, all existing GPU Operator resources are updated inline and 
       $ kubectl apply -f \
           https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
 
+      $ kubectl apply -f \
+          https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_gpuclusters.yaml
+
    *Example Output*
 
    .. code-block:: output
 
       customresourcedefinition.apiextensions.k8s.io/clusterpolicies.nvidia.com configured
       customresourcedefinition.apiextensions.k8s.io/nvidiadrivers.nvidia.com created
+      customresourcedefinition.apiextensions.k8s.io/gpuclusters.nvidia.com created
+
+#. If you use :doc:`DRA Driver for NVIDIA GPUs <dra-intro-install>`, apply the ComputeDomain custom resource definitions:
+
+   .. code-block:: console
+
+      $ kubectl apply -f \
+          https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/$RELEASE_TAG/deployments/gpu-operator/crds/resource.nvidia.com_computedomains.yaml
+
+      $ kubectl apply -f \
+          https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/$RELEASE_TAG/deployments/gpu-operator/crds/resource.nvidia.com_computedomaincliques.yaml
+
+   Apply both definitions before upgrading, including when ComputeDomain support is currently disabled.
 
 #. Apply the custom resource definition for Node Feature Discovery:
 
@@ -142,6 +158,12 @@ Option 2: Automatically Upgrading CRDs Using a Helm Hook
 Starting with GPU Operator v22.09, a ``pre-upgrade`` Helm `hook <https://helm.sh/docs/topics/charts_hooks/#the-available-hooks>`_ can automatically upgrade to latest CRD.
 
 Starting with GPU Operator v24.9.0, the upgrade CRD Helm hook is enabled by default and runs an upgrade CRD job when you upgrade using Helm.
+
+.. important::
+
+   For a ``GPUCluster`` installation, manually apply the ``computedomains.resource.nvidia.com`` and
+   ``computedomaincliques.resource.nvidia.com`` custom resource definitions by using the commands in Option 1 before you upgrade.
+   The automatic hook upgrades the ``GPUCluster`` custom resource definition but does not upgrade the ComputeDomain custom resource definitions.
 
 #. Specify the Operator release tag in an environment variable:
 
