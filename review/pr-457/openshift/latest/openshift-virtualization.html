@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 20, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 21, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -644,17 +644,21 @@ Unzip the bundle to obtain the NVIDIA vGPU Manager for Linux file, <code class="
 </ol>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The driver container image tag for OpenShift has changed after the OCP 4.19 release.
+<p>The driver container image tag suffix varies by OpenShift release.
 Refer to <a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/release_notes/ocp-4-19-release-notes#ocp-4-19-rhcos-split-layers_release-notes">OpenShift Container Platform 4.19 Release Notes section 1.4.5</a>,
 <a class="reference external" href="https://access.redhat.com/articles/6907891">RHEL Versions Utilized by RHEL CoreOS and OCP</a>,
 and <a class="reference external" href="https://github.com/openshift/enhancements/blob/master/enhancements/rhcos/split-rhcos-into-layers.md#etcos-release">Split RHCOS into layers: /etc/os-release</a>
 for more information.</p>
-<p>For RedHat OpenShift 4.18 or earlier, specify <code class="docutils literal notranslate"><span class="pre">rhcos4.x</span></code> where _x_ is the supported minor OCP version.</p>
+<p>For Red Hat OpenShift 4.18, specify <code class="docutils literal notranslate"><span class="pre">rhcos4.18</span></code>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>my/private/registry <span class="nv">VGPU_HOST_DRIVER_VERSION</span><span class="o">=</span><span class="m">580</span>.82.07 <span class="nv">OS_TAG</span><span class="o">=</span>rhcos4.18
 </pre></div>
 </div>
-<p>For OpenShift 4.19 and later, specify <code class="docutils literal notranslate"><span class="pre">rhel9.6</span></code> instead.</p>
+<p>For OpenShift 4.19 through 4.21, specify <code class="docutils literal notranslate"><span class="pre">rhel9.6</span></code>.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>my/private/registry <span class="nv">VGPU_HOST_DRIVER_VERSION</span><span class="o">=</span><span class="m">580</span>.82.07 <span class="nv">OS_TAG</span><span class="o">=</span>rhel9.6
+</pre></div>
+</div>
+<p>For OpenShift 4.22, specify <code class="docutils literal notranslate"><span class="pre">rhel9.8</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nb">export</span> <span class="nv">PRIVATE_REGISTRY</span><span class="o">=</span>my/private/registry <span class="nv">VGPU_HOST_DRIVER_VERSION</span><span class="o">=</span><span class="m">580</span>.82.07 <span class="nv">OS_TAG</span><span class="o">=</span>rhel9.8
 </pre></div>
 </div>
 </div>
