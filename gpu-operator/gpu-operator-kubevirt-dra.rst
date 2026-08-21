@@ -139,7 +139,6 @@ Pre-Installed Driver
    .. code-block:: ini
 
       FABRIC_MODE=1
-      FABRIC_MODE_RESTART=1
       FM_CMD_UNIX_SOCKET_PATH=/run/nvidia-fabricmanager/socket
 
    The configuration file is typically located at ``/usr/share/nvidia/nvswitch/fabricmanager.cfg``.
@@ -486,16 +485,6 @@ advertises the required ``partitionN`` attribute.
    target node's ResourceSlice. For the example in this procedure, the devices
    allocated for ``gpu0`` and ``gpu1`` must have the same ``partition2`` value.
 
-#. On the host, list the Fabric Manager partitions and their status:
-
-   .. code-block:: console
-
-      $ /run/nvidia/fmpm \
-          --unix-domain-socket /run/nvidia-fabricmanager/socket \
-          -l
-
-   Confirm that the partition selected for the claim reports ``isActive: 1``.
-
 #. In the guest, verify that the topology output shows the NVLink connection
    expected for the selected partition:
 
@@ -503,15 +492,29 @@ advertises the required ``partitionN`` attribute.
 
       $ nvidia-smi topo -m
 
-#. Optional: For an additional connectivity demonstration, install a
-   guest-compatible build of
-   `nvbandwidth v0.8 <https://github.com/NVIDIA/nvbandwidth/releases/tag/v0.8>`__ and run:
+#. Optional: Verification that relies on additional software.
 
-   .. code-block:: console
+   #. Refer to the `Fabric-Manager-Client <https://github.com/NVIDIA/Fabric-Manager-Client>`__ repository
+      for information about building the `fmpm` utility.
 
-      $ ./nvbandwidth -t device_to_device_memcpy_read_sm
+      You can use the `fmpm` utility to list the partitions and verify the partition status.
 
-   A successful run reports device-to-device bandwidth for both GPUs without a CUDA peer-access error.
+      .. code-block:: console
+
+         $ /run/nvidia/fmpm \
+             --unix-domain-socket /run/nvidia-fabricmanager/socket \
+            -l
+
+      Confirm that the partition selected for the claim reports ``isActive: 1``.
+
+   #. For an additional connectivity demonstration, install a guest-compatible build of
+      `nvbandwidth v0.8 <https://github.com/NVIDIA/nvbandwidth/releases/tag/v0.8>`__ and run:
+
+      .. code-block:: console
+
+         $ ./nvbandwidth -t device_to_device_memcpy_read_sm
+
+      A successful run reports device-to-device bandwidth for both GPUs without a CUDA peer-access error.
 
 ****************************************
 Troubleshooting and Operational Guidance
