@@ -48,14 +48,35 @@ New Features
   - NVIDIA Container Toolkit v1.20.0
   - NVIDIA Device Plugin for Kubernetes v0.20.0
   - NVIDIA DCGM Exporter v4.6.0-4.8.3
-  - NVIDIA DCGM 4.6.1-1
+  - NVIDIA DCGM 4.6.0-1
   - NVIDIA MIG Manager for Kubernetes v0.15.0
   - Node Feature Discovery v0.19.0
-  - NVIDIA GPU Feature Discovery for Kubernetes v0.19.4
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.20.0
   - NVIDIA GDS Driver v2.29.4
-  - NVIDIA Confidental Computing Manager for Kubernetes v0.4.2
+  - NVIDIA Confidental Computing Manager for Kubernetes v0.4.3
   - NVIDIA GDRCopy Driver v2.6
-  - NVIDIA Kata Sandbox Device Plugin v0.0.4
+  - NVIDIA Kata Sandbox Device Plugin v0.0.5
+
+* Added support for managing the DRA Driver for NVIDIA GPUs through the GPU Operator.
+  The new ``GPUCluster`` custom resource deploys and manages the DRA driver, ComputeDomain support for Multi-Node NVLink, DCGM, DCGM Exporter, and a DRA validation workload.
+  Workloads can allocate full GPUs and preconfigured MIG devices through Kubernetes ``ResourceClaim`` objects and select devices by attributes.
+
+  The ``GPUCluster`` workflow uses an ``NVIDIADriver`` resource for an Operator-managed driver, or a driver that is preinstalled on the host.
+  A cluster cannot use ``GPUCluster`` and ``ClusterPolicy`` at the same time.
+  This workflow requires Kubernetes v1.34.2 or later, an NVIDIA GPU driver version 580 or later, and a CDI-compatible container runtime.
+  Some optional DRA capabilities remain alpha and are disabled by default.
+
+  Refer to :doc:`DRA Driver for NVIDIA GPUs <dra-intro-install>` for prerequisites, capability maturity, limitations, and installation instructions.
+  (`PR #2571 <https://github.com/NVIDIA/gpu-operator/pull/2571>`__,
+  `PR #2572 <https://github.com/NVIDIA/gpu-operator/pull/2572>`__,
+  `PR #2762 <https://github.com/NVIDIA/gpu-operator/pull/2762>`__)
+
+* Added support for assigning full NVIDIA GPUs to KubeVirt virtual machines with the DRA driver.
+  With the GPU Operator-managed ``GPUCluster``, a ``ResourceClaim`` selects GPUs and the DRA driver prepares them for VFIO passthrough.
+  This feature enables running container and virtual-machine GPU workloads on the same node.
+  On supported HGX and single-node NVL systems, optional Fabric Manager partitioning can constrain multi-GPU claims to a valid NVSwitch fabric partition.
+
+  Refer to :ref:`GPU Operator with KubeVirt and DRA <gpu-operator-kubevirt-dra>` for prerequisites, limitations, and configuration.
 
 * Added a ``nvidia.com/gpu.deploy.client`` node label that lets the GPU Operator manage third-party GPU client pods during driver upgrades and MIG configuration changes.
   Advanced users who run their own GPU client workloads that hold GPU device handles (for example, a standalone NVIDIA DRA driver) can add ``nvidia.com/gpu.deploy.client=true`` to the ``nodeSelector`` of the workload's DaemonSet.
@@ -83,7 +104,8 @@ New Features
   When unset, the operator continues to use the namespace that it runs in.
   (`PR #1333 <https://github.com/NVIDIA/gpu-operator/pull/1333>`__)
 
-* Changed the RHEL-specific driver container image tags to use only the major RHEL version instead of the full ``major.minor`` version.
+* Changed the RHEL driver container image tag selection to use only the operating system major version, matching the existing Rocky Linux behavior.
+  The Operator selects NVIDIA-published conventional driver images with major-version operating system tags for RHEL and Rocky Linux 8, 9, and 10, whether you configure the driver through ``ClusterPolicy`` or ``NVIDIADriver``.
   (`PR #2497 <https://github.com/NVIDIA/gpu-operator/pull/2497>`__)
 
 * Added the ``NRI_MANAGEMENT_CDI_DEVICE_NAMESPACES`` environment variable for the NVIDIA Container Toolkit.

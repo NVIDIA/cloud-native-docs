@@ -115,13 +115,13 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - | NVIDIA GPU Feature Discovery
        | for Kubernetes
-     - `0.19.3 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.20.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
      - `0.15.0 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
 
    * - DCGM
-     - `4.6.1-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
+     - `4.6.0-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
 
    * - Validator for NVIDIA GPU Operator
      - ${version}
@@ -137,13 +137,13 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - | NVIDIA Confidential Computing
        | Manager for Kubernetes
-     - `v0.4.2 <https://github.com/NVIDIA/k8s-cc-manager/releases>`__
+     - `v0.4.3 <https://github.com/NVIDIA/k8s-cc-manager/releases>`__
 
    * - NVIDIA GDRCopy Driver
      - `v2.6 <https://github.com/NVIDIA/gdrcopy/releases>`__
 
    * - NVIDIA Kata Sandbox Device Plugin
-     - `v0.0.4 <https://github.com/NVIDIA/sandbox-device-plugin/releases>`__
+     - `v0.0.5 <https://github.com/NVIDIA/sandbox-device-plugin/releases>`__
 
 .. _gds-open-kernel:
 
