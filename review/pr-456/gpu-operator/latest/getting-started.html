@@ -381,7 +381,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt GPU Passthrough and vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt-dra.html">   KubeVirt with DRA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deploy-kata-containers.html">   Kata Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">   Confidential Containers</a></li>
 </ul>
@@ -769,7 +770,12 @@ To view all the options, run <code class="docutils literal notranslate"><span cl
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Operator deploys NVIDIA Confidential Computing Manager for Kubernetes.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">clusterPolicy.deployCR</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the chart creates the <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource for the NVIDIA Kubernetes Device Plugin enablement stack.
+Set this value to <code class="docutils literal notranslate"><span class="pre">false</span></code> when using <code class="docutils literal notranslate"><span class="pre">gpuCluster.deployCR=true</span></code>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code></p></td>
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code> (default), the Container Device Interface (CDI) will be used for
 injecting GPUs into workload containers.
 The Operator will no longer configure the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class as the default runtime handler.
@@ -777,7 +783,7 @@ Instead, native-CDI support in container runtimes like containerd or cri-o will 
 Refer to the <a class="reference internal" href="cdi.html"><span class="doc">Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support</span></a> page for more information.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cdi.nriPluginEnabled</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cdi.nriPluginEnabled</span></code></p></td>
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Node Resource Interface (NRI) Plugin injects GPUs into workload containers.</p>
 <p>With this plugin enabled, NVIDIA Container Toolkit no longer modifies the runtime config.
 Refer to <a class="reference internal" href="cdi.html#nri-plugin"><span class="std std-ref">About the Node Resource Interface (NRI) Plugin</span></a> for more information.</p>
@@ -785,78 +791,80 @@ Refer to <a class="reference internal" href="cdi.html#nri-plugin"><span class="s
 </td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cdi.default</span></code> (Deprecated)</p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cdi.default</span></code> (Deprecated)</p></td>
 <td><p>This field is deprecated as of v25.10.0 and will be ignored.
 The <code class="docutils literal notranslate"><span class="pre">cdi.enabled</span></code> field is set to <code class="docutils literal notranslate"><span class="pre">true</span></code> by default in versions 25.10.0 and later.
 When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the container runtime uses CDI to perform device injection by default.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">daemonsets.annotations</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">daemonsets.annotations</span></code></p></td>
 <td><p>Map of custom annotations to add to all GPU Operator managed pods.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">daemonsets.labels</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">daemonsets.labels</span></code></p></td>
 <td><p>Map of custom labels to add to all GPU Operator managed pods.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.enabled</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.enabled</span></code></p></td>
 <td><p>By default, the Operator gathers GPU telemetry in Kubernetes using <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html">DCGM Exporter</a>.
 Set this value to <code class="docutils literal notranslate"><span class="pre">false</span></code> to disable it.
 Available values are <code class="docutils literal notranslate"><span class="pre">true</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.service.internalTrafficPolicy</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.service.internalTrafficPolicy</span></code></p></td>
 <td><p>Specifies the <a class="reference external" href="https://kubernetes.io/docs/concepts/services-networking/service/#traffic-policies">internalTrafficPolicy</a> for the DCGM Exporter service.
 Available values are <code class="docutils literal notranslate"><span class="pre">Cluster</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">Local</span></code>.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">Cluster</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.hostNetwork</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.hostNetwork</span></code></p></td>
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the DCGM Exporter exposes a metric port on the host’s network namespace.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.annotations</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.annotations</span></code></p></td>
 <td><p>Map of custom annotations to add to the DCGM Exporter DaemonSet.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodLabels</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodLabels</span></code></p></td>
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, Kubernetes pod labels are added as Prometheus label dimensions on the GPU metrics.
 Enabling this option causes the Operator to provision a cluster-scoped ClusterRole and ClusterRoleBinding
 (<code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter-read-pods</span></code>) that grants the DCGM Exporter service account <code class="docutils literal notranslate"><span class="pre">get</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code>, and <code class="docutils literal notranslate"><span class="pre">watch</span></code> access to pods.
+For a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> installation, enabling this option also enables DRA attribution and grants read access to <code class="docutils literal notranslate"><span class="pre">ResourceSlice</span></code> objects.
 Use <code class="docutils literal notranslate"><span class="pre">dcgmExporter.podLabelAllowlistRegex</span></code> to limit which labels are emitted.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodUID</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodUID</span></code></p></td>
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Kubernetes pod UID is added as a Prometheus label dimension on the GPU metrics.
 Like <code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodLabels</span></code>, this provisions a cluster-scoped ClusterRole and ClusterRoleBinding that grants the DCGM Exporter
-service account <code class="docutils literal notranslate"><span class="pre">get</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code>, and <code class="docutils literal notranslate"><span class="pre">watch</span></code> access to pods.</p></td>
+service account <code class="docutils literal notranslate"><span class="pre">get</span></code>, <code class="docutils literal notranslate"><span class="pre">list</span></code>, and <code class="docutils literal notranslate"><span class="pre">watch</span></code> access to pods.
+For a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> installation, enabling this option also enables DRA attribution and grants read access to <code class="docutils literal notranslate"><span class="pre">ResourceSlice</span></code> objects.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.podLabelAllowlistRegex</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.podLabelAllowlistRegex</span></code></p></td>
 <td><p>List of regular expressions that filter which pod labels are emitted as Prometheus dimensions when <code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodLabels</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>.
 NVIDIA recommends configuring this allowlist in clusters with many pod labels to reduce Prometheus cardinality.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">devicePlugin.config</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">devicePlugin.config</span></code></p></td>
 <td><p>Specifies the configuration for the NVIDIA Device Plugin as a config map.</p>
 <p>In most cases, this field is configured after installing the Operator, such as
 to configure <a class="reference internal" href="gpu-sharing.html"><span class="doc">Time-Slicing GPUs in Kubernetes</span></a>.</p>
 </td>
 <td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.enabled</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.enabled</span></code></p></td>
 <td><p>By default, the Operator deploys NVIDIA drivers as a container on the system.
 Set this value to <code class="docutils literal notranslate"><span class="pre">false</span></code> when using the Operator on systems with pre-installed drivers.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.image</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.image</span></code></p></td>
 <td><p>Name of the NVIDIA Driver Container image to use.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">driver</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code></p></td>
 <td><p>List of the image pull secret used for pulling the driver container image from the registry.</p></td>
 <td><p>None</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.kernelModuleType</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.kernelModuleType</span></code></p></td>
 <td><p>Specifies the type of the NVIDIA GPU Kernel modules to use.
 Valid values are <code class="docutils literal notranslate"><span class="pre">auto</span></code> (default), <code class="docutils literal notranslate"><span class="pre">proprietary</span></code>, and <code class="docutils literal notranslate"><span class="pre">open</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Auto</span></code> means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
@@ -867,15 +875,29 @@ The <code class="docutils literal notranslate"><span class="pre">auto</span></co
 </td>
 <td><p><code class="docutils literal notranslate"><span class="pre">auto</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.nvidiaDriverCRD.enabled</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.nvidiaDriverCRD.enabled</span></code></p></td>
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Operator deploys NVIDIA GPU Driver Custom Resource Definition.
 Refer to the <a class="reference internal" href="gpu-driver-configuration.html"><span class="doc">NVIDIA GPU Driver Custom Resource Definition</span></a> page for more information.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.repository</span></code></p></td>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.repository</span></code></p></td>
 <td><p>The images are downloaded from NGC. Specify another image repository when using
 custom driver images.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">draDriver.computeDomains.enabled</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> stack deploys the ComputeDomain controller and kubelet plugin.
+Refer to <a class="reference internal" href="dra-intro-install.html"><span class="doc">DRA Driver for NVIDIA GPUs</span></a> for more information.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">draDriver.version</span></code></p></td>
+<td><p>Version of the DRA Driver for NVIDIA GPUs deployed by the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> stack.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">v0.5.0</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gpuCluster.deployCR</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the chart creates the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource for the DRA enablement stack.
+Set <code class="docutils literal notranslate"><span class="pre">clusterPolicy.deployCR=false</span></code> and refer to <a class="reference internal" href="dra-intro-install.html"><span class="doc">DRA Driver for NVIDIA GPUs</span></a> for the complete installation procedure.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.rdma.enabled</span></code></p></td>
 <td><p>Controls whether the driver daemon set builds and loads the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module.</p>
@@ -1246,6 +1268,7 @@ in the RKE2 documentation.</p>
 <li><p><a class="reference internal" href="gpu-sharing.html"><span class="doc">Time-Slicing GPUs in Kubernetes</span></a> — Share a single GPU across multiple pods using time-slicing or MPS.</p></li>
 <li><p><a class="reference internal" href="gpu-operator-mig.html"><span class="doc">GPU Operator with MIG</span></a> — Configure Multi-Instance GPU (MIG) partitioning on supported GPUs.</p></li>
 <li><p><a class="reference internal" href="gpu-operator-rdma.html"><span class="doc">GPUDirect RDMA and GPUDirect Storage</span></a> — Enable GPUDirect RDMA for high-performance networking.</p></li>
+<li><p><a class="reference internal" href="dra-intro-install.html"><span class="doc">DRA Driver for NVIDIA GPUs</span></a> — Allocate GPUs by using Kubernetes Dynamic Resource Allocation (DRA).</p></li>
 <li><p><a class="reference internal" href="gpu-driver-configuration.html"><span class="doc">NVIDIA GPU Driver Custom Resource Definition</span></a> — Use the NVIDIA GPU Driver Custom Resource Definition to manage drivers per node.</p></li>
 <li><p><a class="reference internal" href="precompiled-drivers.html"><span class="doc">Precompiled Driver Containers</span></a> — Speed up driver deployments with precompiled kernel modules.</p></li>
 <li><p><a class="reference internal" href="cdi.html"><span class="doc">Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support</span></a> — Learn about Container Device Interface (CDI) and NRI Plugin mode.</p></li>

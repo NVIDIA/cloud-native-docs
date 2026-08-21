@@ -381,7 +381,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt GPU Passthrough and vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt-dra.html">   KubeVirt with DRA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deploy-kata-containers.html">   Kata Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">   Confidential Containers</a></li>
 </ul>
@@ -546,13 +547,13 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <div class="line">for Kubernetes</div>
 </div>
 </td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.19.3</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.20.0</a></p></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA MIG Manager for Kubernetes</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md">0.15.0</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>DCGM</p></td>
-<td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html">4.6.1-1</a></p></td>
+<td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html">4.6.0-1</a></p></td>
 </tr>
 <tr class="row-even"><td><p>Validator for NVIDIA GPU Operator</p></td>
 <td><p>v26.7.0</p></td>
@@ -571,13 +572,13 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <div class="line">Manager for Kubernetes</div>
 </div>
 </td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-cc-manager/releases">v0.4.2</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-cc-manager/releases">v0.4.3</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA GDRCopy Driver</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gdrcopy/releases">v2.6</a></p></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA Kata Sandbox Device Plugin</p></td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/sandbox-device-plugin/releases">v0.0.4</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/sandbox-device-plugin/releases">v0.0.5</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -1104,27 +1105,37 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><th class="stub"><p>Ubuntu 22.04 LTS <a class="reference external" href="#ubuntu-kernel"><sup>2</sup></a></p></th>
-<td><p>1.32—1.36</p></td>
+<tr class="row-even"><th class="stub"><p>Ubuntu 26.04 LTS</p></th>
+<td><p>1.33—1.36</p></td>
 <td></td>
-<td><p>1.32—1.36</p></td>
-<td><p>1.32—1.36</p></td>
-<td><p>1.32—1.36</p></td>
-<td><p>1.32—1.36</p></td>
+<td></td>
+<td><p>1.33—1.36</p></td>
+<td><p>1.33—1.36</p></td>
+<td><p>1.33—1.36</p></td>
 <td><p>1.33—1.35</p></td>
-<td><p>2.15 2.16 2.17</p></td>
+<td><p>2.17</p></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Ubuntu 24.04 LTS</p></th>
 <td><p>1.32—1.36</p></td>
 <td></td>
 <td></td>
-<td><p>1.32—1.36</p></td>
-<td><p>1.32—1.36</p></td>
-<td><p>1.32—1.36</p></td>
+<td><p>1.33—1.36</p></td>
+<td><p>1.33—1.36</p></td>
+<td><p>1.33—1.36</p></td>
 <td><p>1.33—1.35</p></td>
 <td><p>2.17</p></td>
 </tr>
-<tr class="row-even"><th class="stub"><p>Red Hat Core OS</p></th>
+<tr class="row-even"><th class="stub"><p>Ubuntu 22.04 LTS <a class="reference external" href="#ubuntu-kernel"><sup>2</sup></a></p></th>
+<td><p>1.33—1.36</p></td>
+<td></td>
+<td><p>1.33—1.36</p></td>
+<td><p>1.33—1.36</p></td>
+<td><p>1.33—1.36</p></td>
+<td><p>1.33—1.36</p></td>
+<td><p>1.33—1.35</p></td>
+<td><p>2.15 2.16 2.17</p></td>
+</tr>
+<tr class="row-odd"><th class="stub"><p>Red Hat Core OS</p></th>
 <td></td>
 <td><div class="line-block">
 <div class="line">4.18—4.22</div>
@@ -1137,54 +1148,54 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <td></td>
 <td></td>
 </tr>
-<tr class="row-odd"><th class="stub"><div class="line-block">
+<tr class="row-even"><th class="stub"><div class="line-block">
 <div class="line">Red Hat</div>
 <div class="line">Enterprise</div>
 <div class="line">Linux 10.0, 10.1, 10.2</div>
 </div>
 </th>
-<td><p>1.32—1.36</p></td>
+<td><p>1.33—1.36</p></td>
 <td></td>
 <td></td>
-<td><p>1.32—1.36</p></td>
+<td><p>1.33—1.36</p></td>
 <td></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
-<tr class="row-even"><th class="stub"><div class="line-block">
+<tr class="row-odd"><th class="stub"><div class="line-block">
 <div class="line">Red Hat</div>
 <div class="line">Enterprise</div>
 <div class="line">Linux 9.2, 9.4, 9.6, 9.7, 9.8 <a class="reference external" href="#rhel-9"><sup>3</sup></a></div>
 </div>
 </th>
-<td><p>1.32—1.36</p></td>
+<td><p>1.33—1.36</p></td>
 <td></td>
 <td></td>
-<td><p>1.32—1.36</p></td>
+<td><p>1.33—1.36</p></td>
 <td></td>
 <td></td>
 <td></td>
 <td><p>2.17</p></td>
 </tr>
-<tr class="row-odd"><th class="stub"><div class="line-block">
+<tr class="row-even"><th class="stub"><div class="line-block">
 <div class="line">Red Hat</div>
 <div class="line">Enterprise</div>
 <div class="line">Linux 8.8,</div>
 <div class="line">8.10</div>
 </div>
 </th>
-<td><p>1.32—1.36</p></td>
+<td><p>1.33—1.36</p></td>
 <td></td>
 <td></td>
-<td><p>1.32—1.36</p></td>
+<td><p>1.33—1.36</p></td>
 <td></td>
 <td></td>
 <td></td>
 <td><p>2.15, 2.16, 2.17</p></td>
 </tr>
-<tr class="row-even"><th class="stub"><p>Rocky Linux 10.1</p></th>
-<td><p>1.32—1.36</p></td>
+<tr class="row-odd"><th class="stub"><p>Rocky Linux 10.1</p></th>
+<td><p>1.33—1.36</p></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1193,8 +1204,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <td></td>
 <td></td>
 </tr>
-<tr class="row-odd"><th class="stub"><p>Rocky Linux 9.7</p></th>
-<td><p>1.32—1.36</p></td>
+<tr class="row-even"><th class="stub"><p>Rocky Linux 9.7</p></th>
+<td><p>1.33—1.36</p></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1203,8 +1214,8 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <td></td>
 <td></td>
 </tr>
-<tr class="row-even"><th class="stub"><p>Rocky Linux 8.10</p></th>
-<td><p>1.32—1.36</p></td>
+<tr class="row-odd"><th class="stub"><p>Rocky Linux 8.10</p></th>
+<td><p>1.33—1.36</p></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1233,6 +1244,11 @@ They are not available for ARM based systems.</p>
 <p class="admonition-title">Note</p>
 <p>Red Hat OpenShift Container Platform is supported on AWS, Azure, GCP, and OCI (Oracle) Virtual Machine or Bare Metal instances with T4, V100, L4, L40s, A10, A100, H100, and H200.</p>
 </div>
+<p>Starting with version 26.7.0, the Operator uses the operating system major version when it constructs image tags for conventional RHEL and Rocky Linux driver containers.
+The Operator combines the Node Feature Discovery <code class="docutils literal notranslate"><span class="pre">feature.node.kubernetes.io/system-os_release.ID</span></code> label with the major component of the <code class="docutils literal notranslate"><span class="pre">feature.node.kubernetes.io/system-os_release.VERSION_ID</span></code> label.
+For example, <code class="docutils literal notranslate"><span class="pre">ID=rhel</span></code> and <code class="docutils literal notranslate"><span class="pre">VERSION_ID=9.8</span></code> produce <code class="docutils literal notranslate"><span class="pre">rhel9</span></code>, and <code class="docutils literal notranslate"><span class="pre">ID=rocky</span></code> and <code class="docutils literal notranslate"><span class="pre">VERSION_ID=10.1</span></code> produce <code class="docutils literal notranslate"><span class="pre">rocky10</span></code>.
+This behavior applies whether you configure the driver through <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> or <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code>.
+NVIDIA publishes conventional driver container images with major-version operating system tags for RHEL and Rocky Linux 8, 9, and 10.</p>
 <p id="partner-validated"><sup>4</sup>
 Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html">Partner Validated</a> documentation for information on other operating systems support.</p>
 </section>
@@ -1263,13 +1279,17 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/datacen
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><th class="stub"><p>Ubuntu 22.04 LTS</p></th>
-<td><p>1.32—1.36</p></td>
-<td><p>1.32—1.36</p></td>
+<tr class="row-even"><th class="stub"><p>Ubuntu 26.04 LTS</p></th>
+<td><p>1.33—1.36</p></td>
+<td><p>1.33—1.36</p></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Ubuntu 24.04 LTS</p></th>
-<td><p>1.32—1.36</p></td>
-<td><p>1.32—1.36</p></td>
+<td><p>1.33—1.36</p></td>
+<td><p>1.33—1.36</p></td>
+</tr>
+<tr class="row-even"><th class="stub"><p>Ubuntu 22.04 LTS</p></th>
+<td><p>1.33—1.36</p></td>
+<td><p>1.33—1.36</p></td>
 </tr>
 </tbody>
 </table>
@@ -1282,36 +1302,43 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/datacen
 See the <a class="reference internal" href="precompiled-drivers.html"><span class="doc">Precompiled Driver Containers</span></a> page for more information about using precompiled drivers.</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 31%" />
-<col style="width: 27%" />
-<col style="width: 18%" />
-<col style="width: 24%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Operating System</p></th>
-<th class="head"><p>Kernel Flavor</p></th>
-<th class="head"><p>Kernel Version</p></th>
+<tr class="row-odd"><th class="head stub"><div class="line-block">
+<div class="line">Operating</div>
+<div class="line">System</div>
+</div>
+</th>
+<th class="head"><div class="line-block">
+<div class="line">Kernel Flavor</div>
+</div>
+</th>
+<th class="head"><div class="line-block">
+<div class="line">Kernel Version</div>
+</div>
+</th>
 <th class="head"><p>CUDA Driver Branch</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Ubuntu 22.04</p></td>
-<td><p>Generic, NVIDIA, Azure
-AWS, Oracle</p></td>
-<td><p>5.15</p></td>
-<td><p>R535, R570, R580</p></td>
+<tr class="row-even"><th class="stub"><p>Ubuntu 26.04</p></th>
+<td><p>Generic, NVIDIA, Azure, Azure-FDE, AWS, Oracle</p></td>
+<td><p>7.0</p></td>
+<td><p>R595</p></td>
 </tr>
-<tr class="row-odd"><td><p>Ubuntu 22.04</p></td>
-<td><p>Generic, NVIDIA, Azure
-AWS, Oracle</p></td>
+<tr class="row-odd"><th class="stub"><p>Ubuntu 24.04</p></th>
+<td><p>Generic, NVIDIA, Azure, Azure-FDE, AWS, Oracle</p></td>
 <td><p>6.8</p></td>
-<td><p>R535, R570, R580</p></td>
+<td><p>R580, R595</p></td>
 </tr>
-<tr class="row-even"><td><p>Ubuntu 24.04</p></td>
-<td><p>Generic, NVIDIA, Azure
-AWS, Oracle</p></td>
-<td><p>6.8</p></td>
-<td><p>R570, R580</p></td>
+<tr class="row-even"><th class="stub"><p>Ubuntu 22.04</p></th>
+<td><p>Generic, NVIDIA, Azure, AWS, Oracle</p></td>
+<td><p>5.15, 6.8</p></td>
+<td><p>R580, R595</p></td>
 </tr>
 </tbody>
 </table>
@@ -1382,28 +1409,32 @@ To report an issue with the GPU Operator on one of these configurations, open an
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Operating System</p></th>
-<th class="head"><p>Containerd 1.7 - 2.3</p></th>
+<th class="head"><p>Containerd 1.8 - 2.3</p></th>
 <th class="head"><p>CRI-O</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>Ubuntu 22.04 LTS</p></td>
+<tr class="row-even"><td><p>Ubuntu 26.04 LTS</p></td>
 <td><p>Yes</p></td>
-<td><p>Yes</p></td>
+<td><p>–</p></td>
 </tr>
 <tr class="row-odd"><td><p>Ubuntu 24.04 LTS</p></td>
 <td><p>Yes</p></td>
 <td><p>Yes</p></td>
 </tr>
-<tr class="row-even"><td><p>Red Hat Core OS (RHCOS)</p></td>
+<tr class="row-even"><td><p>Ubuntu 22.04 LTS</p></td>
+<td><p>Yes</p></td>
+<td><p>Yes</p></td>
+</tr>
+<tr class="row-odd"><td><p>Red Hat Core OS (RHCOS)</p></td>
 <td><p>No</p></td>
 <td><p>Yes</p></td>
 </tr>
-<tr class="row-odd"><td><p>Red Hat Enterprise Linux 8</p></td>
+<tr class="row-even"><td><p>Red Hat Enterprise Linux 8</p></td>
 <td><p>Yes</p></td>
 <td><p>Yes</p></td>
 </tr>
-<tr class="row-even"><td><p>Red Hat Enterprise Linux 9</p></td>
+<tr class="row-odd"><td><p>Red Hat Enterprise Linux 9</p></td>
 <td><p>Yes</p></td>
 <td><p>Yes</p></td>
 </tr>
@@ -1450,21 +1481,28 @@ To report an issue with the GPU Operator on one of these configurations, open an
 </tr>
 </thead>
 <tbody>
-<tr class="row-odd"><td><p>Ubuntu 24.04 LTS</p></td>
-<td><p>1.32—1.36</p></td>
+<tr class="row-odd"><td><p>Ubuntu 26.04 LTS</p></td>
+<td><p>1.33—1.36</p></td>
 <td><p>0.36+</p></td>
 <td></td>
 <td></td>
 <td></td>
 </tr>
-<tr class="row-even"><td><p>Ubuntu 22.04 LTS</p></td>
-<td><p>1.32—1.36</p></td>
+<tr class="row-even"><td><p>Ubuntu 24.04 LTS</p></td>
+<td><p>1.33—1.36</p></td>
+<td><p>0.36+</p></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p>Ubuntu 22.04 LTS</p></td>
+<td><p>1.33—1.36</p></td>
 <td><p>0.36+</p></td>
 <td><p>0.59.1+</p></td>
 <td></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><p>Red Hat Core OS</p></td>
+<tr class="row-even"><td><p>Red Hat Core OS</p></td>
 <td></td>
 <td></td>
 <td></td>

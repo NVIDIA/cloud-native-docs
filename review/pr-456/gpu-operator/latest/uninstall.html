@@ -377,7 +377,8 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt GPU Passthrough and vGPU</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt-dra.html">   KubeVirt with DRA</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deploy-kata-containers.html">   Kata Containers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">   Confidential Containers</a></li>
 </ul>
@@ -450,7 +451,22 @@
 <h1>Uninstalling the GPU Operator<a class="headerlink" href="#uninstalling-the-gpu-operator" title="Permalink to this headline">#</a></h1>
 <p>Perform the following steps to uninstall the Operator.</p>
 <ol class="arabic">
+<li><p>If a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource exists, delete user workloads and user-created ResourceClaims for NVIDIA GPUs.
+Wait for the workload pods to terminate and the claims to be unprepared.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get gpucluster gpu-cluster
+<span class="gp">$ </span>kubectl get resourceclaim --all-namespaces
+</pre></div>
+</div>
+<p>The Helm uninstall command later in this procedure runs a <code class="docutils literal notranslate"><span class="pre">pre-delete</span></code> hook that deletes <code class="docutils literal notranslate"><span class="pre">gpu-cluster</span></code>.
+The hook waits for the GPUCluster finalizer to remove Operator-managed ResourceClaim consumers before Helm removes the Operator.</p>
+</li>
 <li><p>Optional: List and delete NVIDIA driver custom resources.</p>
+<p>If you use <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code>, skip this optional step unless you first delete <code class="docutils literal notranslate"><span class="pre">gpu-cluster</span></code> and wait for its finalizer to complete:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete gpucluster gpu-cluster
+<span class="gp">$ </span>kubectl <span class="nb">wait</span> --for<span class="o">=</span>delete gpucluster/gpu-cluster --timeout<span class="o">=</span>5m
+</pre></div>
+</div>
+<p>The chart-managed default <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resource does not need to be deleted separately.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nvidiadrivers
 </pre></div>
 </div>
@@ -486,14 +502,22 @@
 <p>By default, Helm does not <a class="reference external" href="https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#some-caveats-and-explanations">support deleting existing CRDs</a>
 when you delete the chart.
 As a result, the <code class="docutils literal notranslate"><span class="pre">clusterpolicy</span></code> CRD and <code class="docutils literal notranslate"><span class="pre">nvidiadrivers</span></code> CRD will still remain, by default.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">gpuclusters.nvidia.com</span></code>, <code class="docutils literal notranslate"><span class="pre">computedomains.resource.nvidia.com</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">computedomaincliques.resource.nvidia.com</span></code> CRDs also remain after a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> installation.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get crd clusterpolicies.nvidia.com
 </pre></div>
 </div>
-<p>To overcome this, the Operator uses a <a class="reference external" href="https://helm.sh/docs/topics/charts_hooks/#the-available-hooks">post-delete hook</a>
+<p>To overcome this, the Operator uses a <a class="reference external" href="https://helm.sh/docs/topics/charts_hooks/#the-available-hooks">pre-delete hook</a>
 to perform the CRD cleanup.
 The <code class="docutils literal notranslate"><span class="pre">operator.cleanupCRD</span></code> chart parameter is added to enable this hook.
 This parameter is disabled by default.
 You can enable the hook by specifying <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">operator.cleanupCRD=true</span></code> during install or upgrade to perform automatic CRD cleanup on chart deletion.</p>
+<p>The cleanup hook removes the <code class="docutils literal notranslate"><span class="pre">gpuclusters.nvidia.com</span></code> CRD, but does not remove the two ComputeDomain CRDs.
+After verifying that no ComputeDomain resources remain, you can remove those definitions manually:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete crd computedomains.resource.nvidia.com
+<span class="gp">$ </span>kubectl delete crd computedomaincliques.resource.nvidia.com
+</pre></div>
+</div>
 <p>Alternatively, you can delete the custom resource definition:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete crd clusterpolicies.nvidia.com
 </pre></div>
@@ -509,7 +533,11 @@ Either reboot the node or unload them using the following command:</p>
 </li>
 <li><p>Helm hooks used with the GPU Operator use the Operator image itself.
 If the Operator image cannot be pulled successfully (either due to network error or an invalid NGC registry secret in case of NVAIE), hooks will fail.
-In this case, delete the chart and specify the <code class="docutils literal notranslate"><span class="pre">--no-hooks</span></code> argument to avoid hanging on hook failures.</p></li>
+In this case, delete the chart and specify the <code class="docutils literal notranslate"><span class="pre">--no-hooks</span></code> argument to avoid hanging on hook failures.</p>
+<p>If a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource exists, do not specify <code class="docutils literal notranslate"><span class="pre">--no-hooks</span></code>.
+Doing so can remove the Operator before the GPUCluster finalizer completes ordered teardown of ResourceClaim-consuming operands.
+First resolve the hook failure, or delete <code class="docutils literal notranslate"><span class="pre">gpu-cluster</span></code> and wait for it to disappear while the Operator is still running.</p>
+</li>
 </ul>
 </div>
 </section>
