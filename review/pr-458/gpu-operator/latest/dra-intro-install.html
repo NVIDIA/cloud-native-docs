@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.3';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.7';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 18, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 21, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -462,23 +462,8 @@ This page describes how to use the GPU Operator to install and manage DRA Driver
 <section id="comparison-dra-and-device-plugin">
 <h2>Comparison: DRA and Device Plugin<a class="headerlink" href="#comparison-dra-and-device-plugin" title="Permalink to this headline">#</a></h2>
 <p>GPU Operator supports the DRA Driver as a more recent alternative to the NVIDIA Device Plugin for Kubernetes.
-However, some features of the DRA driver are alpha maturity and not fully supported.
-The driver does not provide feature parity with the device plugin.</p>
+However, some features of the DRA driver have alpha support status.</p>
 <p>A cluster can have either a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource for DRA or a <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource for the Device Plugin, but not both.</p>
-<p>Use DRA for workloads that have the following requirements:</p>
-<ul class="simple">
-<li><p>Coordinate Multi-Node NVLink workloads by using ComputeDomains.</p></li>
-<li><p>Use attribute-based GPU selection or allocation-specific device configuration instead of node-wide configuration.</p></li>
-<li><p>Configure dynamic NVIDIA Multi-Instance GPU (MIG), CUDA Multi-Process Service (MPS),
-CUDA time-slicing, or Virtual Function I/O (VFIO) passthrough for individual allocations.</p></li>
-</ul>
-<p>Use the Device Plugin for workloads that have the following requirements:</p>
-<ul class="simple">
-<li><p>Request <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> or MIG extended resources from existing Pod specifications and tools.</p></li>
-<li><p>Schedule CUDA time-slicing or MPS replicas as independent extended resources.</p></li>
-<li><p>Use the broader set of components managed through <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>, Device Plugin health reporting,
-or Kubernetes Pod priority and preemption.</p></li>
-</ul>
 <section id="capability-comparison">
 <h3>Capability Comparison<a class="headerlink" href="#capability-comparison" title="Permalink to this headline">#</a></h3>
 <p>The following table compares the GPU allocation capabilities of the two mechanisms when managed by the GPU Operator:</p>
@@ -510,7 +495,9 @@ Alpha <code class="docutils literal notranslate"><span class="pre">DynamicMIG</s
 MIG Manager configures MIG geometry before allocation.</p></td>
 </tr>
 <tr class="row-even"><td><p>GPU Sharing</p></td>
-<td><p>Supports time-slicing through a shared DRA claim. Custom time-slice intervals require the Alpha <code class="docutils literal notranslate"><span class="pre">TimeSlicingSettings</span></code> feature gate.
+<td><p>Alpha <code class="docutils literal notranslate"><span class="pre">ConsumableShares</span></code> feature gate implements Kubernetes consumable capacity for scheduler-accounted sharing among independent <code class="docutils literal notranslate"><span class="pre">ResourceClaim</span></code> objects for full GPUs and MIG devices.
+The driver also supports time-slicing through a shared DRA claim.
+Custom time-slice intervals require the Alpha <code class="docutils literal notranslate"><span class="pre">TimeSlicingSettings</span></code> feature gate.
 MPS requires the Alpha <code class="docutils literal notranslate"><span class="pre">MPSSupport</span></code> gate.</p></td>
 <td><p>Advertises time-slicing replicas and experimental MPS replicas for all GPUs on a node.</p></td>
 </tr>
@@ -571,7 +558,7 @@ gRPC health probes report kubelet plugin availability only.</p></td>
 <td><p>Enabled</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">draDriver.featureGates</span></code></p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code>, <code class="docutils literal notranslate"><span class="pre">DynamicMIG</span></code>, <code class="docutils literal notranslate"><span class="pre">MPSSupport</span></code>, <code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code>, <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code>, <code class="docutils literal notranslate"><span class="pre">TimeSlicingSettings</span></code></p></td>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ConsumableShares</span></code>, <code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code>, <code class="docutils literal notranslate"><span class="pre">DynamicMIG</span></code>, <code class="docutils literal notranslate"><span class="pre">MPSSupport</span></code>, <code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code>, <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code>, <code class="docutils literal notranslate"><span class="pre">TimeSlicingSettings</span></code></p></td>
 <td><p>Alpha</p></td>
 <td><p>Disabled</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">draDriver.featureGates</span></code></p></td>
@@ -590,8 +577,13 @@ for the authoritative support status, maturity, and default values.</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code> is alpha and disabled by default.
 The gRPC health probe reports kubelet plugin availability, and DCGM provides telemetry.
 Neither provides DRA allocation health status.</p></li>
-<li><p>This release does not provide scheduler-accounted capacity sharing among independent <code class="docutils literal notranslate"><span class="pre">ResourceClaim</span></code> objects.
-Workloads must share one claim instead of requesting independent replicas.</p></li>
+<li><p>Consumable capacity is available through the alpha <code class="docutils literal notranslate"><span class="pre">ConsumableShares</span></code> feature gate, which is disabled by default.
+When enabled, the feature provides scheduler-accounted capacity sharing among independent <code class="docutils literal notranslate"><span class="pre">ResourceClaim</span></code> objects for full GPUs and MIG devices.
+Kubernetes v1.34 and v1.35 require enabling the <code class="docutils literal notranslate"><span class="pre">DRAConsumableCapacity</span></code> feature gate.
+Kubernetes v1.36 and later enable the feature by default.
+You must also set the <code class="docutils literal notranslate"><span class="pre">CONSUMABLE_SHARES</span></code> environment variable for the DRA GPU kubelet plugin to <code class="docutils literal notranslate"><span class="pre">memory</span></code>, <code class="docutils literal notranslate"><span class="pre">unlimited</span></code>, or a positive integer.
+Set the environment variable through <code class="docutils literal notranslate"><span class="pre">draDriver.gpus.kubeletPlugin.env</span></code>.
+MPS cannot be used when consumable capacity is configured through <code class="docutils literal notranslate"><span class="pre">ConsumableShares</span></code>.</p></li>
 <li><p>Alpha feature gates have compatibility constraints.
 <code class="docutils literal notranslate"><span class="pre">DynamicMIG</span></code> conflicts with <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code>, <code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code>, and <code class="docutils literal notranslate"><span class="pre">MPSSupport</span></code>.
 <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> conflicts with <code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code>, and <code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code> requires <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code>.</p></li>
@@ -686,7 +678,7 @@ The Operator deploys the DRA driver operands in the GPU Operator namespace.</p>
 <label class="sd-tab-label" data-sync-group="dra-driver-install" data-sync-id="managed" for="sd-tab-item-0">
 Operator-Managed Driver</label><div class="sd-tab-content docutils">
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade --install gpu-operator nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.3.3 <span class="se">\</span>
+    --version<span class="o">=</span>v26.7.0 <span class="se">\</span>
     --namespace gpu-operator <span class="se">\</span>
     --create-namespace <span class="se">\</span>
     --set clusterPolicy.deployCR<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
@@ -700,7 +692,7 @@ Operator-Managed Driver</label><div class="sd-tab-content docutils">
 <label class="sd-tab-label" data-sync-group="dra-driver-install" data-sync-id="preinstalled" for="sd-tab-item-1">
 Pre-Installed Driver</label><div class="sd-tab-content docutils">
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade --install gpu-operator nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.3.3 <span class="se">\</span>
+    --version<span class="o">=</span>v26.7.0 <span class="se">\</span>
     --namespace gpu-operator <span class="se">\</span>
     --create-namespace <span class="se">\</span>
     --set clusterPolicy.deployCR<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
