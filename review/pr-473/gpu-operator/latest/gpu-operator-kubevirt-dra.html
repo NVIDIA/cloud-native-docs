@@ -456,6 +456,8 @@
 <p>KubeVirt can attach NVIDIA GPUs to virtual machines by using Kubernetes Dynamic Resource Allocation (DRA).
 The NVIDIA DRA driver advertises GPUs and their attributes in <code class="docutils literal notranslate"><span class="pre">ResourceSlice</span></code> objects.
 A <code class="docutils literal notranslate"><span class="pre">ResourceClaimTemplate</span></code> selects devices, Kubernetes schedules the virtual machine on a node that can access those devices, and the DRA driver prepares the allocation for VFIO passthrough.</p>
+<p>With the DRA driver, you can run mixed workloads—containers and VMs—on the same node.
+This is an important difference from the sandbox device plugin, where a node cannot run mixed workloads.</p>
 <p>This workflow uses a GPU Operator-managed <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource and DRA operands.
 For passthrough with the sandbox device plugin, or for NVIDIA vGPU mediated devices, refer to <a class="reference internal" href="gpu-operator-kubevirt.html#gpu-operator-kubevirt"><span class="std std-ref">GPU Operator with KubeVirt</span></a>.</p>
 <section id="understanding-gpu-assignment">
@@ -477,6 +479,7 @@ MIG device allocation is outside the scope of this procedure.</p></li>
 Use one named request for each GPU, as shown in this procedure.</p></li>
 <li><p>Do not mix DRA and device-plugin GPU entries in the same virtual machine.</p></li>
 <li><p>Virtual machines with passthrough GPUs cannot be live migrated.</p></li>
+<li><p>DCGM and DGCM-Exporter cannot be enabled on the KubeVirt nodes.</p></li>
 <li><p>GPU Operator does not install the NVIDIA driver in the guest operating system.</p></li>
 </ul>
 </section>
