@@ -265,24 +265,31 @@ Use the following steps to build the vGPU Manager container and push it to a pri
    * ``OS_TAG`` - This must match the Guest OS version.
 
 .. note::
-   The driver container image tag for OpenShift has changed after the OCP 4.19 release.
+   The driver container image tag suffix varies by OpenShift release.
    Refer to `OpenShift Container Platform 4.19 Release Notes section 1.4.5 <https://docs.redhat.com/en/documentation/openshift_container_platform/4.19/html/release_notes/ocp-4-19-release-notes#ocp-4-19-rhcos-split-layers_release-notes>`_,
    `RHEL Versions Utilized by RHEL CoreOS and OCP <https://access.redhat.com/articles/6907891>`_,
    and `Split RHCOS into layers: /etc/os-release <https://github.com/openshift/enhancements/blob/master/enhancements/rhcos/split-rhcos-into-layers.md#etcos-release>`_
    for more information.
 
 
-   For RedHat OpenShift 4.18 or earlier, specify ``rhcos4.x`` where _x_ is the supported minor OCP version.
+   For Red Hat OpenShift 4.18, specify ``rhcos4.18``.
 
    .. code-block:: console
 
          $ export PRIVATE_REGISTRY=my/private/registry VGPU_HOST_DRIVER_VERSION=580.82.07 OS_TAG=rhcos4.18
 
-   For OpenShift 4.19 and later, specify ``rhel9.6`` instead.
+   For OpenShift 4.19 through 4.21, specify ``rhel9.6``.
 
    .. code-block:: console
 
       $ export PRIVATE_REGISTRY=my/private/registry VGPU_HOST_DRIVER_VERSION=580.82.07 OS_TAG=rhel9.6
+
+   For OpenShift 4.22, specify ``rhel9.8``.
+
+   .. code-block:: console
+
+      $ export PRIVATE_REGISTRY=my/private/registry VGPU_HOST_DRIVER_VERSION=580.82.07 OS_TAG=rhel9.8
+
 .. note::
 
    The recommended registry to use is the Integrated OpenShift Container Platform registry.

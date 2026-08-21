@@ -84,7 +84,7 @@ Perform the following steps to build a custom driver image for use with Red Hat 
 
    .. code-block:: console
 
-      export OPENSHIFT_VERSION="4.12.13"
+      export OPENSHIFT_VERSION="4.18.24"
       export TARGET_ARCH="x86_64"
 
 #. Determine the Driver Toolkit (DTK) image for your target Red Hat OpenShift version and architecture:
@@ -115,7 +115,7 @@ Perform the following steps to build a custom driver image for use with Red Hat 
       export CUDA_DIST=ubi${RHEL_MAJOR}
       export DRIVER_EPOCH=1
       export DRIVER_VERSION=525.105.17
-      export OS_TAG=rhcos4.12
+      export OS_TAG=rhcos4.18
 
 #. Build and push the image:
 
@@ -231,9 +231,9 @@ Using the CLI
    .. code-block:: console
 
       NAME                                                            READY   STATUS    RESTARTS   AGE
-      nvidia-driver-daemonset-4.18.0-372.51.1.el8_6-rhcos4.12-mlpd4   1/1     Running   0          44s
+      nvidia-driver-daemonset-<kernel-version>-rhcos4.18-mlpd4   1/1     Running   0          44s
 
-   Ensure that the pod names include a Linux kernel version number like ``4.18.0-372.51.1.el8_6``.
+   Ensure that the pod names include the Linux kernel version number in place of ``<kernel-version>``.
 
 ***************************************************
 Disabling Support for Precompiled Driver Containers
