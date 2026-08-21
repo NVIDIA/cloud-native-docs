@@ -457,6 +457,12 @@ They are not available for ARM based systems.
 
   |ocp_csp_support|
 
+Starting with version 26.7.0, the Operator uses the operating system major version when it constructs image tags for conventional RHEL and Rocky Linux driver containers.
+The Operator combines the Node Feature Discovery ``feature.node.kubernetes.io/system-os_release.ID`` label with the major component of the ``feature.node.kubernetes.io/system-os_release.VERSION_ID`` label.
+For example, ``ID=rhel`` and ``VERSION_ID=9.8`` produce ``rhel9``, and ``ID=rocky`` and ``VERSION_ID=10.1`` produce ``rocky10``.
+This behavior applies whether you configure the driver through ``ClusterPolicy`` or ``NVIDIADriver``.
+NVIDIA publishes conventional driver container images with major-version operating system tags for RHEL and Rocky Linux 8, 9, and 10.
+
 .. _partner-validated:
 
 :sup:`4`
