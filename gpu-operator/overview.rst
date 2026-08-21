@@ -77,81 +77,89 @@ By installing and using the GPU Operator, you accept the terms and conditions of
 
 .. list-table::
    :header-rows: 1
-   :widths: 30 10 60
+   :widths: 25 10 40 25
 
    * - Component
      - Artifact Type
      - Artifact Licenses
+     - Third-Party Licenses
 
    * - NVIDIA GPU Operator
      - Helm Chart
      - `Apache 2.0 <https://www.apache.org/licenses/LICENSE-2.0>`__
+     - `THIRD_PARTY_NOTICES.md <https://github.com/NVIDIA/gpu-operator/blob/main/THIRD_PARTY_NOTICES.md>`__
 
    * - NVIDIA GPU Operator
      - Image
      - |pstai|_
-
-   * - NVIDIA GPU Feature Discovery
-     - Image
-     - |pstai|_
+     - `THIRD_PARTY_NOTICES.md <https://github.com/NVIDIA/gpu-operator/blob/main/THIRD_PARTY_NOTICES.md>`__
 
    * - NVIDIA GPU Driver
      - Image
      - `License for Customer Use of NVIDIA Software <http://www.nvidia.com/content/DriverDownload-March2009/licence.php?lang=us>`__
 
        |pstai|_
+     - --
 
    * - NVIDIA Container Toolkit
      - Image
      - |pstai|_
+     - `THIRD_PARTY_NOTICES.md <https://github.com/NVIDIA/nvidia-container-toolkit/blob/main/THIRD_PARTY_NOTICES.md>`__
 
    * - NVIDIA Kubernetes Device Plugin
      - Image
      - |pstai|_
+     - `THIRD_PARTY_NOTICES.md <https://github.com/NVIDIA/k8s-device-plugin/blob/main/THIRD_PARTY_NOTICES.md>`__
 
    * - NVIDIA MIG Manager for Kubernetes
      - Image
      - |pstai|_
+     - `THIRD_PARTY_NOTICES.md <https://github.com/NVIDIA/mig-parted/blob/main/THIRD_PARTY_NOTICES.md>`__
 
    * - Validator for NVIDIA GPU Operator
      - Image
      - |pstai|_
+     - `THIRD_PARTY_NOTICES.md <https://github.com/NVIDIA/gpu-operator/blob/main/THIRD_PARTY_NOTICES.md>`__
 
    * - NVIDIA DCGM
      - Image
      - |pstai|_
+     - --
 
    * - NVIDIA DCGM Exporter
      - Image
      - |pstai|_
+     - --
 
    * - NVIDIA Driver Manager for Kubernetes
      - Image
      - |pstai|_
+     - `THIRD_PARTY_NOTICES.md <https://github.com/NVIDIA/k8s-driver-manager/blob/main/THIRD_PARTY_NOTICES.md>`__
 
    * - NVIDIA KubeVirt GPU Device Plugin
      - Image
      - |pstai|_
+     - `THIRD_PARTY_NOTICES.md <https://github.com/NVIDIA/kubevirt-gpu-device-plugin/blob/master/THIRD_PARTY_NOTICES.md>`__
 
    * - NVIDIA vGPU Device Manager
      - Image
      - |pstai|_
+     - `THIRD_PARTY_NOTICES.md <https://github.com/NVIDIA/vgpu-device-manager/blob/main/THIRD_PARTY_NOTICES.md>`__
 
    * - NVIDIA GDS Driver
      - Image
      - `License for Customer Use of NVIDIA Software <http://www.nvidia.com/content/DriverDownload-March2009/licence.php?lang=us>`__
 
        |pstai|_
+     - --
 
    * - NVIDIA Confidential Computing
        Manager for Kubernetes
      - Image
      - |pstai|_
-
-   * - NVIDIA Kata Manager for Kubernetes
-     - Image
-     - |pstai|_
+     - `THIRD_PARTY_NOTICES.md <https://github.com/NVIDIA/k8s-cc-manager/blob/main/THIRD_PARTY_NOTICES.md>`__
 
    * - NVIDIA GDRCopy Driver
      - Image
      - |pstai|_
+     - `Third-Party Notices <https://catalog.ngc.nvidia.com/orgs/nvidia/cloud-native/containers/gdrdrv/->`__
