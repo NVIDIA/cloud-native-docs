@@ -269,6 +269,11 @@ Verify DRA Resources
 
       $ kubectl get resourceslice <slice-name> -o yaml
 
+   The driver publishes partition membership through attributes named ``partitionN``,
+   where ``N`` is ``1``, ``2``, ``4``, or ``8`` and specifies the number of GPUs in the partition.
+   The attribute value is the Fabric Manager partition ID.
+   For example, ``partition2: 4`` indicates that the GPU belongs to two-GPU partition 4.
+
    Confirm that devices with the ``gpu.nvidia.com/type`` attribute set to
    ``vfio`` include a ``gpuModuleID`` attribute and the ``partitionN`` attributes
    reported for the hardware. For the two-GPU example in this procedure, at

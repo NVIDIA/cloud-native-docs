@@ -17,14 +17,18 @@
 
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
-############################################
-NVIDIA GPU Driver Custom Resource Definition
-############################################
+.. _nvidia-gpu-driver-custom-resource-definition:
+
+########################################
+NVIDIA Driver Custom Resource Definition
+########################################
 
 
-*****************************************************
-Overview of the GPU Driver Custom Resource Definition
-*****************************************************
+.. _overview-of-the-gpu-driver-custom-resource-definition:
+
+********************************************************
+Overview of the NVIDIA Driver Custom Resource Definition
+********************************************************
 
 You can create one or more instances of an NVIDIA driver (``NVIDIADriver``) custom resource
 to specify the NVIDIA GPU driver type and driver version to configure on specific nodes.
@@ -161,7 +165,7 @@ Custom Driver Parameters
   For more information, refer to :doc:`Customizing NVIDIA GPU Driver Parameters during Installation <custom-driver-params>`.
 
 
-.. _migrate-clusterpolicy-to-nvidiadriver:
+.. _migrating-from-cluster-policy-driver-management:
 
 ***********************************************
 Migrating from Cluster Policy Driver Management
@@ -348,8 +352,8 @@ The following table describes some of the fields in the custom resource.
 
    * - ``kernelModuleType``
      - Specifies the type of the NVIDIA GPU Kernel modules to use.
-       Valid values are ``auto`` (default), ``proprietary``, and ``open``. 
-       
+       Valid values are ``auto`` (default), ``proprietary``, and ``open``.
+
        ``Auto`` means that the recommended kernel module type is chosen based on the GPU devices on the host and the driver branch used.
      - ``auto``
 
@@ -384,7 +388,7 @@ The following table describes some of the fields in the custom resource.
      - ``nvcr.io/nvidia``
 
    * - ``useOpenKernelModules`` Deprecated.
-     - This field is deprecated as of v25.3.0 and will be ignored. Use ``kernelModuleType`` instead. 
+     - This field is deprecated as of v25.3.0 and will be ignored. Use ``kernelModuleType`` instead.
        Specifies to use the NVIDIA Open GPU Kernel modules.
      - ``false``
 
@@ -576,10 +580,11 @@ Precompiled Driver Container on Some Nodes
 
 
 .. _nvd-upgrade:
+.. _upgrading-the-nvidia-gpu-driver:
 
-*******************************
-Upgrading the NVIDIA GPU Driver
-*******************************
+***************************
+Upgrading the NVIDIA Driver
+***************************
 
 To upgrade a driver managed by an NVIDIA driver custom resource, update the ``spec.version`` field.
 The upgrade controller applies the resource's ``spec.upgradePolicy`` to the nodes that it manages.

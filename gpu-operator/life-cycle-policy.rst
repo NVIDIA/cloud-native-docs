@@ -29,7 +29,7 @@ NVIDIA GPU Operator Versioning
 NVIDIA GPU Operator is versioned following the calendar versioning convention.
 
 The version follows the pattern ``YY.MM.PP``, such as 23.6.0, 23.6.1, and 23.9.0.
-The first two fields, ``YY.MM`` identify a major version and indicates when the major version was initially released.
+The first two fields, ``YY.MM``, identify a major version and indicate when the major version was initially released.
 The third field, ``PP``, identifies the patch version of the major version.
 Patch releases typically include critical bug and CVE fixes, but can include minor features.
 
@@ -39,7 +39,7 @@ NVIDIA GPU Operator Life Cycle
 ******************************
 
 When a new major version of NVIDIA GPU Operator is released, the previous major version enters deprecated support and only receives patch release updates for critical bug and CVE fixes.
-All prior major versions enter end of support and are no longer supported and do not receive patch release updates.
+All prior major versions reach end of support and no longer receive patch release updates.
 
 The product life cycle and versioning are subject to change in the future.
 
@@ -53,7 +53,7 @@ The product life cycle and versioning are subject to change in the future.
    * - GPU Operator Version
      - Status
 
-   * - 26.6.x
+   * - 26.7.x
      - Supported
 
    * - 26.3.x
@@ -80,7 +80,7 @@ When post-release testing confirms support for newer versions of operands, these
 Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
 .. note::
-  All the following components are supported as :ref:`government-ready <install-gpu-operator-gov-ready>` in the NVIDIA GPU Operator v26.3, except for NVIDIA GDS Driver, NVIDIA Confidential Computing Manager, and NVIDIA GDRCopy Driver.
+  All of the following components are supported as :ref:`government-ready <install-gpu-operator-gov-ready>` in the NVIDIA GPU Operator v26.7, except for NVIDIA GDS Driver, NVIDIA Confidential Computing Manager, and NVIDIA GDRCopy Driver.
 
 **D** = Default driver, **R** = Recommended driver
 

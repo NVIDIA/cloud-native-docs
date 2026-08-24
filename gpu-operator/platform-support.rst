@@ -331,7 +331,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
       - 1.33---1.36
       - 1.33---1.36
       - 1.33---1.36
-      - 1.33---1.35
+      - 1.33---1.36
       - 2.17
 
     * - Ubuntu 24.04 LTS
@@ -341,7 +341,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
       - 1.33---1.36
       - 1.33---1.36
       - 1.33---1.36
-      - 1.33---1.35
+      - 1.33---1.36
       - 2.17
 
     * - Ubuntu 22.04 LTS |fn2|_
@@ -351,7 +351,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
       - 1.33---1.36
       - 1.33---1.36
       - 1.33---1.36
-      - 1.33---1.35
+      - 1.33---1.36
       - 2.15 2.16 2.17
 
     * - Red Hat Core OS
@@ -483,16 +483,21 @@ Cloud Service Providers
         | Kubernetes
       - | Google GKE
         | Kubernetes
+      - | Microsoft Azure
+        | Kubernetes Service
 
     * - Ubuntu 26.04 LTS
+      - 1.33---1.36
       - 1.33---1.36
       - 1.33---1.36
 
     * - Ubuntu 24.04 LTS
       - 1.33---1.36
       - 1.33---1.36
+      - 1.33---1.36
 
     * - Ubuntu 22.04 LTS
+      - 1.33---1.36
       - 1.33---1.36
       - 1.33---1.36
 
@@ -558,6 +563,8 @@ To report an issue with the GPU Operator on one of these configurations, open an
 
 For more details about partners and their supported configurations, refer to the :external+pv:doc:`index` page.
 
+.. _supported-container-runtimes:
+
 ****************************
 Supported Container Runtimes
 ****************************
@@ -565,7 +572,7 @@ Supported Container Runtimes
 The GPU Operator has been validated for the following container runtimes:
 
 +----------------------------+------------------------+----------------+
-| Operating System           | Containerd 1.8 - 2.3   | CRI-O          |
+| Operating System           | Containerd 2.0 - 2.3   | CRI-O          |
 +============================+========================+================+
 | Ubuntu 26.04 LTS           | Yes                    | --             |
 +----------------------------+------------------------+----------------+

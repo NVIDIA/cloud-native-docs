@@ -56,7 +56,7 @@ Prerequisites
    For worker nodes or node groups that run CPU workloads only, the nodes can run any operating system because
    the GPU Operator does not perform any configuration or management of nodes for CPU-only workloads.
 
-   If you are planning to use NVIDIA GPU Driver Custom Resource Definition, you can use a mix of operating system versions on CPU and GPU nodes. Refer to the :doc:`NVIDIA GPU Driver Custom Resource Definition <gpu-driver-configuration>` page for more information.
+   If you are planning to use NVIDIA GPU Driver Custom Resource Definition, you can use a mix of operating system versions on CPU and GPU nodes. Refer to the :doc:`NVIDIA Driver Custom Resource Definition <nvidia-driver-configuration>` page for more information.
 
 #. Nodes must be configured with a container engine such as CRI-O or containerd.
 
@@ -470,7 +470,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``driver.nvidiaDriverCRD.enabled``
      - When set to ``true``, the Operator deploys NVIDIA GPU Driver Custom Resource Definition.
-       Refer to the :doc:`NVIDIA GPU Driver Custom Resource Definition <gpu-driver-configuration>` page for more information.
+       Refer to the :doc:`NVIDIA Driver Custom Resource Definition <nvidia-driver-configuration>` page for more information.
      - ``false``
 
    * - ``driver.repository``
@@ -540,7 +540,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        When set to ``true``, the GDRCopy Driver runs as a sidecar container in the GPU driver pod.
        For information about GDRCopy, refer to the `gdrcopy <https://developer.nvidia.com/gdrcopy>`__ page.
 
-       You can enable GDRCopy if you use the :doc:`gpu-driver-configuration`.
+       You can enable GDRCopy if you use the :doc:`nvidia-driver-configuration`.
      - ``false``
 
 
@@ -899,6 +899,6 @@ After verifying the installation, you can configure the GPU Operator for your wo
 - :doc:`gpu-operator-mig` — Configure Multi-Instance GPU (MIG) partitioning on supported GPUs.
 - :doc:`gpu-operator-rdma` — Enable GPUDirect RDMA for high-performance networking.
 - :doc:`dra-intro-install` — Allocate GPUs by using Kubernetes Dynamic Resource Allocation (DRA).
-- :doc:`gpu-driver-configuration` — Use the NVIDIA GPU Driver Custom Resource Definition to manage drivers per node.
+- :doc:`nvidia-driver-configuration` — Use the NVIDIA GPU Driver Custom Resource Definition to manage drivers per node.
 - :doc:`precompiled-drivers` — Speed up driver deployments with precompiled kernel modules.
 - :doc:`cdi` — Learn about Container Device Interface (CDI) and NRI Plugin mode.
