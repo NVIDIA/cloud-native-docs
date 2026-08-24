@@ -143,7 +143,7 @@ Learn
       Roles, responsibilities, and documentation navigation by persona.
 
 
-   .. grid-item-card:: :octicon:`server;1.5em;sd-mr-1` Supported Platforms
+   .. grid-item-card:: :octicon:`server;1.5em;sd-mr-1` Supported Platforms and Software Components
       :link: supported-platforms
       :link-type: doc
 
@@ -189,7 +189,7 @@ Configuration
       :link: configure-workloads
       :link-type: doc
 
-      Runtime classes, resource types, and multi-GPU passthrough.
+      Runtime classes, resource types, multi-GPU passthrough, and agent security policy.
 
    .. grid-item-card:: :octicon:`gear;1.5em;sd-mr-1` Managing the Confidential Computing Mode
       :link: configure-cc-mode
