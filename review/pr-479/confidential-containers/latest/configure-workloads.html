@@ -687,13 +687,7 @@ for details.</p>
 Because the Kata shim on the host is outside the TEE, the host can still issue Agent API calls
 into the guest unless you restrict those Agent API calls.
 An <em>agent security policy</em> is a Rego policy that the agent enforces so that only the operations
-your workload declared are allowed.
-That restriction is required for an attested, secure end-to-end deployment: attestation proves
-the TEE before secrets are released, and the agent policy limits what the untrusted host can
-ask the guest to do afterward.</p>
-<p>This policy is not the Trustee attestation policy that decides whether to release secrets.
-An attested deployment uses both.
-Refer to <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> for Trustee concepts and a local connectivity test.</p>
+your workload declared are allowed.</p>
 <p>The <a class="reference internal" href="run-sample-workload.html"><span class="doc">sample workload</span></a> omits an agent policy so that you can confirm
 GPU passthrough with the smallest possible manifest.
 Do not treat that YAML as a production template.</p>
@@ -730,7 +724,11 @@ use it.</p>
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>Refer to <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> for Trustee concepts and a local connectivity test.
-Production attestation, secret release, and encrypted images are documented upstream.</p></li>
+A complete attestation process should cover the Kata Agent API surface as well as the TEE.
+The agent security policy contained in the workload annotation is included in the measured
+payload that is attested with the guest.
+The agent security policy is distinct from the Trustee attestation policy that decides whether
+to release secrets.</p></li>
 <li><p>Refer to <a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a> to change the CC mode on GPUs at the cluster or node level.</p></li>
 <li><p>Refer to <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a> if a workload does not schedule or the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code>.</p></li>
 </ul>

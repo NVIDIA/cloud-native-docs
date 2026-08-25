@@ -445,12 +445,13 @@ Attestation is required for any feature that depends on secrets, including:</p>
 <li><p>Using sealed secrets</p></li>
 <li><p>Requesting secrets directly from workloads</p></li>
 </ul>
-<p>Attestation is necessary but not sufficient for a secure end-to-end deployment.
-The Kata shim on the host remains untrusted and can still issue Agent API calls into the guest
-unless you restrict those Agent API calls with a Kata agent security policy.
-Generate and attach that policy as part of the workload manifest.
+<p>A complete attestation process should also cover the Kata Agent API surface: which operations the
+untrusted host is allowed to request inside the guest.
+An agent security policy constrains that surface.
+Generate and attach that policy as part of the workload manifest so attestation of the guest
+includes that constrained Agent API surface.
 Refer to <a class="reference internal" href="configure-workloads.html#coco-agent-security-policy"><span class="std std-ref">Attach a Kata Agent Security Policy</span></a>.
-Agent policy is distinct from the Trustee policy that decides whether to release a KBS resource.</p>
+The agent security policy is distinct from the Trustee policy that decides whether to release a KBS resource.</p>
 <section id="key-concepts">
 <h2>Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this headline">#</a></h2>
 <p>The following concepts appear throughout this page:</p>
