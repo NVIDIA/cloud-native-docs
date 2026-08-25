@@ -52,6 +52,8 @@ New Features
   - NVIDIA MIG Manager for Kubernetes v0.15.0
   - Node Feature Discovery v0.19.0
   - NVIDIA GPU Feature Discovery for Kubernetes v0.20.0
+  - NVIDIA vGPU Device Manager v0.5.0
+  - NVIDIA KubeVirt GPU Device Plugin v1.6.0
   - NVIDIA GDS Driver v2.29.4
   - NVIDIA Confidental Computing Manager for Kubernetes v0.4.3
   - NVIDIA GDRCopy Driver v2.6
@@ -184,6 +186,7 @@ Post-Release Documentation Updates
 ----------------------------------
 
 * Updated the release notes to include the new features and enhancements to the NVIDIA driver CRD.
+* Added NVIDIA vGPU Device Manager v0.5.0 and NVIDIA KubeVirt GPU Device Plugin v1.6.0 to the software component version list.
 * The minimum :ref:`supported containerd version <supported-container-runtimes>` changed from 1.8 to 2.0.
 * The documentation page for the NVIDIA driver CRD was renamed to :doc:`nvidia-driver-configuration`.
 * Restored Azure Kubernetes Service (AKS) to the :ref:`cloud service providers <cloud-service-providers>` table.
