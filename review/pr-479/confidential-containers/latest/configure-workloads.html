@@ -433,14 +433,14 @@
 <p>A Confidential Container workload is a standard Kubernetes pod that runs inside a TEE-protected
 virtual machine and requests one or more GPUs through the NVIDIA Kata sandbox device plugin.
 Compared with a traditional GPU pod, a Confidential Container workload pod manifest differs in
-the following ways:</p>
+various ways. In particular, the pod manifest:</p>
 <ul class="simple">
-<li><p>It selects a TEE-aware Kata runtime class instead of the default <code class="docutils literal notranslate"><span class="pre">runc</span></code>-based runtime.</p></li>
-<li><p>It requests GPU and NVSwitch resources using the resource types advertised by the NVIDIA
+<li><p>Selects a TEE-aware Kata runtime class instead of the default <code class="docutils literal notranslate"><span class="pre">runc</span></code>-based runtime.</p></li>
+<li><p>Requests GPU and NVSwitch resources using the resource types advertised by the NVIDIA
 Kata sandbox device plugin, which can be either default names or model-specific names.</p></li>
-<li><p>For NVSwitch-based HGX systems, it requests every GPU and NVSwitch on the node together so
+<li><p>For NVSwitch-based HGX systems, requests every GPU and NVSwitch on the node together so
 that all devices reside inside the same Confidential Container virtual machine.</p></li>
-<li><p>For an attested production deployment, it includes a Kata agent security policy that limits
+<li><p>For an attested production deployment, includes a Kata agent security policy that limits
 which Agent API calls the untrusted host can make into the guest.</p></li>
 </ul>
 <p><strong>Before this page:</strong> Complete the <a class="reference internal" href="confidential-containers-deploy.html"><span class="doc">Detailed Install Guide</span></a> and verify the cluster with <a class="reference internal" href="run-sample-workload.html"><span class="doc">Run a Sample Workload</span></a> (<code class="docutils literal notranslate"><span class="pre">Test</span> <span class="pre">PASSED</span></code> in pod logs).
@@ -685,8 +685,8 @@ for details.</p>
 <span id="coco-agent-security-policy"></span><h2>Attach a Kata Agent Security Policy<a class="headerlink" href="#attach-a-kata-agent-security-policy" title="Permalink to this headline">#</a></h2>
 <p>The Kata agent runs inside the guest virtual machine and manages the container lifecycle.
 Because the Kata shim on the host is outside the TEE, the host can still issue Agent API calls
-into the guest unless you restrict them.
-An agent security policy is a Rego policy that the agent enforces so that only the operations
+into the guest unless you restrict those Agent API calls.
+An <em>agent security policy</em> is a Rego policy that the agent enforces so that only the operations
 your workload declared are allowed.
 That restriction is required for an attested, secure end-to-end deployment: attestation proves
 the TEE before secrets are released, and the agent policy limits what the untrusted host can
@@ -700,19 +700,18 @@ Do not treat that YAML as a production template.</p>
 <p>The Kata Containers <code class="docutils literal notranslate"><span class="pre">genpolicy</span></code> tool reads your Kubernetes YAML, infers the intended Agent API
 calls, encodes the policy in base64, and appends it as an annotation on the same file.</p>
 <ol class="arabic">
-<li><p>Obtain <code class="docutils literal notranslate"><span class="pre">genpolicy</span></code> from the latest Kata Containers release that is compatible with this
+<li><p>Download <code class="docutils literal notranslate"><span class="pre">genpolicy</span></code> from the latest Kata Containers release that is compatible with this
 reference architecture.
-For build and usage details, refer to the
+For usage details, refer to the
 <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/src/tools/genpolicy/README.md">Agent Policy generation tool</a>
 documentation.</p></li>
-<li><p>Run <code class="docutils literal notranslate"><span class="pre">genpolicy</span></code> against the manifest you will deploy, for example:</p>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">genpolicy</span></code> against the manifest to deploy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>genpolicy -y cuda-vectoradd-kata.yaml
 </pre></div>
 </div>
-</li>
-<li><p>Review the generated policy before you apply the manifest.
-Auto-generated policy is a starting point.
-It can allow operations you do not want, such as <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">exec</span></code>, or omit operations your
+<p>Review the generated policy before you apply the manifest.
+The automatically-generated policy is a starting point.
+The policy can allow operations you do not want, such as <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">exec</span></code>, or omit operations your
 workload needs.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>

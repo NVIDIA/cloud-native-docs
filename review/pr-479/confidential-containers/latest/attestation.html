@@ -447,7 +447,7 @@ Attestation is required for any feature that depends on secrets, including:</p>
 </ul>
 <p>Attestation is necessary but not sufficient for a secure end-to-end deployment.
 The Kata shim on the host remains untrusted and can still issue Agent API calls into the guest
-unless you restrict them with a Kata agent security policy.
+unless you restrict those Agent API calls with a Kata agent security policy.
 Generate and attach that policy as part of the workload manifest.
 Refer to <a class="reference internal" href="configure-workloads.html#coco-agent-security-policy"><span class="std std-ref">Attach a Kata Agent Security Policy</span></a>.
 Agent policy is distinct from the Trustee policy that decides whether to release a KBS resource.</p>
