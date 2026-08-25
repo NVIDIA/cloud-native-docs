@@ -28,7 +28,7 @@ This page is relevant to the following users:
 
 * The :ref:`Hardware IT Administrator <coco-persona-hardware-it-administrator>` uses the hardware tables to confirm that the selected CPU and GPU are validated for Confidential Computing before configuring the system.
 * The :ref:`Host OS Administrator <coco-persona-host-os-administrator>` uses the hardware tables to confirm validated host OS and kernel versions.
-* The :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-administrator>` uses the software component matrix to confirm that the correct versions are in place before beginning cluster installation.
+* The :ref:`Kubernetes Cluster Administrator <coco-persona-kubernetes-cluster-administrator>` uses the component matrix to confirm supported versions.
 
 ********
 Hardware
@@ -75,16 +75,16 @@ NVIDIA GPUs
     For both single and multi GPU Passthrough, all GPUs on the host must be configured for Confidential Computing and all GPUs must be assigned to one Confidential Container virtual machine.
     Configuring only some GPUs on a node for Confidential Computing is not supported.
 
-CPU Platforms
-=============
+Host Platforms
+==============
 
 .. flat-table::
    :header-rows: 1
 
-   * - Category
+   * - CPU Platform
      - TEE
-     - Operating System
-     - Kernel Version
+     - Host Operating System
+     - Host Kernel Version
    * - AMD Genoa / Milan
      - AMD SEV-SNP
      - Ubuntu 25.10 or 26.04
@@ -115,10 +115,43 @@ For additional resources on machine setup:
 Supported Software Components
 *****************************
 
+Cluster and Deployment Software
+================================
+
+The installation guides begin with an existing Kubernetes cluster that uses ``containerd``.
+You then install Kata Containers and the NVIDIA GPU Operator.
+
 .. flat-table::
    :header-rows: 1
 
    * - Component
+     - Release/Version
+     - Installation
+   * - `Kubernetes <https://kubernetes.io/>`__
+     - 1.32 \+
+     - Prerequisite, must already be installed on the cluster hosts.
+   * - `containerd <https://github.com/containerd/containerd>`__
+     - 2.3.x
+     - Prerequisite, must already be installed on the cluster hosts.
+   * - `Kata Containers <https://katacontainers.io/>`__
+     - ${kata_version}
+     - Installed with the ``kata-deploy`` Helm chart by following the :doc:`Quickstart Install <install-quickstart>` or :doc:`Detailed Install Guide <confidential-containers-deploy>`.
+   * - `NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html>`__ and its components.
+
+       Refer to the :ref:`GPU Operator Component Matrix <gpuop:operator-component-matrix>` for the list of components and versions included in each release.
+     - ${gpu_operator_version} and higher
+     - Installed by following the :doc:`Quickstart Install <install-quickstart>` or :doc:`Detailed Install Guide <confidential-containers-deploy>`.
+
+Kata-provided Guest and Runtime Artifacts
+=========================================
+
+The supported ``kata-deploy`` Helm chart installs the guest OS, guest kernel, OVMF, and QEMU artifacts listed in the following table as part of Kata Containers.
+You do not supply or install these artifacts individually.
+
+.. flat-table::
+   :header-rows: 1
+
+   * - Artifact
      - Release/Version
    * - Guest OS
      - Distroless
@@ -128,19 +161,27 @@ Supported Software Components
      - edk2-stable202511
    * - `QEMU <https://www.qemu.org/>`__
      - 10.1 \+ Patches
-   * - `Containerd <https://github.com/containerd/containerd>`__
-     - 2.3.x
-   * - `Kubernetes <https://kubernetes.io/>`__
-     - 1.32 \+
-   * - `NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html>`__ and its components.
 
-       Refer to the :ref:`GPU Operator Component Matrix <gpuop:operator-component-matrix>` for the list of components and versions included in each release.
-     - ${gpu_operator_version} and higher
-   * - `Kata Containers <https://katacontainers.io/>`__
-     - ${kata_version} (installed with ``kata-deploy`` Helm chart)
+Separately Deployed Components and Interfaces
+=============================================
+
+The following components and interfaces are not installed by the :doc:`Quickstart Install <install-quickstart>` or :doc:`Detailed Install Guide <confidential-containers-deploy>`.
+
+.. flat-table::
+   :header-rows: 1
+
+   * - Interface or Component
+     - Version
+     - When It Is Needed
+     - How It Is Provided
    * - `Key Broker Service (KBS) protocol <https://confidentialcontainers.org/docs/attestation/>`__
      - 0.4.0
+     - Required for Trustee-based attestation and secret or key release.
+     - The :doc:`Attestation <attestation>` quickstart installs a local evaluation Trustee.
+       Deploy a production Trustee separately by following the upstream Confidential Containers documentation.
    * - `Kata Lifecycle Manager <https://github.com/kata-containers/lifecycle-manager>`__
      - 0.1.8
+     - Optional for Kata Containers upgrades and day-two lifecycle management.
+     - Install separately by following the upstream Kata Lifecycle Manager documentation.
 
 Users may leverage `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.13>`__ to deploy Confidential Containers.
