@@ -183,5 +183,9 @@ The following components and interfaces are not installed by the :doc:`Quickstar
      - 0.1.8
      - Optional for Kata Containers upgrades and day-two lifecycle management.
      - Install separately by following the upstream Kata Lifecycle Manager documentation.
+   * - `Kata Containers genpolicy <https://github.com/kata-containers/kata-containers/blob/${kata_version}/src/tools/genpolicy/README.md>`__
+     - ${kata_version}
+     - Used to generate an agent security policy for attested production workloads.
+     - Download separately from the corresponding Kata Containers release.
 
 Users may leverage `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.13>`__ to deploy Confidential Containers.
