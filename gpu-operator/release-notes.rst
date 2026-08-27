@@ -59,6 +59,12 @@ New Features
   - NVIDIA GDRCopy Driver v2.6
   - NVIDIA Kata Sandbox Device Plugin v0.0.5
 
+* Added the GPU Operator Helm chart as an OCI artifact in NGC.
+  You can now install the Operator directly from
+  ``oci://nvcr.io/nvidia/cloud-native-charts/gpu-operator`` as an alternative
+  to using the classic Helm repository.
+  (`Issue #2520 <https://github.com/NVIDIA/gpu-operator/issues/2520>`__)
+
 * Added support for managing the DRA Driver for NVIDIA GPUs through the GPU Operator.
   The new ``GPUCluster`` custom resource deploys and manages the DRA driver, ComputeDomain support for Multi-Node NVLink, DCGM, DCGM Exporter, and a DRA validation workload.
   Workloads can allocate full GPUs and preconfigured MIG devices through Kubernetes ``ResourceClaim`` objects and select devices by attributes.
@@ -185,6 +191,8 @@ Known Issues
 Post-Release Documentation Updates
 ----------------------------------
 
+* Added the Helm chart OCI artifact to the new features and installation
+  documentation after the artifact became available following the v26.7.0 release.
 * Updated the release notes to include the new features and enhancements to the NVIDIA driver CRD.
 * Added NVIDIA vGPU Device Manager v0.5.0 and NVIDIA KubeVirt GPU Device Plugin v1.6.0 to the software component version list.
 * The minimum :ref:`supported containerd version <supported-container-runtimes>` changed from 1.8 to 2.0.

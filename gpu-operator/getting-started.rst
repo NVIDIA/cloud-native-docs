@@ -94,16 +94,29 @@ Use ``--set`` options to customize the deployment for your environment.
    For installation on Red Hat OpenShift Container Platform,
    refer to :external+ocp:doc:`steps-overview`.
 
-#. Add the NVIDIA Helm repository:
+#. Choose how to access the GPU Operator Helm chart:
 
-   .. code-block:: console
+   - To install the chart as an OCI artifact, no Helm repository setup is required.
 
-      $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
-          && helm repo update
+   - To use the classic NVIDIA Helm repository, add and update the repository:
+
+     .. code-block:: console
+
+        $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
+            && helm repo update
 
 #. Install the GPU Operator.
 
-   - Install the Operator with the default configuration:
+   - Install the Operator from the OCI artifact with the default configuration:
+
+     .. code-block:: console
+
+        $ helm install --wait gpu-operator \
+            -n gpu-operator --create-namespace \
+            oci://nvcr.io/nvidia/cloud-native-charts/gpu-operator \
+            --version=${version}
+
+   - Install the Operator from the classic Helm repository with the default configuration:
 
      .. code-block:: console
 
@@ -112,7 +125,7 @@ Use ``--set`` options to customize the deployment for your environment.
             nvidia/gpu-operator \
             --version=${version}
 
-   - Install the Operator and specify configuration options:
+   - Install the Operator from the classic Helm repository and specify configuration options:
 
      .. code-block:: console
 
