@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 25, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 27, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -509,15 +509,28 @@ Use <code class="docutils literal notranslate"><span class="pre">--set</span></c
 refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/steps-overview.html" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Installation and Upgrade Overview on OpenShift</span></a>.</p>
 </div>
 <ol class="arabic">
-<li><p>Add the NVIDIA Helm repository:</p>
+<li><p>Choose how to access the GPU Operator Helm chart:</p>
+<ul>
+<li><p>To install the chart as an OCI artifact, no Helm repository setup is required.</p></li>
+<li><p>To use the classic NVIDIA Helm repository, add and update the repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\</span>
     <span class="o">&amp;&amp;</span> helm repo update
 </pre></div>
 </div>
 </li>
+</ul>
+</li>
 <li><p>Install the GPU Operator.</p>
 <ul>
-<li><p>Install the Operator with the default configuration:</p>
+<li><p>Install the Operator from the OCI artifact with the default configuration:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator <span class="se">\</span>
+    -n gpu-operator --create-namespace <span class="se">\</span>
+    oci://nvcr.io/nvidia/cloud-native-charts/gpu-operator <span class="se">\</span>
+    --version<span class="o">=</span>v26.7.0
+</pre></div>
+</div>
+</li>
+<li><p>Install the Operator from the classic Helm repository with the default configuration:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
@@ -525,7 +538,7 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 </pre></div>
 </div>
 </li>
-<li><p>Install the Operator and specify configuration options:</p>
+<li><p>Install the Operator from the classic Helm repository and specify configuration options:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
