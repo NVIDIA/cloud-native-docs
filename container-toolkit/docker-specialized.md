@@ -174,14 +174,14 @@ The following table describes the supported driver capabilities:
       - Description
 
     * - ``compute``
-      - Required for CUDA and OpenCL applications. When present on the host,
+      - required for CUDA and OpenCL applications. When present on the host,
         the NVIDIA OpenCL ICD file is also available in the container.
 
     * - ``compat32``
       - required for running 32-bit applications.
 
     * - ``graphics``
-      - Required for running OpenGL, EGL, and Vulkan applications.
+      - required for rendering OpenGL, EGL, and Vulkan applications.
 
     * - ``utility``
       - required for using ``nvidia-smi`` and NVML.
@@ -190,8 +190,14 @@ The following table describes the supported driver capabilities:
       - required for using the Video Codec SDK.
 
     * - ``display``
-      - required for leveraging X11 display.
+      - required for displaying X11 or Wayland windows. Implies ``graphics``.
 ```
+
+:::{note}
+`NVIDIA_DRIVER_CAPABILITIES` replaces the default capabilities rather than adding to them, so list every
+capability your application needs. An application that displays 3D rendered output on X11 or Wayland requires
+`compute,utility,graphics,display`, for instance.
+:::
 
 For example, to allow usage of CUDA and NVML, specify the `compute` and `utility` capabilities:
 
