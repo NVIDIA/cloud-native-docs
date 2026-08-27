@@ -1,0 +1,1173 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>GPU Operator with KubeVirt and DRA &#8212; NVIDIA GPU Operator</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'gpu-operator-kubevirt-dra';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.7';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Deploy with Kata Containers" href="deploy-kata-containers.html" />
+    <link rel="prev" title="GPU Operator with KubeVirt" href="gpu-operator-kubevirt.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Aug 27, 2026"/>
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
+<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
+<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
+<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install-gpu-operator-gov-ready.html">Government Ready</a></li>
+</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="security.html">Security Considerations</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">DRA Driver for NVIDIA GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
+<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="cdi.html">CDI and NRI Support</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt GPU Passthrough and vGPU</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">   KubeVirt with DRA</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-kata-containers.html">   Kata Containers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">   Confidential Containers</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Platform-Specific Configurations</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html">Partner Validated</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA GPU Operator</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">GPU Operator with KubeVirt and DRA</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="gpu-operator-with-kubevirt-and-dra">
+<span id="gpu-operator-kubevirt-dra"></span><h1>GPU Operator with KubeVirt and DRA<a class="headerlink" href="#gpu-operator-with-kubevirt-and-dra" title="Permalink to this headline">#</a></h1>
+<p>KubeVirt can attach NVIDIA GPUs to virtual machines by using Kubernetes Dynamic Resource Allocation (DRA).
+The NVIDIA DRA driver advertises GPUs and their attributes in <code class="docutils literal notranslate"><span class="pre">ResourceSlice</span></code> objects.
+A <code class="docutils literal notranslate"><span class="pre">ResourceClaimTemplate</span></code> selects devices, Kubernetes schedules the virtual machine on a node that can access those devices, and the DRA driver prepares the allocation for VFIO passthrough.</p>
+<p>With the DRA driver, you can run mixed workloads—containers and VMs—on the same node.
+This is an important difference from the sandbox device plugin, where a node cannot run mixed workloads.</p>
+<p>This workflow uses a GPU Operator-managed <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource and DRA operands.
+For passthrough with the sandbox device plugin, or for NVIDIA vGPU mediated devices, refer to <a class="reference internal" href="gpu-operator-kubevirt.html#gpu-operator-kubevirt"><span class="std std-ref">GPU Operator with KubeVirt</span></a>.</p>
+<section id="understanding-gpu-assignment">
+<h2>Understanding GPU Assignment<a class="headerlink" href="#understanding-gpu-assignment" title="Permalink to this headline">#</a></h2>
+<p>With DRA, the device request specifies the required device type and attributes.
+Kubernetes allocates devices that satisfy the request and schedules the virtual machine on the node that advertises them.
+The DRA driver then binds each allocated GPU to <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code> while the claim is prepared and restores it when the claim is unprepared.
+On supported systems, Fabric Manager partitioning can additionally constrain a multi-GPU claim to a valid NVSwitch fabric partition.</p>
+<p>GPU Operator discovers GPU nodes and manages operand placement.</p>
+</section>
+<section id="assumptions-constraints-and-dependencies">
+<h2>Assumptions, Constraints, and Dependencies<a class="headerlink" href="#assumptions-constraints-and-dependencies" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>The examples allocate full GPUs from the <code class="docutils literal notranslate"><span class="pre">vfio.gpu.nvidia.com</span></code> DeviceClass.
+MIG device allocation is outside the scope of this procedure.</p></li>
+<li><p>An allocated GPU cannot be used by another workload until the claim is unprepared.</p></li>
+<li><p>Host services and workloads must release open handles to a GPU before it can be bound to <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code>.</p></li>
+<li><p>KubeVirt supports exactly one allocated device for each named request.
+Use one named request for each GPU, as shown in this procedure.</p></li>
+<li><p>Do not mix DRA and device-plugin GPU entries in the same virtual machine.</p></li>
+<li><p>Virtual machines with passthrough GPUs cannot be live migrated.</p></li>
+<li><p>With <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> enabled, the DRA driver initially advertises each eligible physical GPU as both a GPU device and a VFIO device.
+These entries represent the same hardware.</p>
+<p>If a container GPU claim and a VFIO claim for the same GPU are allocated before either claim is prepared, Kubernetes can allocate both.
+The first preparation succeeds and the other fails.</p>
+<p>To avoid this race, submit container and VM workloads serially and wait for device preparation, or dedicate separate nodes to container and VFIO workloads.
+You could also use labels and node selectors to avoid the race condition.
+Refer to <a class="reference external" href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/gpu-allocation/kubevirt-vfio-gpu-passthrough/#limitations-and-considerations">Limitations and Considerations</a> in the DRA driver documentation for more information.</p>
+</li>
+<li><p>DCGM and DGCM-Exporter cannot be enabled on the KubeVirt nodes.</p></li>
+<li><p>GPU Operator does not install the NVIDIA driver in the guest operating system.</p></li>
+</ul>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
+<p>Before you begin, verify the following prerequisites:</p>
+<ul>
+<li><p>Follow <a class="reference internal" href="dra-intro-install.html#dra-driver-for-nvidia-gpus"><span class="std std-ref">DRA Driver for NVIDIA GPUs</span></a> to install GPU Operator with the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> custom resource and validate the installation.
+The <code class="docutils literal notranslate"><span class="pre">gpu-cluster</span></code> resource must be ready, and no <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource can exist in the cluster.</p></li>
+<li><p>Use Kubernetes v1.34.2 or later, an NVIDIA GPU driver version 580 or later,
+and a Container Device Interface-compatible container runtime, as described in the DRA driver procedure.</p></li>
+<li><p>Install KubeVirt v1.8.0 or later.
+KubeVirt v1.8.x requires the <code class="docutils literal notranslate"><span class="pre">GPUsWithDRA</span></code> feature gate.
+The gate is enabled by default in KubeVirt v1.9.0 and later.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>On Kubernetes v1.34, KubeVirt’s <code class="docutils literal notranslate"><span class="pre">ImageVolume</span></code> feature can prevent <code class="docutils literal notranslate"><span class="pre">containerDisk</span></code>-backed virtual machines, including the example in this procedure, from starting.
+Disable <code class="docutils literal notranslate"><span class="pre">ImageVolume</span></code> in the KubeVirt custom resource, or use Kubernetes v1.35 or later.
+For more information, refer to <a class="reference external" href="https://github.com/kubevirt/kubevirt/issues/17460">KubeVirt issue #17460</a>.</p>
+</div>
+</li>
+<li><p>Use bare-metal GPU worker nodes with CPU virtualization and IOMMU enabled in the firmware.
+Boot the hosts with <code class="docutils literal notranslate"><span class="pre">intel_iommu=on</span></code> or <code class="docutils literal notranslate"><span class="pre">amd_iommu=on</span></code>, as appropriate.</p></li>
+<li><p>Install the <code class="docutils literal notranslate"><span class="pre">virtctl</span></code> command-line tool for troubleshooting.</p></li>
+<li><p>Ensure that you use a guest operating system that has a supported NVIDIA driver.</p></li>
+</ul>
+<p>Fabric Manager partitioning is optional and hardware-specific.
+It applies only to supported HGX or single-node NVL systems with an NVSwitch-managed fabric and a supported partition topology.
+The optional partitioning steps in this procedure apply to the systems with NVLink 5 or later.</p>
+</section>
+<section id="optional-configure-fabric-manager-partitioning">
+<h2>Optional: Configure Fabric Manager Partitioning<a class="headerlink" href="#optional-configure-fabric-manager-partitioning" title="Permalink to this headline">#</a></h2>
+<p>Fabric Manager must run in partitioning mode and provide a UNIX socket that the DRA driver can access.
+Skip this section on systems that do not support Fabric Manager partitioning or when you do not need topology-constrained allocation.
+Use the procedure that matches how the NVIDIA driver is installed.</p>
+<section id="operator-managed-driver">
+<h3>Operator-Managed Driver<a class="headerlink" href="#operator-managed-driver" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Stop GPU workloads on the target nodes.
+Updating the <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resource restarts the driver pods and can reset GPUs when Fabric Manager partitioning is enabled.</p></li>
+<li><p>List the <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resources and identify the resource that applies to the target nodes:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nvidiadriver
+</pre></div>
+</div>
+</li>
+<li><p>Edit the <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resource:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch nvidiadriver &lt;driver-name&gt; <span class="se">\</span>
+    --type<span class="o">=</span>merge -p <span class="err">&#39;</span><span class="o">{</span>
+<span class="go">      &quot;spec&quot;:{</span>
+<span class="go">        &quot;env&quot;:[</span>
+<span class="go">          {&quot;name&quot;:&quot;NVFM_CONFIG_FABRIC_MODE&quot;,&quot;value&quot;:&quot;1&quot;},</span>
+<span class="go">          {&quot;name&quot;:&quot;NVFM_CONFIG_FM_CMD_UNIX_SOCKET_PATH&quot;,&quot;value&quot;:&quot;/run/nvidia-fabricmanager/socket&quot;}</span>
+<span class="go">        ]}}&#39;</span>
+</pre></div>
+</div>
+<p>The GPU Operator adds these variables to the driver container.
+The driver container configures and starts Fabric Manager.</p>
+</li>
+<li><p>Wait for the <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resource to return to the ready state:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nvidiadriver &lt;driver-name&gt;
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="pre-installed-driver">
+<h3>Pre-Installed Driver<a class="headerlink" href="#pre-installed-driver" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Stop GPU workloads on the target nodes and stop Fabric Manager:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl stop nvidia-fabricmanager
+</pre></div>
+</div>
+</li>
+<li><p>In the Fabric Manager configuration file, configure the following settings:</p>
+<div class="highlight-ini notranslate"><div class="highlight"><pre><span></span><span class="na">FABRIC_MODE</span><span class="o">=</span><span class="s">1</span><span class="w"></span>
+<span class="na">FM_CMD_UNIX_SOCKET_PATH</span><span class="o">=</span><span class="s">/run/nvidia-fabricmanager/socket</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The configuration file is typically located at <code class="docutils literal notranslate"><span class="pre">/usr/share/nvidia/nvswitch/fabricmanager.cfg</span></code>.</p>
+</li>
+<li><p>Optional: If stale partition state must be cleared, reset the GPUs while they are idle:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo nvidia-smi --gpu-reset
+</pre></div>
+</div>
+<p>A GPU reset disrupts workloads that use the affected GPUs.</p>
+</li>
+<li><p>Start Fabric Manager and verify that the service is running:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo systemctl start nvidia-fabricmanager
+<span class="gp">$ </span>sudo systemctl status nvidia-fabricmanager
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+<section id="enable-vfio-support-with-dra">
+<h2>Enable VFIO Support with DRA<a class="headerlink" href="#enable-vfio-support-with-dra" title="Permalink to this headline">#</a></h2>
+<p>Enable <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> and <code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code> in the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource.</p>
+<ol class="arabic">
+<li><p>Isolate GPU consumers that would keep NVIDIA clients open during VFIO rebinding:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch gpucluster gpu-cluster --type<span class="o">=</span>merge -p <span class="s1">&#39;{&quot;spec&quot;:{&quot;dcgmExporter&quot;:{&quot;enabled&quot;:false}}}&#39;</span>
+</pre></div>
+</div>
+</li>
+<li><p>Add the feature gates under <code class="docutils literal notranslate"><span class="pre">spec.draDriver.featureGates</span></code>.
+Preserve any other DRA driver settings:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch gpucluster gpu-cluster <span class="se">\</span>
+    --type<span class="o">=</span>merge -p <span class="err">&#39;</span><span class="o">{</span>
+<span class="go">        &quot;spec&quot;:{</span>
+<span class="go">          &quot;draDriver&quot;:{</span>
+<span class="go">            &quot;computeDomains&quot;:{&quot;enabled&quot;:false},</span>
+<span class="go">            &quot;featureGates&quot;:{</span>
+<span class="go">              &quot;PassthroughSupport&quot;:true,</span>
+<span class="go">              &quot;DeviceMetadata&quot;:true,</span>
+<span class="go">              &quot;FabricManagerPartitioning&quot;:true  # For NVLink 5 or later systems with NVSwitch-managed fabric.</span>
+<span class="go">            }}}}&#39;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> enables allocation with <code class="docutils literal notranslate"><span class="pre">VfioDeviceConfig</span></code>.
+<code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code> provides KubeVirt with the PCI address for each allocated device and exposes the VFIO API device to the <code class="docutils literal notranslate"><span class="pre">virt-launcher</span></code> pod.
+GPU Operator continues to manage the DRA driver, DeviceClasses, RBAC, and operand lifecycle.</p>
+</li>
+<li><p>Wait until GPU Operator finishes reconciling the change:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get gpucluster gpu-cluster
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">STATUS</span></code> column must show <code class="docutils literal notranslate"><span class="pre">ready</span></code>.</p>
+</li>
+</ol>
+</section>
+<section id="configure-kubevirt-for-dra-gpus">
+<h2>Configure KubeVirt for DRA GPUs<a class="headerlink" href="#configure-kubevirt-for-dra-gpus" title="Permalink to this headline">#</a></h2>
+<ol class="arabic">
+<li><p>For KubeVirt v1.8.x, add <code class="docutils literal notranslate"><span class="pre">GPUsWithDRA</span></code> to the existing feature-gate list in the <code class="docutils literal notranslate"><span class="pre">KubeVirt</span></code> custom resource:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch kubevirt kubevirt <span class="se">\</span>
+    --namespace kubevirt <span class="se">\</span>
+    --type<span class="o">=</span>json <span class="se">\</span>
+    -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/configuration/developerConfiguration/featureGates/-&quot;, &quot;value&quot;: &quot;GPUsWithDRA&quot;}]&#39;</span>
+</pre></div>
+</div>
+<p>The JSON patch appends <code class="docutils literal notranslate"><span class="pre">GPUsWithDRA</span></code> and leaves other feature gates unchanged.
+Skip this step with KubeVirt v1.9.0 and later, where <code class="docutils literal notranslate"><span class="pre">GPUsWithDRA</span></code> is enabled by default.</p>
+</li>
+<li><p>Wait for KubeVirt to become available:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">wait</span> kubevirt/kubevirt <span class="se">\</span>
+    --namespace kubevirt <span class="se">\</span>
+    --for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Available <span class="se">\</span>
+    --timeout<span class="o">=</span>5m
+</pre></div>
+</div>
+</li>
+</ol>
+<p>For more information, refer to
+<a class="reference external" href="https://kubevirt.io/user-guide/compute/dra_gpu/">Assigning GPUs with Dynamic Resource Allocation</a>
+in the KubeVirt documentation.</p>
+</section>
+<section id="verify-dra-resources">
+<h2>Verify DRA Resources<a class="headerlink" href="#verify-dra-resources" title="Permalink to this headline">#</a></h2>
+<ol class="arabic">
+<li><p>Verify that the VFIO DeviceClass exists:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get deviceclass vfio.gpu.nvidia.com
+</pre></div>
+</div>
+</li>
+<li><p>List the ResourceSlices advertised by the DRA driver:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get resourceslices
+</pre></div>
+</div>
+<p>Confirm that the target GPU node has a ResourceSlice for the <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com</span></code>
+driver. The claim allocation later in this procedure verifies that the
+<code class="docutils literal notranslate"><span class="pre">vfio.gpu.nvidia.com</span></code> DeviceClass can select devices from the node.</p>
+</li>
+<li><p>Optional: If you enabled Fabric Manager partitioning on the target node,
+inspect the ResourceSlice in YAML format:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get resourceslice &lt;slice-name&gt; -o yaml
+</pre></div>
+</div>
+<p>Confirm that devices with the <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com/type</span></code> attribute set to
+<code class="docutils literal notranslate"><span class="pre">vfio</span></code> include a <code class="docutils literal notranslate"><span class="pre">gpuModuleID</span></code> attribute and the <code class="docutils literal notranslate"><span class="pre">partitionN</span></code> attributes
+reported for the hardware. For the two-GPU example in this procedure, at
+least two VFIO devices must advertise the same <code class="docutils literal notranslate"><span class="pre">partition2</span></code> value.</p>
+<p>Nodes without a supported NVSwitch-managed fabric do not advertise these
+attributes and do not require the remaining Fabric Manager-specific checks.
+If the target node has supported hardware and is configured for Fabric Manager
+partitioning, missing attributes indicate a configuration problem. Verify the
+Fabric Manager service, socket, and DRA kubelet-plugin logs before continuing.</p>
+</li>
+</ol>
+</section>
+<section id="create-a-gpu-claim-template">
+<h2>Create a GPU Claim Template<a class="headerlink" href="#create-a-gpu-claim-template" title="Permalink to this headline">#</a></h2>
+<ol class="arabic">
+<li><p>Create a file named <code class="docutils literal notranslate"><span class="pre">kubevirt-vfio-gpus.yaml</span></code> with the following contents.
+The template requests two VFIO GPUs:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.k8s.io/v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ResourceClaimTemplate</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt-vfio-gpus</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">devices</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">config</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">requests</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu0</span><span class="w"></span>
+<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu1</span><span class="w"></span>
+<span class="w">        </span><span class="nt">opaque</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu.nvidia.com</span><span class="w"></span>
+<span class="w">          </span><span class="nt">parameters</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.nvidia.com/v1beta1</span><span class="w"></span>
+<span class="w">            </span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VfioDeviceConfig</span><span class="w"></span>
+<span class="w">            </span><span class="nt">iommu</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">backendPolicy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">LegacyOnly</span><span class="w"></span>
+<span class="w">              </span><span class="nt">enableAPIDevice</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">      </span><span class="nt">requests</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu0</span><span class="w"></span>
+<span class="w">        </span><span class="nt">exactly</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">allocationMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExactCount</span><span class="w"></span>
+<span class="w">          </span><span class="nt">count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">          </span><span class="nt">deviceClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vfio.gpu.nvidia.com</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu1</span><span class="w"></span>
+<span class="w">        </span><span class="nt">exactly</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">allocationMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ExactCount</span><span class="w"></span>
+<span class="w">          </span><span class="nt">count</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">          </span><span class="nt">deviceClassName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">vfio.gpu.nvidia.com</span><span class="w"></span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">backendPolicy:</span> <span class="pre">LegacyOnly</span></code> selects the legacy VFIO IOMMU backend required by KubeVirt.
+<code class="docutils literal notranslate"><span class="pre">enableAPIDevice:</span> <span class="pre">true</span></code> exposes <code class="docutils literal notranslate"><span class="pre">/dev/vfio/vfio</span></code> to <code class="docutils literal notranslate"><span class="pre">virt-launcher</span></code>.</p>
+</li>
+<li><p>Optional: If you enabled Fabric Manager partitioning and the target hardware advertises <code class="docutils literal notranslate"><span class="pre">partition2</span></code>,
+add the following constraint under <code class="docutils literal notranslate"><span class="pre">spec.spec.devices</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">constraints</span><span class="p">:</span><span class="w"></span>
+<span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">requests</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu0</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu1</span><span class="w"></span>
+<span class="w">  </span><span class="nt">matchAttribute</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu.nvidia.com/partition2</span><span class="w"></span>
+</pre></div>
+</div>
+<p>The constraint requires both GPUs to have the same two-GPU partition ID.
+Combined with the two single-GPU requests, this selects a complete two-GPU partition.
+Use only a <code class="docutils literal notranslate"><span class="pre">partitionN</span></code> attribute that appears in the target node’s <code class="docutils literal notranslate"><span class="pre">ResourceSlice</span></code>.</p>
+</li>
+<li><p>Apply the manifest in the namespace where you will create the virtual machine:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f kubevirt-vfio-gpus.yaml
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">ResourceClaimTemplate</span></code> is namespace-scoped.</p>
+</li>
+</ol>
+</section>
+<section id="create-a-vm-that-uses-the-gpu-claim">
+<h2>Create a VM That Uses the GPU Claim<a class="headerlink" href="#create-a-vm-that-uses-the-gpu-claim" title="Permalink to this headline">#</a></h2>
+<ol class="arabic">
+<li><p>Create a file named <code class="docutils literal notranslate"><span class="pre">dra-gpu-vm.yaml</span></code> with the following contents.
+The virtual machine creates a claim from the template and maps one GPU to each named request:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt.io/v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">VirtualMachine</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dra-gpu-vm</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">runStrategy</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Always</span><span class="w"></span>
+<span class="w">  </span><span class="nt">template</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">labels</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">kubevirt.io/domain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dra-gpu-vm</span><span class="w"></span>
+<span class="w">    </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">resourceClaims</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-claim</span><span class="w"></span>
+<span class="w">        </span><span class="nt">resourceClaimTemplateName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">kubevirt-vfio-gpus</span><span class="w"></span>
+<span class="w">      </span><span class="nt">domain</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">cpu</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">cores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8</span><span class="w"></span>
+<span class="w">        </span><span class="nt">devices</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">disks</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span><span class="w"></span>
+<span class="w">            </span><span class="nt">disk</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span><span class="w"></span>
+<span class="w">            </span><span class="nt">disk</span><span class="p">:</span><span class="w"></span>
+<span class="w">              </span><span class="nt">bus</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">virtio</span><span class="w"></span>
+<span class="w">          </span><span class="nt">gpus</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu0</span><span class="w"></span>
+<span class="w">            </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-claim</span><span class="w"></span>
+<span class="w">            </span><span class="nt">requestName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu0</span><span class="w"></span>
+<span class="w">          </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu1</span><span class="w"></span>
+<span class="w">            </span><span class="nt">claimName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-claim</span><span class="w"></span>
+<span class="w">            </span><span class="nt">requestName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu1</span><span class="w"></span>
+<span class="w">        </span><span class="nt">resources</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">requests</span><span class="p">:</span><span class="w"></span>
+<span class="w">            </span><span class="nt">memory</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">64Gi</span><span class="w"></span>
+<span class="w">      </span><span class="nt">volumes</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">containerdisk</span><span class="w"></span>
+<span class="w">        </span><span class="nt">containerDisk</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">quay.io/containerdisks/fedora:44</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cloudinitdisk</span><span class="w"></span>
+<span class="w">        </span><span class="nt">cloudInitNoCloud</span><span class="p">:</span><span class="w"></span>
+<span class="w">          </span><span class="nt">userData</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|-</span><span class="w"></span>
+<span class="w">            </span><span class="no">#cloud-config</span><span class="w"></span>
+<span class="w">            </span><span class="no">users:</span><span class="w"></span>
+<span class="w">            </span><span class="no">- name: fedora</span><span class="w"></span>
+<span class="w">              </span><span class="no">groups: wheel</span><span class="w"></span>
+<span class="w">              </span><span class="no">sudo: ALL=(ALL) NOPASSWD:ALL</span><span class="w"></span>
+<span class="w">              </span><span class="no">shell: /bin/bash</span><span class="w"></span>
+<span class="w">              </span><span class="no">lock_passwd: false</span><span class="w"></span>
+<span class="w">            </span><span class="no">chpasswd:</span><span class="w"></span>
+<span class="w">              </span><span class="no">list: |</span><span class="w"></span>
+<span class="w">                </span><span class="no">fedora:fedora</span><span class="w"></span>
+<span class="w">              </span><span class="no">expire: false</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify that the following names match between the virtual machine and claim template:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">resourceClaimTemplateName</span></code> matches the <code class="docutils literal notranslate"><span class="pre">ResourceClaimTemplate</span></code> name.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">claimName</span></code> matches the name under <code class="docutils literal notranslate"><span class="pre">spec.template.spec.resourceClaims</span></code>.</p></li>
+<li><p>Each <code class="docutils literal notranslate"><span class="pre">requestName</span></code> matches one request in the claim template.</p></li>
+</ul>
+</li>
+<li><p>Apply the manifest and wait for the virtual machine instance to become ready:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f dra-gpu-vm.yaml
+<span class="gp">$ </span>kubectl <span class="nb">wait</span> vmi/dra-gpu-vm --for<span class="o">=</span><span class="nv">condition</span><span class="o">=</span>Ready --timeout<span class="o">=</span>10m
+</pre></div>
+</div>
+</li>
+<li><p>Access the guest through its serial console:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>virtctl console dra-gpu-vm
+</pre></div>
+</div>
+<p>Log in as <code class="docutils literal notranslate"><span class="pre">fedora</span></code> with the password <code class="docutils literal notranslate"><span class="pre">fedora</span></code>.
+Change or remove these demonstration credentials before using the manifest in another environment.
+The writable layer of a <code class="docutils literal notranslate"><span class="pre">containerDisk</span></code> is ephemeral and does not survive VMI recreation.
+Use persistent guest storage for a long-running virtual machine.</p>
+</li>
+</ol>
+</section>
+<section id="install-the-guest-driver-and-verify-gpus">
+<h2>Install the Guest Driver and Verify GPUs<a class="headerlink" href="#install-the-guest-driver-and-verify-gpus" title="Permalink to this headline">#</a></h2>
+<p>The host driver and guest driver are separate installations.
+Follow the <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/fedora.html">NVIDIA Driver Installation Guide for Fedora</a>
+to select a driver that is compatible with the guest kernel and the assigned GPUs.</p>
+<section id="install-the-guest-driver">
+<h3>Install the Guest Driver<a class="headerlink" href="#install-the-guest-driver" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>For the Fedora 44 image in the example, run the following commands in the guest:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>sudo dnf -y install kernel-devel-matched kernel-headers dnf-plugins-core
+<span class="gp">$ </span>sudo dnf config-manager addrepo <span class="se">\</span>
+    --from-repofile<span class="o">=</span>https://developer.download.nvidia.com/compute/cuda/repos/fedora44/x86_64/cuda-fedora44.repo
+<span class="gp">$ </span>sudo dnf clean expire-cache
+<span class="gp">$ </span>sudo dnf -y install nvidia-driver-cuda kmod-nvidia-open-dkms
+<span class="gp">$ </span>sudo reboot
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="verify-the-gpus-on-any-supported-host">
+<h3>Verify the GPUs on Any Supported Host<a class="headerlink" href="#verify-the-gpus-on-any-supported-host" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Verify that the generated claim is allocated and reserved:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get resourceclaims
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">STATE</span></code> column must show <code class="docutils literal notranslate"><span class="pre">allocated,reserved</span></code>.</p>
+</li>
+<li><p>Reconnect to the console after the virtual machine reboots and verify GPU
+enumeration and topology:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi -L
+<span class="gp">$ </span>nvidia-smi topo -m
+</pre></div>
+</div>
+<p>The first command must list both assigned GPUs.
+The topology output depends on the hardware and can show a PCIe connection on
+systems without NVLink or NVSwitch.</p>
+<p>This verification applies to every supported host. If you did not configure
+Fabric Manager partitioning, skip the Fabric Manager-specific verification
+that follows.</p>
+</li>
+</ol>
+</section>
+<section id="optional-verify-fabric-manager-partitioning">
+<h3>Optional: Verify Fabric Manager Partitioning<a class="headerlink" href="#optional-verify-fabric-manager-partitioning" title="Permalink to this headline">#</a></h3>
+<p>Perform these steps only when the target node has a supported NVSwitch-managed
+fabric, Fabric Manager partitioning is configured, and the ResourceSlice
+advertises the required <code class="docutils literal notranslate"><span class="pre">partitionN</span></code> attribute.</p>
+<ol class="arabic">
+<li><p>Inspect the generated claim’s allocation:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get resourceclaim &lt;claim-name&gt; -o yaml
+</pre></div>
+</div>
+<p>Compare the devices under <code class="docutils literal notranslate"><span class="pre">status.allocation.devices.results</span></code> with the
+target node’s ResourceSlice. For the example in this procedure, the devices
+allocated for <code class="docutils literal notranslate"><span class="pre">gpu0</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu1</span></code> must have the same <code class="docutils literal notranslate"><span class="pre">partition2</span></code> value.</p>
+</li>
+<li><p>In the guest, verify that the topology output shows the NVLink connection
+expected for the selected partition:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>nvidia-smi topo -m
+</pre></div>
+</div>
+</li>
+<li><p>Optional: Verification that relies on additional software.</p>
+<ol class="arabic">
+<li><p>Build and run the <code class="docutils literal notranslate"><span class="pre">list-partitions</span></code> binary.</p>
+<p>Perform the build on a Linux system with Go 1.24 or later and the same CPU
+architecture as the target GPU node.</p>
+<ol class="arabic">
+<li><p>Clone the <a class="reference external" href="https://github.com/NVIDIA/go-nvfm/tree/main/examples/list-partitions">go-nvfm</a> repository and build the example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone --depth <span class="m">1</span> https://github.com/NVIDIA/go-nvfm.git
+<span class="gp">$ </span><span class="nb">cd</span> go-nvfm
+<span class="gp">$ </span>make example-list-partitions
+</pre></div>
+</div>
+</li>
+<li><p>Identify the driver pod on the node that owns the allocated GPUs:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods --namespace gpu-operator <span class="se">\</span>
+    --selector app.kubernetes.io/component<span class="o">=</span>nvidia-driver <span class="se">\</span>
+    --field-selector spec.nodeName<span class="o">=</span>&lt;node-name&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Copy the <code class="docutils literal notranslate"><span class="pre">list-partitions</span></code> executable to the driver container:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl cp --namespace gpu-operator <span class="se">\</span>
+    --container nvidia-driver-ctr <span class="se">\</span>
+    ./list-partitions &lt;driver-pod&gt;:/run/nvidia/list-partitions
+</pre></div>
+</div>
+</li>
+<li><p>List the Fabric Manager partitions:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl <span class="nb">exec</span> --namespace gpu-operator <span class="se">\</span>
+    --container nvidia-driver-ctr <span class="se">\</span>
+    &lt;driver-pod&gt; -- bash -c <span class="se">\</span>
+    <span class="s2">&quot;NVFM_UNIX_SOCKET_PATH=/run/nvidia-fabricmanager/socket /run/nvidia/list-partitions&quot;</span>
+</pre></div>
+</div>
+<p>Confirm that the partition selected for the claim reports <code class="docutils literal notranslate"><span class="pre">&quot;isActive&quot;:</span> <span class="pre">1</span></code>.</p>
+</li>
+</ol>
+</li>
+<li><p>For an additional connectivity demonstration, install a guest-compatible build of
+<a class="reference external" href="https://github.com/NVIDIA/nvbandwidth/releases/tag/v0.8">nvbandwidth v0.8</a> and run:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>./nvbandwidth -t device_to_device_memcpy_read_sm
+</pre></div>
+</div>
+<p>A successful run reports device-to-device bandwidth for both GPUs without a CUDA peer-access error.</p>
+</li>
+</ol>
+</li>
+</ol>
+</section>
+</section>
+<section id="troubleshooting-and-operational-guidance">
+<h2>Troubleshooting and Operational Guidance<a class="headerlink" href="#troubleshooting-and-operational-guidance" title="Permalink to this headline">#</a></h2>
+<section id="vm-remains-pending">
+<h3>VM Remains Pending<a class="headerlink" href="#vm-remains-pending" title="Permalink to this headline">#</a></h3>
+<p>Inspect the generated <code class="docutils literal notranslate"><span class="pre">ResourceClaim</span></code>, the VM events, and the available VFIO devices:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get resourceclaims
+<span class="gp">$ </span>kubectl describe vm dra-gpu-vm
+<span class="gp">$ </span>kubectl get resourceslices
+</pre></div>
+</div>
+<p>If a partition-constrained claim cannot be allocated, confirm that the target hardware supports Fabric Manager partitioning
+and that two VFIO devices advertise the same <code class="docutils literal notranslate"><span class="pre">partition2</span></code> value.
+Also confirm that the claim template and VM are in the same namespace.</p>
+</section>
+<section id="vfio-deviceclass-is-unavailable">
+<h3>VFIO DeviceClass Is Unavailable<a class="headerlink" href="#vfio-deviceclass-is-unavailable" title="Permalink to this headline">#</a></h3>
+<p>Verify that the <code class="docutils literal notranslate"><span class="pre">gpu-cluster</span></code> resource is ready and that <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> and <code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code> are enabled.
+If you use Fabric Manager partitioning, also verify that <code class="docutils literal notranslate"><span class="pre">FabricManagerPartitioning</span></code> is enabled.
+Check the GPU Operator namespace for DRA kubelet-plugin errors.</p>
+</section>
+<section id="gpu-preparation-does-not-complete">
+<h3>GPU Preparation Does Not Complete<a class="headerlink" href="#gpu-preparation-does-not-complete" title="Permalink to this headline">#</a></h3>
+<p>If the <code class="docutils literal notranslate"><span class="pre">virt-launcher</span></code> pod remains in <code class="docutils literal notranslate"><span class="pre">ContainerCreating</span></code>, inspect DRA kubelet-plugin logs for a <code class="docutils literal notranslate"><span class="pre">NodePrepareResources</span></code> error:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator <span class="se">\</span>
+    -l dra-driver-nvidia-gpu-component<span class="o">=</span>kubelet-plugin <span class="se">\</span>
+    -c gpus
+</pre></div>
+</div>
+<p>A process with an open handle to <code class="docutils literal notranslate"><span class="pre">/dev/nvidia*</span></code> can prevent the GPU from switching to <code class="docutils literal notranslate"><span class="pre">vfio-pci</span></code>.
+Identify and stop the process, then allow kubelet to retry preparation.
+Refer to the
+<a class="reference external" href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/gpu-allocation/kubevirt-vfio-gpu-passthrough/#troubleshooting">NVIDIA KubeVirt VFIO troubleshooting guide</a>
+for the current diagnostic procedure.</p>
+</section>
+<section id="guest-does-not-detect-the-gpus">
+<h3>Guest Does Not Detect the GPUs<a class="headerlink" href="#guest-does-not-detect-the-gpus" title="Permalink to this headline">#</a></h3>
+<p>Confirm that the VM is ready and that each GPU entry uses a unique <code class="docutils literal notranslate"><span class="pre">claimName</span></code> and <code class="docutils literal notranslate"><span class="pre">requestName</span></code> pair.
+In the guest, verify that the running kernel matches the installed kernel development packages and that the NVIDIA kernel modules loaded successfully.</p>
+<p>For GPU Operator upgrades, NVIDIA driver upgrades, and uninstall behavior with active claims,
+refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-gpu-operator"><span class="std std-ref">Upgrading the NVIDIA GPU Operator</span></a>, <a class="reference internal" href="gpu-driver-upgrades.html#gpu-driver-upgrades"><span class="std std-ref">GPU Driver Upgrades</span></a>, and <a class="reference internal" href="uninstall.html"><span class="doc">Uninstalling the GPU Operator</span></a>.</p>
+</section>
+</section>
+<section id="related-information">
+<h2>Related Information<a class="headerlink" href="#related-information" title="Permalink to this headline">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="dra-intro-install.html#dra-driver-for-nvidia-gpus"><span class="std std-ref">DRA Driver for NVIDIA GPUs</span></a></p></li>
+<li><p><a class="reference internal" href="gpu-operator-kubevirt.html#gpu-operator-kubevirt"><span class="std std-ref">GPU Operator with KubeVirt</span></a></p></li>
+<li><p><a class="reference external" href="https://kubevirt.io/user-guide/compute/dra_gpu/">Assigning GPUs with Dynamic Resource Allocation</a></p></li>
+<li><p><a class="reference external" href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/gpu-allocation/kubevirt-vfio-gpu-passthrough/">KubeVirt VFIO GPU passthrough</a></p></li>
+<li><p><a class="reference external" href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/gpu-allocation/fabric-manager-partitioning/">Fabric Manager partitioning documentation</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/">NVIDIA Driver Installation Guide</a></p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="gpu-operator-kubevirt.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">GPU Operator with KubeVirt</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="deploy-kata-containers.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Deploy with Kata Containers</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-gpu-assignment">Understanding GPU Assignment</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-constraints-and-dependencies">Assumptions, Constraints, and Dependencies</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-configure-fabric-manager-partitioning">Optional: Configure Fabric Manager Partitioning</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#operator-managed-driver">Operator-Managed Driver</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-installed-driver">Pre-Installed Driver</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-vfio-support-with-dra">Enable VFIO Support with DRA</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-kubevirt-for-dra-gpus">Configure KubeVirt for DRA GPUs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-dra-resources">Verify DRA Resources</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-gpu-claim-template">Create a GPU Claim Template</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-vm-that-uses-the-gpu-claim">Create a VM That Uses the GPU Claim</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-guest-driver-and-verify-gpus">Install the Guest Driver and Verify GPUs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#install-the-guest-driver">Install the Guest Driver</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-gpus-on-any-supported-host">Verify the GPUs on Any Supported Host</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optional-verify-fabric-manager-partitioning">Optional: Verify Fabric Manager Partitioning</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-and-operational-guidance">Troubleshooting and Operational Guidance</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vm-remains-pending">VM Remains Pending</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#vfio-deviceclass-is-unavailable">VFIO DeviceClass Is Unavailable</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-preparation-does-not-complete">GPU Preparation Does Not Complete</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#guest-does-not-detect-the-gpus">Guest Does Not Detect the GPUs</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#related-information">Related Information</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2026, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
