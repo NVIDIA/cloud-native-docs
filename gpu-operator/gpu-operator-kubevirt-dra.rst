@@ -65,7 +65,7 @@ Assumptions, Constraints, and Dependencies
   You could also use labels and node selectors to avoid the race condition.
   Refer to `Limitations and Considerations <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/gpu-allocation/kubevirt-vfio-gpu-passthrough/#limitations-and-considerations>`__ in the DRA driver documentation for more information.
 
-* DCGM and DGCM-Exporter cannot be enabled on the KubeVirt nodes.
+* DCGM and DCGM Exporter cannot be enabled on the KubeVirt nodes.
 * GPU Operator does not install the NVIDIA driver in the guest operating system.
 
 *************
@@ -172,17 +172,26 @@ Pre-Installed Driver
       $ sudo systemctl start nvidia-fabricmanager
       $ sudo systemctl status nvidia-fabricmanager
 
+******************************
+Disable DCGM and DCGM Exporter
+******************************
+
+DCGM and DCGM Exporter are not supported on KubeVirt nodes that use VFIO passthrough.
+Both operands keep NVIDIA client connections open and prevent the driver from rebinding a GPU to the VFIO driver.
+
+Disable both operands in the ``GPUCluster`` resource before you enable VFIO support:
+
+.. code-block:: console
+   :force:
+
+   $ kubectl patch gpucluster gpu-cluster \
+       --type=merge -p '{"spec":{"dcgm":{"enabled":false},"dcgmExporter":{"enabled":false}}}'
+
 ****************************
 Enable VFIO Support with DRA
 ****************************
 
 Enable ``PassthroughSupport`` and ``DeviceMetadata`` in the ``GPUCluster`` resource.
-
-#. Isolate GPU consumers that would keep NVIDIA clients open during VFIO rebinding:
-
-   .. code-block:: console
-
-      $ kubectl patch gpucluster gpu-cluster --type=merge -p '{"spec":{"dcgmExporter":{"enabled":false}}}'
 
 #. Add the feature gates under ``spec.draDriver.featureGates``.
    Preserve any other DRA driver settings:
@@ -197,13 +206,26 @@ Enable ``PassthroughSupport`` and ``DeviceMetadata`` in the ``GPUCluster`` resou
                   "computeDomains":{"enabled":false},
                   "featureGates":{
                     "PassthroughSupport":true,
-                    "DeviceMetadata":true,
-                    "FabricManagerPartitioning":true  # For NVLink 5 or later systems with NVSwitch-managed fabric.
+                    "DeviceMetadata":true
                   }}}}'
 
    ``PassthroughSupport`` enables allocation with ``VfioDeviceConfig``.
    ``DeviceMetadata`` provides KubeVirt with the PCI address for each allocated device and exposes the VFIO API device to the ``virt-launcher`` pod.
    GPU Operator continues to manage the DRA driver, DeviceClasses, RBAC, and operand lifecycle.
+
+#. Optional: If you configured Fabric Manager partitioning, also enable the ``FabricManagerPartitioning`` feature gate.
+   Perform this step only on supported HGX or single-node NVL systems with an NVSwitch-managed fabric:
+
+   .. code-block:: console
+      :force:
+
+      $ kubectl patch gpucluster gpu-cluster \
+          --type=merge -p '{
+              "spec":{
+                "draDriver":{
+                  "featureGates":{
+                    "FabricManagerPartitioning":true  # For NVLink 5 or later systems with NVSwitch-managed fabric.
+                  }}}}'
 
 #. Wait until GPU Operator finishes reconciling the change:
 
@@ -268,6 +290,11 @@ Verify DRA Resources
    .. code-block:: console
 
       $ kubectl get resourceslice <slice-name> -o yaml
+
+   The driver publishes partition membership through attributes named ``partitionN``,
+   where ``N`` is ``1``, ``2``, ``4``, or ``8`` and specifies the number of GPUs in the partition.
+   The attribute value is the Fabric Manager partition ID.
+   For example, ``partition2: 4`` indicates that the GPU belongs to two-GPU partition 4.
 
    Confirm that devices with the ``gpu.nvidia.com/type`` attribute set to
    ``vfio`` include a ``gpuModuleID`` attribute and the ``partitionN`` attributes

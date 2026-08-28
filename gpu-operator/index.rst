@@ -47,7 +47,7 @@
    Outdated Kernels <install-gpu-operator-outdated-kernels.rst>
    Custom GPU Driver Parameters <custom-driver-params.rst>
    precompiled-drivers.rst
-   GPU Driver CRD <gpu-driver-configuration.rst>
+   NVIDIA Driver CRD <nvidia-driver-configuration.rst>
    CDI and NRI Support <cdi.rst>
 
 .. toctree::

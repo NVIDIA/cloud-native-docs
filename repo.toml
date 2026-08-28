@@ -182,6 +182,7 @@ sphinx_exclude_patterns = [
   "life-cycle-policy.rst",
 ]
 redirects = [
+  { path="gpu-driver-configuration.html", target="nvidia-driver-configuration.html" },
   { path="openshift/introduction.html", project="openshift", target="introduction.html" },
   { path="openshift/time-slicing-gpus-in-openshift.html", project="openshift", target="time-slicing-gpus-in-openshift.html" },
   { path="openshift/enable-gpu-monitoring-dashboard.html", project="openshift", target="enable-gpu-monitoring-dashboard.html" },

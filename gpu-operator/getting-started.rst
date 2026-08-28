@@ -56,7 +56,7 @@ Prerequisites
    For worker nodes or node groups that run CPU workloads only, the nodes can run any operating system because
    the GPU Operator does not perform any configuration or management of nodes for CPU-only workloads.
 
-   If you are planning to use NVIDIA GPU Driver Custom Resource Definition, you can use a mix of operating system versions on CPU and GPU nodes. Refer to the :doc:`NVIDIA GPU Driver Custom Resource Definition <gpu-driver-configuration>` page for more information.
+   If you are planning to use NVIDIA GPU Driver Custom Resource Definition, you can use a mix of operating system versions on CPU and GPU nodes. Refer to the :doc:`NVIDIA Driver Custom Resource Definition <nvidia-driver-configuration>` page for more information.
 
 #. Nodes must be configured with a container engine such as CRI-O or containerd.
 
@@ -94,16 +94,29 @@ Use ``--set`` options to customize the deployment for your environment.
    For installation on Red Hat OpenShift Container Platform,
    refer to :external+ocp:doc:`steps-overview`.
 
-#. Add the NVIDIA Helm repository:
+#. Choose how to access the GPU Operator Helm chart:
 
-   .. code-block:: console
+   - To install the chart as an OCI artifact, no Helm repository setup is required.
 
-      $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
-          && helm repo update
+   - To use the classic NVIDIA Helm repository, add and update the repository:
+
+     .. code-block:: console
+
+        $ helm repo add nvidia https://helm.ngc.nvidia.com/nvidia \
+            && helm repo update
 
 #. Install the GPU Operator.
 
-   - Install the Operator with the default configuration:
+   - Install the Operator from the OCI artifact with the default configuration:
+
+     .. code-block:: console
+
+        $ helm install --wait gpu-operator \
+            -n gpu-operator --create-namespace \
+            oci://nvcr.io/nvidia/cloud-native-charts/gpu-operator \
+            --version=${version}
+
+   - Install the Operator from the classic Helm repository with the default configuration:
 
      .. code-block:: console
 
@@ -112,7 +125,7 @@ Use ``--set`` options to customize the deployment for your environment.
             nvidia/gpu-operator \
             --version=${version}
 
-   - Install the Operator and specify configuration options:
+   - Install the Operator from the classic Helm repository and specify configuration options:
 
      .. code-block:: console
 
@@ -470,7 +483,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``driver.nvidiaDriverCRD.enabled``
      - When set to ``true``, the Operator deploys NVIDIA GPU Driver Custom Resource Definition.
-       Refer to the :doc:`NVIDIA GPU Driver Custom Resource Definition <gpu-driver-configuration>` page for more information.
+       Refer to the :doc:`NVIDIA Driver Custom Resource Definition <nvidia-driver-configuration>` page for more information.
      - ``false``
 
    * - ``driver.repository``
@@ -540,7 +553,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        When set to ``true``, the GDRCopy Driver runs as a sidecar container in the GPU driver pod.
        For information about GDRCopy, refer to the `gdrcopy <https://developer.nvidia.com/gdrcopy>`__ page.
 
-       You can enable GDRCopy if you use the :doc:`gpu-driver-configuration`.
+       You can enable GDRCopy if you use the :doc:`nvidia-driver-configuration`.
      - ``false``
 
 
@@ -899,6 +912,6 @@ After verifying the installation, you can configure the GPU Operator for your wo
 - :doc:`gpu-operator-mig` — Configure Multi-Instance GPU (MIG) partitioning on supported GPUs.
 - :doc:`gpu-operator-rdma` — Enable GPUDirect RDMA for high-performance networking.
 - :doc:`dra-intro-install` — Allocate GPUs by using Kubernetes Dynamic Resource Allocation (DRA).
-- :doc:`gpu-driver-configuration` — Use the NVIDIA GPU Driver Custom Resource Definition to manage drivers per node.
+- :doc:`nvidia-driver-configuration` — Use the NVIDIA GPU Driver Custom Resource Definition to manage drivers per node.
 - :doc:`precompiled-drivers` — Speed up driver deployments with precompiled kernel modules.
 - :doc:`cdi` — Learn about Container Device Interface (CDI) and NRI Plugin mode.

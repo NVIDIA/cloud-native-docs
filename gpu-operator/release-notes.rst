@@ -52,10 +52,18 @@ New Features
   - NVIDIA MIG Manager for Kubernetes v0.15.0
   - Node Feature Discovery v0.19.0
   - NVIDIA GPU Feature Discovery for Kubernetes v0.20.0
+  - NVIDIA vGPU Device Manager v0.5.0
+  - NVIDIA KubeVirt GPU Device Plugin v1.6.0
   - NVIDIA GDS Driver v2.29.4
   - NVIDIA Confidental Computing Manager for Kubernetes v0.4.3
   - NVIDIA GDRCopy Driver v2.6
   - NVIDIA Kata Sandbox Device Plugin v0.0.5
+
+* Added the GPU Operator Helm chart as an OCI artifact in NGC.
+  You can now install the Operator directly from
+  ``oci://nvcr.io/nvidia/cloud-native-charts/gpu-operator`` as an alternative
+  to using the classic Helm repository.
+  (`Issue #2520 <https://github.com/NVIDIA/gpu-operator/issues/2520>`__)
 
 * Added support for managing the DRA Driver for NVIDIA GPUs through the GPU Operator.
   The new ``GPUCluster`` custom resource deploys and manages the DRA driver, ComputeDomain support for Multi-Node NVLink, DCGM, DCGM Exporter, and a DRA validation workload.
@@ -78,6 +86,18 @@ New Features
 
   Refer to :ref:`GPU Operator with KubeVirt and DRA <gpu-operator-kubevirt-dra>` for prerequisites, limitations, and configuration.
 
+* Added the following features and enhancements to the NVIDIA driver CRD:
+
+  * Added support for :ref:`migrating from cluster policy driver management to NVIDIA driver CRD <migrating-from-cluster-policy-driver-management>`.
+    (`PR #2353 <https://github.com/NVIDIA/gpu-operator/pull/2353>`__)
+  * Added an ``upgradePolicy`` field to the NVIDIA driver custom resource definition (CRD).
+    You can now define a driver upgrade policy per NVIDIADriver custom resource.
+    When the field is unset, the driver-upgrade controller falls back to the default upgrade policy that is defined in the Helm chart values.
+    (`PR #2582 <https://github.com/NVIDIA/gpu-operator/pull/2582>`__)
+  * Added support for setting a default custom resource during installation or upgrade.
+    This default resource can co-exist with user-defined resource, and typically acts as a fallback.
+    (`PR #2355 <https://github.com/NVIDIA/gpu-operator/pull/2355>`__)
+
 * Added a ``nvidia.com/gpu.deploy.client`` node label that lets the GPU Operator manage third-party GPU client pods during driver upgrades and MIG configuration changes.
   Advanced users who run their own GPU client workloads that hold GPU device handles (for example, a standalone NVIDIA DRA driver) can add ``nvidia.com/gpu.deploy.client=true`` to the ``nodeSelector`` of the workload's DaemonSet.
   The GPU Operator then automatically restarts these pods during a driver upgrade or a MIG configuration change, so the operation can proceed without manual pod eviction.
@@ -87,11 +107,6 @@ New Features
   Previously, a chart upgrade that changed only cosmetic pod-template metadata, such as the ``helm.sh/chart`` label, evicted running GPU workloads and drained the node.
   The driver-upgrade controller now compares the driver configuration digest between the running pod and the desired DaemonSet, and when they match, it cordons the node and restarts the driver pod in place without evicting workloads or draining the node.
   (`PR #2527 <https://github.com/NVIDIA/gpu-operator/pull/2527>`__)
-
-* Added an ``upgradePolicy`` field to the NVIDIA driver custom resource definition (CRD).
-  You can now define a driver upgrade policy per NVIDIADriver custom resource.
-  When the field is unset, the driver-upgrade controller falls back to the default upgrade policy that is defined in the Helm chart values.
-  (`PR #2582 <https://github.com/NVIDIA/gpu-operator/pull/2582>`__)
 
 * Added the ``hostPaths.kubeletRootDir`` Helm value to configure a custom kubelet root directory.
   When left empty, the GPU Operator uses ``/var/lib/kubelet`` as the default path.
@@ -172,6 +187,20 @@ Known Issues
   The device that is prepared first succeeds, and preparation of the other device fails.
 
   To avoid conflicting allocations, submit the workloads serially and wait for device preparation to complete, or dedicate separate nodes to container and VFIO workloads.
+
+Post-Release Documentation Updates
+----------------------------------
+
+* Added the Helm chart OCI artifact to the new features and installation
+  documentation after the artifact became available following the v26.7.0 release.
+* Updated the release notes to include the new features and enhancements to the NVIDIA driver CRD.
+* Added NVIDIA vGPU Device Manager v0.5.0 and NVIDIA KubeVirt GPU Device Plugin v1.6.0 to the software component version list.
+* The minimum :ref:`supported containerd version <supported-container-runtimes>` changed from 1.8 to 2.0.
+* The documentation page for the NVIDIA driver CRD was renamed to :doc:`nvidia-driver-configuration`.
+* Restored Azure Kubernetes Service (AKS) to the :ref:`cloud service providers <cloud-service-providers>` table.
+* Added support for Kubernetes 1.36 for Canonical MicroK8s to the :ref:`bare-metal` table.
+* Added a brief explanation of the ``partitionN`` attribute to the :ref:`gpu-operator-kubevirt-dra` page.
+
 
 ----
 
@@ -370,7 +399,7 @@ New Features
 
 * Added support for the NVIDIA Driver Custom Resource Definition (CRD).
   Use this feature on new cluster installations to configure multiple driver types and versions on different nodes or multiple operating system versions on nodes.
-  Refer to the :doc:`NVIDIA Driver Custom Resource Definition documentation <gpu-driver-configuration>` for more information.
+  Refer to the :doc:`NVIDIA Driver Custom Resource Definition documentation <nvidia-driver-configuration>` for more information.
 
   .. note::
     This feature does not support an upgrade from an earlier version of the NVIDIA GPU Operator or switching from ClusterPolicy to the NVIDIA Driver CRD.
@@ -1393,11 +1422,11 @@ Known Limitations
 * Using NVIDIA vGPU on bare metal nodes and NVSwitch is not supported.
 * All worker nodes in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
   Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
-  The technical preview feature that provides :doc:`gpu-driver-configuration` is also an alternative.
+  The technical preview feature that provides :doc:`nvidia-driver-configuration` is also an alternative.
 * NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
 * The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version.
   The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
-  The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
+  The technical preview feature that provides :doc:`nvidia-driver-configuration` is an alternative.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
   Additionally, all GPU Operator pods become stuck in the ``Init`` state.
@@ -1547,13 +1576,13 @@ Known Limitations
   argument so that the default value, ``false``, is used.
 * All worker nodes in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
   Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
-  The technical preview feature that provides :doc:`gpu-driver-configuration` is also an alternative.
+  The technical preview feature that provides :doc:`nvidia-driver-configuration` is also an alternative.
 * NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
 * Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
   in this case for the driver installation to succeed.
 * The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version.
   The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
-  The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
+  The technical preview feature that provides :doc:`nvidia-driver-configuration` is an alternative.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
   Additionally, all GPU Operator pods become stuck in the ``Init`` state.
@@ -1662,13 +1691,13 @@ Known Limitations
   argument so that the default value, ``false``, is used.
 * All worker nodes in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
   Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
-  The technical preview feature that provides :doc:`gpu-driver-configuration` is also an alternative.
+  The technical preview feature that provides :doc:`nvidia-driver-configuration` is also an alternative.
 * NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
 * Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
   in this case for the driver installation to succeed.
 * The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version.
   The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
-  The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
+  The technical preview feature that provides :doc:`nvidia-driver-configuration` is an alternative.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
   Additionally, all GPU Operator pods become stuck in the ``Init`` state.
@@ -1709,7 +1738,7 @@ New Features
 
   - Refer to :ref:`gpu-operator-helm-chart-options` for information about setting
     ``useOpenKernelModules`` if you manage the driver containers with the NVIDIA cluster policy custom resource definition.
-  - Refer to :doc:`gpu-driver-configuration` for information about setting ``spec.useOpenKernelModules``
+  - Refer to :doc:`nvidia-driver-configuration` for information about setting ``spec.useOpenKernelModules``
     if you manage the driver containers with the technology preview NVIDIA driver custom resource.
 
 * Includes these software component versions:
@@ -1811,13 +1840,13 @@ Known Limitations
   argument so that the default value, ``false``, is used.
 * All worker nodes in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
   Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
-  The technical preview feature that provides :doc:`gpu-driver-configuration` is also an alternative.
+  The technical preview feature that provides :doc:`nvidia-driver-configuration` is also an alternative.
 * NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
 * Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
   in this case for the driver installation to succeed.
 * The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version.
   The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
-  The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
+  The technical preview feature that provides :doc:`nvidia-driver-configuration` is an alternative.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
   Additionally, all GPU Operator pods become stuck in the ``Init`` state.
@@ -1837,7 +1866,7 @@ New Features
   running multiple GPU driver types and versions on the same cluster and adds
   support for multiple operating system versions.
   This feature is a technology preview.
-  Refer to :doc:`gpu-driver-configuration` for more information.
+  Refer to :doc:`nvidia-driver-configuration` for more information.
 
 * Added support for additional Linux kernel variants for precompiled driver containers.
 
@@ -1908,13 +1937,13 @@ Known Limitations
   argument so that the default value, ``false``, is used.
 * All worker nodes in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
   Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
-  The technical preview feature that provides :doc:`gpu-driver-configuration` is also an alternative.
+  The technical preview feature that provides :doc:`nvidia-driver-configuration` is also an alternative.
 * NVIDIA GPUDirect Storage (GDS) is not supported with secure boot enabled systems.
 * Driver Toolkit images are broken with Red Hat OpenShift version ``4.11.12`` and require cluster-level entitlements to be enabled
   in this case for the driver installation to succeed.
 * The NVIDIA GPU Operator can only be used to deploy a single NVIDIA GPU Driver type and version.
   The NVIDIA vGPU and Data Center GPU Driver cannot be used within the same cluster.
-  The technical preview feature that provides :doc:`gpu-driver-configuration` is an alternative.
+  The technical preview feature that provides :doc:`nvidia-driver-configuration` is an alternative.
 * The ``nouveau`` driver must be blacklisted when using NVIDIA vGPU.
   Otherwise the driver fails to initialize the GPU with the error ``Failed to enable MSI-X`` in the system journal logs.
   Additionally, all GPU Operator pods become stuck in the ``Init`` state.
