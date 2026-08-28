@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 27, 2026"/>
+    <meta name="docbuild:last-update" content="Aug 28, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -580,14 +580,14 @@ that are present.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">compute</span></code></p></td>
-<td><p>Required for CUDA and OpenCL applications. When present on the host,
+<td><p>required for CUDA and OpenCL applications. When present on the host,
 the NVIDIA OpenCL ICD file is also available in the container.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">compat32</span></code></p></td>
 <td><p>required for running 32-bit applications.</p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">graphics</span></code></p></td>
-<td><p>Required for running OpenGL, EGL, and Vulkan applications.</p></td>
+<td><p>required for rendering OpenGL, EGL, and Vulkan applications.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">utility</span></code></p></td>
 <td><p>required for using <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span></code> and NVML.</p></td>
@@ -596,10 +596,16 @@ the NVIDIA OpenCL ICD file is also available in the container.</p></td>
 <td><p>required for using the Video Codec SDK.</p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">display</span></code></p></td>
-<td><p>required for leveraging X11 display.</p></td>
+<td><p>required for displaying X11 or Wayland windows. Implies <code class="docutils literal notranslate"><span class="pre">graphics</span></code>.</p></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">NVIDIA_DRIVER_CAPABILITIES</span></code> replaces the default capabilities rather than adding to them, so list every
+capability your application needs. An application that displays 3D rendered output on X11 or Wayland requires
+<code class="docutils literal notranslate"><span class="pre">compute,utility,graphics,display</span></code>, for instance.</p>
 </div>
 <p>For example, to allow usage of CUDA and NVML, specify the <code class="docutils literal notranslate"><span class="pre">compute</span></code> and <code class="docutils literal notranslate"><span class="pre">utility</span></code> capabilities:</p>
 <blockquote>
