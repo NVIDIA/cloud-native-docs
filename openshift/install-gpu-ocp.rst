@@ -175,7 +175,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
 #. Optional: Verify the successful install in the web console. The display changes to:
 
-   .. image:: graphics/cluster_policy_sacceed.png
+   .. image:: graphics/cluster_policy_succeed.png
 
 .. _create-cluster-policy:
 
