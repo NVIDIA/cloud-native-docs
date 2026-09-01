@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 27, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 01, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -445,12 +445,12 @@ Attestation is required for any feature that depends on secrets, including:</p>
 <li><p>Using sealed secrets</p></li>
 <li><p>Requesting secrets directly from workloads</p></li>
 </ul>
-<p>A complete attestation process should also cover the Kata Agent API surface: which operations the
-untrusted host is allowed to request inside the guest.
+<p>A complete attestation scenario covers not only the TEE but also the Kata Agent API surface:
+which operations the untrusted host is allowed to request inside the guest.
 An agent security policy constrains that surface.
 Generate and attach that policy as part of the workload manifest so attestation of the guest
 includes that constrained Agent API surface.
-Refer to <a class="reference internal" href="configure-workloads.html#coco-agent-security-policy"><span class="std std-ref">Attach a Kata Agent Security Policy</span></a>.
+Refer to <a class="reference internal" href="configure-workloads.html#kata-agent-security-policy"><span class="std std-ref">Attach a Kata Agent Security Policy</span></a>.
 The agent security policy is distinct from the Trustee policy that decides whether to release a KBS resource.</p>
 <section id="key-concepts">
 <h2>Key Concepts<a class="headerlink" href="#key-concepts" title="Permalink to this headline">#</a></h2>

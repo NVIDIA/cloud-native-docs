@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 27, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 01, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -376,7 +376,7 @@
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
 <li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nvidia-driver-configuration.html">NVIDIA Driver CRD</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cdi.html">CDI and NRI Support</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
@@ -457,20 +457,20 @@
 <span id="operator-versioning"></span><h2>NVIDIA GPU Operator Versioning<a class="headerlink" href="#nvidia-gpu-operator-versioning" title="Permalink to this headline">#</a></h2>
 <p>NVIDIA GPU Operator is versioned following the calendar versioning convention.</p>
 <p>The version follows the pattern <code class="docutils literal notranslate"><span class="pre">YY.MM.PP</span></code>, such as 23.6.0, 23.6.1, and 23.9.0.
-The first two fields, <code class="docutils literal notranslate"><span class="pre">YY.MM</span></code> identify a major version and indicates when the major version was initially released.
+The first two fields, <code class="docutils literal notranslate"><span class="pre">YY.MM</span></code>, identify a major version and indicate when the major version was initially released.
 The third field, <code class="docutils literal notranslate"><span class="pre">PP</span></code>, identifies the patch version of the major version.
 Patch releases typically include critical bug and CVE fixes, but can include minor features.</p>
 <section id="nvidia-gpu-operator-life-cycle">
 <span id="operator-life-cycle-policy"></span><h3>NVIDIA GPU Operator Life Cycle<a class="headerlink" href="#nvidia-gpu-operator-life-cycle" title="Permalink to this headline">#</a></h3>
 <p>When a new major version of NVIDIA GPU Operator is released, the previous major version enters deprecated support and only receives patch release updates for critical bug and CVE fixes.
-All prior major versions enter end of support and are no longer supported and do not receive patch release updates.</p>
+All prior major versions reach end of support and no longer receive patch release updates.</p>
 <p>The product life cycle and versioning are subject to change in the future.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Upgrades are only supported within a major release or to the next major release.</p>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id7">
-<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id7" title="Permalink to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id8">
+<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id8" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -481,7 +481,7 @@ All prior major versions enter end of support and are no longer supported and do
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>26.6.x</p></td>
+<tr class="row-even"><td><p>26.7.x</p></td>
 <td><p>Supported</p></td>
 </tr>
 <tr class="row-odd"><td><p>26.3.x</p></td>
@@ -502,7 +502,7 @@ All prior major versions enter end of support and are no longer supported and do
 Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-gpu-operator"><span class="std std-ref">Upgrading the NVIDIA GPU Operator</span></a> for more information.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>All the following components are supported as <a class="reference internal" href="install-gpu-operator-gov-ready.html#install-gpu-operator-gov-ready"><span class="std std-ref">government-ready</span></a> in the NVIDIA GPU Operator v26.3, except for NVIDIA GDS Driver, NVIDIA Confidential Computing Manager, and NVIDIA GDRCopy Driver.</p>
+<p>All of the following components are supported as <a class="reference internal" href="install-gpu-operator-gov-ready.html#install-gpu-operator-gov-ready"><span class="std std-ref">government-ready</span></a> in the NVIDIA GPU Operator v26.7, except for NVIDIA GDS Driver, NVIDIA Confidential Computing Manager, and NVIDIA GDRCopy Driver.</p>
 </div>
 <p><strong>D</strong> = Default driver, <strong>R</strong> = Recommended driver</p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -559,10 +559,10 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <td><p>v26.7.0</p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA KubeVirt GPU Device Plugin</p></td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin">v1.5.0</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin">v1.6.0</a></p></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA vGPU Device Manager</p></td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">v0.4.2</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">v0.5.0</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA GDS Driver <a class="reference external" href="#gds-open-kernel"><sup>2</sup></a></p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/gds-nvidia-fs/releases">2.29.4</a></p></td>
@@ -1112,7 +1112,7 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <td><p>1.33—1.36</p></td>
 <td><p>1.33—1.36</p></td>
 <td><p>1.33—1.36</p></td>
-<td><p>1.33—1.35</p></td>
+<td><p>1.33—1.36</p></td>
 <td><p>2.17</p></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Ubuntu 24.04 LTS</p></th>
@@ -1122,7 +1122,7 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <td><p>1.33—1.36</p></td>
 <td><p>1.33—1.36</p></td>
 <td><p>1.33—1.36</p></td>
-<td><p>1.33—1.35</p></td>
+<td><p>1.33—1.36</p></td>
 <td><p>2.17</p></td>
 </tr>
 <tr class="row-even"><th class="stub"><p>Ubuntu 22.04 LTS <a class="reference external" href="#ubuntu-kernel"><sup>2</sup></a></p></th>
@@ -1132,7 +1132,7 @@ NVIDIA Jetson, or other embedded products with integrated GPUs, are not supporte
 <td><p>1.33—1.36</p></td>
 <td><p>1.33—1.36</p></td>
 <td><p>1.33—1.36</p></td>
-<td><p>1.33—1.35</p></td>
+<td><p>1.33—1.36</p></td>
 <td><p>2.15 2.16 2.17</p></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Red Hat Core OS</p></th>
@@ -1256,9 +1256,10 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/datacen
 <span id="id5"></span><h3>Cloud Service Providers<a class="headerlink" href="#cloud-service-providers" title="Permalink to this headline">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 33%" />
-<col style="width: 33%" />
-<col style="width: 33%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head stub"><div class="line-block">
@@ -1276,18 +1277,26 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/datacen
 <div class="line">Kubernetes</div>
 </div>
 </th>
+<th class="head"><div class="line-block">
+<div class="line">Microsoft Azure</div>
+<div class="line">Kubernetes Service</div>
+</div>
+</th>
 </tr>
 </thead>
 <tbody>
 <tr class="row-even"><th class="stub"><p>Ubuntu 26.04 LTS</p></th>
 <td><p>1.33—1.36</p></td>
 <td><p>1.33—1.36</p></td>
+<td><p>1.33—1.36</p></td>
 </tr>
 <tr class="row-odd"><th class="stub"><p>Ubuntu 24.04 LTS</p></th>
 <td><p>1.33—1.36</p></td>
 <td><p>1.33—1.36</p></td>
+<td><p>1.33—1.36</p></td>
 </tr>
 <tr class="row-even"><th class="stub"><p>Ubuntu 22.04 LTS</p></th>
+<td><p>1.33—1.36</p></td>
 <td><p>1.33—1.36</p></td>
 <td><p>1.33—1.36</p></td>
 </tr>
@@ -1399,7 +1408,7 @@ To report an issue with the GPU Operator on one of these configurations, open an
 <p>For more details about partners and their supported configurations, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html" title="(in Partner Validated Configurations with NVIDIA GPU Operator)"><span>About Partner-Validated Configurations</span></a> page.</p>
 </section>
 <section id="supported-container-runtimes">
-<h2>Supported Container Runtimes<a class="headerlink" href="#supported-container-runtimes" title="Permalink to this headline">#</a></h2>
+<span id="id7"></span><h2>Supported Container Runtimes<a class="headerlink" href="#supported-container-runtimes" title="Permalink to this headline">#</a></h2>
 <p>The GPU Operator has been validated for the following container runtimes:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1409,7 +1418,7 @@ To report an issue with the GPU Operator on one of these configurations, open an
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head"><p>Operating System</p></th>
-<th class="head"><p>Containerd 1.8 - 2.3</p></th>
+<th class="head"><p>Containerd 2.0 - 2.3</p></th>
 <th class="head"><p>CRI-O</p></th>
 </tr>
 </thead>

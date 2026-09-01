@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 27, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 01, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -682,10 +682,10 @@ for details.</p>
 </section>
 </section>
 <section id="attach-a-kata-agent-security-policy">
-<span id="coco-agent-security-policy"></span><h2>Attach a Kata Agent Security Policy<a class="headerlink" href="#attach-a-kata-agent-security-policy" title="Permalink to this headline">#</a></h2>
+<span id="kata-agent-security-policy"></span><h2>Attach a Kata Agent Security Policy<a class="headerlink" href="#attach-a-kata-agent-security-policy" title="Permalink to this headline">#</a></h2>
 <p>The Kata agent runs inside the guest virtual machine and manages the container lifecycle.
-Because the Kata shim on the host is outside the TEE, the host can still issue Agent API calls
-into the guest unless you restrict those Agent API calls.
+Because the Kata shim on the host is outside the TEE, the untrusted host can still issue Agent
+API calls into the guest unless you restrict those Agent API calls.
 An <em>agent security policy</em> is a Rego policy that the agent enforces so that only the operations
 your workload declared are allowed.</p>
 <p>The <a class="reference internal" href="run-sample-workload.html"><span class="doc">sample workload</span></a> omits an agent policy so that you can confirm
@@ -724,11 +724,12 @@ use it.</p>
 <h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
 <li><p>Refer to <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> for Trustee concepts and a local connectivity test.
-A complete attestation process should cover the Kata Agent API surface as well as the TEE.
-The agent security policy contained in the workload annotation is included in the measured
+A complete attestation scenario must not only cover the TEE but also the Kata Agent API surface.
+For this purpose, the agent security policy contained in the workload annotation is included in the measured
 payload that is attested with the guest.
 The agent security policy is distinct from the Trustee attestation policy that decides whether
-to release secrets.</p></li>
+to release secrets.
+Refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/getting-started/securing-workloads/#understanding-coco-policies">Understanding CoCo Policies</a>.</p></li>
 <li><p>Refer to <a class="reference internal" href="configure-cc-mode.html"><span class="doc">Managing the Confidential Computing Mode</span></a> to change the CC mode on GPUs at the cluster or node level.</p></li>
 <li><p>Refer to <a class="reference internal" href="troubleshooting.html"><span class="doc">Troubleshooting</span></a> if a workload does not schedule or the pod stays <code class="docutils literal notranslate"><span class="pre">Pending</span></code>.</p></li>
 </ul>

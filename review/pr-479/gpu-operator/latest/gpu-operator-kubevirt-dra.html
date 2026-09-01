@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Aug 27, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 01, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -376,7 +376,7 @@
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
 <li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-driver-configuration.html">GPU Driver CRD</a></li>
+<li class="toctree-l1"><a class="reference internal" href="nvidia-driver-configuration.html">NVIDIA Driver CRD</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cdi.html">CDI and NRI Support</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
@@ -487,7 +487,7 @@ The first preparation succeeds and the other fails.</p>
 You could also use labels and node selectors to avoid the race condition.
 Refer to <a class="reference external" href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/gpu-allocation/kubevirt-vfio-gpu-passthrough/#limitations-and-considerations">Limitations and Considerations</a> in the DRA driver documentation for more information.</p>
 </li>
-<li><p>DCGM and DGCM-Exporter cannot be enabled on the KubeVirt nodes.</p></li>
+<li><p>DCGM and DCGM Exporter cannot be enabled on the KubeVirt nodes.</p></li>
 <li><p>GPU Operator does not install the NVIDIA driver in the guest operating system.</p></li>
 </ul>
 </section>
@@ -583,15 +583,20 @@ The driver container configures and starts Fabric Manager.</p>
 </ol>
 </section>
 </section>
+<section id="disable-dcgm-and-dcgm-exporter">
+<h2>Disable DCGM and DCGM Exporter<a class="headerlink" href="#disable-dcgm-and-dcgm-exporter" title="Permalink to this headline">#</a></h2>
+<p>DCGM and DCGM Exporter are not supported on KubeVirt nodes that use VFIO passthrough.
+Both operands keep NVIDIA client connections open and prevent the driver from rebinding a GPU to the VFIO driver.</p>
+<p>Disable both operands in the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource before you enable VFIO support:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch gpucluster gpu-cluster <span class="se">\</span>
+    --type<span class="o">=</span>merge -p <span class="s1">&#39;{&quot;spec&quot;:{&quot;dcgm&quot;:{&quot;enabled&quot;:false},&quot;dcgmExporter&quot;:{&quot;enabled&quot;:false}}}&#39;</span>
+</pre></div>
+</div>
+</section>
 <section id="enable-vfio-support-with-dra">
 <h2>Enable VFIO Support with DRA<a class="headerlink" href="#enable-vfio-support-with-dra" title="Permalink to this headline">#</a></h2>
 <p>Enable <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> and <code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code> in the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource.</p>
 <ol class="arabic">
-<li><p>Isolate GPU consumers that would keep NVIDIA clients open during VFIO rebinding:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch gpucluster gpu-cluster --type<span class="o">=</span>merge -p <span class="s1">&#39;{&quot;spec&quot;:{&quot;dcgmExporter&quot;:{&quot;enabled&quot;:false}}}&#39;</span>
-</pre></div>
-</div>
-</li>
 <li><p>Add the feature gates under <code class="docutils literal notranslate"><span class="pre">spec.draDriver.featureGates</span></code>.
 Preserve any other DRA driver settings:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch gpucluster gpu-cluster <span class="se">\</span>
@@ -601,14 +606,25 @@ Preserve any other DRA driver settings:</p>
 <span class="go">            &quot;computeDomains&quot;:{&quot;enabled&quot;:false},</span>
 <span class="go">            &quot;featureGates&quot;:{</span>
 <span class="go">              &quot;PassthroughSupport&quot;:true,</span>
-<span class="go">              &quot;DeviceMetadata&quot;:true,</span>
-<span class="go">              &quot;FabricManagerPartitioning&quot;:true  # For NVLink 5 or later systems with NVSwitch-managed fabric.</span>
+<span class="go">              &quot;DeviceMetadata&quot;:true</span>
 <span class="go">            }}}}&#39;</span>
 </pre></div>
 </div>
 <p><code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> enables allocation with <code class="docutils literal notranslate"><span class="pre">VfioDeviceConfig</span></code>.
 <code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code> provides KubeVirt with the PCI address for each allocated device and exposes the VFIO API device to the <code class="docutils literal notranslate"><span class="pre">virt-launcher</span></code> pod.
 GPU Operator continues to manage the DRA driver, DeviceClasses, RBAC, and operand lifecycle.</p>
+</li>
+<li><p>Optional: If you configured Fabric Manager partitioning, also enable the <code class="docutils literal notranslate"><span class="pre">FabricManagerPartitioning</span></code> feature gate.
+Perform this step only on supported HGX or single-node NVL systems with an NVSwitch-managed fabric:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch gpucluster gpu-cluster <span class="se">\</span>
+    --type<span class="o">=</span>merge -p <span class="err">&#39;</span><span class="o">{</span>
+<span class="go">        &quot;spec&quot;:{</span>
+<span class="go">          &quot;draDriver&quot;:{</span>
+<span class="go">            &quot;featureGates&quot;:{</span>
+<span class="go">              &quot;FabricManagerPartitioning&quot;:true  # For NVLink 5 or later systems with NVSwitch-managed fabric.</span>
+<span class="go">            }}}}&#39;</span>
+</pre></div>
+</div>
 </li>
 <li><p>Wait until GPU Operator finishes reconciling the change:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get gpucluster gpu-cluster
@@ -665,6 +681,10 @@ inspect the ResourceSlice in YAML format:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get resourceslice &lt;slice-name&gt; -o yaml
 </pre></div>
 </div>
+<p>The driver publishes partition membership through attributes named <code class="docutils literal notranslate"><span class="pre">partitionN</span></code>,
+where <code class="docutils literal notranslate"><span class="pre">N</span></code> is <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">4</span></code>, or <code class="docutils literal notranslate"><span class="pre">8</span></code> and specifies the number of GPUs in the partition.
+The attribute value is the Fabric Manager partition ID.
+For example, <code class="docutils literal notranslate"><span class="pre">partition2:</span> <span class="pre">4</span></code> indicates that the GPU belongs to two-GPU partition 4.</p>
 <p>Confirm that devices with the <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com/type</span></code> attribute set to
 <code class="docutils literal notranslate"><span class="pre">vfio</span></code> include a <code class="docutils literal notranslate"><span class="pre">gpuModuleID</span></code> attribute and the <code class="docutils literal notranslate"><span class="pre">partitionN</span></code> attributes
 reported for the hardware. For the two-GPU example in this procedure, at
@@ -1049,6 +1069,7 @@ refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#pre-installed-driver">Pre-Installed Driver</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disable-dcgm-and-dcgm-exporter">Disable DCGM and DCGM Exporter</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enable-vfio-support-with-dra">Enable VFIO Support with DRA</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-kubevirt-for-dra-gpus">Configure KubeVirt for DRA GPUs</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-dra-resources">Verify DRA Resources</a></li>
