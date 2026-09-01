@@ -16,7 +16,7 @@ Installing the NVIDIA GPU Operator by using the web console
 
 #. Search for the **NVIDIA GPU Operator**. For additional information, refer to the `Red Hat OpenShift Container Platform documentation <https://docs.openshift.com/container-platform/latest/operators/admin/olm-adding-operators-to-cluster.html>`_.
 
-#. Select the **NVIDIA GPU Operator**, click **Install**. In the following screen, click **Install**.
+#. Select the **NVIDIA GPU Operator**,**(optional)** select the latest channel ``v26.7`` ( or leave the default ``v26.3`` ) it will select the correct version also ,click **Install**. In the following screen, click **Install**.
 
    .. note:: Here, you can select the namespace where you want to deploy the GPU Operator. The suggested namespace to use is the ``nvidia-gpu-operator``. You can choose any existing namespace or create a new namespace under **Select a Namespace**.
 
@@ -92,7 +92,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
          operatorgroup.operators.coreos.com/nvidia-gpu-operator-group created
 
-#. Get the value of ``channel``, and store it in a variable:
+#. Get the value of ``channel``, and store it in a variable (``26.3``):
 
    .. code-block:: console
 
@@ -151,7 +151,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
    .. code-block:: console
 
       NAME            CSV                              APPROVAL   APPROVED
-      install-wwhfj   gpu-operator-certified.v22.9.0   Manual     false
+      install-4fpqq   gpu-operator-certified.v26.3.3   Manual     false
 
 #. Approve the install plan using the CLI commands:
 
@@ -175,7 +175,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
 #. Optional: Verify the successful install in the web console. The display changes to:
 
-   .. image:: graphics/cluster_policy_suceed.png
+   .. image:: graphics/cluster_policy_sacceed.png
 
 .. _create-cluster-policy:
 
