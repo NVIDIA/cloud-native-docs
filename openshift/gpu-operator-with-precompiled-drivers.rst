@@ -20,11 +20,30 @@ By default, NVIDIA GPU drivers are built on the cluster nodes when you deploy th
 Driver compilation and packaging is done on every Kubernetes node, leading to bursts of compute demand, waste of resources, and long provisioning times.
 In contrast, using container images with precompiled drivers makes the drivers immediately available on all nodes, resulting in faster provisioning and cost savings in public cloud deployments.
 
+*******************************************
+Red Hat-Provided Precompiled Driver Images
+*******************************************
+
+Red Hat publishes official precompiled NVIDIA GPU driver images for Red Hat OpenShift at ``registry.redhat.io/nvidia`` under the ``gpu-driver-rhel9`` image name. Using these images removes the need to build and host your own custom precompiled driver image for common deployments.
+
+The registry hosts multiple tags for the driver image, including fixed tags for specific driver releases (for example, ``580.65.06``) and a floating major-version tag (for example, ``580``) that always points to the latest driver release within that major branch. Pinning to the major-version tag lets your cluster automatically pick up new driver releases within the same major version as they are published, while pinning to a fixed version tag keeps the driver version constant until you change it.
+
+To use a Red Hat-provided precompiled driver image, set the ``driver`` fields of the ``ClusterPolicy`` resource as shown in the following example:
+
+.. code-block:: json
+
+   "driver": {
+     "usePrecompiled": true,
+     "repository": "registry.redhat.io/nvidia",
+     "image": "gpu-driver-rhel9",
+     "version": "580"
+   }
+
 ***********************************
 Limitations and Restrictions
 ***********************************
 
-* NVIDIA does not provide precompiled driver images for Red Hat OpenShift. Such images have to be custom built and hosted in a public or private image registry.
+* Red Hat provides official precompiled driver images for Red Hat OpenShift at ``registry.redhat.io/nvidia``. Custom precompiled driver images built from other sources, such as the NVIDIA community driver container repository, have to be custom built and hosted in a public or private image registry.
 
 * NVIDIA provides limited support for custom driver container images.
 
@@ -84,7 +103,7 @@ Perform the following steps to build a custom driver image for use with Red Hat 
 
    .. code-block:: console
 
-      export OPENSHIFT_VERSION="4.18.24"
+      export OPENSHIFT_VERSION="4.22.0"
       export TARGET_ARCH="x86_64"
 
 #. Determine the Driver Toolkit (DTK) image for your target Red Hat OpenShift version and architecture:
@@ -115,7 +134,7 @@ Perform the following steps to build a custom driver image for use with Red Hat 
       export CUDA_DIST=ubi${RHEL_MAJOR}
       export DRIVER_EPOCH=1
       export DRIVER_VERSION=525.105.17
-      export OS_TAG=rhcos4.18
+      export OS_TAG=rhcos4.22
 
 #. Build and push the image:
 
@@ -231,7 +250,7 @@ Using the CLI
    .. code-block:: console
 
       NAME                                                            READY   STATUS    RESTARTS   AGE
-      nvidia-driver-daemonset-<kernel-version>-rhcos4.18-mlpd4   1/1     Running   0          44s
+      nvidia-driver-daemonset-<kernel-version>-rhcos4.22-mlpd4   1/1     Running   0          44s
 
    Ensure that the pod names include the Linux kernel version number in place of ``<kernel-version>``.
 
