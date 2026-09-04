@@ -46,3 +46,4 @@ Refer to the MKE product documentation for information about working with MKE.
          $ cat <<EOF > nvidia-container-microshift.te
          $ checkmodule -m -M -o nvidia-container-microshift.mod nvidia-container-microshift.te
       2023/06/22 14:25:38 Retreiving plugins.
+* Restored Azure Kubernetes Service (AKS) to the :ref:`cloud service providers <cloud-service-providers>` table.
