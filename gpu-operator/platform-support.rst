@@ -325,33 +325,33 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
         | NKP
 
     * - Ubuntu 26.04 LTS
-      - 1.33---1.36
+      - 1.33---1.37
       -
       -
-      - 1.33---1.36
-      - 1.33---1.36
-      - 1.33---1.36
-      - 1.33---1.36
+      - 1.33---1.37
+      - 1.33---1.37
+      - 1.33---1.37
+      - 1.33---1.37
       - 2.17
 
     * - Ubuntu 24.04 LTS
-      - 1.32---1.36
+      - 1.32---1.37
       -
       -
-      - 1.33---1.36
-      - 1.33---1.36
-      - 1.33---1.36
-      - 1.33---1.36
+      - 1.33---1.37
+      - 1.33---1.37
+      - 1.33---1.37
+      - 1.33---1.37
       - 2.17
 
     * - Ubuntu 22.04 LTS |fn2|_
-      - 1.33---1.36
+      - 1.33---1.37
       -
-      - 1.33---1.36
-      - 1.33---1.36
-      - 1.33---1.36
-      - 1.33---1.36
-      - 1.33---1.36
+      - 1.33---1.37
+      - 1.33---1.37
+      - 1.33---1.37
+      - 1.33---1.37
+      - 1.33---1.37
       - 2.15 2.16 2.17
 
     * - Red Hat Core OS
@@ -367,10 +367,10 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
     * - | Red Hat
         | Enterprise
         | Linux 10.0, 10.1, 10.2
-      - 1.33---1.36
+      - 1.33---1.37
       -
       -
-      - 1.33---1.36
+      - 1.33---1.37
       -
       -
       -
@@ -379,10 +379,10 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
     * - | Red Hat
         | Enterprise
         | Linux 9.2, 9.4, 9.6, 9.7, 9.8 |fn3|_
-      - 1.33---1.36
+      - 1.33---1.37
       -
       -
-      - 1.33---1.36
+      - 1.33---1.37
       -
       -
       -
@@ -392,17 +392,17 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
         | Enterprise
         | Linux 8.8,
         | 8.10
-      - 1.33---1.36
+      - 1.33---1.37
       -
       -
-      - 1.33---1.36
+      - 1.33---1.37
       -
       -
       -
       - 2.15, 2.16, 2.17
 
     * - Rocky Linux 10.1
-      - 1.33---1.36
+      - 1.33---1.37
       -
       -
       -
@@ -412,7 +412,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
       -
 
     * - Rocky Linux 9.7
-      - 1.33---1.36
+      - 1.33---1.37
       -
       -
       -
@@ -422,7 +422,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
       -
 
     * - Rocky Linux 8.10
-      - 1.33---1.36
+      - 1.33---1.37
       -
       -
       -
@@ -487,19 +487,19 @@ Cloud Service Providers
         | Kubernetes Service
 
     * - Ubuntu 26.04 LTS
-      - 1.33---1.36
-      - 1.33---1.36
-      - 1.33---1.36
+      - 1.33---1.37
+      - 1.33---1.37
+      - 1.33---1.37
 
     * - Ubuntu 24.04 LTS
-      - 1.33---1.36
-      - 1.33---1.36
-      - 1.33---1.36
+      - 1.33---1.37
+      - 1.33---1.37
+      - 1.33---1.37
 
     * - Ubuntu 22.04 LTS
-      - 1.33---1.36
-      - 1.33---1.36
-      - 1.33---1.36
+      - 1.33---1.37
+      - 1.33---1.37
+      - 1.33---1.37
 
 .. _supported-precompiled-drivers:
 
@@ -604,9 +604,9 @@ Operating System    Kubernetes           KubeVirt              OpenShift Virtual
 \                   \             | GPU           vGPU         | GPU            vGPU
                                   | Passthrough                | Passthrough
 ================    ===========   =============   =========    =============    ===========
-Ubuntu 26.04 LTS    1.33---1.36   0.36+
-Ubuntu 24.04 LTS    1.33---1.36   0.36+
-Ubuntu 22.04 LTS    1.33---1.36   0.36+           0.59.1+
+Ubuntu 26.04 LTS    1.33---1.37   0.36+
+Ubuntu 24.04 LTS    1.33---1.37   0.36+
+Ubuntu 22.04 LTS    1.33---1.37   0.36+           0.59.1+
 Red Hat Core OS                                                4.18---4.22      4.18---4.22
 ================    ===========   =============   =========    =============    ===========
 

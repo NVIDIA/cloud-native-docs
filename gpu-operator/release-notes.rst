@@ -55,7 +55,7 @@ New Features
   - NVIDIA vGPU Device Manager v0.5.0
   - NVIDIA KubeVirt GPU Device Plugin v1.6.0
   - NVIDIA GDS Driver v2.29.4
-  - NVIDIA Confidental Computing Manager for Kubernetes v0.4.3
+  - NVIDIA Confidential Computing Manager for Kubernetes v0.4.3
   - NVIDIA GDRCopy Driver v2.6
   - NVIDIA Kata Sandbox Device Plugin v0.0.5
 
@@ -200,6 +200,7 @@ Post-Release Documentation Updates
 * Restored Azure Kubernetes Service (AKS) to the :ref:`cloud service providers <cloud-service-providers>` table.
 * Added support for Kubernetes 1.36 for Canonical MicroK8s to the :ref:`bare-metal` table.
 * Added a brief explanation of the ``partitionN`` attribute to the :ref:`gpu-operator-kubevirt-dra` page.
+* Added support for Kubernetes 1.37 to the :ref:`bare-metal`, :ref:`cloud service providers <cloud-service-providers>`, and KubeVirt and OpenShift Virtualization tables.
 
 
 ----
