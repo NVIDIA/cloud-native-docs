@@ -38,6 +38,14 @@ Attestation is required for any feature that depends on secrets, including:
 * Using sealed secrets
 * Requesting secrets directly from workloads
 
+A complete attestation scenario covers not only the TEE but also the Kata Agent API surface:
+which operations the untrusted host is allowed to request inside the guest.
+An agent security policy constrains that surface.
+Generate and attach that policy as part of the workload manifest so attestation of the guest
+includes that constrained Agent API surface.
+Refer to :ref:`Attach a Kata Agent Security Policy <kata-agent-security-policy>`.
+The agent security policy is distinct from the Trustee policy that decides whether to release a KBS resource.
+
 Key Concepts
 ============
 

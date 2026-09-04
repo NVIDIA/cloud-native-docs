@@ -67,10 +67,10 @@ Depending on your role, you may complete several sections or only a subset.
      - Installs and manages the Kubernetes cluster and the Confidential Containers software stack.
      - :doc:`Prerequisites <prerequisites>`
    * - :ref:`Security Engineer <coco-persona-security-engineer>`
-     - Validates Confidential Computing configuration, attestation policy, and secret release for workloads.
+     - Validates Confidential Computing configuration, attestation policy, agent security policy, and secret release for workloads.
      - :doc:`Attestation Quickstart <attestation>`
    * - :ref:`Container User <coco-persona-container-user>`
-     - Deploys confidential GPU workloads on a prepared cluster.
+     - Deploys confidential GPU workloads on a prepared cluster, including generating and attaching an agent security policy.
      - :doc:`Configuring Workloads <configure-workloads>`
 
 .. _coco-persona-hardware-it-administrator:
@@ -140,6 +140,7 @@ Relevant pages:
 * :doc:`Reference Architecture <overview>`: understand the use cases, trust model, and how workloads are isolated from the infrastructure.
 * :doc:`Attestation Quickstart <attestation>`: stand up a local Trustee instance and verify connectivity.
   Attestation is required for workloads that use secrets, encrypted container images, or authenticated registries.
+  Review the :ref:`Kata agent security policy <kata-agent-security-policy>` so the untrusted host cannot issue unauthorized Agent API calls into the guest.
 
 For production attestation workflows, secret management, and policy configuration, refer to the upstream `Confidential Containers attestation documentation <https://confidentialcontainers.org/docs/attestation/>`_.
 
@@ -155,5 +156,5 @@ This persona works primarily with Kubernetes workload manifests and does not req
 
 Relevant pages:
 
-* :doc:`Configuring Workloads <configure-workloads>`: runtime class selection, GPU and NVSwitch resource types, and single- or multi-GPU passthrough manifests.
+* :doc:`Configuring Workloads <configure-workloads>`: runtime class selection, GPU and NVSwitch resource types, single- or multi-GPU passthrough manifests, and attaching a Kata agent security policy.
 * :doc:`Run a Sample Workload <run-sample-workload>`: run the reference workload to confirm the cluster is ready before deploying your own application.
