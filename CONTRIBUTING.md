@@ -32,6 +32,32 @@ The headings follow this convention:
 
 If you need more levels, then consider creating a new document. A document has only one `H1`.
 
+### Writing Style
+
+Write for a reader who is skimming under time pressure. The following rules come up most often in review.
+
+**Make the reader the subject.** Start with "you" and an action, not with a gerund or an abstract noun.
+
+* Instead of: "Using these images removes the need to build and host your own driver image."
+* Write: "You can use these images to avoid building and hosting your own driver image."
+
+**Use "must" for requirements.** Prefer "must" to "have to be", "has to", or "there is a need to". Prefer "to" over "in order to".
+
+* Instead of: "Custom images have to be built and hosted by you."
+* Write: "You must build and host custom images."
+
+**One idea per sentence.** Split a sentence that contrasts two behaviors with "while" or "whereas". Aim for fewer than 30 words.
+
+* Instead of: "Pinning to the major tag picks up new releases automatically, while pinning to a fixed tag keeps the version constant until you change it."
+* Write: "Pinning to the major tag picks up new releases automatically. Pinning to a fixed tag keeps the version constant until you change it."
+
+**Avoid parenthetical asides.** Set an example off with commas or move it to its own sentence.
+
+* Instead of: "Use a fixed tag (for example, ``580.65.06``) to pin the driver."
+* Write: "Use a fixed tag, such as ``580.65.06``, to pin the driver."
+
+**Re-check nearby statements when a fact changes.** If your change adds a supported option, a vendor-provided image, or a new default, read the limitations, notes, and prerequisites around it and remove or narrow any that are no longer true.
+
 ### Guideline for Kubernetes Object Types in Body Text
 
 Prefer lowercase plain text such as namespace, pod, daemon set, container, service, and so on.
