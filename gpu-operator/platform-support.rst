@@ -335,7 +335,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
       - 2.17
 
     * - Ubuntu 24.04 LTS
-      - 1.32---1.37
+      - 1.33---1.37
       -
       -
       - 1.33---1.37
