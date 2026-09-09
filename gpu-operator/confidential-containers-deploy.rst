@@ -23,7 +23,7 @@ Documentation for configuring the GPU Operator for Confidential Containers is av
 
       Deploy Confidential Containers with the NVIDIA GPU Operator on Kubernetes.
 
-   .. grid-item-card:: :octicon:`server;1.5em;sd-mr-1` Supported Platforms
+   .. grid-item-card:: :octicon:`server;1.5em;sd-mr-1` Supported Platforms and Software Components
       :link: https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/supported-platforms.html
       :link-type: url
 

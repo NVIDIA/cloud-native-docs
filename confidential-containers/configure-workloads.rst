@@ -28,20 +28,22 @@ As a :ref:`Container User <coco-persona-container-user>`, use this page to confi
 A Confidential Container workload is a standard Kubernetes pod that runs inside a TEE-protected
 virtual machine and requests one or more GPUs through the NVIDIA Kata sandbox device plugin.
 Compared with a traditional GPU pod, a Confidential Container workload pod manifest differs in
-three ways:
+various ways. In particular, the pod manifest:
 
-* It selects a TEE-aware Kata runtime class instead of the default ``runc``-based runtime.
-* It requests GPU and NVSwitch resources using the resource types advertised by the NVIDIA
+* Selects a TEE-aware Kata runtime class instead of the default ``runc``-based runtime.
+* Requests GPU and NVSwitch resources using the resource types advertised by the NVIDIA
   Kata sandbox device plugin, which can be either default names or model-specific names.
-* For NVSwitch-based HGX systems, it requests every GPU and NVSwitch on the node together so
+* For NVSwitch-based HGX systems, requests every GPU and NVSwitch on the node together so
   that all devices reside inside the same Confidential Container virtual machine.
+* For an attested production deployment, includes a Kata agent security policy that limits
+  which Agent API calls the untrusted host can make into the guest.
 
 **Before this page:** Complete the :doc:`Detailed Install Guide <confidential-containers-deploy>` and verify the cluster with :doc:`Run a Sample Workload <run-sample-workload>` (``Test PASSED`` in pod logs).
 For install steps, refer to :doc:`Prerequisites <prerequisites>` and :doc:`Detailed Install Guide <confidential-containers-deploy>`.
 
 This page describes each of these decisions and provides single-GPU and multi-GPU passthrough
 manifest examples that you can copy and adapt to your environment.
-The install sample uses a minimal manifest.
+The install sample uses a minimal manifest and does not attach an agent security policy.
 
 ********************************
 Select a Container Runtime Class
@@ -63,7 +65,7 @@ Select the runtime class based on the CPU TEE on the target worker node:
      - ``kata-qemu-nvidia-gpu-tdx``
 
 The ``kata-deploy`` chart also installs a ``kata-qemu-nvidia-gpu`` runtime class.
-That class is intended for non-confidential Kata workloads. 
+That class is intended for non-confidential Kata workloads.
 
 .. _coco-resource-types:
 
@@ -72,7 +74,7 @@ Reference GPU and NVSwitch Resource Types
 *****************************************
 
 The NVIDIA Kata sandbox device plugin advertises GPUs and NVSwitches to Kubernetes as extended resources.
-Your pod manifest requests those resources under ``resources.limits``. 
+Your pod manifest requests those resources under ``resources.limits``.
 You can use either the default resource types or model-specific resource types.
 
 By default, every passthrough GPU is advertised as ``nvidia.com/pgpu`` and every NVSwitch is advertised as ``nvidia.com/nvswitch``.
@@ -102,9 +104,9 @@ Use the model-specific resource name in workloads that must target a specific ac
      limits:
        nvidia.com/GH100_H200_141GB: "1"
 
- 
+
 Set the ``NODE_NAME`` environment variable to the node you want to check:
- 
+
 .. code-block:: console
 
    $ export NODE_NAME="<node-name>"
@@ -315,9 +317,63 @@ Run a Multi-GPU Workload
 
       $ kubectl delete -f multi-gpu-kata.yaml
 
+.. _kata-agent-security-policy:
+
+***********************************
+Attach a Kata Agent Security Policy
+***********************************
+
+The Kata agent runs inside the guest virtual machine and manages the container lifecycle.
+Because the Kata shim on the host is outside the TEE, the untrusted host can still issue Agent
+API calls into the guest unless you restrict those Agent API calls.
+An *agent security policy* is a Rego policy that the agent enforces so that only the operations
+your workload declared are allowed.
+
+The :doc:`sample workload <run-sample-workload>` omits an agent policy so that you can confirm
+GPU passthrough with the smallest possible manifest.
+Do not treat that YAML as a production template.
+
+The Kata Containers ``genpolicy`` tool reads your Kubernetes YAML, infers the intended Agent API
+calls, encodes the policy in base64, and appends it as an annotation on the same file.
+
+#. Download ``genpolicy`` from the latest Kata Containers release that is compatible with this
+   reference architecture.
+   For usage details, refer to the
+   `Agent Policy generation tool <https://github.com/kata-containers/kata-containers/blob/main/src/tools/genpolicy/README.md>`_
+   documentation.
+
+#. Run ``genpolicy`` against the manifest to deploy:
+
+   .. code-block:: console
+
+      $ genpolicy -y cuda-vectoradd-kata.yaml
+
+   Review the generated policy before you apply the manifest.
+   The automatically-generated policy is a starting point.
+   The policy can allow operations you do not want, such as ``kubectl exec``, or omit operations your
+   workload needs.
+
+   .. important::
+
+      Review and, if needed, edit the policy so that it matches your threat model before you
+      use it.
+
+#. Apply the annotated manifest:
+
+   .. code-block:: console
+
+      $ kubectl apply -f cuda-vectoradd-kata.yaml
+
 **********
 Next Steps
 **********
 
+* Refer to :doc:`Attestation <attestation>` for Trustee concepts and a local connectivity test.
+  A complete attestation scenario must not only cover the TEE but also the Kata Agent API surface.
+  For this purpose, the agent security policy contained in the workload annotation is included in the measured
+  payload that is attested with the guest.
+  The agent security policy is distinct from the Trustee attestation policy that decides whether
+  to release secrets.
+  Refer to the upstream `Understanding CoCo Policies <https://confidentialcontainers.org/docs/getting-started/securing-workloads/#understanding-coco-policies>`__.
 * Refer to :doc:`Managing the Confidential Computing Mode <configure-cc-mode>` to change the CC mode on GPUs at the cluster or node level.
 * Refer to :doc:`Troubleshooting <troubleshooting>` if a workload does not schedule or the pod stays ``Pending``.

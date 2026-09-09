@@ -117,7 +117,7 @@ For runtime class selection, resource type naming, multi-GPU passthrough, and ad
       cuda-vectoradd-kata   1/1     Running   0          10s
 
    The pod could also say ``Completed`` if the container already completed successfully.
-   
+
    If the pod stays ``Pending`` for more than a few minutes, use the :doc:`Troubleshooting <troubleshooting>` guide for more details on viewing logs and potential causes for the pod being stuck.
 
 #. View the logs from the pod after the container starts:
@@ -168,7 +168,7 @@ For runtime class selection, resource type naming, multi-GPU passthrough, and ad
       Normal  Created    71s   kubelet            Created container: cuda-vectoradd
       Normal  Started    68s   kubelet            Started container cuda-vectoradd
 
-   The ``Runtime Class Name`` should match the runtime class used to create the pod and you will see that the pod ran successfully. 
+   The ``Runtime Class Name`` should match the runtime class used to create the pod and you will see that the pod ran successfully.
    The example output shows ``Runtime Class Name:  kata-qemu-nvidia-gpu-tdx``.
 
 
@@ -195,7 +195,7 @@ Next Steps
    deployment, refer to the upstream `Confidential Containers NVIDIA attestation guide
    <https://confidentialcontainers.org/docs/examples/nvidia-nim-confidential-gpu-attestation/>`__.
 
-If you'd like to continue to learn about Confidential Container configuraion, review the following pages:
+If you'd like to continue to learn about Confidential Container configuration, review the following pages:
 
 * Refer to :doc:`Configuring Workloads <configure-workloads>` for runtime class selection, resource types, and multi-GPU passthrough manifests.
 * Refer to :doc:`Managing the Confidential Computing Mode <configure-cc-mode>` to change the CC mode on GPUs at the cluster or node level.

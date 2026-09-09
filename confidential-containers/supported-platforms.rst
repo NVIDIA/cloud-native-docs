@@ -18,9 +18,9 @@
 
 .. _coco-supported-platforms:
 
-###################
-Supported Platforms
-###################
+##############################################
+Supported Platforms and Software Components
+##############################################
 
 Following are the platforms supported by the NVIDIA Confidential Containers Reference Architecture.
 

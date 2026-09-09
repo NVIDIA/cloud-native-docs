@@ -31,14 +31,14 @@ Background
 **********
 
 NVIDIA GPUs power the training and deployment of Large Language Models (LLMs) that define the state of the art in AI reasoning and capability.
-As organizations adopt these models in regulated industries such as financial services, healthcare, and the public sector, protecting model intellectual property and sensitive user data becomes essential. 
-The model deployment landscape is also evolving to include public clouds, enterprise on-premises, and edge. 
+As organizations adopt these models in regulated industries such as financial services, healthcare, and the public sector, protecting model intellectual property and sensitive user data becomes essential.
+The model deployment landscape is also evolving to include public clouds, enterprise on-premises, and edge.
 A zero-trust posture on cloud-native platforms such as Kubernetes is essential to secure assets (model IP and enterprise private data) from untrusted infrastructure with privileged user access.
 
 Confidential Computing (CC) addresses this gap by using hardware-based Trusted Execution Environments (TEEs), such as AMD SEV-SNP and Intel TDX, with NVIDIA Confidential Computing capabilities to provide isolation, memory encryption, and integrity verification during processing. In addition to isolation, CC provides Remote Attestation, which allows workload owners to cryptographically verify the state of a TEE before providing secrets or sensitive data.
 
 `Confidential Containers <https://github.com/confidential-containers>`__ (CoCo) is the cloud-native approach of CC on Kubernetes.
-The Confidential Containers project leverages Kata Containers to provide the sandboxing capabilities. 
+The Confidential Containers project leverages Kata Containers to provide the sandboxing capabilities.
 `Kata Containers <https://katacontainers.io/>`_ is an open-source project that provides lightweight Utility Virtual Machines (UVMs) that feel and perform like containers while providing strong workload isolation. Along with the Confidential Containers project, Kata enables the orchestration of secure, GPU-accelerated workloads in Kubernetes.
 
 .. _coco-use-cases:
@@ -47,7 +47,7 @@ The Confidential Containers project leverages Kata Containers to provide the san
 Use Cases
 *********
 
-The target for Confidential Containers is to enable model providers (closed and open source) and Enterprises to use the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge).  
+The target for Confidential Containers is to enable model providers (closed and open source) and Enterprises to use the advancements of Gen AI, agnostic to the deployment model (Cloud, Enterprise, or Edge).
 
 * For Model Providers: It enables the expansion of reach by allowing expensive, proprietary model weights to be deployed on-site at customer data centers without exposing the intellectual property (IP) to the customer's infrastructure administrators.
 * For Adopters: It provides low-latency access to state-of-the-art frontier models within their own sovereign environment, ensuring their private prompts and data never leave their controlled premises while maintaining the security of the model provider's IP.
@@ -127,14 +127,14 @@ These components include:
 * NVIDIA Confidential Computing Manager (cc-manager) for Kubernetes: Sets the confidential computing (CC) mode on the NVIDIA GPUs.
   By default, the Confidential Computing Manager will transition all NVIDIA GPUs to Confidential Computing mode, if they are not already in that mode.
 * NVIDIA Kata Sandbox Device Plugin: Creates host-side Container Device Interface (CDI) specifications for GPU passthrough and discovers NVIDIA GPUs along with their capabilities, advertises these to Kubernetes, and allocates GPUs during pod deployment.
-  Allocatable GPU resources are advertised as type ``nvidia.com/pgpu`` by default. 
+  Allocatable GPU resources are advertised as type ``nvidia.com/pgpu`` by default.
 * NVIDIA VFIO Manager: Binds discovered NVIDIA GPUs and NVSwitches to the vfio-pci driver for VFIO passthrough.
 
 Refer to the :doc:`NVIDIA GPU Operator <gpuop:overview>` documentation for more information on the NVIDIA GPU Operator or the :ref:`GPU Operator Cluster Topology Considerations <coco-gpu-operator-components>` section for more information on selecting nodes for Confidential Containers.
 
 **Node Feature Discovery (NFD)**
 
-Bootstraps the node by advertising the node features using labels to make sophisticated scheduling decisions, such as installing the Kata/CoCo stack only on the nodes that support the CC prerequisites for CPU and GPU. 
+Bootstraps the node by advertising the node features using labels to make sophisticated scheduling decisions, such as installing the Kata/CoCo stack only on the nodes that support the CC prerequisites for CPU and GPU.
 This directs the Operator to install node feature rules that detect CPU security features and the NVIDIA GPU hardware.
 
 Refer to the `Node Feature Discovery documentation <https://kubernetes-sigs.github.io/node-feature-discovery/>`_ for upstream usage and reference material.
@@ -143,19 +143,20 @@ This component is typically deployed and managed by default by the GPU Operator.
 
 **Snapshotter (for example, Nydus)**
 
-Handles the container image "guest pull" functionality. 
-Used as a remote snapshotter, it bypasses image pulls on the host. 
+Handles the container image "guest pull" functionality.
+Used as a remote snapshotter, it bypasses image pulls on the host.
 Instead, the snapshotter fetches and unpacks encrypted and signed container images directly inside the protected guest memory, keeping proprietary contents hidden and ensuring image integrity.
 
 
 **Kata Agent and Agent Security Policy**
 
-Runs inside the guest VM to manage the container lifecycle while enforcing a strict, immutable agent security policy based on Rego (regorus). 
+Runs inside the guest VM to manage the container lifecycle while enforcing a strict, immutable agent security policy based on Rego (regorus).
 This blocks the untrusted host from executing unauthorized commands, such as a malicious ``kubectl exec``.
+For how to generate and attach a policy to a workload, refer to :ref:`Attach a Kata Agent Security Policy <kata-agent-security-policy>`.
 
 **Trustee and Attestation Service**
 
-Attestation and key brokering framework (which includes the Key Broker Service and Attestation Service). 
+Attestation and key brokering framework (which includes the Key Broker Service and Attestation Service).
 It acts as the cryptographic gatekeeper, verifying hardware/software evidence and only releasing secrets if the environment is proven secure.
 
 
@@ -219,7 +220,7 @@ The following features are supported with Confidential Containers:
 
 
 * Composite :doc:`attestation <attestation>` using Trustee and the NVIDIA Remote Attestation Service (NRAS).
-* Generating Kata Agent Security Policies using the `genpolicy tool <https://github.com/kata-containers/kata-containers/blob/main/src/tools/genpolicy/README.md>`_.
+* Generating Kata Agent Security Policies.
 * Use of `signed sealed secrets <https://confidentialcontainers.org/docs/features/sealed-secrets/>`_.
 * Access to authenticated registries for container image guest-pull.
 * Container image signature verification and encrypted container images.
@@ -235,6 +236,7 @@ Limitations and Restrictions
 ****************************
 
 * NVIDIA supports the GPU Operator and confidential computing with the containerd runtime only.
+
 * All GPUs on the host must be configured for Confidential Computing.
   Configuring only a subset of GPUs on a node is not supported.
   For multi-GPU passthrough, all GPUs must be assigned to a single confidential VM.
@@ -281,11 +283,11 @@ To deploy on your cluster, start with the **Install** section:
 .. grid:: 2
    :gutter: 3
 
-   .. grid-item-card:: :octicon:`server;1.5em;sd-mr-1` Supported Platforms
+   .. grid-item-card:: :octicon:`server;1.5em;sd-mr-1` Supported Platforms and Software Components
       :link: supported-platforms
       :link-type: doc
 
-      Hardware, OS, and component versions validated for general availability (GA).
+      Validated hardware, OS, and component versions.
 
    .. grid-item-card:: :octicon:`checklist;1.5em;sd-mr-1` Prerequisites
       :link: prerequisites
@@ -306,4 +308,3 @@ To deploy on your cluster, start with the **Install** section:
       Verify the deployment; success is ``Test PASSED`` in pod logs.
 
 After installation, refer to the **Configuration** section for workload configuration, CC mode management, and attestation.
-
