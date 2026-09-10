@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 09, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -502,13 +502,13 @@ The GPU Operator will use the label to determine which software components to de
 <ul>
 <li><p><a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/virtualization/installing">Install the OpenShift Virtualization Operator</a>.</p></li>
 <li><p><a class="reference external" href="https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/virtualization/getting-started#installing-virtctl_virt-using-the-cli-tools">Install the virtctl client</a>.</p></li>
-<li><p>Starting with OpenShift Virtualization 4.12.3 and 4.13.0, disable MDev Configurations</p>
+<li><p>You must disable OpenShift Virtualization mediated device management to prevent conflicts with the GPU Operator:</p>
 <div class="sd-tab-set docutils">
 <input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio">
 <label class="sd-tab-label" for="sd-tab-item-0">
 OpenShift Virtualization v4.23.0 or newer</label><div class="sd-tab-content docutils">
 <p>Set the <code class="docutils literal notranslate"><span class="pre">spec.virtualization.mediatedDevicesConfiguration.enabled</span></code> field to <code class="docutils literal notranslate"><span class="pre">false</span></code>:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch hyperconverged -n openshift-cnv kubevirt-hyperconverged --type<span class="o">=</span><span class="s1">&#39;merge&#39;</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch hyperconverged -n openshift-cnv kubevirt-hyperconverged --type<span class="o">=</span><span class="s1">&#39;merge&#39;</span> <span class="se">\</span>
   -p<span class="o">=</span><span class="s1">&#39;{&quot;spec&quot;:{&quot;virtualization&quot;:{&quot;mediatedDevicesConfiguration&quot;:{&quot;enabled&quot;: false}}}}&#39;</span>
 </pre></div>
 </div>
@@ -521,7 +521,7 @@ OpenShift Virtualization v4.23.0 or newer</label><div class="sd-tab-content docu
 <label class="sd-tab-label" for="sd-tab-item-1">
 Earlier versions of OpenShift Virtualization</label><div class="sd-tab-content docutils">
 <p>Set the <code class="docutils literal notranslate"><span class="pre">disableMDevConfiguration</span></code> feature gate:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch hyperconverged -n openshift-cnv kubevirt-hyperconverged --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch hyperconverged -n openshift-cnv kubevirt-hyperconverged --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
   -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/featureGates/disableMDevConfiguration&quot;, &quot;value&quot;: true}]&#39;</span>
 </pre></div>
 </div>
@@ -532,7 +532,7 @@ Earlier versions of OpenShift Virtualization</label><div class="sd-tab-content d
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>in OpenShit Virtualization v4.22.x, use the full versioned name for the hyperconverged custom resource:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch hyperconvergeds.v1beta1.hco.kubevirt.io -n openshift-cnv  kubevirt-hyperconverged --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/featureGates/disableMDevConfiguration&quot;, &quot;value&quot;: true}]&#39;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch hyperconvergeds.v1beta1.hco.kubevirt.io -n openshift-cnv  kubevirt-hyperconverged --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;: &quot;add&quot;, &quot;path&quot;: &quot;/spec/featureGates/disableMDevConfiguration&quot;, &quot;value&quot;: true}]&#39;</span>
 </pre></div>
 </div>
 </div>
@@ -892,7 +892,9 @@ To learn more about the vGPU Device Manager and how to configure which types of 
 <input checked="checked" id="sd-tab-item-2" name="sd-tab-set-1" type="radio">
 <label class="sd-tab-label" for="sd-tab-item-2">
 OpenShift Virtualization v4.23.0 or newer</label><div class="sd-tab-content docutils">
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hco.kubevirt.io/v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HyperConverged</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">virtualization</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">mediatedDevicesConfiguration</span><span class="p">:</span><span class="w"></span>
@@ -909,7 +911,9 @@ OpenShift Virtualization v4.23.0 or newer</label><div class="sd-tab-content docu
 <input id="sd-tab-item-3" name="sd-tab-set-1" type="radio">
 <label class="sd-tab-label" for="sd-tab-item-3">
 Earlier versions of OpenShift Virtualization</label><div class="sd-tab-content docutils">
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hco.kubevirt.io/v1beta1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HyperConverged</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">disableMDevConfiguration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
@@ -968,16 +972,18 @@ Earlier versions of OpenShift Virtualization</label><div class="sd-tab-content d
 <input checked="checked" id="sd-tab-item-4" name="sd-tab-set-2" type="radio">
 <label class="sd-tab-label" for="sd-tab-item-4">
 OpenShift Virtualization v4.23.0 or newer</label><div class="sd-tab-content docutils">
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
-<span class="w"> </span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">   </span><span class="nt">virtualization</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">mediatedDevicesConfiguration</span><span class="p">:</span><span class="w"></span>
-<span class="w">         </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
-<span class="w">      </span><span class="nt">permittedHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Defines VM devices to import.</span><span class="w"></span>
-<span class="w">        </span><span class="nt">mediatedDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Include for vGPU</span><span class="w"></span>
-<span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">          </span><span class="nt">mdevNameSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIA A10-12Q</span><span class="w"></span>
-<span class="w">          </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/NVIDIA_A10-12Q</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hco.kubevirt.io/v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HyperConverged</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">virtualization</span><span class="p">:</span><span class="w"></span>
+<span class="w">     </span><span class="nt">mediatedDevicesConfiguration</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
+<span class="w">     </span><span class="nt">permittedHostDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Defines VM devices to import.</span><span class="w"></span>
+<span class="w">       </span><span class="nt">mediatedDevices</span><span class="p">:</span><span class="w"> </span><span class="c1"># Include for vGPU</span><span class="w"></span>
+<span class="w">       </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">externalResourceProvider</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">         </span><span class="nt">mdevNameSelector</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIA A10-12Q</span><span class="w"></span>
+<span class="w">         </span><span class="nt">resourceName</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/NVIDIA_A10-12Q</span><span class="w"></span>
 <span class="nn">...</span><span class="w"></span>
 </pre></div>
 </div>
@@ -985,7 +991,9 @@ OpenShift Virtualization v4.23.0 or newer</label><div class="sd-tab-content docu
 <input id="sd-tab-item-5" name="sd-tab-set-2" type="radio">
 <label class="sd-tab-label" for="sd-tab-item-5">
 Earlier versions of OpenShift Virtualization</label><div class="sd-tab-content docutils">
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nn">...</span><span class="w"></span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">hco.kubevirt.io/v1beta1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HyperConverged</span><span class="w"></span>
+<span class="nn">...</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">featureGates</span><span class="p">:</span><span class="w"></span>
 <span class="w">    </span><span class="nt">disableMDevConfiguration</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>

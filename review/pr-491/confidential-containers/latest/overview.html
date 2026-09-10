@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 09, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 10, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -510,7 +510,8 @@ Used as a remote snapshotter, it bypasses image pulls on the host.
 Instead, the snapshotter fetches and unpacks encrypted and signed container images directly inside the protected guest memory, keeping proprietary contents hidden and ensuring image integrity.</p>
 <p><strong>Kata Agent and Agent Security Policy</strong></p>
 <p>Runs inside the guest VM to manage the container lifecycle while enforcing a strict, immutable agent security policy based on Rego (regorus).
-This blocks the untrusted host from executing unauthorized commands, such as a malicious <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">exec</span></code>.</p>
+This blocks the untrusted host from executing unauthorized commands, such as a malicious <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">exec</span></code>.
+For how to generate and attach a policy to a workload, refer to <a class="reference internal" href="configure-workloads.html#kata-agent-security-policy"><span class="std std-ref">Attach a Kata Agent Security Policy</span></a>.</p>
 <p><strong>Trustee and Attestation Service</strong></p>
 <p>Attestation and key brokering framework (which includes the Key Broker Service and Attestation Service).
 It acts as the cryptographic gatekeeper, verifying hardware/software evidence and only releasing secrets if the environment is proven secure.</p>
@@ -579,7 +580,7 @@ Configuring only some GPUs on a node for Confidential Computing is not supported
 </div>
 <ul class="simple">
 <li><p>Composite <a class="reference internal" href="attestation.html"><span class="doc">attestation</span></a> using Trustee and the NVIDIA Remote Attestation Service (NRAS).</p></li>
-<li><p>Generating Kata Agent Security Policies using the <a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/src/tools/genpolicy/README.md">genpolicy tool</a>.</p></li>
+<li><p>Generating Kata Agent Security Policies.</p></li>
 <li><p>Use of <a class="reference external" href="https://confidentialcontainers.org/docs/features/sealed-secrets/">signed sealed secrets</a>.</p></li>
 <li><p>Access to authenticated registries for container image guest-pull.</p></li>
 <li><p>Container image signature verification and encrypted container images.</p></li>
@@ -632,10 +633,10 @@ Achieve availability through replication, which is standard practice in Kubernet
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">
 <div class="sd-card-body docutils">
 <div class="sd-card-title sd-font-weight-bold docutils">
-<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-server sd-mr-1" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.75 6.5a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5ZM6 7.25a.75.75 0 0 1 .75-.75h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 6 7.25Zm4 9a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1-.75-.75Zm-3.25-.75a.75.75 0 0 0 0 1.5h.5a.75.75 0 0 0 0-1.5h-.5Z"></path><path d="M3.25 2h17.5c.966 0 1.75.784 1.75 1.75v7c0 .372-.116.716-.314 1 .198.284.314.628.314 1v7a1.75 1.75 0 0 1-1.75 1.75H3.25a1.75 1.75 0 0 1-1.75-1.75v-7c0-.358.109-.707.314-1a1.741 1.741 0 0 1-.314-1v-7C1.5 2.784 2.284 2 3.25 2Zm0 10.5a.25.25 0 0 0-.25.25v7c0 .138.112.25.25.25h17.5a.25.25 0 0 0 .25-.25v-7a.25.25 0 0 0-.25-.25Zm0-1.5h17.5a.25.25 0 0 0 .25-.25v-7a.25.25 0 0 0-.25-.25H3.25a.25.25 0 0 0-.25.25v7c0 .138.112.25.25.25Z"></path></svg> Supported Platforms</div>
-<p class="sd-card-text">Hardware, OS, and component versions validated for general availability (GA).</p>
+<svg version="1.1" width="1.5em" height="1.5em" class="sd-octicon sd-octicon-server sd-mr-1" viewBox="0 0 24 24" aria-hidden="true"><path d="M10.75 6.5a.75.75 0 0 0 0 1.5h6.5a.75.75 0 0 0 0-1.5h-6.5ZM6 7.25a.75.75 0 0 1 .75-.75h.5a.75.75 0 0 1 0 1.5h-.5A.75.75 0 0 1 6 7.25Zm4 9a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 0 1.5h-6.5a.75.75 0 0 1-.75-.75Zm-3.25-.75a.75.75 0 0 0 0 1.5h.5a.75.75 0 0 0 0-1.5h-.5Z"></path><path d="M3.25 2h17.5c.966 0 1.75.784 1.75 1.75v7c0 .372-.116.716-.314 1 .198.284.314.628.314 1v7a1.75 1.75 0 0 1-1.75 1.75H3.25a1.75 1.75 0 0 1-1.75-1.75v-7c0-.358.109-.707.314-1a1.741 1.741 0 0 1-.314-1v-7C1.5 2.784 2.284 2 3.25 2Zm0 10.5a.25.25 0 0 0-.25.25v7c0 .138.112.25.25.25h17.5a.25.25 0 0 0 .25-.25v-7a.25.25 0 0 0-.25-.25Zm0-1.5h17.5a.25.25 0 0 0 .25-.25v-7a.25.25 0 0 0-.25-.25H3.25a.25.25 0 0 0-.25.25v7c0 .138.112.25.25.25Z"></path></svg> Supported Platforms and Software Components</div>
+<p class="sd-card-text">Validated hardware, OS, and component versions.</p>
 </div>
-<a class="sd-stretched-link sd-hide-link-text reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms</span></a></div>
+<a class="sd-stretched-link sd-hide-link-text reference internal" href="supported-platforms.html"><span class="doc">Supported Platforms and Software Components</span></a></div>
 </div>
 <div class="sd-col sd-d-flex-row docutils">
 <div class="sd-card sd-sphinx-override sd-w-100 sd-shadow-sm sd-card-hover docutils">

@@ -24,7 +24,7 @@ Scope notes for agents and readers:
 - [Personas](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/personas.html): Target roles — hardware IT admin, host OS admin, Kubernetes cluster admin, security engineer, container user (plus application-owner and enterprise/compliance stakeholders).
 
 ## Prerequisites & platforms
-- [Supported Platforms](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/supported-platforms.html): Validated versions — OS/kernel, containerd, Kubernetes, Kata, GPU Operator — and supported CPUs (AMD Genoa/Milan, Intel ER/GR) and GPUs (H100/H200/B200/RTX Pro 6000, single- and multi-GPU PPCIe).
+- [Supported Platforms and Software Components](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/supported-platforms.html): Validated versions — OS/kernel, containerd, Kubernetes, Kata, GPU Operator — and supported CPUs (AMD Genoa/Milan, Intel ER/GR) and GPUs (H100/H200/B200/RTX Pro 6000, single- and multi-GPU PPCIe).
 - [Prerequisites](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/prerequisites.html): Required starting state — Kubernetes cluster, containerd, BIOS (hardware virtualization, ACS, IOMMU), host OS/kernel, and feature gates (e.g. KubeletPodResourcesGet) — before installing Kata and the GPU Operator.
 
 ## Install
@@ -33,7 +33,7 @@ Scope notes for agents and readers:
 
 ## Run & configure
 - [Run a Sample Workload](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/run-sample-workload.html): Deploy cuda-vectoradd-kata.yaml on the CC RuntimeClass; success = `Test PASSED` in the pod logs.
-- [Configuring Workloads](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/configure-workloads.html): Workload spec options for confidential GPU pods.
+- [Configuring Workloads](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/configure-workloads.html): Workload spec options for confidential GPU pods, including how to attach a Kata agent security policy.
 - [Managing Confidential Computing Mode](https://docs.nvidia.com/datacenter/cloud-native/confidential-containers/latest/configure-cc-mode.html): Turning GPU CC mode on/off and verifying cc.mode.state.
 
 ## Attestation
