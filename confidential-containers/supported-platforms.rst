@@ -157,11 +157,11 @@ You do not supply or install these artifacts individually.
      - Distroless, with `NVRC ${nvrc_version} <https://github.com/NVIDIA/nvrc/releases/tag/${nvrc_version}>`__
        and NVIDIA GPU driver ${guest_nvidia_driver_version}
    * - Guest kernel
-     - 6.18.5
+     - ${guest_kernel_version}
    * - `OVMF <https://github.com/tianocore/edk2>`__
      - edk2-stable202511
    * - `QEMU <https://www.qemu.org/>`__
-     - 10.1 \+ Patches
+     - ${qemu_version} \+ Patches
 
 Separately Deployed Components and Interfaces
 =============================================
