@@ -114,12 +114,12 @@ Step 1: Install Trustee with Docker Compose
 -------------------------------------------
 
 Installing Trustee with Docker Compose is the recommended install path.
-Clone the upstream Trustee repository.
+Clone the upstream Trustee repository at ${trustee_version}.
 The repository ships with a ``docker-compose.yml`` that wires KBS, the Attestation Service, and the Reference Value Provider Service together.
 
 .. code-block:: console
 
-   $ git clone https://github.com/confidential-containers/trustee.git && cd trustee
+   $ git clone --branch ${trustee_version} --depth 1 https://github.com/confidential-containers/trustee.git && cd trustee
 
 Start the Trustee containers in the background.
 
@@ -141,6 +141,22 @@ Start the Trustee containers in the background.
 
    On first run, ``docker compose up -d`` pulls the KBS, AS, and RVPS images before starting them.
    This step can take several minutes. The command returns after the containers start. The services may need an additional few seconds to become ready to accept requests.
+
+.. note::
+
+   The Trustee ${trustee_version} `docker-compose.yml <https://github.com/confidential-containers/trustee/blob/${trustee_version}/docker-compose.yml>`_ still references ``:latest`` images for KBS, AS, and RVPS.
+   While cloning that tag pins the compose configuration to a released version, ``docker compose up -d`` still pulls whatever ``:latest`` resolves to at that time.
+   ``:latest`` does not match Trustee ${trustee_version}.
+   For a reproducible backend that matches this architecture, replace the three ``image:`` lines before you run ``docker compose up -d``:
+
+   * KBS: ``ghcr.io/confidential-containers/staged-images/kbs-grpc-as:${trustee_image_tag}``
+   * AS: ``ghcr.io/confidential-containers/staged-images/coco-as-grpc:${trustee_image_tag}``
+   * RVPS: ``ghcr.io/confidential-containers/staged-images/rvps:${trustee_image_tag}``
+
+   Those tags are the Trustee ${trustee_version} commit, the same commit as the ``kbs-client`` artifact in the next step.
+   The GHCR registry does not publish a ``${trustee_version}`` tag for these images.
+   Equivalent digest pins are ``kbs-grpc-as@${trustee_kbs_image_digest}``, ``coco-as-grpc@${trustee_as_image_digest}``, and ``rvps@${trustee_rvps_image_digest}``.
+   This edit is unnecessary after Trustee starts pinning images in the release compose file.
 
 For details on optional configuration such as the admin keypair, debug logging, and per-service config files, refer to the upstream `Install Trustee in Docker <https://confidentialcontainers.org/docs/attestation/installation/docker/>`_ guide.
 
@@ -184,21 +200,21 @@ Step 3: Install the KBS Client Tool
 
 The KBS client tool, ``kbs-client``, is distributed as a container artifact in the Confidential Containers GitHub Container Registry.
 This tool is mainly used for configuring Trustee.
-
-Pull the ``kbs-client`` artifact into the current directory with ORAS.
+The registry does not publish a ``${trustee_version}`` tag for this artifact.
+Pull the ``sample_only`` build for the Trustee ${trustee_version} commit on ``x86_64``.
 
 .. code-block:: console
 
-   $ oras pull ghcr.io/confidential-containers/staged-images/kbs-client:latest
+   $ oras pull ghcr.io/confidential-containers/staged-images/kbs-client:${kbs_client_tag}
 
 *Example Output:*
 
 .. code-block:: output
 
-   ✓ Pulled      kbs-client                                    12.3/12.3 MB 100.00%
-   ✓ Pulled      application/vnd.oci.image.manifest.v1+json    533/533  B  100.00%
-   Pulled [registry] ghcr.io/confidential-containers/staged-images/kbs-client:latest
-   Digest: sha256:a2a48a7cea6dc5d1bad3baea15f4162835e1262eb74fdf4847a6382d09dc5caa
+   Downloading 5148271f5a55 kbs-client
+   Downloaded  5148271f5a55 kbs-client
+   Pulled [registry] ghcr.io/confidential-containers/staged-images/kbs-client:${kbs_client_tag}
+   Digest: sha256:429be62c527e766a9854f9dac37f878010069c4aa6745d3d555d2bf393b9e82e
 
 Confirm the ``kbs-client`` binary was extracted to the current directory.
 

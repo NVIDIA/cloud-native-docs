@@ -215,7 +215,7 @@ docs_root = "${root}/confidential-containers"
 project = "confidential-containers"
 name = "NVIDIA Confidential Containers Architecture"
 version = "1.1.0"
-source_substitutions = { kata_version = "4.0.0", gpu_operator_version = "v26.3.1", gpu_operator_minor_version = "26.3", genpolicy_version = "4.1.0", nvrc_version = "v0.1.5", guest_nvidia_driver_version = "595.58.03", guest_kernel_version = "6.18.35", qemu_version = "11.0.1" }
+source_substitutions = { kata_version = "4.0.0", gpu_operator_version = "v26.3.1", gpu_operator_minor_version = "26.3", genpolicy_version = "4.1.0", nvrc_version = "v0.1.5", guest_nvidia_driver_version = "595.58.03", guest_kernel_version = "6.18.35", qemu_version = "11.0.1", trustee_version = "v0.21.0", guest_components_version = "v0.21.0", trustee_image_tag = "258ea4acb7b9bd865fce5c63a539f2120dba8298", kbs_client_tag = "sample_only-258ea4acb7b9bd865fce5c63a539f2120dba8298-x86_64", trustee_kbs_image_digest = "sha256:873a1e1704965d1325b70fdf31335cc8d9c95acab4f003b0f3ece675b3584dd8", trustee_as_image_digest = "sha256:5319dcb609ed1d61876491bb43be1e03838f29eab7cea5673c7979892dc8015a", trustee_rvps_image_digest = "sha256:185cdc6754e544de3068a4f9c25733d62e7e6cfb8464da9f2de2ac490573b509" }
 copyright_start = 2020
 
 [repo_docs.projects.confidential-containers.builds.linkcheck]
