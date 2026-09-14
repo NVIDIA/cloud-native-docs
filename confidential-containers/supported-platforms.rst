@@ -154,7 +154,8 @@ You do not supply or install these artifacts individually.
    * - Artifact
      - Release/Version
    * - Guest OS
-     - Distroless
+     - Distroless, with `NVRC ${nvrc_version} <https://github.com/NVIDIA/nvrc/releases/tag/${nvrc_version}>`__
+       and NVIDIA GPU driver ${guest_nvidia_driver_version}
    * - Guest kernel
      - 6.18.5
    * - `OVMF <https://github.com/tianocore/edk2>`__
