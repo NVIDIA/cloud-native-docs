@@ -169,7 +169,7 @@ Install the NVIDIA GPU Operator
          --set sandboxWorkloads.mode=kata \
          --set nfd.enabled=true \
          --set nfd.nodefeaturerules=true \
-         --version=v26.3.1
+         --version=${gpu_operator_version}
 
    *Example Output:*
 
