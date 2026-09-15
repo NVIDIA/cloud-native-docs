@@ -103,18 +103,48 @@ Prerequisites
 
 * `Install the OpenShift Virtualization Operator <https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/virtualization/installing>`__.
 * `Install the virtctl client <https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/virtualization/getting-started#installing-virtctl_virt-using-the-cli-tools>`__.
-* Starting with OpenShift Virtualization 4.12.3 and 4.13.0, set the ``disableMDevConfiguration`` feature gate:
+* You must disable OpenShift Virtualization mediated device management to prevent conflicts with the GPU Operator:
 
-  .. code-block:: console
+  .. tab-set::
 
-     $ kubectl patch hyperconverged -n openshift-cnv  kubevirt-hyperconverged --type='json' -p='[{"op": "add", "path": "/spec/featureGates/disableMDevConfiguration", "value": true}]'
+    .. tab-item:: OpenShift Virtualization v4.23.0 or newer
+      :selected:
 
-  *Example Output*
+      Set the ``spec.virtualization.mediatedDevicesConfiguration.enabled`` field to ``false``:
 
-  .. code-block:: output
+      .. code-block:: console
 
-     hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged patched
+        $ oc patch hyperconverged -n openshift-cnv kubevirt-hyperconverged --type='merge' \
+          -p='{"spec":{"virtualization":{"mediatedDevicesConfiguration":{"enabled": false}}}}'
 
+      *Example Output*
+
+      .. code-block:: output
+
+        hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged patched
+
+    .. tab-item:: Earlier versions of OpenShift Virtualization
+
+      Set the ``disableMDevConfiguration`` feature gate:
+
+      .. code-block:: console
+
+        $ oc patch hyperconverged -n openshift-cnv kubevirt-hyperconverged --type='json' \
+          -p='[{"op": "add", "path": "/spec/featureGates/disableMDevConfiguration", "value": true}]'
+
+      *Example Output*
+
+      .. code-block:: output
+
+        hyperconverged.hco.kubevirt.io/kubevirt-hyperconverged patched
+
+      .. note::
+
+         in OpenShit Virtualization v4.22.x, use the full versioned name for the hyperconverged custom resource:
+
+         .. code-block:: console
+
+            $ oc patch hyperconvergeds.v1beta1.hco.kubevirt.io -n openshift-cnv  kubevirt-hyperconverged --type='json' -p='[{"op": "add", "path": "/spec/featureGates/disableMDevConfiguration", "value": true}]'
 
 * If planning to use NVIDIA vGPU, SR-IOV must be enabled in the BIOS if your GPUs are based on the NVIDIA Ampere architecture or later. Refer to the `NVIDIA vGPU Documentation <https://docs.nvidia.com/grid/latest/grid-vgpu-user-guide/index.html#prereqs-vgpu>`_ to ensure you have met all the prerequisites for using NVIDIA vGPU.
 
@@ -511,18 +541,43 @@ The following example permits the A10 GPU device, the device names for the GPUs 
 
 #. Modify the ``HyperConverged`` custom resource like the following partial examples.
 
-   .. code-block:: yaml
+   .. tab-set::
 
-      ...
-      spec:
-         featureGates:
-            disableMDevConfiguration: true
-         permittedHostDevices: # Defines VM devices to import.
-            pciHostDevices: # Include for GPU passthrough
-            - externalResourceProvider: true
-              pciDeviceSelector: 10DE:2236
-              resourceName: nvidia.com/GA102GL_A10
-      ...
+      .. tab-item:: OpenShift Virtualization v4.23.0 or newer
+         :selected:
+
+         .. code-block:: yaml
+
+            apiVersion: hco.kubevirt.io/v1
+            kind: HyperConverged
+            ...
+            spec:
+              virtualization:
+                mediatedDevicesConfiguration:
+                  enabled: false
+                permittedHostDevices: # Defines VM devices to import.
+                  pciHostDevices: # Include for GPU passthrough
+                  - externalResourceProvider: true
+                    pciDeviceSelector: 10DE:2236
+                    resourceName: nvidia.com/GA102GL_A10
+            ...
+
+      .. tab-item:: Earlier versions of OpenShift Virtualization
+
+         .. code-block:: yaml
+
+            apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            ...
+            spec:
+              featureGates:
+                disableMDevConfiguration: true
+              permittedHostDevices: # Defines VM devices to import.
+                pciHostDevices: # Include for GPU passthrough
+                - externalResourceProvider: true
+                  pciDeviceSelector: 10DE:2236
+                  resourceName: nvidia.com/GA102GL_A10
+            ...
 
    Replace the values in the YAML as follows.
 
@@ -574,18 +629,43 @@ The following example permits the A10-12Q vGPU device, the device names for the 
 
 #. Modify the ``HyperConverged`` custom resource like the following partial examples.
 
-   .. code-block:: yaml
+   .. tab-set::
 
-      ...
-      spec:
-        featureGates:
-          disableMDevConfiguration: true
-        permittedHostDevices: # Defines VM devices to import.
-          mediatedDevices: # Include for vGPU
-          - externalResourceProvider: true
-            mdevNameSelector: NVIDIA A10-12Q
-            resourceName: nvidia.com/NVIDIA_A10-12Q
-      ...
+      .. tab-item:: OpenShift Virtualization v4.23.0 or newer
+         :selected:
+
+         .. code-block:: yaml
+
+            apiVersion: hco.kubevirt.io/v1
+            kind: HyperConverged
+            ...
+            spec:
+              virtualization:
+                 mediatedDevicesConfiguration:
+                    enabled: false
+                 permittedHostDevices: # Defines VM devices to import.
+                   mediatedDevices: # Include for vGPU
+                   - externalResourceProvider: true
+                     mdevNameSelector: NVIDIA A10-12Q
+                     resourceName: nvidia.com/NVIDIA_A10-12Q
+            ...
+
+      .. tab-item:: Earlier versions of OpenShift Virtualization
+
+         .. code-block:: yaml
+
+            apiVersion: hco.kubevirt.io/v1beta1
+            kind: HyperConverged
+            ...
+            spec:
+              featureGates:
+                disableMDevConfiguration: true
+              permittedHostDevices: # Defines VM devices to import.
+                mediatedDevices: # Include for vGPU
+                - externalResourceProvider: true
+                  mdevNameSelector: NVIDIA A10-12Q
+                  resourceName: nvidia.com/NVIDIA_A10-12Q
+            ...
 
    Replace the values in the YAML as follows.
 
