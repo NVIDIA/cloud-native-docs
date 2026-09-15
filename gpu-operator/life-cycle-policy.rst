@@ -107,6 +107,9 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    * - NVIDIA Device Plugin for Kubernetes
      - `0.20.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
+   * - DRA Driver for NVIDIA GPUs
+     - `v${dra_version} <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v${dra_version}>`__
+
    * - DCGM Exporter
      - `v4.6.0-4.8.3 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
 
