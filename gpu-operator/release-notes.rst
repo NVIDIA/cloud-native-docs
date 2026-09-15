@@ -192,6 +192,7 @@ Known Issues
 Post-Release Documentation Updates
 ----------------------------------
 
+* Added Cosign signature verification instructions for the GPU Operator Helm chart OCI artifact.
 * Added DRA Driver for NVIDIA GPUs v0.5.0 to the GPU Operator Component Matrix and release notes.
 * Added the Helm chart OCI artifact to the new features and installation
   documentation after the artifact became available following the v26.7.0 release.

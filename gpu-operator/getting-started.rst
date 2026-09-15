@@ -98,6 +98,15 @@ Use ``--set`` options to customize the deployment for your environment.
 
    - To install the chart as an OCI artifact, no Helm repository setup is required.
 
+     Before you install the chart, verify its signature with Cosign:
+
+     .. code-block:: console
+
+        $ cosign verify \
+            --key https://api.ngc.nvidia.com/v2/catalog/containers/public-key \
+            --insecure-ignore-tlog \
+            nvcr.io/nvidia/cloud-native-charts/gpu-operator:${version}
+
    - To use the classic NVIDIA Helm repository, add and update the repository:
 
      .. code-block:: console
