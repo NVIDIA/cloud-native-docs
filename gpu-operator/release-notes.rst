@@ -47,6 +47,7 @@ New Features
   - NVIDIA Driver Manager for Kubernetes v0.12.0
   - NVIDIA Container Toolkit v1.20.0
   - NVIDIA Device Plugin for Kubernetes v0.20.0
+  - DRA Driver for NVIDIA GPUs v0.5.0
   - NVIDIA DCGM Exporter v4.6.0-4.8.3
   - NVIDIA DCGM 4.6.0-1
   - NVIDIA MIG Manager for Kubernetes v0.15.0
@@ -191,6 +192,7 @@ Known Issues
 Post-Release Documentation Updates
 ----------------------------------
 
+* Added DRA Driver for NVIDIA GPUs v0.5.0 to the GPU Operator Component Matrix and release notes.
 * Added the Helm chart OCI artifact to the new features and installation
   documentation after the artifact became available following the v26.7.0 release.
 * Updated the release notes to include the new features and enhancements to the NVIDIA driver CRD.
