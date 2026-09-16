@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 14, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 16, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -474,10 +474,9 @@ CoCo uses Kata Containers as the sandbox and Trustee as the attestation framewor
 </section>
 <section id="quickstart">
 <h2>Quickstart<a class="headerlink" href="#quickstart" title="Permalink to this headline">#</a></h2>
-<p>This page walks you through standing up a development Trustee v0.21.0 instance with Docker Compose, installing the Key Broker Service (KBS) client tool, and sending a sample resource request to confirm the system is reachable.
+<p>This page walks you through standing up a development Trustee instance with Docker Compose, installing the Key Broker Service (KBS) client tool, and sending a sample resource request to confirm the system is reachable.
 It runs on a standalone Linux host and does not require a Kubernetes cluster or the Confidential Containers runtime.</p>
-<p>The goal is to give you a working local attestation backend and a client to interact with it before you wire Trustee into a Confidential Containers workload.
-This architecture validates Trustee v0.21.0 with guest-components v0.21.0 in the Kata 4.0.0 guest.</p>
+<p>The goal is to give you a working local attestation backend and a client to interact with it before you wire Trustee into a Confidential Containers workload.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>This quickstart is for evaluation only.
@@ -535,9 +534,11 @@ The repository ships with a <code class="docutils literal notranslate"><span cla
 <p class="admonition-title">Note</p>
 <p>On first run, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">-d</span></code> pulls the KBS, AS, and RVPS images before starting them.
 This step can take several minutes. The command returns after the containers start. The services may need an additional few seconds to become ready to accept requests.</p>
-<p>The compose file at Trustee v0.21.0 still names <code class="docutils literal notranslate"><span class="pre">:latest</span></code> images.
-After you clone that tag, the configuration files match this architecture.
-The container images follow whatever <code class="docutils literal notranslate"><span class="pre">:latest</span></code> resolves to unless you pin those <code class="docutils literal notranslate"><span class="pre">image:</span></code> lines to a digest or commit tag.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Trustee v0.21.0 <a class="reference external" href="https://github.com/confidential-containers/trustee/blob/v0.21.0/docker-compose.yml">docker-compose.yml</a> still references <code class="docutils literal notranslate"><span class="pre">:latest</span></code> images for KBS, AS, and RVPS.
+While cloning that tag pins the compose configuration to a released version, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">-d</span></code> still pulls whatever <code class="docutils literal notranslate"><span class="pre">:latest</span></code> resolves to at that time.</p>
 </div>
 <p>For details on optional configuration such as the admin keypair, debug logging, and per-service config files, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/docker/">Install Trustee in Docker</a> guide.</p>
 </section>

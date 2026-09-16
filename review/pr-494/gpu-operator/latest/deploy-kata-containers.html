@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 14, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 16, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -711,7 +711,7 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <li><p>Install the kata-deploy Helm chart:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install kata-deploy <span class="s2">&quot;</span><span class="si">${</span><span class="nv">CHART</span><span class="si">}</span><span class="s2">&quot;</span> <span class="se">\</span>
    --namespace kata-system --create-namespace <span class="se">\</span>
-   --set nfd.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+   --set node-feature-discovery.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
    -f kata-nvidia-gpu-values.yaml <span class="se">\</span>
    --version <span class="s2">&quot;</span><span class="si">${</span><span class="nv">VERSION</span><span class="si">}</span><span class="s2">&quot;</span>
 </pre></div>
@@ -729,8 +729,8 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Both <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> and the GPU Operator deploy Node Feature Discovery (NFD) by default.
-The install command includes <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">nfd.enabled=false</span></code> to prevent <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> from deploying NFD.
+<p>Both <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> and the GPU Operator can deploy Node Feature Discovery (NFD).
+The install command disables the NFD deployment by <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code>.
 The GPU Operator will deploy and manage NFD in the next step.</p>
 </div>
 <div class="admonition note">

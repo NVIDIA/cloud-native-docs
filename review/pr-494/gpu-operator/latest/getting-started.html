@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 14, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 16, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -511,7 +511,15 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <ol class="arabic">
 <li><p>Choose how to access the GPU Operator Helm chart:</p>
 <ul>
-<li><p>To install the chart as an OCI artifact, no Helm repository setup is required.</p></li>
+<li><p>To install the chart as an OCI artifact, no Helm repository setup is required.</p>
+<p>Before you install the chart, verify its signature with Cosign:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cosign verify <span class="se">\</span>
+    --key https://api.ngc.nvidia.com/v2/catalog/containers/public-key <span class="se">\</span>
+    --insecure-ignore-tlog <span class="se">\</span>
+    nvcr.io/nvidia/cloud-native-charts/gpu-operator:v26.7.0
+</pre></div>
+</div>
+</li>
 <li><p>To use the classic NVIDIA Helm repository, add and update the repository:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm repo add nvidia https://helm.ngc.nvidia.com/nvidia <span class="se">\</span>
     <span class="o">&amp;&amp;</span> helm repo update

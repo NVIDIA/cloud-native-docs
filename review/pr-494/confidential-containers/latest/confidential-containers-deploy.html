@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 14, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 16, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -533,11 +533,11 @@ The <code class="docutils literal notranslate"><span class="pre">kata-deploy</sp
 <span class="nt">deploymentMode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">daemonset</span><span class="w"></span>
 
 <span class="c1"># Disable Node Feature Discovery (NFD) deployment by kata-deploy.</span><span class="w"></span>
-<span class="c1"># Both kata-deploy and the GPU Operator deploy NFD by default. This</span><span class="w"></span>
-<span class="c1"># reference architecture relies on the NFD instance that the GPU Operator</span><span class="w"></span>
-<span class="c1"># deploys and manages, so the kata-deploy NFD is turned off to avoid a</span><span class="w"></span>
+<span class="c1"># Both kata-deploy and the GPU Operator can deploy NFD. This reference</span><span class="w"></span>
+<span class="c1"># architecture relies on the NFD instance that the GPU Operator deploys</span><span class="w"></span>
+<span class="c1"># and manages, so the kata-deploy NFD subchart is turned off to avoid a</span><span class="w"></span>
 <span class="c1"># duplicate, conflicting deployment.</span><span class="w"></span>
-<span class="nt">nfd</span><span class="p">:</span><span class="w"></span>
+<span class="nt">node-feature-discovery</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
 
 <span class="c1"># Install the nydus snapshotter on each node alongside containerd.</span><span class="w"></span>
@@ -671,8 +671,8 @@ If you are deploying to a single node cluster, you may need to wait for an addit
 The following steps confirm the Kata components are healthy.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Both <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> and the GPU Operator deploy Node Feature Discovery (NFD) by default.
-The values file sets <code class="docutils literal notranslate"><span class="pre">nfd.enabled:</span> <span class="pre">false</span></code> to prevent <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> from deploying NFD.
+<p>Both <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> and the GPU Operator can deploy Node Feature Discovery (NFD).
+The values file disables the NFD deployment by <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code>.
 The GPU Operator will deploy and manage NFD in the next step.</p>
 </div>
 </li>

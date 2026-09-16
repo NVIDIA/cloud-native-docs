@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 14, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 16, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -460,6 +460,23 @@ Changes include:</p>
 <li><p>Includes a new sample values file, <code class="file docutils literal notranslate"><span class="pre">samples/kata-nvidia-gpu-values.yaml</span></code>, that configures the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm chart for the NVIDIA Confidential Containers reference architecture (NVIDIA GPU shims only, NFD disabled, <code class="docutils literal notranslate"><span class="pre">nydus</span></code> snapshotter, and per-shim runtime class node selectors).</p></li>
 <li><p>Adds a readiness verification step using <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">rollout</span> <span class="pre">status</span> <span class="pre">ds/kata-deploy</span></code>. This step relies on the readiness reporting in Kata Containers and lets you confirm that <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> has finished extracting artifacts and restarting containerd on every node before continuing.</p></li>
 </ul>
+</section>
+<section id="post-release-documentation-updates">
+<h3>Post-Release Documentation Updates<a class="headerlink" href="#post-release-documentation-updates" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Renamed the supported platforms page to <a class="reference internal" href="supported-platforms.html#coco-supported-platforms"><span class="std std-ref">Supported Platforms and Software Components</span></a>.</p></li>
+<li><p>Documented attaching a Kata agent security policy for attested production workloads.
+Refer to <a class="reference internal" href="configure-workloads.html#kata-agent-security-policy"><span class="std std-ref">Attach a Kata Agent Security Policy</span></a>.</p></li>
+<li><p>Split the software matrix into cluster prerequisites, Kata-provided guest and runtime artifacts, and separately deployed components.</p></li>
+<li><p>Recorded the distroless guest payload: NVRC, the NVIDIA GPU driver in the guest, and guest-components.</p></li>
+<li><p>Updated the guest kernel and QEMU versions to match the Kata Containers artifacts this architecture installs.</p></li>
+<li><p>Replaced the Key Broker Service protocol version with Trustee v0.21.0 as the separately deployed attestation component.
+The <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> quickstart clones that Trustee tag and pulls the matching <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> artifact.</p></li>
+<li><p>Pinned <code class="docutils literal notranslate"><span class="pre">genpolicy</span></code> to 4.1.0 and pointed the download and README links at that Kata Containers release.</p></li>
+<li><p>Restored <code class="docutils literal notranslate"><span class="pre">--wait</span></code> on the detailed <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> install command and attributed the disabled NFD deployment to the values file.</p></li>
+<li><p>Corrected the NFD setting in <code class="file docutils literal notranslate"><span class="pre">samples/kata-nvidia-gpu-values.yaml</span></code>.
+The sample used a key that the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart ignores, so the chart default kept NFD disabled instead of the sample.</p></li>
+</ul>
 <hr class="docutils" />
 <section id="coco-v1-0-0">
 <span id="id2"></span><h4>1.0.0<a class="headerlink" href="#coco-v1-0-0" title="Permalink to this headline">#</a></h4>
@@ -569,7 +586,8 @@ Refer to <a class="reference external" href="http://docs.nvidia.com/datacenter/c
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coco-v1-1-0">1.1.0</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-features">New Features</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docs-changelog">Docs Changelog</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#docs-changelog">Docs Changelog</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#post-release-documentation-updates">Post-Release Documentation Updates</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#coco-v1-0-0">1.0.0</a></li>
 </ul>
 </li>

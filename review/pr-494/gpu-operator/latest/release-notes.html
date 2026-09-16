@@ -79,7 +79,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 14, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 16, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -473,6 +473,7 @@
 <li><p>NVIDIA Driver Manager for Kubernetes v0.12.0</p></li>
 <li><p>NVIDIA Container Toolkit v1.20.0</p></li>
 <li><p>NVIDIA Device Plugin for Kubernetes v0.20.0</p></li>
+<li><p>DRA Driver for NVIDIA GPUs v0.5.0</p></li>
 <li><p>NVIDIA DCGM Exporter v4.6.0-4.8.3</p></li>
 <li><p>NVIDIA DCGM 4.6.0-1</p></li>
 <li><p>NVIDIA MIG Manager for Kubernetes v0.15.0</p></li>
@@ -601,6 +602,8 @@ The device that is prepared first succeeds, and preparation of the other device 
 <section id="post-release-documentation-updates">
 <h3>Post-Release Documentation Updates<a class="headerlink" href="#post-release-documentation-updates" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
+<li><p>Added Cosign signature verification instructions for the GPU Operator Helm chart OCI artifact.</p></li>
+<li><p>Added DRA Driver for NVIDIA GPUs v0.5.0 to the GPU Operator Component Matrix and release notes.</p></li>
 <li><p>Added the Helm chart OCI artifact to the new features and installation
 documentation after the artifact became available following the v26.7.0 release.</p></li>
 <li><p>Updated the release notes to include the new features and enhancements to the NVIDIA driver CRD.</p></li>
@@ -611,6 +614,8 @@ documentation after the artifact became available following the v26.7.0 release.
 <li><p>Added support for Kubernetes 1.36 for Canonical MicroK8s to the <a class="reference internal" href="platform-support.html#bare-metal"><span class="std std-ref">Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</span></a> table.</p></li>
 <li><p>Added a brief explanation of the <code class="docutils literal notranslate"><span class="pre">partitionN</span></code> attribute to the <a class="reference internal" href="gpu-operator-kubevirt-dra.html#gpu-operator-kubevirt-dra"><span class="std std-ref">GPU Operator with KubeVirt and DRA</span></a> page.</p></li>
 <li><p>Added support for Kubernetes 1.37 to the <a class="reference internal" href="platform-support.html#bare-metal"><span class="std std-ref">Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU</span></a>, <a class="reference internal" href="platform-support.html#cloud-service-providers"><span class="std std-ref">cloud service providers</span></a>, and KubeVirt and OpenShift Virtualization tables.</p></li>
+<li><p>Corrected the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> Helm install on the <a class="reference internal" href="deploy-kata-containers.html"><span class="doc">Kata Containers with GPU Operator</span></a> page.
+The previous <code class="docutils literal notranslate"><span class="pre">--set</span></code> used a GPU Operator chart key that the <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> chart ignores.</p></li>
 </ul>
 <hr class="docutils" />
 </section>
