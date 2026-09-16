@@ -38,6 +38,15 @@ Also replace ``kubectl`` in the following commands with ``oc`` when running on R
 
 NVIDIA vGPU is only supported with the NVIDIA License System.
 
+The procedure on this page builds a driver container image from the vGPU guest driver that you download from the NVIDIA Licensing Portal.
+The procedure is for NVIDIA vGPU customers who do not have an NVIDIA AI Enterprise entitlement.
+
+.. note::
+
+   If you have an NVIDIA AI Enterprise entitlement, you do not need to build a driver container image.
+   A prebuilt vGPU guest driver image is available from NVIDIA NGC.
+   Refer to the `NVIDIA AI Enterprise documentation <https://docs.nvidia.com/ai-enterprise/>`_ for the image and the installation procedure.
+
 ****************
 Platform Support
 ****************
@@ -64,6 +73,8 @@ Before installing the GPU Operator on NVIDIA vGPU, ensure the following:
 
       For vGPU 18.0 and later, ensure that you use DLS 3.4 or later.
 
+* You do not have an NVIDIA AI Enterprise entitlement.
+  NVIDIA AI Enterprise customers use the prebuilt vGPU guest driver image from NVIDIA NGC instead of building an image.
 * You have access to a private registry such as NVIDIA NGC Private Registry and can push container images to the registry.
 * Git and Docker are required to build the vGPU driver image from source repository and push to the private registry.
 * Each Kubernetes worker node in the cluster has access to the private registry.
