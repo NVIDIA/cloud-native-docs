@@ -692,6 +692,7 @@ Support for GPUDirect Storage
 
 Supported operating systems and NVIDIA GPU Drivers with GPUDirect Storage.
 
+- Ubuntu 26.04 LTS with Network Operator 26.7.0.
 - Ubuntu 24.04 LTS Network Operator 25.7.0.
 - Ubuntu 22.04 LTS with Network Operator 25.7.0.
 - Red Hat OpenShift Container Platform 4.18 and higher.
