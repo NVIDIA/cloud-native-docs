@@ -139,6 +139,38 @@ identifies the invalid or missing channel. Inspect
 `/dev/nvidia-caps-imex-channels/` on the host and request only the channel IDs
 that are present.
 
+(mig-management-devices)=
+
+### MIG Management Devices
+
+Use the `NVIDIA_MIG_CONFIG_DEVICES` and `NVIDIA_MIG_MONITOR_DEVICES` environment variables to inject MIG management capability device nodes into a container.
+These device nodes are in the `/dev/nvidia-caps/` directory and enable tools such as `nvidia-smi mig` to create, destroy, and monitor MIG partitions from within the container.
+
+Set either variable to `all` to inject the corresponding capability devices.
+No other value is supported.
+
+The following command injects both MIG config and monitor devices:
+
+```console
+$ docker run --rm --runtime=nvidia --privileged \
+    -e NVIDIA_VISIBLE_DEVICES=all \
+    -e NVIDIA_MIG_CONFIG_DEVICES=all \
+    -e NVIDIA_MIG_MONITOR_DEVICES=all \
+    <image> nvidia-smi mig -lgip
+```
+
+The following constraints apply:
+
+- The container must have `CAP_SYS_ADMIN`.
+  Running with `--privileged` satisfies this requirement.
+- The only accepted value is `all`.
+- You cannot combine MIG management device injection with per-MIG-instance visibility.
+  For example, setting `NVIDIA_VISIBLE_DEVICES=0:0` together with `NVIDIA_MIG_CONFIG_DEVICES=all` is not supported.
+- On systems that do not support MIG, the variables are silently ignored.
+
+These variables are distinct from using MIG compute instances as accelerators.
+For information about running workloads on specific MIG instances, refer to [](cdi-support.md#mig-management-devices).
+
 ### Driver Capabilities
 
 The `NVIDIA_DRIVER_CAPABILITIES` variable controls which driver libraries and binaries are mounted inside the container.

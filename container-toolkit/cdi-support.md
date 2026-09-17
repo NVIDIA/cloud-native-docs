@@ -251,6 +251,16 @@ Containers can request specific NVIDIA IMEX channels with the
 and validation errors, refer to
 [Requesting IMEX Channels](docker-specialized.md#requesting-imex-channels).
 
+(using-cdi-with-mig-management-devices)=
+
+### MIG Management Devices
+
+JIT-CDI mode injects MIG management capability device nodes when the `NVIDIA_MIG_CONFIG_DEVICES` or `NVIDIA_MIG_MONITOR_DEVICES` environment variable is set to `all` in a privileged container.
+This injects the `/dev/nvidia-caps/` device nodes that tools such as `nvidia-smi mig` need to create, destroy, and monitor MIG partitions.
+The container must have `CAP_SYS_ADMIN`, and the host must use cgroup v2.
+
+For supported values, constraints, and an example, refer to [MIG Management Devices](docker-specialized.md#mig-management-devices).
+
 ## Using CDI with Non-CDI-Enabled Runtimes
 
 To support runtimes that do not natively support CDI, you can configure the NVIDIA Container Runtime in a `cdi` mode.
