@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 17, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 18, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -634,9 +634,9 @@ and validation errors, refer to
 </section>
 <section id="mig-management-devices">
 <span id="using-cdi-with-mig-management-devices"></span><h3>MIG Management Devices<a class="headerlink" href="#mig-management-devices" title="Permalink to this headline">#</a></h3>
-<p>JIT-CDI mode injects MIG management capability device nodes when the <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_CONFIG_DEVICES</span></code> or <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_MONITOR_DEVICES</span></code> environment variable is set to <code class="docutils literal notranslate"><span class="pre">all</span></code> in a privileged container.
+<p>JIT-CDI mode injects MIG management capability device nodes when the <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_CONFIG_DEVICES</span></code> or <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_MONITOR_DEVICES</span></code> environment variable is set to <code class="docutils literal notranslate"><span class="pre">all</span></code>.
 This injects the <code class="docutils literal notranslate"><span class="pre">/dev/nvidia-caps/</span></code> device nodes that tools such as <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span> <span class="pre">mig</span></code> need to create, destroy, and monitor MIG partitions.
-The container must have <code class="docutils literal notranslate"><span class="pre">CAP_SYS_ADMIN</span></code>, and the host must use cgroup v2.</p>
+The container must have <code class="docutils literal notranslate"><span class="pre">CAP_SYS_ADMIN</span></code>.</p>
 <p>For supported values, constraints, and an example, refer to <a class="reference internal" href="docker-specialized.html#id2"><span class="std std-doc">MIG Management Devices</span></a>.</p>
 </section>
 </section>

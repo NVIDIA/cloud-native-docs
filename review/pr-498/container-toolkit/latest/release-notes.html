@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 17, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 18, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -426,7 +426,7 @@
 <h3>Fixes and Features<a class="headerlink" href="#fixes-and-features" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
 <li><p>CDI specifications and JIT-CDI mode now inject MIG management capability devices into containers.
-Set the <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_CONFIG_DEVICES</span></code> or <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_MONITOR_DEVICES</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">all</span></code> in a privileged container to inject the <code class="docutils literal notranslate"><span class="pre">/dev/nvidia-caps/</span></code> device nodes for MIG partition management.
+Set the <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_CONFIG_DEVICES</span></code> or <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_MONITOR_DEVICES</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">all</span></code> in a container with <code class="docutils literal notranslate"><span class="pre">CAP_SYS_ADMIN</span></code> to inject the <code class="docutils literal notranslate"><span class="pre">/dev/nvidia-caps/</span></code> device nodes for MIG partition management.
 For supported values and constraints, refer to <a class="reference internal" href="docker-specialized.html#id2"><span class="std std-doc">MIG Management Devices</span></a>.
 For more information, refer to <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/issues/1740">issue #1740</a>
 and <a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/pull/1947">PR #1947</a>.</p></li>

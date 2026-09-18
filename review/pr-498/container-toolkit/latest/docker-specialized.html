@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 17, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 18, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -547,7 +547,7 @@ These device nodes are in the <code class="docutils literal notranslate"><span c
 <p>Set either variable to <code class="docutils literal notranslate"><span class="pre">all</span></code> to inject the corresponding capability devices.
 No other value is supported.</p>
 <p>The following command injects both MIG config and monitor devices:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm --runtime<span class="o">=</span>nvidia --privileged <span class="se">\</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm --runtime<span class="o">=</span>nvidia --cap-add<span class="o">=</span>SYS_ADMIN <span class="se">\</span>
     -e <span class="nv">NVIDIA_VISIBLE_DEVICES</span><span class="o">=</span>all <span class="se">\</span>
     -e <span class="nv">NVIDIA_MIG_CONFIG_DEVICES</span><span class="o">=</span>all <span class="se">\</span>
     -e <span class="nv">NVIDIA_MIG_MONITOR_DEVICES</span><span class="o">=</span>all <span class="se">\</span>
@@ -556,8 +556,7 @@ No other value is supported.</p>
 </div>
 <p>The following constraints apply:</p>
 <ul class="simple">
-<li><p>The container must have <code class="docutils literal notranslate"><span class="pre">CAP_SYS_ADMIN</span></code>.
-Running with <code class="docutils literal notranslate"><span class="pre">--privileged</span></code> satisfies this requirement.</p></li>
+<li><p>The container must have <code class="docutils literal notranslate"><span class="pre">CAP_SYS_ADMIN</span></code>.</p></li>
 <li><p>The only accepted value is <code class="docutils literal notranslate"><span class="pre">all</span></code>.</p></li>
 <li><p>You cannot combine MIG management device injection with per-MIG-instance visibility.
 For example, setting <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES=0:0</span></code> together with <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_CONFIG_DEVICES=all</span></code> is not supported.</p></li>
