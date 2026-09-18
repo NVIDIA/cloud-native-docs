@@ -204,6 +204,8 @@ Post-Release Documentation Updates
 * Added support for Kubernetes 1.36 for Canonical MicroK8s to the :ref:`bare-metal` table.
 * Added a brief explanation of the ``partitionN`` attribute to the :ref:`gpu-operator-kubevirt-dra` page.
 * Added support for Kubernetes 1.37 to the :ref:`bare-metal`, :ref:`cloud service providers <cloud-service-providers>`, and KubeVirt and OpenShift Virtualization tables.
+* Added support for GPUDirect Storage on Ubuntu 26.04 LTS with Network Operator 26.7.0
+  in the :ref:`Support for GPUDirect Storage` section.
 
 
 ----
