@@ -95,11 +95,23 @@ Procedure
       $ export NGC_API_KEY="M2Vub3QxYmgyZ..."
       $ export NGC_USER_EMAIL="user@example.com"
 
-#. Go to the
-   `NVIDIA GPU Operator - Deploy Installer Script <https://catalog.ngc.nvidia.com/orgs/nvidia/teams/vgpu/resources/gpu-operator-installer-5>`__
-   web page on NVIDIA NGC.
+#. In the following table, open the installer script for your NVIDIA AI Enterprise Infra release.
 
-   Click the **File Browser** tab, identify your NVIDIA AI Enterprise release, click |ellipses-img|, and select **Download File**.
+   .. list-table::
+      :header-rows: 1
+
+      * - NVIDIA AI Enterprise Infra release
+        - Installer script on NVIDIA NGC
+      * - 5
+        - `NVIDIA GPU Operator - Deploy Installer Script 5 <https://catalog.ngc.nvidia.com/orgs/nvidia/vgpu/resources/gpu-operator-installer-5/->`__
+      * - 6
+        - `NVIDIA GPU Operator - Deploy Installer Script 6 <https://catalog.ngc.nvidia.com/orgs/nvidia/vgpu/resources/gpu-operator-installer-6/->`__
+      * - 7
+        - `NVIDIA GPU Operator - Deploy Installer Script 7 <https://catalog.ngc.nvidia.com/orgs/nvidia/vgpu/resources/gpu-operator-installer-7/->`__
+      * - 8
+        - `NVIDIA GPU Operator - Deploy Installer Script 8 <https://catalog.ngc.nvidia.com/orgs/nvidia/vgpu/resources/gpu-operator-installer-8/->`__
+
+   Click the **File Browser** tab, select the latest script version for your release, click |ellipses-img|, and select **Download File**.
 
    Copy the downloaded script to the same directory as the client configuration token.
 
