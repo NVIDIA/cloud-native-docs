@@ -15,7 +15,7 @@ This release of the NVIDIA Container Toolkit `v1.20.1` is a bugfix release.
 ### Fixes and Features
 
 - CDI specifications and JIT-CDI mode now inject MIG management capability devices into containers.
-  Set the `NVIDIA_MIG_CONFIG_DEVICES` or `NVIDIA_MIG_MONITOR_DEVICES` environment variable to `all` in a privileged container to inject the `/dev/nvidia-caps/` device nodes for MIG partition management.
+  Set the `NVIDIA_MIG_CONFIG_DEVICES` or `NVIDIA_MIG_MONITOR_DEVICES` environment variable to `all` in a container with `CAP_SYS_ADMIN` to inject the `/dev/nvidia-caps/` device nodes for MIG partition management.
   For supported values and constraints, refer to [MIG Management Devices](docker-specialized.md#mig-management-devices).
   For more information, refer to [issue #1740](https://github.com/NVIDIA/nvidia-container-toolkit/issues/1740)
   and [PR #1947](https://github.com/NVIDIA/nvidia-container-toolkit/pull/1947).

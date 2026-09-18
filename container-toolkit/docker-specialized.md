@@ -152,7 +152,7 @@ No other value is supported.
 The following command injects both MIG config and monitor devices:
 
 ```console
-$ docker run --rm --runtime=nvidia --privileged \
+$ docker run --rm --runtime=nvidia --cap-add=SYS_ADMIN \
     -e NVIDIA_VISIBLE_DEVICES=all \
     -e NVIDIA_MIG_CONFIG_DEVICES=all \
     -e NVIDIA_MIG_MONITOR_DEVICES=all \
@@ -162,7 +162,6 @@ $ docker run --rm --runtime=nvidia --privileged \
 The following constraints apply:
 
 - The container must have `CAP_SYS_ADMIN`.
-  Running with `--privileged` satisfies this requirement.
 - The only accepted value is `all`.
 - You cannot combine MIG management device injection with per-MIG-instance visibility.
   For example, setting `NVIDIA_VISIBLE_DEVICES=0:0` together with `NVIDIA_MIG_CONFIG_DEVICES=all` is not supported.

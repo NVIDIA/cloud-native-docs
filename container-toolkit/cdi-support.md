@@ -255,9 +255,9 @@ and validation errors, refer to
 
 ### MIG Management Devices
 
-JIT-CDI mode injects MIG management capability device nodes when the `NVIDIA_MIG_CONFIG_DEVICES` or `NVIDIA_MIG_MONITOR_DEVICES` environment variable is set to `all` in a privileged container.
+JIT-CDI mode injects MIG management capability device nodes when the `NVIDIA_MIG_CONFIG_DEVICES` or `NVIDIA_MIG_MONITOR_DEVICES` environment variable is set to `all`.
 This injects the `/dev/nvidia-caps/` device nodes that tools such as `nvidia-smi mig` need to create, destroy, and monitor MIG partitions.
-The container must have `CAP_SYS_ADMIN`, and the host must use cgroup v2.
+The container must have `CAP_SYS_ADMIN`.
 
 For supported values, constraints, and an example, refer to [MIG Management Devices](docker-specialized.md#mig-management-devices).
 
