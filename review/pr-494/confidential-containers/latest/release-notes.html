@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 16, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 18, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -471,7 +471,7 @@ Refer to <a class="reference internal" href="configure-workloads.html#kata-agent
 <li><p>Recorded the distroless guest payload: NVRC, the NVIDIA GPU driver in the guest, and guest-components.</p></li>
 <li><p>Updated the guest kernel and QEMU versions to match the Kata Containers artifacts this architecture installs.</p></li>
 <li><p>Replaced the Key Broker Service protocol version with Trustee v0.21.0 as the separately deployed attestation component.
-The <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> quickstart clones that Trustee tag and pulls the matching <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> artifact.</p></li>
+The <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> quickstart clones that Trustee tag, documents Compose image pins for KBS, AS, and RVPS to that commit, and pulls the matching <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> artifact.</p></li>
 <li><p>Pinned <code class="docutils literal notranslate"><span class="pre">genpolicy</span></code> to 4.1.0 and pointed the download and README links at that Kata Containers release.</p></li>
 <li><p>Restored <code class="docutils literal notranslate"><span class="pre">--wait</span></code> on the detailed <code class="docutils literal notranslate"><span class="pre">kata-deploy</span></code> install command and attributed the disabled NFD deployment to the values file.</p></li>
 <li><p>Corrected the NFD setting in <code class="file docutils literal notranslate"><span class="pre">samples/kata-nvidia-gpu-values.yaml</span></code>.

@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 16, 2026"/>
+    <meta name="docbuild:last-update" content="Sep 18, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -538,7 +538,18 @@ This step can take several minutes. The command returns after the containers sta
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The Trustee v0.21.0 <a class="reference external" href="https://github.com/confidential-containers/trustee/blob/v0.21.0/docker-compose.yml">docker-compose.yml</a> still references <code class="docutils literal notranslate"><span class="pre">:latest</span></code> images for KBS, AS, and RVPS.
-While cloning that tag pins the compose configuration to a released version, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">-d</span></code> still pulls whatever <code class="docutils literal notranslate"><span class="pre">:latest</span></code> resolves to at that time.</p>
+While cloning that tag pins the compose configuration to a released version, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">-d</span></code> still pulls whatever <code class="docutils literal notranslate"><span class="pre">:latest</span></code> resolves to at that time.
+<code class="docutils literal notranslate"><span class="pre">:latest</span></code> does not match Trustee v0.21.0.
+For a reproducible backend that matches this architecture, replace the three <code class="docutils literal notranslate"><span class="pre">image:</span></code> lines before you run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">-d</span></code>:</p>
+<ul class="simple">
+<li><p>KBS: <code class="docutils literal notranslate"><span class="pre">ghcr.io/confidential-containers/staged-images/kbs-grpc-as:258ea4acb7b9bd865fce5c63a539f2120dba8298</span></code></p></li>
+<li><p>AS: <code class="docutils literal notranslate"><span class="pre">ghcr.io/confidential-containers/staged-images/coco-as-grpc:258ea4acb7b9bd865fce5c63a539f2120dba8298</span></code></p></li>
+<li><p>RVPS: <code class="docutils literal notranslate"><span class="pre">ghcr.io/confidential-containers/staged-images/rvps:258ea4acb7b9bd865fce5c63a539f2120dba8298</span></code></p></li>
+</ul>
+<p>Those tags are the Trustee v0.21.0 commit, the same commit as the <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> artifact in the next step.
+The GHCR registry does not publish a <code class="docutils literal notranslate"><span class="pre">v0.21.0</span></code> tag for these images.
+Equivalent digest pins are <code class="docutils literal notranslate"><span class="pre">kbs-grpc-as&#64;sha256:873a1e1704965d1325b70fdf31335cc8d9c95acab4f003b0f3ece675b3584dd8</span></code>, <code class="docutils literal notranslate"><span class="pre">coco-as-grpc&#64;sha256:5319dcb609ed1d61876491bb43be1e03838f29eab7cea5673c7979892dc8015a</span></code>, and <code class="docutils literal notranslate"><span class="pre">rvps&#64;sha256:185cdc6754e544de3068a4f9c25733d62e7e6cfb8464da9f2de2ac490573b509</span></code>.
+This edit is unnecessary after Trustee starts pinning images in the release compose file.</p>
 </div>
 <p>For details on optional configuration such as the admin keypair, debug logging, and per-service config files, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/docker/">Install Trustee in Docker</a> guide.</p>
 </section>
