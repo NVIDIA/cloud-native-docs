@@ -102,6 +102,16 @@ Prerequisites
         For example, NVIDIA HGX GB200 NVL72 or NVIDIA HGX GB300 NVL72.
         Refer to the `NVIDIA Multi-Node NVLink Systems documentation <https://docs.nvidia.com/multi-node-nvlink-systems/index.html>`_ for details on Multi-Node NVLink systems.
 
+      * For using ComputeDomains with a pre-installed GPU Driver:
+
+        * The corresponding nvidia-imex-* packages installed through your Linux distribution's package manager.
+        * The IMEX systemd service disabled before installing the GPU Operator (on all GPU nodes).
+          For example:
+
+          .. code-block:: console
+
+             $ systemctl disable --now nvidia-imex.service && systemctl mask nvidia-imex.service
+
 
 
 *******************************
