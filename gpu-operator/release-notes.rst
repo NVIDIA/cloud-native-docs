@@ -189,6 +189,10 @@ Known Issues
 
   To avoid conflicting allocations, submit the workloads serially and wait for device preparation to complete, or dedicate separate nodes to container and VFIO workloads.
 
+* If you install the DRA Driver for NVIDIA GPUs from its own Helm chart alongside GPU Operator, both charts install the ComputeDomain custom resource definitions (CRDs).
+  GitOps tools that track CRD ownership can report a conflict between the two releases.
+  Do not install the standalone DRA chart with the ``GPUCluster`` workflow. If you use the standalone chart instead, install GPU Operator with ``--skip-crds`` and apply the ``ClusterPolicy`` and ``NVIDIADriver`` CRDs separately before creating those resources.
+
 Post-Release Documentation Updates
 ----------------------------------
 
