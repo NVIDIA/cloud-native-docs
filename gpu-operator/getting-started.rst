@@ -523,7 +523,8 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``false``
 
    * - ``driver.rdma.useHostMofed``
-     - Indicate if MLNX_OFED (MOFED) drivers are pre-installed on the host.
+     - Controls whether the driver daemon set builds the legacy ``nvidia-peermem`` kernel module against MLNX_OFED drivers that are installed on the host.
+       This option applies only when ``driver.rdma.enabled=true``.
      - ``false``
 
    * - ``driver.secretEnv``
