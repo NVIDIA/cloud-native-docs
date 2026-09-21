@@ -204,6 +204,8 @@ Post-Release Documentation Updates
 * Added support for Kubernetes 1.36 for Canonical MicroK8s to the :ref:`bare-metal` table.
 * Added a brief explanation of the ``partitionN`` attribute to the :ref:`gpu-operator-kubevirt-dra` page.
 * Added support for Kubernetes 1.37 to the :ref:`bare-metal`, :ref:`cloud service providers <cloud-service-providers>`, and KubeVirt and OpenShift Virtualization tables.
+* Corrected the ``kata-deploy`` Helm install on the :doc:`Kata Containers with GPU Operator <deploy-kata-containers>` page.
+  The previous ``--set`` used a GPU Operator chart key that the ``kata-deploy`` chart ignores.
 
 
 ----

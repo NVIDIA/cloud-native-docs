@@ -165,6 +165,7 @@ The minimum required version is ${kata_version}.
       $ helm install kata-deploy "${CHART}" \
          --namespace kata-system --create-namespace \
          -f kata-nvidia-gpu-values.yaml \
+         --wait --timeout 10m \
          --version "${VERSION}"
 
    *Example Output immediately after running the command:*
@@ -200,8 +201,8 @@ The minimum required version is ${kata_version}.
 
    .. note::
 
-      Both ``kata-deploy`` and the GPU Operator deploy Node Feature Discovery (NFD) by default.
-      The install command includes ``--set nfd.enabled=false`` to prevent ``kata-deploy`` from deploying NFD.
+      Both ``kata-deploy`` and the GPU Operator can deploy Node Feature Discovery (NFD).
+      The values file disables the NFD deployment by ``kata-deploy``.
       The GPU Operator will deploy and manage NFD in the next step.
 
 #. Verify that the ``kata-deploy`` pod is running:

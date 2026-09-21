@@ -154,13 +154,15 @@ You do not supply or install these artifacts individually.
    * - Artifact
      - Release/Version
    * - Guest OS
-     - Distroless
+     - Distroless, with `NVRC ${nvrc_version} <https://github.com/NVIDIA/nvrc/releases/tag/${nvrc_version}>`__,
+       NVIDIA GPU driver ${guest_nvidia_driver_version}, and
+       `guest-components ${guest_components_version} <https://github.com/confidential-containers/guest-components/releases/tag/${guest_components_version}>`__ artifacts.
    * - Guest kernel
-     - 6.18.5
+     - ${guest_kernel_version}
    * - `OVMF <https://github.com/tianocore/edk2>`__
      - edk2-stable202511
    * - `QEMU <https://www.qemu.org/>`__
-     - 10.1 \+ Patches
+     - ${qemu_version} \+ Patches
 
 Separately Deployed Components and Interfaces
 =============================================
@@ -174,18 +176,20 @@ The following components and interfaces are not installed by the :doc:`Quickstar
      - Version
      - When It Is Needed
      - How It Is Provided
-   * - `Key Broker Service (KBS) protocol <https://confidentialcontainers.org/docs/attestation/>`__
-     - 0.4.0
-     - Required for Trustee-based attestation and secret or key release.
-     - The :doc:`Attestation <attestation>` quickstart installs a local evaluation Trustee.
+   * - `Trustee <https://github.com/confidential-containers/trustee/releases/tag/${trustee_version}>`__
+     - ${trustee_version}
+     - Required for attestation and secret or key release.
+       This architecture validates Trustee ${trustee_version} with guest-components ${guest_components_version} in the Kata guest.
+     - The :doc:`Attestation <attestation>` quickstart installs a local evaluation Trustee ${trustee_version}.
        Deploy a production Trustee separately by following the upstream Confidential Containers documentation.
    * - `Kata Lifecycle Manager <https://github.com/kata-containers/lifecycle-manager>`__
      - 0.1.8
      - Optional for Kata Containers upgrades and day-two lifecycle management.
      - Install separately by following the upstream Kata Lifecycle Manager documentation.
-   * - `Kata Containers genpolicy <https://github.com/kata-containers/kata-containers/blob/${kata_version}/src/tools/genpolicy/README.md>`__
-     - ${kata_version}
+   * - `Kata Containers genpolicy <https://github.com/kata-containers/kata-containers/blob/${genpolicy_version}/src/tools/genpolicy/README.md>`__
+     - ${genpolicy_version}
      - Used to generate an agent security policy for attested production workloads.
-     - Download separately from the corresponding Kata Containers release.
+       Refer to :ref:`Attach a Kata Agent Security Policy <kata-agent-security-policy>`.
+     - Download ``genpolicy`` ${genpolicy_version} from the `Kata Containers ${genpolicy_version} release <https://github.com/kata-containers/kata-containers/releases/tag/${genpolicy_version}>`__.
 
 Users may leverage `Red Hat OpenShift Sandboxed Containers <https://docs.redhat.com/en/documentation/openshift_sandboxed_containers/1.13>`__ to deploy Confidential Containers.

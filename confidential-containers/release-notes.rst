@@ -64,6 +64,22 @@ Changes include:
 
 * Adds a readiness verification step using ``kubectl rollout status ds/kata-deploy``. This step relies on the readiness reporting in Kata Containers and lets you confirm that ``kata-deploy`` has finished extracting artifacts and restarting containerd on every node before continuing.
 
+Post-Release Documentation Updates
+----------------------------------
+
+* Renamed the supported platforms page to :ref:`Supported Platforms and Software Components <coco-supported-platforms>`.
+* Documented attaching a Kata agent security policy for attested production workloads.
+  Refer to :ref:`Attach a Kata Agent Security Policy <kata-agent-security-policy>`.
+* Split the software matrix into cluster prerequisites, Kata-provided guest and runtime artifacts, and separately deployed components.
+* Recorded the distroless guest payload: NVRC, the NVIDIA GPU driver in the guest, and guest-components.
+* Updated the guest kernel and QEMU versions to match the Kata Containers artifacts this architecture installs.
+* Replaced the Key Broker Service protocol version with Trustee ${trustee_version} as the separately deployed attestation component.
+  The :doc:`Attestation <attestation>` quickstart clones that Trustee tag, documents Compose image pins for KBS, AS, and RVPS to that commit, and pulls the matching ``kbs-client`` artifact.
+* Pinned ``genpolicy`` to ${genpolicy_version} and pointed the download and README links at that Kata Containers release.
+* Restored ``--wait`` on the detailed ``kata-deploy`` install command and attributed the disabled NFD deployment to the values file.
+* Corrected the NFD setting in :file:`samples/kata-nvidia-gpu-values.yaml`.
+  The sample used a key that the ``kata-deploy`` chart ignores, so the chart default kept NFD disabled instead of the sample.
+
 ----
 
 .. _coco-v1.0.0:
