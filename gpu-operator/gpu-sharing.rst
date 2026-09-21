@@ -19,6 +19,17 @@ of extended options for the `NVIDIA Kubernetes Device Plugin <https://catalog.ng
 GPU time-slicing enables workloads that are scheduled on oversubscribed GPUs to
 interleave with one another.
 
+.. note::
+
+   GPU sharing through the ClusterPolicy and NVIDIA Kubernetes Device Plugin
+   is supported through time-slicing and MIG. MPS is not officially supported
+   through this integration. MPS can run on statically partitioned MIG
+   instances; refer to the `MIG User Guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html>`__
+   for application considerations. Experimental MPS support through the DRA
+   driver requires the Alpha ``MPSSupport`` feature gate. Refer to
+   :doc:`dra-intro-install` for the DRA feature gates and their compatibility
+   constraints.
+
 This mechanism for enabling *time-slicing* of
 GPUs in Kubernetes enables a system administrator to define a set of
 *replicas* for a GPU, each of which can be handed out independently to a

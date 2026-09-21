@@ -917,10 +917,11 @@ Next Steps
 
 After verifying the installation, you can configure the GPU Operator for your workloads:
 
-- :doc:`gpu-sharing` — Share a single GPU across multiple pods using time-slicing or MPS.
+- :doc:`gpu-sharing` — Share a single GPU across multiple pods using time-slicing.
 - :doc:`gpu-operator-mig` — Configure Multi-Instance GPU (MIG) partitioning on supported GPUs.
 - :doc:`gpu-operator-rdma` — Enable GPUDirect RDMA for high-performance networking.
-- :doc:`dra-intro-install` — Allocate GPUs by using Kubernetes Dynamic Resource Allocation (DRA).
+- :doc:`dra-intro-install` — Allocate GPUs by using Kubernetes Dynamic Resource Allocation (DRA),
+  including experimental MPS sharing.
 - :doc:`nvidia-driver-configuration` — Use the NVIDIA GPU Driver Custom Resource Definition to manage drivers per node.
 - :doc:`precompiled-drivers` — Speed up driver deployments with precompiled kernel modules.
 - :doc:`cdi` — Learn about Container Device Interface (CDI) and NRI Plugin mode.
