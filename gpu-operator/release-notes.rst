@@ -204,6 +204,7 @@ Post-Release Documentation Updates
 * Added support for Kubernetes 1.36 for Canonical MicroK8s to the :ref:`bare-metal` table.
 * Added a brief explanation of the ``partitionN`` attribute to the :ref:`gpu-operator-kubevirt-dra` page.
 * Added support for Kubernetes 1.37 to the :ref:`bare-metal`, :ref:`cloud service providers <cloud-service-providers>`, and KubeVirt and OpenShift Virtualization tables.
+* Updated :doc:`gpu-operator-rdma` to clarify the DMA-BUF and ``nvidia-peermem`` requirements and installation steps, correct the MacVLAN verification example, and scope the GDS guidance to remote storage over RDMA.
 
 
 ----

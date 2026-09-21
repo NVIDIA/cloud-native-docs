@@ -25,46 +25,47 @@ such as NVIDIA ConnectX SmartNICs or BlueField DPUs, or video acquisition adapte
 GDS performs direct memory access (DMA) transfers between GPU memory and storage.
 DMA avoids a bounce buffer through the CPU.
 This direct path increases system bandwidth and decreases the latency and utilization load on the CPU.
+The GDS information on this page focuses on remote storage that transfers data over an RDMA-capable network.
+For local NVMe and other GDS configurations, refer to the `GPUDirect Storage documentation <https://docs.nvidia.com/gpudirect-storage/>`__.
 
-To support GPUDirect RDMA, userspace CUDA APIs are required.
-The kernel mode support is provided by one of two approaches: DMA-BUF from the Linux kernel or the legacy ``nvidia-peermem`` kernel module.
-NVIDIA recommends using the DMA-BUF rather than using the ``nvidia-peermem`` kernel module from the GPU Driver.
-
-The Operator uses GDS driver version 2.17.5 or newer.
-This version and higher is only supported with the NVIDIA Open GPU Kernel module driver.
-In GPU Operator v25.3.0 and later, the ``driver.kernelModuleType`` default is ``auto``, for the supported driver versions. 
-This configuration allows the GPU Operator to choose the recommended driver kernel module type depending on the driver branch and the GPU devices available. 
-Newer driver versions will use the open kernel module by default, however to make sure you are using the open kernel module, include ``--set driver.kernelModuleType=open`` command-line argument in your helm Operator install command.
+To support GPUDirect RDMA, an application or communication library registers GPU memory with an RDMA device.
+The system can register the memory through DMA-BUF in the Linux kernel or the legacy ``nvidia-peermem`` kernel module.
+NVIDIA recommends using DMA-BUF when it is supported.
+DMA-BUF uses the Linux kernel and RDMA buffer-sharing interfaces and does not require the GPU Operator to build and load the legacy ``nvidia-peermem`` kernel module.
+DMA-BUF reduces the network driver dependencies and configuration required on each node.
+When using DMA-BUF, the application or library must explicitly request it when registering GPU memory.
 
 In conjunction with the Network Operator, the GPU Operator can be used to
 set up the networking related components such as network device kernel drivers and Kubernetes device plugins to enable
 workloads to take advantage of GPUDirect RDMA and GPUDirect Storage.
 Refer to the Network Operator `documentation <https://docs.nvidia.com/networking/software/cloud-orchestration/index.html>`_ for installation information.
 
-********************
-Common Prerequisites
-********************
+****************************
+GPUDirect RDMA Prerequisites
+****************************
 
-The prerequisites for configuring GPUDirect RDMA or GPUDirect Storage depend on whether you use DMA-BUF from the Linux kernel or the legacy ``nvidia-peermem`` kernel module.
+The prerequisites for configuring direct GPUDirect RDMA workloads depend on whether you use DMA-BUF or the legacy ``nvidia-peermem`` kernel module.
 
 .. list-table::
    :header-rows: 1
    :stub-columns: 1
    :widths: 20 40 40
 
-   * - Technology
+   * - Requirement
      - DMA-BUF
-     - Legacy NVIDIA-peermem
+     - Legacy NVIDIA peermem
 
    * - GPU Driver
      - An Open Kernel module driver is required.
      - Any supported driver.
 
    * - CUDA
-     - CUDA 11.7 or higher.
-       The CUDA runtime is provided by the driver.
-     - No minimum version.
-       The CUDA runtime is provided by the driver.
+     - CUDA 11.7 or later in the workload.
+     - A CUDA version that is supported by the GPU driver and the workload.
+
+   * - Application
+     - The application or communication library must support DMA-BUF and explicitly select it when registering GPU memory.
+     - The application or communication library must support GPUDirect RDMA.
 
    * - GPU
      - Turing architecture data center, Quadro RTX, and RTX GPU or higher.
@@ -72,12 +73,15 @@ The prerequisites for configuring GPUDirect RDMA or GPUDirect Storage depend on 
 
    * - Network Device Drivers
      - MLNX_OFED or DOCA-OFED are optional.
-       You can use the Linux driver packages from the package manager.
+       You can use the Linux network driver and RDMA userspace packages from the operating system package manager.
      - MLNX_OFED or DOCA-OFED are required.
 
    * - Linux Kernel
      - 5.12 or higher.
      - No minimum version.
+
+The NVIDIA GPU driver provides the CUDA driver interface.
+The CUDA runtime and other CUDA userspace components must be available in the workload container.
 
 * Make sure the network device drivers are installed.
 
@@ -121,7 +125,7 @@ For information about the supported versions, refer to :ref:`Support for GPUDire
 Installing the GPU Operator and Enabling GPUDirect RDMA
 =======================================================
 
-To use DMA-BUF and network device drivers that are installed by the Network Operator:
+For DMA-BUF, install the GPU Operator with the NVIDIA Open GPU Kernel module driver:
 
 .. code-block:: console
 
@@ -129,86 +133,25 @@ To use DMA-BUF and network device drivers that are installed by the Network Oper
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
         --version=${version} \
+        --set driver.kernelModuleType=open
 
-To use DMA-BUF and network device drivers that are installed on the host:
-
-.. code-block:: console
-
-   $ helm install --wait --generate-name \
-        -n gpu-operator --create-namespace \
-        nvidia/gpu-operator \
-        --version=${version} \
-        --set driver.rdma.useHostMofed=true
-
-To use the legacy ``nvidia-peermem`` kernel module instead of DMA-BUF, add ``--set driver.rdma.enabled=true`` to either of the preceding commands.
-Add ``--set driver.kernelModuleType=open`` if you are using a driver version from a branch earlier than R570.
-
-Verifying the Installation of GPUDirect with RDMA
-=================================================
-
-During the installation, the NVIDIA driver daemon set runs an `init container` to wait on the network device kernel drivers to be ready.
-This init container checks for Mellanox NICs on the node and ensures that the necessary kernel symbols are exported by the kernel drivers.
-
-If you were required to use the ``driver.rdma.enabled=true`` argument when you installed the Operator, the nvidia-peermem-ctr container is started inside each driver pod after the verification.
-
-#. Confirm that the pod template for the driver daemon set includes the mofed-validation init container and
-   the nvidia-driver-ctr containers:
-
-   .. code-block:: console
-
-      $ kubectl describe ds -n gpu-operator nvidia-driver-daemonset
-
-   *Example Output*
-
-   The following partial output omits the init containers and containers that are common to all installations.
-
-   .. code-block:: output
-
-      ...
-       Init Containers:
-        mofed-validation:
-        Container ID:  containerd://5a36c66b43f676df616e25ba7ae0c81aeaa517308f28ec44e474b2f699218de3
-        Image:         nvcr.io/nvidia/cloud-native/gpu-operator-validator:v1.8.1
-        Image ID:      nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:7a70e95fd19c3425cd4394f4b47bbf2119a70bd22d67d72e485b4d730853262c
-      ...
-       Containers:
-        nvidia-driver-ctr:
-        Container ID:  containerd://199a760946c55c3d7254fa0ebe6a6557dd231179057d4909e26c0e6aec49ab0f
-        Image:         nvcr.io/nvaie/vgpu-guest-driver:470.63.01-ubuntu20.04
-        Image ID:      nvcr.io/nvaie/vgpu-guest-driver@sha256:a1b7d2c8e1bad9bb72d257ddfc5cec341e790901e7574ba2c32acaddaaa94625
-      ...
-        nvidia-peermem-ctr:
-        Container ID:  containerd://0742d86f6017bf0c304b549ebd8caad58084a4185a1225b2c9a7f5c4a171054d
-        Image:         nvcr.io/nvaie/vgpu-guest-driver:470.63.01-ubuntu20.04
-        Image ID:      nvcr.io/nvaie/vgpu-guest-driver@sha256:a1b7d2c8e1bad9bb72d257ddfc5cec341e790901e7574ba2c32acaddaaa94625
-      ...
-
-   The nvidia-peermem-ctr container is present only if you were required to specify the ``driver.rdma.enabled=true`` argument when you installed the Operator.
-
-#. Legacy only: Confirm that the nvidia-peermem-ctr container successfully loaded the nvidia-peermem kernel module:
-
-   .. code-block:: console
-
-      $ kubectl logs -n gpu-operator ds/nvidia-driver-daemonset -c nvidia-peermem-ctr
-
-   Alternatively, run ``kubectl logs -n gpu-operator nvidia-driver-daemonset-xxxxx -c nvidia-peermem-ctr`` for each pod in the daemonset.
-
-   *Example Output*
-
-   .. code-block:: output
-
-      waiting for mellanox ofed and nvidia drivers to be installed
-      waiting for mellanox ofed and nvidia drivers to be installed
-      successfully loaded nvidia-peermem module
-
+To use the legacy ``nvidia-peermem`` kernel module, add ``--set driver.rdma.enabled=true`` to the command.
+If MLNX_OFED is installed directly on the host, also add ``--set driver.rdma.useHostMofed=true``.
 
 Verifying the Installation by Performing a Data Transfer
 ========================================================
 
 You can perform the following steps to verify that GPUDirect with RDMA is configured
 correctly and that pods can perform RDMA data transfers.
+The example verifies GPUDirect RDMA over an Ethernet/RoCE network.
+It uses a MacVLAN secondary network and the RDMA shared device plugin to give the test pods shared access to an RDMA device.
+The sample commands use DMA-BUF.
+The ``--use_cuda_dmabuf`` option causes the perftest application to register GPU memory by using DMA-BUF.
+For the legacy ``nvidia-peermem`` path, run both commands without ``--use_cuda_dmabuf``.
 
-#. Get the network interface name of the InfiniBand device on the host:
+#. Run ``ibdev2netdev`` to identify the network interface associated with the RDMA device.
+
+   The following example runs the command in a Network Operator driver pod:
 
    .. code-block:: console
 
@@ -233,20 +176,20 @@ correctly and that pods can perform RDMA data transfers.
           name: demo-macvlannetwork
         spec:
           networkNamespace: "default"
-        master: "ens64np1"
-        mode: "bridge"
-        mtu: 1500
-        ipam: |
-          {
-            "type": "whereabouts",
-            "range": "192.168.2.225/28",
-            "exclude": [
-              "192.168.2.229/30",
-              "192.168.2.236/32"
-            ]
-          }
+          master: "ens64np1"
+          mode: "bridge"
+          mtu: 1500
+          ipam: |
+            {
+              "type": "whereabouts",
+              "range": "192.168.2.225/28",
+              "exclude": [
+                "192.168.2.229/30",
+                "192.168.2.236/32"
+              ]
+            }
 
-     Replace ``ens64np1`` with the the network interface name reported by the ``ibdev2netdev`` command
+     Replace ``ens64np1`` with the network interface name reported by the ``ibdev2netdev`` command
      from the preceding step.
 
    - Apply the manifest:
@@ -399,12 +342,35 @@ correctly and that pods can perform RDMA data transfers.
 
    .. code-block:: console
 
-      $ kubectl delete -f demo-macvlannetworks.yaml
+      $ kubectl delete -f demo-macvlannetwork.yaml
+
+
+Verifying the nvidia-peermem Kernel Module
+==========================================
+
+For deployments with the legacy ``nvidia-peermem`` kernel module, confirm that the ``nvidia-peermem-ctr`` container successfully loaded the module:
+
+.. code-block:: console
+
+   $ kubectl logs -n gpu-operator ds/nvidia-driver-daemonset -c nvidia-peermem-ctr
+
+Alternatively, run ``kubectl logs -n gpu-operator nvidia-driver-daemonset-xxxxx -c nvidia-peermem-ctr`` for each pod in the daemon set.
+
+*Example Output*
+
+.. code-block:: output
+
+   successfully loaded nvidia-peermem module
 
 
 ***********************
 Using GPUDirect Storage
 ***********************
+
+This section covers GDS with remote storage over an RDMA-capable network.
+In this configuration, GDS uses RDMA as the network transport, but the storage integration determines which network drivers and GPU memory registration mechanism are required.
+Follow the documentation for your storage system to configure and verify those components.
+For other storage configurations, refer to the `GPUDirect Storage documentation <https://docs.nvidia.com/gpudirect-storage/>`__.
 
 Platform Support
 ================
@@ -415,14 +381,15 @@ See :ref:`Support for GPUDirect Storage` on the platform support page.
 Installing the GPU Operator and Enabling GPUDirect Storage
 ==========================================================
 
-The following section is applicable to the following configurations and describe how to deploy the GPU Operator using the Helm Chart:
+The following section describes how to deploy the GPU Operator using the Helm Chart for these configurations:
 
 * Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU.
 
-Starting with v22.9.1, the GPU Operator provides an option to load the ``nvidia-fs`` kernel module during the bootstrap of the NVIDIA driver daemon set.
-Starting with v23.9.1, the GPU Operator deploys a version of GDS that requires using the NVIDIA Open Kernel module driver.
+The GPU Operator loads the ``nvidia-fs`` kernel module during the bootstrap of the NVIDIA driver daemon set.
+The Operator uses ``nvidia-fs`` version 2.17.5 or later, which requires the NVIDIA Open GPU Kernel module driver.
 
-The following sample command applies to clusters that use the Network Operator to install the network device kernel drivers.
+Configure the RDMA network and storage software separately according to the requirements for your storage system.
+Install the GPU Operator with the open kernel module driver and GDS enabled:
 
 .. code-block:: console
 
@@ -430,90 +397,43 @@ The following sample command applies to clusters that use the Network Operator t
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
         --version=${version} \
-        --set gds.enabled=true
+        --set gds.enabled=true \
+        --set driver.kernelModuleType=open
 
-Add ``--set driver.rdma.enabled=true`` to the command to use the legacy ``nvidia-peermem`` kernel module.
-
-Add ``--set driver.kernelModuleType=open`` if you are using a driver version from a branch earlier than R570.
+If the storage integration requires the legacy ``nvidia-peermem`` kernel module, also set ``driver.rdma.enabled=true``.
+If the integration uses ``nvidia-peermem`` with network device drivers that are installed on the host, also set ``driver.rdma.useHostMofed=true``.
 
 Verification
-==============
+============
 
-During the installation, an init container is used with the driver daemon set to wait on the network device kernel drivers to be ready.
-This init container checks for Mellanox NICs on the node and ensures that the necessary kernel symbols are exported by the kernel drivers.
-After the verification completes, the nvidia-fs-ctr container starts inside the driver pods.
-
-If you were required to use the ``driver.rdma.enabled=true`` argument when you installed the Operator, the nvidia-peermem-ctr container is started inside each driver pod after the verification.
+When GDS is enabled, the GPU Operator adds the nvidia-fs-ctr container to each NVIDIA driver pod.
+The container loads the ``nvidia_fs`` kernel module that provides the kernel support required by GDS.
+Confirm that the container is configured in the NVIDIA driver daemon set:
 
 .. code-block:: console
 
-   $ kubectl get pod -n gpu-operator
+   $ kubectl get ds -n gpu-operator nvidia-driver-daemonset \
+       -o jsonpath='{.spec.template.spec.containers[*].name}'
 
 *Example Output*
 
 .. code-block:: output
 
-   gpu-operator   gpu-feature-discovery-pktzg                                       1/1     Running     0          11m
-   gpu-operator   gpu-operator-1672257888-node-feature-discovery-master-7ccb7txmc   1/1     Running     0          12m
-   gpu-operator   gpu-operator-1672257888-node-feature-discovery-worker-bqhrl       1/1     Running     0          11m
-   gpu-operator   gpu-operator-6f64c86bc-zjqdh                                      1/1     Running     0          12m
-   gpu-operator   nvidia-container-toolkit-daemonset-rgwqg                          1/1     Running     0          11m
-   gpu-operator   nvidia-cuda-validator-8whvt                                       0/1     Completed   0          8m50s
-   gpu-operator   nvidia-dcgm-exporter-pt9q9                                        1/1     Running     0          11m
-   gpu-operator   nvidia-device-plugin-daemonset-472fc                              1/1     Running     0          11m
-   gpu-operator   nvidia-device-plugin-validator-29nhc                              0/1     Completed   0          8m34s
-   gpu-operator   nvidia-driver-daemonset-j9vw6                                     3/3     Running     0          12m
-   gpu-operator   nvidia-mig-manager-mtjcw                                          1/1     Running     0          7m35s
-   gpu-operator   nvidia-operator-validator-b8nz2                                   1/1     Running     0          11m
+   nvidia-driver-ctr nvidia-fs-ctr
 
+Verify that the ``nvidia_fs`` kernel module is loaded on a worker node:
 
 .. code-block:: console
 
-   $ kubectl describe pod -n gpu-operator nvidia-driver-daemonset-xxxx
-   <snip>
-    Init Containers:
-     mofed-validation:
-      Container ID:  containerd://a31a8c16ce7596073fef7cb106da94c452fdff111879e7fc3ec58b9cef83856a
-      Image:         nvcr.io/nvidia/cloud-native/gpu-operator-validator:v22.9.1
-      Image ID:      nvcr.io/nvidia/cloud-native/gpu-operator-validator@sha256:18c9ea88ae06d479e6657b8a4126a8ee3f4300a40c16ddc29fb7ab3763d46005
+   $ lsmod | grep nvidia_fs
 
-    <snip>
-    Containers:
-     nvidia-driver-ctr:
-      Container ID:  containerd://7cf162e4ee4af865c0be2023d61fbbf68c828d396207e7eab2506f9c2a5238a4
-      Image:         nvcr.io/nvidia/driver:525.60.13-ubuntu20.04
-      Image ID:      nvcr.io/nvidia/driver@sha256:0ee0c585fa720f177734b3295a073f402d75986c1fe018ae68bd73fe9c21b8d8
+*Example Output*
 
-
-     <snip>
-     nvidia-peermem-ctr:
-      Container ID:  containerd://5c71c9f8ccb719728a0503500abecfb5423e8088f474d686ee34b5fe3746c28e
-      Image:         nvcr.io/nvidia/driver:525.60.13-ubuntu20.04
-      Image ID:      nvcr.io/nvidia/driver@sha256:0ee0c585fa720f177734b3295a073f402d75986c1fe018ae68bd73fe9c21b8d8
-
-     <snip>
-     nvidia-fs-ctr:
-      Container ID:  containerd://f5c597d59e1cf8747aa20b8c229a6f6edd3ed588b9d24860209ba0cc009c0850
-      Image:         nvcr.io/nvidia/cloud-native/nvidia-fs:2.14.13-ubuntu20.04
-      Image ID:      nvcr.io/nvidia/cloud-native/nvidia-fs@sha256:109485365f68caeaee1edee0f3f4d722fe5b5d7071811fc81c630c8a840b847b
-
-    <snip>
-
-
-
-Lastly, verify that NVIDIA kernel modules are loaded on the worker node:
-
-.. code-block:: console
-
-   $ lsmod | grep nvidia
+.. code-block:: output
 
    nvidia_fs             245760  0
-   nvidia_peermem         16384  0
-   nvidia_modeset       1159168  0
-   nvidia_uvm           1048576  0
-   nvidia              39059456  115 nvidia_uvm,nvidia_modeset
-   ib_core               319488  9 rdma_cm,ib_ipoib,iw_cm,ib_umad,rdma_ucm,ib_uverbs,mlx5_ib,ib_cm
-   drm                   491520  6 drm_kms_helper,drm_vram_helper,nvidia,mgag200,ttm
+
+Finally, use the verification procedure for your storage system to confirm that the mount or storage client uses GDS over RDMA.
 
 
 *******************
@@ -523,6 +443,8 @@ Related Information
 Refer to the following resources for more information:
 
   * GPUDirect RDMA: https://docs.nvidia.com/cuda/gpudirect-rdma/index.html
+
+  * GPUDirect Storage: https://docs.nvidia.com/gpudirect-storage/
 
   * NVIDIA Network Operator: https://github.com/Mellanox/network-operator
 
