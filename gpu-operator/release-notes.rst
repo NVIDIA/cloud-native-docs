@@ -54,9 +54,56 @@ New Features
 Known Issues
 ------------
 
-* On nodes with NVIDIA H100 GPUs, upgrading the driver from 595.91.07 to 615.71.09 without rebooting can prevent subsequent MIG reconfiguration.
+* On nodes with NVIDIA H100 GPUs, upgrading the driver from 595.91.07 to 615.71.09 without rebooting or resetting the GPUs can prevent subsequent MIG reconfiguration.
   Deleting a MIG GPU instance fails with ``NVML ERROR_UNKNOWN``, and the driver logs Xid 119.
-  Reboot the node after upgrading the driver and before changing the MIG configuration.
+
+  As a workaround, reboot the node after upgrading the driver and before changing the MIG configuration.
+  Alternatively, perform the following steps for each affected node to reset the GPUs without rebooting the node:
+
+  #. Before upgrading the driver, disable MIG and wait for the ``nvidia.com/mig.config.state`` node label to report ``success``:
+
+     .. code-block:: console
+
+        $ kubectl label node <node-name> nvidia.com/mig.config=all-disabled --overwrite
+
+     If disabling MIG fails, reboot the node instead of continuing with these steps.
+
+  #. Pause the GPU operands that hold GPU handles:
+
+     .. code-block:: console
+
+        $ kubectl label node <node-name> --overwrite \
+            nvidia.com/gpu.deploy.device-plugin=false \
+            nvidia.com/gpu.deploy.gpu-feature-discovery=false \
+            nvidia.com/gpu.deploy.dcgm=false \
+            nvidia.com/gpu.deploy.dcgm-exporter=false \
+            nvidia.com/gpu.deploy.mig-manager=false
+
+  #. Change the ``driver.version`` value to ``615.71.09`` and wait for the driver pod on the node to report ``Running``.
+
+  #. Reset the GPUs and verify that they are detected:
+
+     .. code-block:: console
+
+        $ kubectl -n gpu-operator exec <driver-pod-name> -c nvidia-driver-ctr -- nvidia-smi -r
+        $ kubectl -n gpu-operator exec <driver-pod-name> -c nvidia-driver-ctr -- nvidia-smi -L
+
+  #. Resume the GPU operands:
+
+     .. code-block:: console
+
+        $ kubectl label node <node-name> --overwrite \
+            nvidia.com/gpu.deploy.device-plugin=true \
+            nvidia.com/gpu.deploy.gpu-feature-discovery=true \
+            nvidia.com/gpu.deploy.dcgm=true \
+            nvidia.com/gpu.deploy.dcgm-exporter=true \
+            nvidia.com/gpu.deploy.mig-manager=true
+
+  #. Restore the required MIG profile:
+
+     .. code-block:: console
+
+        $ kubectl label node <node-name> nvidia.com/mig.config=<profile> --overwrite
 
 ----
 
