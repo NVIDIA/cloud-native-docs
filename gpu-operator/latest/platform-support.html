@@ -468,8 +468,8 @@ All prior major versions enter end of support and are no longer supported and do
 <p class="admonition-title">Note</p>
 <p>Upgrades are only supported within a major release or to the next major release.</p>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id50">
-<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id50" title="Permalink to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id51">
+<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id51" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -567,6 +567,7 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 </div>
 </td>
 <td><div class="line-block">
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-615-71-09/index.html">615.71.09</a> <a class="reference external" href="#r615-requirements"><sup>3</sup></a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-610-57-04/index.html">610.57.04</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-91-07/index.html">595.91.07</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-71-05/index.html">595.71.05</a></div>
@@ -666,6 +667,11 @@ For more detailed information, see GitHub issue <a class="github reference exter
 <div><p><sup>2</sup>
 This release of the GDS driver requires that you use the NVIDIA Open GPU Kernel module driver for the GPUs.
 Refer to <a class="reference internal" href="gpu-operator-rdma.html"><span class="doc">GPUDirect RDMA and GPUDirect Storage</span></a> for more information.</p>
+</div></blockquote>
+<blockquote id="r615-requirements">
+<div><p><sup>3</sup>
+NVIDIA GPU Driver 615.71.09 requires NVIDIA Container Toolkit 1.20.1 and NVIDIA MIG Manager 0.15.1.
+Set the <code class="docutils literal notranslate"><span class="pre">toolkit.version=v1.20.1</span></code> and <code class="docutils literal notranslate"><span class="pre">migManager.version=v0.15.1</span></code> Helm values when you use this driver with GPU Operator 26.3.3.</p>
 </div></blockquote>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -1317,7 +1323,7 @@ They are not available for ARM based systems.</p>
 Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html">Partner Validated</a> documentation for information on other operating systems support.</p>
 </section>
 <section id="cloud-service-providers">
-<span id="id48"></span><h3>Cloud Service Providers<a class="headerlink" href="#cloud-service-providers" title="Permalink to this headline">#</a></h3>
+<span id="id49"></span><h3>Cloud Service Providers<a class="headerlink" href="#cloud-service-providers" title="Permalink to this headline">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 33%" />
@@ -1357,7 +1363,7 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/datacen
 </section>
 </section>
 <section id="supported-precompiled-drivers">
-<span id="id49"></span><h2>Supported Precompiled Drivers<a class="headerlink" href="#supported-precompiled-drivers" title="Permalink to this headline">#</a></h2>
+<span id="id50"></span><h2>Supported Precompiled Drivers<a class="headerlink" href="#supported-precompiled-drivers" title="Permalink to this headline">#</a></h2>
 <p>The GPU Operator has been validated with the following precompiled drivers.
 See the <a class="reference internal" href="precompiled-drivers.html"><span class="doc">Precompiled Driver Containers</span></a> page for more information about using precompiled drivers.</p>
 <div class="pst-scrollable-table-container"><table class="table">
