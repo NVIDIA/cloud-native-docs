@@ -485,10 +485,52 @@ The GPU Operator now infers these feature flags dynamically from the kernel modu
 </section>
 <section id="known-issues">
 <h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
-<li><p>On nodes with NVIDIA H100 GPUs, upgrading the driver from 595.91.07 to 615.71.09 without rebooting can prevent subsequent MIG reconfiguration.
-Deleting a MIG GPU instance fails with <code class="docutils literal notranslate"><span class="pre">NVML</span> <span class="pre">ERROR_UNKNOWN</span></code>, and the driver logs Xid 119.
-Reboot the node after upgrading the driver and before changing the MIG configuration.</p></li>
+<ul>
+<li><p>On nodes with NVIDIA H100 GPUs, upgrading the driver from 595.91.07 to 615.71.09 without rebooting or resetting the GPUs can prevent subsequent MIG reconfiguration.
+Deleting a MIG GPU instance fails with <code class="docutils literal notranslate"><span class="pre">NVML</span> <span class="pre">ERROR_UNKNOWN</span></code>, and the driver logs Xid 119.</p>
+<p>As a workaround, reboot the node after upgrading the driver and before changing the MIG configuration.
+Alternatively, perform the following steps for each affected node to reset the GPUs without rebooting the node:</p>
+<ol class="arabic">
+<li><p>Before upgrading the driver, disable MIG and wait for the <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig.config.state</span></code> node label to report <code class="docutils literal notranslate"><span class="pre">success</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>all-disabled --overwrite
+</pre></div>
+</div>
+<p>If disabling MIG fails, reboot the node instead of continuing with these steps.</p>
+</li>
+<li><p>Pause the GPU operands that hold GPU handles:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite <span class="se">\</span>
+    nvidia.com/gpu.deploy.device-plugin<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    nvidia.com/gpu.deploy.gpu-feature-discovery<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    nvidia.com/gpu.deploy.dcgm<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    nvidia.com/gpu.deploy.dcgm-exporter<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
+    nvidia.com/gpu.deploy.mig-manager<span class="o">=</span><span class="nb">false</span>
+</pre></div>
+</div>
+</li>
+<li><p>Change the <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> value to <code class="docutils literal notranslate"><span class="pre">615.71.09</span></code> and wait for the driver pod on the node to report <code class="docutils literal notranslate"><span class="pre">Running</span></code>.</p></li>
+<li><p>Reset the GPUs and verify that they are detected:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl -n gpu-operator <span class="nb">exec</span> &lt;driver-pod-name&gt; -c nvidia-driver-ctr -- nvidia-smi -r
+<span class="gp">$ </span>kubectl -n gpu-operator <span class="nb">exec</span> &lt;driver-pod-name&gt; -c nvidia-driver-ctr -- nvidia-smi -L
+</pre></div>
+</div>
+</li>
+<li><p>Resume the GPU operands:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; --overwrite <span class="se">\</span>
+    nvidia.com/gpu.deploy.device-plugin<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    nvidia.com/gpu.deploy.gpu-feature-discovery<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    nvidia.com/gpu.deploy.dcgm<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    nvidia.com/gpu.deploy.dcgm-exporter<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
+    nvidia.com/gpu.deploy.mig-manager<span class="o">=</span><span class="nb">true</span>
+</pre></div>
+</div>
+</li>
+<li><p>Restore the required MIG profile:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label node &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>&lt;profile&gt; --overwrite
+</pre></div>
+</div>
+</li>
+</ol>
+</li>
 </ul>
 </section>
 <section id="post-release-documentation-updates">
