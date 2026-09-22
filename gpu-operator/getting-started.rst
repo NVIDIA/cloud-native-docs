@@ -754,6 +754,10 @@ Running a Custom Driver Image
 If you want to use custom driver container images, such as version 580.126.20, then
 you can build a custom driver container image. Follow these steps:
 
+- Install Docker Engine on the machine where you build the image. Follow the
+  `Docker installation guide <https://docs.docker.com/engine/install/>`__ for
+  your operating system. Verify that Docker is available by running
+  ``docker version`` before continuing.
 - Rebuild the driver container by specifying the ``$DRIVER_VERSION`` argument when building the Docker image. For
   reference, the `driver container Dockerfiles <https://github.com/NVIDIA/gpu-driver-container/>`__ are available on GitHub.
 - Build the container using the appropriate Dockerfile. For example:
