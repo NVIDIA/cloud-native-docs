@@ -98,6 +98,10 @@ The guest driver file name follows the pattern ``NVIDIA-Linux-x86_64-<version>-g
 Build the Driver Container
 **************************
 
+This build procedure is for vGPU users who are not NVIDIA AI Enterprise
+customers. NVIDIA AI Enterprise customers can pull the prebuilt vGPU driver
+image from NVIDIA NGC. For that workflow, refer to :doc:`install-gpu-operator-nvaie`.
+
 Perform the following steps to build and push a container image that includes the vGPU Linux guest driver.
 
 #. Clone the driver container repository and change directory into the repository:
