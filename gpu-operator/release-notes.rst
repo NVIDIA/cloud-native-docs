@@ -47,6 +47,7 @@ New Features
   - NVIDIA DCGM Exporter v4.6.1-4.8.4
   - NVIDIA DCGM 4.6.1-1
   - NVIDIA MIG Manager for Kubernetes v0.15.1
+  - NVIDIA vGPU Device Manager v0.5.1
   - NVIDIA Confidential Computing Manager for Kubernetes v0.4.4
 
 * Added support for NVIDIA Data Center GPU Driver 615.71.09.

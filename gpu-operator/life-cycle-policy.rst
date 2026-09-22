@@ -144,7 +144,8 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - :cspan:`1` `v1.6.0 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`__
 
    * - NVIDIA vGPU Device Manager
-     - :cspan:`1` `v0.5.0 <https://github.com/NVIDIA/vgpu-device-manager>`__
+     - `v0.5.0 <https://github.com/NVIDIA/vgpu-device-manager>`__
+     - `v0.5.1 <https://github.com/NVIDIA/vgpu-device-manager>`__
 
    * - NVIDIA GDS Driver |gds|_
      - :cspan:`1` `2.29.4 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`__
