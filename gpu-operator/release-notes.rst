@@ -33,6 +33,33 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v26.7.1:
+
+26.7.1
+======
+
+New Features
+------------
+
+* Updated software component versions:
+
+  - NVIDIA Container Toolkit v1.20.1
+  - NVIDIA DCGM Exporter v4.6.1-4.8.4
+  - NVIDIA DCGM 4.6.1-1
+  - NVIDIA MIG Manager for Kubernetes v0.15.1
+  - NVIDIA Confidential Computing Manager for Kubernetes v0.4.4
+
+* Added support for NVIDIA Data Center GPU Driver 615.71.09.
+
+Known Issues
+------------
+
+* On nodes with NVIDIA H100 GPUs, upgrading the driver from 595.91.07 to 615.71.09 without rebooting can prevent subsequent MIG reconfiguration.
+  Deleting a MIG GPU instance fails with ``NVML ERROR_UNKNOWN``, and the driver logs Xid 119.
+  Reboot the node after upgrading the driver and before changing the MIG configuration.
+
+----
+
 .. _v26.7.0:
 
 26.7.0
