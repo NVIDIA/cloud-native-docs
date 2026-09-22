@@ -105,14 +105,16 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
        | `535.309.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-309-01/index.html>`_
 
    * - NVIDIA Driver Manager for Kubernetes
-     - :cspan:`1` `v0.12.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
+     - `v0.12.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
+     - `v0.12.1 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
 
    * - NVIDIA Container Toolkit
      - `1.20.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
      - `1.20.1 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
 
    * - NVIDIA Device Plugin for Kubernetes
-     - :cspan:`1` `0.20.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.20.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.20.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - DRA Driver for NVIDIA GPUs
      - :cspan:`1` `v${dra_version} <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v${dra_version}>`__
@@ -126,7 +128,8 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - | NVIDIA GPU Feature Discovery
        | for Kubernetes
-     - :cspan:`1` `0.20.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.20.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.20.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
      - `0.15.0 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__

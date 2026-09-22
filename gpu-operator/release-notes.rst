@@ -43,10 +43,13 @@ New Features
 
 * Updated software component versions:
 
+  - NVIDIA Driver Manager for Kubernetes v0.12.1
   - NVIDIA Container Toolkit v1.20.1
+  - NVIDIA Device Plugin for Kubernetes v0.20.1
   - NVIDIA DCGM Exporter v4.6.1-4.8.4
   - NVIDIA DCGM 4.6.1-1
   - NVIDIA MIG Manager for Kubernetes v0.15.1
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.20.1
   - NVIDIA vGPU Device Manager v0.5.1
   - NVIDIA Confidential Computing Manager for Kubernetes v0.4.4
 
