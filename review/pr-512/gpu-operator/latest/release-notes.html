@@ -505,8 +505,8 @@ When omitted, the field defaults to <code class="docutils literal notranslate"><
 <section id="fixed-issues">
 <h3>Fixed Issues<a class="headerlink" href="#fixed-issues" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>Fixed an issue where GPU Feature Discovery could not update a <code class="docutils literal notranslate"><span class="pre">NodeFeature</span></code> resource because its role did not permit deleting <code class="docutils literal notranslate"><span class="pre">NodeFeature</span></code> resources.
-The role now includes the required delete permission.
+<li><p>Fixed an issue where GPU Feature Discovery could not update a <code class="docutils literal notranslate"><span class="pre">NodeFeature</span></code> resource when the <code class="docutils literal notranslate"><span class="pre">OwnerReferencesPermissionEnforcement</span></code> admission controller was enabled.
+The GPU Feature Discovery role now permits deleting <code class="docutils literal notranslate"><span class="pre">NodeFeature</span></code> resources.
 (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2926">GPU Operator PR #2926</a>, <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/2914">Issue #2914</a>)</p></li>
 <li><p>Fixed an issue where GPU operands could start after the driver pod restarted but before the driver libraries became available.
 Affected operands could fail, and NVIDIA MIG Manager could report <code class="docutils literal notranslate"><span class="pre">ERROR_LIBRARY_NOT_FOUND</span></code>.
