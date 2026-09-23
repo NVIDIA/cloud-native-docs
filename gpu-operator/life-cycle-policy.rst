@@ -88,65 +88,79 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    :header-rows: 2
 
    * - :rspan:`1` Component
-     - GPU Operator Version
+     - :cspan:`1` GPU Operator Version
 
    * - v26.7.0
+     - v26.7.1
 
    * - NVIDIA GPU Driver
      - | `610.57.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-610-57-04/index.html>`_
        | `595.91.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-91-07/index.html>`_ (**R**, **D**)
        | `580.173.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-173-02/index.html>`_
-       | `535.309.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-309-01/index.html>`_
+     - | `615.71.09 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-615-71-09/index.html>`_
+       | `610.57.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-610-57-04/index.html>`_
+       | `595.91.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-91-07/index.html>`_ (**R**, **D**)
+       | `580.173.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-173-02/index.html>`_
 
    * - NVIDIA Driver Manager for Kubernetes
      - `v0.12.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
+     - `v0.12.1 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
 
    * - NVIDIA Container Toolkit
      - `1.20.0 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
+     - `1.20.1 <https://github.com/NVIDIA/nvidia-container-toolkit/releases>`__
 
    * - NVIDIA Device Plugin for Kubernetes
      - `0.20.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.20.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - DRA Driver for NVIDIA GPUs
-     - `v${dra_version} <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v${dra_version}>`__
+     - :cspan:`1` `v${dra_version} <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v${dra_version}>`__
 
    * - DCGM Exporter
      - `v4.6.0-4.8.3 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
+     - `v4.6.1-4.8.4 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
 
    * - Node Feature Discovery
-     - `v0.19.0 <https://github.com/kubernetes-sigs/node-feature-discovery/releases/>`__
+     - :cspan:`1` `v0.19.0 <https://github.com/kubernetes-sigs/node-feature-discovery/releases/>`__
 
    * - | NVIDIA GPU Feature Discovery
        | for Kubernetes
      - `0.20.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.20.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
      - `0.15.0 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
+     - `0.15.1 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
 
    * - DCGM
      - `4.6.0-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
+     - `4.6.1-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
 
    * - Validator for NVIDIA GPU Operator
-     - ${version}
+     - v26.7.0
+     - v26.7.1
 
    * - NVIDIA KubeVirt GPU Device Plugin
-     - `v1.6.0 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`__
+     - :cspan:`1` `v1.6.0 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`__
 
    * - NVIDIA vGPU Device Manager
      - `v0.5.0 <https://github.com/NVIDIA/vgpu-device-manager>`__
+     - `v0.5.1 <https://github.com/NVIDIA/vgpu-device-manager>`__
 
    * - NVIDIA GDS Driver |gds|_
-     - `2.29.4 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`__
+     - :cspan:`1` `2.29.4 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`__
 
    * - | NVIDIA Confidential Computing
        | Manager for Kubernetes
      - `v0.4.3 <https://github.com/NVIDIA/k8s-cc-manager/releases>`__
+     - `v0.4.4 <https://github.com/NVIDIA/k8s-cc-manager/releases>`__
 
    * - NVIDIA GDRCopy Driver
-     - `v2.6 <https://github.com/NVIDIA/gdrcopy/releases>`__
+     - :cspan:`1` `v2.6 <https://github.com/NVIDIA/gdrcopy/releases>`__
 
    * - NVIDIA Kata Sandbox Device Plugin
-     - `v0.0.5 <https://github.com/NVIDIA/sandbox-device-plugin/releases>`__
+     - :cspan:`1` `v0.0.5 <https://github.com/NVIDIA/sandbox-device-plugin/releases>`__
 
 .. _gds-open-kernel:
 
