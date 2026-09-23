@@ -80,8 +80,8 @@ Improvements
 Fixed Issues
 ------------
 
-* Fixed an issue where GPU Feature Discovery could not update a ``NodeFeature`` resource because its role did not permit deleting ``NodeFeature`` resources.
-  The role now includes the required delete permission.
+* Fixed an issue where GPU Feature Discovery could not update a ``NodeFeature`` resource when the ``OwnerReferencesPermissionEnforcement`` admission controller was enabled.
+  The GPU Feature Discovery role now permits deleting ``NodeFeature`` resources.
   (`GPU Operator PR #2926 <https://github.com/NVIDIA/gpu-operator/pull/2926>`__, `Issue #2914 <https://github.com/NVIDIA/gpu-operator/issues/2914>`__)
 
 * Fixed an issue where GPU operands could start after the driver pod restarted but before the driver libraries became available.
