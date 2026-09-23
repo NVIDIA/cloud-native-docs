@@ -733,6 +733,37 @@ Fixed Issues
 Known Issues
 ------------
 
+* When you install the GPU Operator Helm chart and the standalone DRA Driver Helm chart
+  with a GitOps tool that tracks custom resource definition ownership, both charts can
+  claim the ``computedomains.resource.nvidia.com`` and
+  ``computedomaincliques.resource.nvidia.com`` custom resource definitions.
+  The ownership conflict can prevent the GitOps tool from applying the applications.
+
+  To work around this issue, skip the GPU Operator chart's custom resource definitions
+  during installation and apply only the ClusterPolicy and NVIDIADriver definitions
+  from the matching GPU Operator release. Leave the ComputeDomain definitions to the
+  standalone DRA Driver chart:
+
+  .. code-block:: console
+
+     $ helm install gpu-operator nvidia/gpu-operator \
+         --namespace gpu-operator \
+         --create-namespace \
+         --version=${version} \
+         --skip-crds
+
+     $ export RELEASE_TAG=${version}
+
+     $ kubectl apply -f \
+         https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_clusterpolicies.yaml
+
+     $ kubectl apply -f \
+         https://raw.githubusercontent.com/NVIDIA/gpu-operator/refs/tags/$RELEASE_TAG/deployments/gpu-operator/crds/nvidia.com_nvidiadrivers.yaml
+
+  This workaround applies to Helm-based installations, including GitOps workflows.
+  For OpenShift installations managed by Operator Lifecycle Manager, follow the
+  OpenShift OLM installation and upgrade procedure instead of this Helm workaround.
+
 * When using cri-o as the container runtime, several of the GPU Operator pods may be stuck in the ``Init:RunContainerError`` or ``Init:CreateContainerError`` state during installation of GPU Operator, upgrade of GPU Operator, or upgrade of the GPU driver daemonset.
   The pods may be in this state for several minutes and restart several times.
   The pods will recover from this state as soon as the container toolkit pod starts running.
