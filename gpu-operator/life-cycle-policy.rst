@@ -97,12 +97,10 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - | `610.57.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-610-57-04/index.html>`_
        | `595.91.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-91-07/index.html>`_ (**R**, **D**)
        | `580.173.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-173-02/index.html>`_
-       | `535.309.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-309-01/index.html>`_
      - | `615.71.09 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-615-71-09/index.html>`_
        | `610.57.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-610-57-04/index.html>`_
        | `595.91.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-91-07/index.html>`_ (**R**, **D**)
        | `580.173.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-173-02/index.html>`_
-       | `535.309.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-309-01/index.html>`_
 
    * - NVIDIA Driver Manager for Kubernetes
      - `v0.12.0 <https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager>`__
