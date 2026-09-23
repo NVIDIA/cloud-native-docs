@@ -55,6 +55,83 @@ New Features
 
 * Added support for NVIDIA Data Center GPU Driver 615.71.09.
 
+* Helm installations can now configure the leader-election lease renewal deadline by setting the ``operator.leaderElection.renewDeadline`` Helm value.
+  This matches the configuration available with OLM installations.
+  (`GPU Operator PR #2902 <https://github.com/NVIDIA/gpu-operator/pull/2902>`__)
+
+* Containers can now enforce soft and hard per-GPU CUDA memory limits.
+  Set the ``NVIDIA_GPU_MEMORY_REQUEST`` and ``NVIDIA_GPU_MEMORY_LIMIT`` environment variables to specify the limits in MiB.
+  This feature requires an R615 or later driver.
+  (`Container Toolkit PR #2093 <https://github.com/NVIDIA/nvidia-container-toolkit/pull/2093>`__)
+
+Improvements
+------------
+
+* The deprecated ``spec.numNodes`` field is no longer required in a ``ComputeDomain`` resource.
+  When omitted, the field defaults to ``0``.
+  (`GPU Operator PR #2863 <https://github.com/NVIDIA/gpu-operator/pull/2863>`__)
+
+* The release image list now includes images used only by the OLM bundle, helping administrators mirror or allowlist every image required for an OLM installation.
+  (`GPU Operator PR #2927 <https://github.com/NVIDIA/gpu-operator/pull/2927>`__)
+
+* Containers using R615 or later drivers now automatically receive the GPU firmware files required at runtime when CDI is used.
+  (`Container Toolkit PR #2096 <https://github.com/NVIDIA/nvidia-container-toolkit/pull/2096>`__)
+
+Fixed Issues
+------------
+
+* Fixed an issue where GPU Feature Discovery could not update a ``NodeFeature`` resource because its role did not permit deleting ``NodeFeature`` resources.
+  The role now includes the required delete permission.
+  (`GPU Operator PR #2926 <https://github.com/NVIDIA/gpu-operator/pull/2926>`__, `Issue #2914 <https://github.com/NVIDIA/gpu-operator/issues/2914>`__)
+
+* Fixed an issue where GPU operands could start after the driver pod restarted but before the driver libraries became available.
+  Affected operands could fail, and NVIDIA MIG Manager could report ``ERROR_LIBRARY_NOT_FOUND``.
+  GPU operands now wait for driver validation to complete.
+  (`GPU Operator PR #2896 <https://github.com/NVIDIA/gpu-operator/pull/2896>`__, `Issue #2874 <https://github.com/NVIDIA/gpu-operator/issues/2874>`__)
+
+* Fixed an issue where the Operator could continue reconciliation after NVIDIA driver DaemonSet cleanup failed.
+  The Operator now remains in the current state and reports the cleanup error against the correct state.
+  (`GPU Operator PR #2793 <https://github.com/NVIDIA/gpu-operator/pull/2793>`__)
+
+* Fixed an issue where an ``NVIDIADriver``-managed driver pod did not mount the host ``/lib/modules`` directory when using precompiled drivers on SUSE nodes.
+  (`GPU Operator PR #2791 <https://github.com/NVIDIA/gpu-operator/pull/2791>`__, `Issue #2776 <https://github.com/NVIDIA/gpu-operator/issues/2776>`__)
+
+* Fixed false ``GPUOperatorNodeDeploymentFailed`` alerts when the NVIDIA Device Plugin was intentionally disabled in the ``ClusterPolicy``.
+  The NVIDIA Node Status Exporter now skips Device Plugin validation when ``devicePlugin.enabled=false``.
+  (`GPU Operator PR #2818 <https://github.com/NVIDIA/gpu-operator/pull/2818>`__, `Issue #2237 <https://github.com/NVIDIA/gpu-operator/issues/2237>`__)
+
+* Fixed an issue where GPU Feature Discovery could panic while parsing a malformed PCI vendor-specific capability length.
+  Invalid capability entries are now skipped.
+  (`k8s-device-plugin PR #2027 <https://github.com/NVIDIA/k8s-device-plugin/pull/2027>`__, `Issue #1891 <https://github.com/NVIDIA/k8s-device-plugin/issues/1891>`__)
+
+* Fixed an issue where NVIDIA MIG Manager could leave GPU operands paused indefinitely when waiting for GPU client pods to stop or when restarting the validator failed.
+  NVIDIA MIG Manager now restores the operand labels and reports the MIG configuration state as ``failed``.
+  (`MIG Manager PR #484 <https://github.com/NVIDIA/mig-parted/pull/484>`__, `Issue #485 <https://github.com/NVIDIA/mig-parted/issues/485>`__)
+
+* Fixed an issue where mounting ``/etc/nvidia`` as read-only caused the ``update-application-profile`` hook to fail container creation.
+  The hook now ignores read-only file system errors when application profiles cannot be written.
+  (`Container Toolkit PR #2028 <https://github.com/NVIDIA/nvidia-container-toolkit/pull/2028>`__, `Issue #2026 <https://github.com/NVIDIA/nvidia-container-toolkit/issues/2026>`__)
+
+* Fixed an issue where enabling CDI with ``nvidia-ctk runtime configure`` could overwrite existing Docker feature flags, such as ``containerd-snapshotter``.
+  Existing Docker feature flags are now preserved.
+  (`Container Toolkit PR #2094 <https://github.com/NVIDIA/nvidia-container-toolkit/pull/2094>`__)
+
+* Fixed NVIDIA graphics and display injection on hosts where X.Org and GLVND configuration files are installed outside the canonical container paths.
+  NVIDIA Container Toolkit now mounts the files in canonical locations and injects the EGL X11 libraries and ``nvidia-xconfig``.
+  (`Container Toolkit PR #1980 <https://github.com/NVIDIA/nvidia-container-toolkit/pull/1980>`__, `Issue #1477 <https://github.com/NVIDIA/nvidia-container-toolkit/issues/1477>`__, `Issue #563 <https://github.com/NVIDIA/nvidia-container-toolkit/issues/563>`__)
+
+* Fixed an issue where generated CDI specifications could omit NVIDIA control device nodes and cause Vulkan or Wayland applications to fail.
+  The ``nvidia-cdi-refresh`` service now creates missing control device nodes before generating CDI specifications.
+  (`Container Toolkit PR #1979 <https://github.com/NVIDIA/nvidia-container-toolkit/pull/1979>`__, `Issue #1982 <https://github.com/NVIDIA/nvidia-container-toolkit/issues/1982>`__)
+
+* Fixed an issue where CDI hooks could fail with Podman ``--userns nomap`` or ``--userns auto`` because they could not read the container bundle.
+  With ``crun`` 1.27 or later, the hooks now use the container root path supplied by the runtime.
+  (`Container Toolkit PR #1971 <https://github.com/NVIDIA/nvidia-container-toolkit/pull/1971>`__, `Issue #648 <https://github.com/NVIDIA/nvidia-container-toolkit/issues/648>`__)
+
+* Improved handling of transient Kubernetes API errors during driver operations that could leave a node cordoned.
+  NVIDIA Driver Manager now retries cordon and uncordon requests with bounded exponential backoff.
+  (`Driver Manager PR #210 <https://github.com/NVIDIA/k8s-driver-manager/pull/210>`__, `Issue #190 <https://github.com/NVIDIA/k8s-driver-manager/issues/190>`__)
+
 Known Issues
 ------------
 
