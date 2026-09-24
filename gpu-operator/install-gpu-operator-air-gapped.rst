@@ -358,11 +358,11 @@ Deploy GPU Operator
 
 Download and deploy GPU Operator Helm Chart with the updated ``values.yaml``.
 
-Fetch the chart from the NGC repository:
+Download the chart from the NGC repository:
 
 .. code-block:: console
 
-    $ helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-${version}.tgz
+    $ helm pull https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-${version}.tgz
 
 Install the GPU Operator with the customized ``values.yaml``:
 
