@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>NVIDIA GPU Operator on Red Hat OpenShift Container Platform &#8212; NVIDIA GPU Operator on Red Hat OpenShift Container Platform</title>
+    <title>Deploy GPU Operator in an IPv6 Network &#8212; NVIDIA GPU Operator on Red Hat OpenShift Container Platform</title>
   
   
   
@@ -54,7 +54,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'deploy-gpu-ocp-ipv6';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -69,7 +69,8 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Introduction to NVIDIA GPU Operator on OpenShift" href="introduction.html" />
+    <link rel="next" title="Enabling the GPU Monitoring Dashboard" href="enable-gpu-monitoring-dashboard.html" />
+    <link rel="prev" title="Deploy GPU Operators in a disconnected or airgapped environment" href="mirror-gpu-ocp-disconnected.html" />
 
 
 
@@ -147,7 +148,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -241,6 +242,10 @@
   
 
   
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
 </div>
 
     </header>
@@ -261,7 +266,7 @@
     
   
 
-<a class="navbar-brand logo" href="#">
+<a class="navbar-brand logo" href="index.html">
   
   
   
@@ -345,7 +350,7 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><ul class="nav bd-sidenav">
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
 <li class="toctree-l1"><a class="reference internal" href="steps-overview.html">Installation and Upgrade Overview</a></li>
@@ -358,7 +363,7 @@
 <li class="toctree-l1"><a class="reference internal" href="mig-ocp.html">MIG Support in OpenShift Container Platform</a></li>
 <li class="toctree-l1"><a class="reference internal" href="clean-up.html">Cleanup</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mirror-gpu-ocp-disconnected.html">Deploy GPU Operators in a disconnected or airgapped environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deploy-gpu-ocp-ipv6.html">Deploy GPU Operator in an IPv6 Network</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Deploy GPU Operator in an IPv6 Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html">Enabling the GPU Monitoring Dashboard</a></li>
 
 <li class="toctree-l1"><a class="reference internal" href="time-slicing-gpus-in-openshift.html">Time-slicing NVIDIA GPUs in OpenShift</a></li>
@@ -400,9 +405,9 @@
       <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="#">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a>
+      <a href="index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</li>
+    <li class="breadcrumb-item active" aria-current="page">Deploy GPU Operator in an IPv6 Network</li>
   </ul>
 </nav></div>
       
@@ -418,32 +423,47 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="nvidia-gpu-operator-on-red-hat-openshift-container-platform">
-<h1>NVIDIA GPU Operator on Red Hat OpenShift Container Platform<a class="headerlink" href="#nvidia-gpu-operator-on-red-hat-openshift-container-platform" title="Permalink to this headline">#</a></h1>
-<div class="toctree-wrapper compound">
+  <section id="deploy-gpu-operator-in-an-ipv6-network">
+<span id="deploy-gpu-ocp-ipv6"></span><h1>Deploy GPU Operator in an IPv6 Network<a class="headerlink" href="#deploy-gpu-operator-in-an-ipv6-network" title="Permalink to this headline">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>You can deploy the NVIDIA GPU Operator on an OpenShift Container Platform cluster that uses IPv6-only networking.
+The only component that requires IPv6-specific configuration is NVIDIA DCGM.</p>
+<p>The default <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> custom resource sets <code class="docutils literal notranslate"><span class="pre">dcgm.enabled</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+With this setting, the Operator deploys DCGM as a separate <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm</span></code> daemon set.
+DCGM Exporter connects to the DCGM host engine, <code class="docutils literal notranslate"><span class="pre">nv-hostengine</span></code>, through the <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm</span></code> service on port <code class="docutils literal notranslate"><span class="pre">5555</span></code>.</p>
+<p>The DCGM container starts the host engine with the <code class="docutils literal notranslate"><span class="pre">-b</span> <span class="pre">0.0.0.0</span></code> argument by default.
+This argument binds the host engine to IPv4 addresses only.
+In an IPv6-only cluster, DCGM Exporter cannot connect to the host engine and the exporter pods go into <code class="docutils literal notranslate"><span class="pre">CrashLoopBackOff</span></code>.</p>
+</section>
+<section id="configure-dcgm-for-ipv6">
+<h2>Configure DCGM for IPv6<a class="headerlink" href="#configure-dcgm-for-ipv6" title="Permalink to this headline">#</a></h2>
+<p>To bind the host engine to IPv6 addresses, set <code class="docutils literal notranslate"><span class="pre">dcgm.args</span></code> and specify <code class="docutils literal notranslate"><span class="pre">::</span></code> as the bind address.
+The <code class="docutils literal notranslate"><span class="pre">::</span></code> value binds the host engine to all interfaces for IPv4 and IPv6.
+The values in <code class="docutils literal notranslate"><span class="pre">dcgm.args</span></code> replace the default container arguments, so you must specify the complete argument list.</p>
+<p class="rubric">Prerequisites</p>
+<ul class="simple">
+<li><p>GPU Operator v26.7.1 or later.
+Earlier versions include a DCGM Exporter that cannot resolve the <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm</span></code> service name to an IPv6 address.</p></li>
+</ul>
+<p class="rubric">Procedure</p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
-<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
-<li class="toctree-l1"><a class="reference internal" href="steps-overview.html">Installation and Upgrade Overview</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-nfd.html">NFD Operator Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-gpu-ocp.html">GPU Operator Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nvaie-with-ocp.html">NVIDIA AI Enterprise with OpenShift</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install-gpu-operator-gov-ready-openshift.html">Government Ready</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="mig-ocp.html">MIG Support in OpenShift Container Platform</a></li>
-<li class="toctree-l1"><a class="reference internal" href="clean-up.html">Cleanup</a></li>
-<li class="toctree-l1"><a class="reference internal" href="mirror-gpu-ocp-disconnected.html">Deploy GPU Operators in a disconnected or airgapped environment</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deploy-gpu-ocp-ipv6.html">Deploy GPU Operator in an IPv6 Network</a></li>
-<li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html">Enabling the GPU Monitoring Dashboard</a></li>
-<li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html#viewing-gpu-metrics">Viewing GPU Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="time-slicing-gpus-in-openshift.html">Time-slicing NVIDIA GPUs in OpenShift</a></li>
-<li class="toctree-l1"><a class="reference internal" href="openshift-virtualization.html">NVIDIA GPU Operator with OpenShift Virtualization</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-with-precompiled-drivers.html">Precompiled Drivers for the NVIDIA GPU Operator for RHCOS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting-gpu-ocp.html">Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="appendix-ocp.html">Appendix</a></li>
-</ul>
+<li><p>If you create the cluster policy from the command line, add the following <code class="docutils literal notranslate"><span class="pre">dcgm</span></code> field to the <code class="docutils literal notranslate"><span class="pre">spec</span></code> object in the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file before you apply it:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;dcgm&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;-n&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-b&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;::&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--log-level&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;NONE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-f&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
 </div>
+</li>
+<li><p>If the cluster policy already exists, patch it:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch clusterpolicy gpu-cluster-policy --type<span class="o">=</span>merge <span class="se">\</span>
+    -p <span class="s1">&#39;{&quot;spec&quot;:{&quot;dcgm&quot;:{&quot;args&quot;:[&quot;-n&quot;,&quot;-b&quot;,&quot;::&quot;,&quot;--log-level&quot;,&quot;NONE&quot;,&quot;-f&quot;,&quot;-&quot;]}}}&#39;</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</section>
 </section>
 
 
@@ -456,12 +476,21 @@
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="mirror-gpu-ocp-disconnected.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Deploy GPU Operators in a disconnected or airgapped environment</p>
+      </div>
+    </a>
     <a class="right-next"
-       href="introduction.html"
+       href="enable-gpu-monitoring-dashboard.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Introduction to NVIDIA GPU Operator on OpenShift</p>
+        <p class="prev-next-title">Enabling the GPU Monitoring Dashboard</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -472,9 +501,26 @@
             
             
 
-<div class="bd-sidebar-secondary"></div>
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
 
 
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-dcgm-for-ipv6">Configure DCGM for IPv6</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
 
