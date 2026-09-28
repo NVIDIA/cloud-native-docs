@@ -59,7 +59,7 @@
       KubeVirt with DRA <gpu-operator-kubevirt-dra.rst>
       Kata Containers <deploy-kata-containers.rst>
       Confidential Containers <confidential-containers-deploy.rst>
-   
+
 .. toctree::
    :caption: Specialized Networks
    :titlesonly:
@@ -68,6 +68,7 @@
    HTTP Proxy <install-gpu-operator-proxy.rst>
    Air-Gapped Network <install-gpu-operator-air-gapped.rst>
    Service Mesh <install-gpu-operator-service-mesh.rst>
+   IPv6 Networks <install-gpu-operator-ipv6.rst>
 
 .. toctree::
    :titlesonly:
