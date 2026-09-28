@@ -33,8 +33,31 @@ To use a Red Hat-provided precompiled driver image, set the ``driver`` fields of
      "usePrecompiled": true,
      "repository": "registry.redhat.io/nvidia",
      "image": "gpu-driver-rhel9",
-     "version": "580"
+     "version": "580",
+     "imagePullSecrets": ["redhat-registry-secret"]
    }
+
+Because ``registry.redhat.io`` requires authentication, ``driver.imagePullSecrets`` must reference a pull secret in the ``nvidia-gpu-operator`` namespace that contains valid ``registry.redhat.io`` credentials. Refer to `Red Hat Container Registry Authentication <https://access.redhat.com/articles/RegistryAuthentication>`_ for the supported authentication mechanisms:
+
+.. note::
+
+   The cluster-wide pull secret, ``openshift-config/pull-secret``, usually already has access to ``registry.redhat.io``.
+   However, the pull secret is not automatically scoped to the ``nvidia-gpu-operator`` namespace.
+   You still must create a namespace-scoped secret and reference it in ``driver.imagePullSecrets``.
+
+* **Customer Portal credentials**: Your individual Red Hat login. Simplest to use, but ties image pulls to a personal account.
+
+* **Registry Service Account token**: A dedicated username and token generated from the `Registry Service Account Management Application <https://access.redhat.com/terms-based-registry/>`_, decoupled from any individual account. Recommended for shared systems such as an OpenShift cluster.
+
+Create the pull secret using either credential type:
+
+.. code-block:: console
+
+   $ oc create secret docker-registry redhat-registry-secret \
+       --docker-server=registry.redhat.io \
+       --docker-username=<username> \
+       --docker-password=<password> \
+       -n nvidia-gpu-operator
 
 ***********************************
 Limitations and Restrictions
