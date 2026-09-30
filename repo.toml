@@ -228,6 +228,7 @@ docs_root = "${root}/openshift"
 project = "gpu-operator-openshift"
 name = "NVIDIA GPU Operator on Red Hat OpenShift Container Platform"
 version = "26.7"  # Check that this value matches maj.min version of repo_docs.projects.gpu-operator.version
+source_substitutions = { version = "26.7" }  # Keep in sync with the version value above
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "get-entitlement.rst",
