@@ -1,0 +1,960 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Installing the NVIDIA GPU Operator with DRA on OpenShift &#8212; NVIDIA GPU Operator on Red Hat OpenShift Container Platform</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'dra-gpu-ocp';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.7';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="NVIDIA AI Enterprise with OpenShift" href="nvaie-with-ocp.html" />
+    <link rel="prev" title="Installing the NVIDIA GPU Operator on OpenShift" href="install-gpu-ocp.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Oct 01, 2026"/>
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="steps-overview.html">Installation and Upgrade Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-nfd.html">NFD Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-ocp.html">GPU Operator Installation</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Installing the NVIDIA GPU Operator with DRA on OpenShift</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="nvaie-with-ocp.html">NVIDIA AI Enterprise with OpenShift</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install-gpu-operator-gov-ready-openshift.html">Government Ready</a></li>
+</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="mig-ocp.html">MIG Support in OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clean-up.html">Cleanup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mirror-gpu-ocp-disconnected.html">Deploy GPU Operators in a disconnected or airgapped environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html">Enabling the GPU Monitoring Dashboard</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="time-slicing-gpus-in-openshift.html">Time-slicing NVIDIA GPUs in OpenShift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openshift-virtualization.html">NVIDIA GPU Operator with OpenShift Virtualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-with-precompiled-drivers.html">Precompiled Drivers for the NVIDIA GPU Operator for RHCOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting-gpu-ocp.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-ocp.html">Appendix</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Installing the NVIDIA GPU Operator with DRA on OpenShift</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="installing-the-nvidia-gpu-operator-with-dra-on-openshift">
+<span id="dra-gpu-ocp"></span><h1>Installing the NVIDIA GPU Operator with DRA on OpenShift<a class="headerlink" href="#installing-the-nvidia-gpu-operator-with-dra-on-openshift" title="Permalink to this headline">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>Dynamic Resource Allocation (DRA) is a Kubernetes API for requesting, configuring, and sharing specialized devices such as GPUs.
+Starting with NVIDIA GPU Operator v26.7, you can use the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> and <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> custom resources to enable DRA-based GPU allocation on Red Hat OpenShift Container Platform, as an alternative to the Device Plugin-based <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> workflow described in <a class="reference internal" href="install-gpu-ocp.html#install-nvidiagpu"><span class="std std-ref">Installing the NVIDIA GPU Operator on OpenShift</span></a>.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>A cluster can have either a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource for DRA or a <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource for the Device Plugin, but not both.
+This page assumes a new installation. Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/dra-intro-install.html" title="(in NVIDIA GPU Operator)"><span>DRA Driver for NVIDIA GPUs</span></a> for the full DRA vs. Device Plugin capability comparison, feature-maturity matrix, and limitations, which apply equally to OpenShift.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This procedure requires GPU Operator v26.7 or later and Kubernetes v1.34.2 or later, which corresponds to Red Hat OpenShift Container Platform 4.21 or later.
+This guide is validated on Red Hat OpenShift Container Platform 4.22.</p>
+</div>
+</section>
+<section id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
+<ul>
+<li><p>A working OpenShift cluster with a GPU worker node. Refer to <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites for GPU Operator on OpenShift</span></a>.</p></li>
+<li><p>The Node Feature Discovery (NFD) Operator installed and running. Refer to <a class="reference internal" href="install-nfd.html#install-nfd"><span class="std std-ref">Installing the Node Feature Discovery Operator on OpenShift</span></a>.</p></li>
+<li><p>No <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource exists in the cluster:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get clusterpolicy
+</pre></div>
+</div>
+<p>If a <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource exists, use a different cluster for the DRA workflow, or remove the existing installation first. Refer to <a class="reference internal" href="clean-up.html"><span class="doc">Cleanup</span></a>.</p>
+</li>
+</ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>OpenShift’s CRI-O container runtime supports the Container Device Interface (CDI) required by the DRA driver without additional configuration.</p>
+</div>
+</section>
+<section id="installing-the-gpu-operator">
+<h2>Installing the GPU Operator<a class="headerlink" href="#installing-the-gpu-operator" title="Permalink to this headline">#</a></h2>
+<p>Follow these steps to install the NVIDIA GPU Operator by using the OpenShift CLI (<code class="docutils literal notranslate"><span class="pre">oc</span></code>), then create <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> and <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resources instead of <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>.</p>
+<ol class="arabic">
+<li><p>Create a namespace for the NVIDIA GPU Operator and save it in the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator.yaml</span></code> file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Namespace</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc create -f nvidia-gpu-operator.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Create an <code class="docutils literal notranslate"><span class="pre">OperatorGroup</span></code> CR and save it in the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operatorgroup.yaml</span></code> file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">operators.coreos.com/v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">OperatorGroup</span><span class="w"></span>
+<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator-group</span><span class="w"></span>
+<span class="w">  </span><span class="nt">namespace</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">targetNamespaces</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia-gpu-operator</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc create -f nvidia-gpu-operatorgroup.yaml
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Refer to <a class="reference internal" href="install-gpu-ocp.html#install-gpu-ocp"><span class="std std-ref">Installing the NVIDIA GPU Operator using the CLI</span></a> for detailed namespace and <code class="docutils literal notranslate"><span class="pre">OperatorGroup</span></code> creation steps if you have not already created them.</p>
+</div>
+</li>
+<li><p>Select the <code class="docutils literal notranslate"><span class="pre">v26.7</span></code> channel explicitly and look up the starting CSV. DRA support requires v26.7 or later, and the certified-operator default channel might still point to an earlier release:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">CHANNEL</span><span class="o">=</span>v26.7
+<span class="gp">$ </span><span class="nv">STARTING_CSV</span><span class="o">=</span><span class="k">$(</span>oc get packagemanifests/gpu-operator-certified -n openshift-marketplace -ojson <span class="p">|</span> jq -r <span class="s1">&#39;.status.channels[] | select(.name == &quot;&#39;</span><span class="nv">$CHANNEL</span><span class="s1">&#39;&quot;) | .currentCSV&#39;</span><span class="k">)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create the <code class="docutils literal notranslate"><span class="pre">Subscription</span></code> CR:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt;EOF &gt; nvidia-gpu-sub.yaml
+<span class="go">apiVersion: operators.coreos.com/v1alpha1</span>
+<span class="go">kind: Subscription</span>
+<span class="go">metadata:</span>
+<span class="go">  name: gpu-operator-certified</span>
+<span class="go">  namespace: nvidia-gpu-operator</span>
+<span class="go">spec:</span>
+<span class="go">  channel: $CHANNEL</span>
+<span class="go">  installPlanApproval: Manual</span>
+<span class="go">  name: gpu-operator-certified</span>
+<span class="go">  source: certified-operators</span>
+<span class="go">  sourceNamespace: openshift-marketplace</span>
+<span class="go">  startingCSV: $STARTING_CSV</span>
+<span class="go">EOF</span>
+
+<span class="gp">$ </span>oc create -f nvidia-gpu-sub.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Approve the install plan:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">INSTALL_PLAN</span><span class="o">=</span><span class="k">$(</span>oc get installplan -n nvidia-gpu-operator -oname<span class="k">)</span>
+<span class="gp">$ </span>oc patch <span class="nv">$INSTALL_PLAN</span> -n nvidia-gpu-operator --type merge --patch <span class="s1">&#39;{&quot;spec&quot;:{&quot;approved&quot;:true }}&#39;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="create-the-gpucluster-instance">
+<h2>Create the GPUCluster instance<a class="headerlink" href="#create-the-gpucluster-instance" title="Permalink to this headline">#</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> custom resource definition (CRD) and a default example are provided by the GPU Operator CSV, the same way <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> is provided.</p>
+<ol class="arabic">
+<li><p>Extract the default <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> example from the CSV:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator <span class="nv">$STARTING_CSV</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.alm-examples}&#39;</span> <span class="p">|</span> jq -r <span class="s1">&#39;map(select(.kind == &quot;GPUCluster&quot;)) | .[0]&#39;</span> &gt; gpucluster.json
+</pre></div>
+</div>
+<p>The default example is similar to the following:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;apiVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nvidia.com/v1alpha1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GPUCluster&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpu-cluster&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;spec&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;draDriver&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nvcr.io/nvidia&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;dra-driver-nvidia-gpu&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;v0.5.0&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;imagePullPolicy&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;IfNotPresent&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;computeDomains&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;dcgm&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;dcgmExporter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> does not manage the NVIDIA GPU driver. Create an <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resource in the next section to install the driver.</p>
+</div>
+</li>
+<li><p>Apply the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f gpucluster.json
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">gpucluster.nvidia.com/gpu-cluster created</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="create-the-nvidiadriver-instance">
+<h2>Create the NVIDIADriver instance<a class="headerlink" href="#create-the-nvidiadriver-instance" title="Permalink to this headline">#</a></h2>
+<ol class="arabic">
+<li><p>Extract the default <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> example from the CSV:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator <span class="nv">$STARTING_CSV</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.alm-examples}&#39;</span> <span class="p">|</span> jq -r <span class="s1">&#39;map(select(.kind == &quot;NVIDIADriver&quot;)) | .[0]&#39;</span> &gt; nvidiadriver.json
+</pre></div>
+</div>
+<p>The default example is similar to the following (abbreviated):</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;apiVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nvidia.com/v1alpha1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVIDIADriver&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpu-driver&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="p">},</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;spec&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;driverType&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpu&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nvcr.io/nvidia&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;driver&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;sha256:&lt;digest&gt;&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;nodeSelector&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The default <code class="docutils literal notranslate"><span class="pre">version</span></code> field pins a specific driver build by image digest rather than a release tag such as <code class="docutils literal notranslate"><span class="pre">580.65.06</span></code>. The digest satisfies the DRA driver’s minimum required GPU driver version of 580 or later. Change <code class="docutils literal notranslate"><span class="pre">repository</span></code>, <code class="docutils literal notranslate"><span class="pre">image</span></code>, and <code class="docutils literal notranslate"><span class="pre">version</span></code> to reference a different driver image if required, following the same pattern as the <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> <code class="docutils literal notranslate"><span class="pre">driver</span></code> fields described in <a class="reference internal" href="install-gpu-ocp.html#create-cluster-policy"><span class="std std-ref">Create the ClusterPolicy instance</span></a>.</p>
+</div>
+</li>
+<li><p>Apply the <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resource:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f nvidiadriver.json
+</pre></div>
+</div>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">nvidiadriver.nvidia.com/gpu-driver created</span>
+</pre></div>
+</div>
+<p>The Operator builds the driver container by using the OpenShift Driver Toolkit (DTK), the same mechanism used for the <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> driver daemonset. If the driver pod does not become ready, refer to <a class="reference internal" href="steps-overview.html#broken-dtk"><span class="std std-ref">About the Broken Driver Toolkit</span></a> for troubleshooting steps that apply to both workflows.</p>
+</li>
+</ol>
+</section>
+<section id="verify-the-installation">
+<h2>Verify the installation<a class="headerlink" href="#verify-the-installation" title="Permalink to this headline">#</a></h2>
+<ol class="arabic">
+<li><p>Confirm that the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> and <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resources are ready:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get gpucluster gpu-cluster
+<span class="gp">$ </span>oc get nvidiadriver -n nvidia-gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME          STATUS   AGE</span>
+<span class="go">gpu-cluster   ready    6m38s</span>
+
+<span class="go">NAME         STATUS   DEFAULT   AGE</span>
+<span class="go">gpu-driver   ready    false     2026-09-30T13:07:35Z</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">ready</span></code> status confirms that the Operator reconciled the desired state. If your cluster has no GPU nodes labeled yet, the managed pods in the next step do not start until the Node Feature Discovery Operator labels a GPU node.</p>
+</div>
+</li>
+<li><p>Confirm that the managed pods are running in the GPU Operator namespace:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get pods -n nvidia-gpu-operator
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                            READY   STATUS    RESTARTS   AGE</span>
+<span class="go">gpu-operator-6b4b79979d-vl9pw                   1/1     Running   0          3h21m</span>
+<span class="go">nvidia-dcgm-exporter-dra-pc85w                  1/1     Running   0          8m45s</span>
+<span class="go">nvidia-dra-driver-controller-6fc968db58-fzfw7   1/1     Running   0          171m</span>
+<span class="go">nvidia-dra-driver-kubelet-plugin-dhjcd          2/2     Running   0          8m34s</span>
+<span class="go">nvidia-dra-validator-thqnh                      1/1     Running   0          8m45s</span>
+<span class="go">nvidia-gpu-driver-rhel9-59f4c8db85-pn5c5        2/2     Running   0          8m45s</span>
+</pre></div>
+</div>
+<p>The driver <code class="docutils literal notranslate"><span class="pre">DaemonSet</span></code> is named <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-driver-rhel9-&lt;hash&gt;</span></code> and its node selector includes the RHCOS <code class="docutils literal notranslate"><span class="pre">OSTREE_VERSION</span></code> label, similar to the <code class="docutils literal notranslate"><span class="pre">nvidia-driver-daemonset-&lt;RHCOS-version&gt;</span></code> naming used by <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>.</p>
+</li>
+<li><p>Confirm that the DRA <code class="docutils literal notranslate"><span class="pre">DeviceClass</span></code> objects are available:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get deviceclass
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                        AGE</span>
+<span class="go">compute-domain-daemon.nvidia.com            3h</span>
+<span class="go">compute-domain-default-channel.nvidia.com   3h</span>
+<span class="go">gpu.nvidia.com                              3h</span>
+<span class="go">mig.nvidia.com                              3h</span>
+<span class="go">vfio.gpu.nvidia.com                         3h</span>
+</pre></div>
+</div>
+</li>
+<li><p>Confirm that a <code class="docutils literal notranslate"><span class="pre">ResourceSlice</span></code> was published for your GPU node:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get resourceslice -o yaml
+</pre></div>
+</div>
+<p><em>Example Output</em> (abbreviated)</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.k8s.io/v1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ResourceSlice</span><span class="w"></span>
+<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">devices</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">attributes</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">addressingMode</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">string</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">HMM</span><span class="w"></span>
+<span class="w">      </span><span class="nt">architecture</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">string</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Turing</span><span class="w"></span>
+<span class="w">      </span><span class="nt">brand</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">string</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Nvidia</span><span class="w"></span>
+<span class="w">      </span><span class="nt">cudaComputeCapability</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7.5.0</span><span class="w"></span>
+<span class="w">      </span><span class="nt">cudaDriverVersion</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">13.2.0</span><span class="w"></span>
+<span class="w">      </span><span class="nt">driverVersion</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">595.91.7</span><span class="w"></span>
+<span class="w">      </span><span class="nt">productName</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">string</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Tesla T4</span><span class="w"></span>
+<span class="w">      </span><span class="nt">uuid</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">string</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">GPU-35cc335d-cbdd-999f-6289-38d96976de78</span><span class="w"></span>
+<span class="w">    </span><span class="nt">capacity</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="nt">memory</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">15Gi</span><span class="w"></span>
+<span class="w">    </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-0</span><span class="w"></span>
+<span class="w">  </span><span class="nt">driver</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu.nvidia.com</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+<section id="running-a-sample-dra-workload">
+<h2>Running a sample DRA workload<a class="headerlink" href="#running-a-sample-dra-workload" title="Permalink to this headline">#</a></h2>
+<p>Request a full GPU by creating a <code class="docutils literal notranslate"><span class="pre">ResourceClaimTemplate</span></code> and a pod that references it.</p>
+<ol class="arabic">
+<li><p>Create a project for the sample workload:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc new-project gpu-example
+</pre></div>
+</div>
+</li>
+<li><p>Create a <code class="docutils literal notranslate"><span class="pre">ResourceClaimTemplate</span></code> that requests one GPU by using the managed <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com</span></code> <code class="docutils literal notranslate"><span class="pre">DeviceClass</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt;EOF <span class="p">|</span> oc create -f -
+<span class="go">apiVersion: resource.k8s.io/v1</span>
+<span class="go">kind: ResourceClaimTemplate</span>
+<span class="go">metadata:</span>
+<span class="go">  namespace: gpu-example</span>
+<span class="go">  name: single-gpu</span>
+<span class="go">spec:</span>
+<span class="go">  spec:</span>
+<span class="go">    devices:</span>
+<span class="go">      requests:</span>
+<span class="go">      - name: gpu</span>
+<span class="go">        exactly:</span>
+<span class="go">          deviceClassName: gpu.nvidia.com</span>
+<span class="go">EOF</span>
+</pre></div>
+</div>
+</li>
+<li><p>Create a pod that references the <code class="docutils literal notranslate"><span class="pre">ResourceClaimTemplate</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cat &lt;&lt;EOF <span class="p">|</span> oc create -f -
+<span class="go">apiVersion: v1</span>
+<span class="go">kind: Pod</span>
+<span class="go">metadata:</span>
+<span class="go">  namespace: gpu-example</span>
+<span class="go">  name: gpu-pod</span>
+<span class="go">spec:</span>
+<span class="go">  containers:</span>
+<span class="go">  - name: workload</span>
+<span class="go">    image: nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubi8</span>
+<span class="go">    command: [&quot;bash&quot;, &quot;-c&quot;]</span>
+<span class="go">    args: [&quot;nvidia-smi -L; sleep 9999&quot;]</span>
+<span class="go">    resources:</span>
+<span class="go">      claims:</span>
+<span class="go">      - name: gpu</span>
+<span class="go">  resourceClaims:</span>
+<span class="go">  - name: gpu</span>
+<span class="go">    resourceClaimTemplateName: single-gpu</span>
+<span class="go">EOF</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>OpenShift can report a <code class="docutils literal notranslate"><span class="pre">PodSecurity</span></code> admission warning similar to the following. The warning does not block pod creation under the default namespace Pod Security level and can be ignored for this example:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Warning: would violate PodSecurity &quot;restricted:latest&quot;: allowPrivilegeEscalation != false (container &quot;workload&quot; must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container &quot;workload&quot; must set securityContext.capabilities.drop=[&quot;ALL&quot;]), runAsNonRoot != true (pod or container &quot;workload&quot; must set securityContext.runAsNonRoot=true), seccompProfile (pod or container &quot;workload&quot; must set securityContext.seccompProfile.type to &quot;RuntimeDefault&quot; or &quot;Localhost&quot;)</span>
+</pre></div>
+</div>
+</div>
+</li>
+<li><p>Verify that the pod was allocated a GPU:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc <span class="nb">exec</span> -n gpu-example gpu-pod -- nvidia-smi -L
+</pre></div>
+</div>
+<p><em>Example Output</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">GPU 0: Tesla T4 (UUID: GPU-35cc335d-cbdd-999f-6289-38d96976de78)</span>
+</pre></div>
+</div>
+</li>
+<li><p>Clean up the sample workload:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc delete project gpu-example
+</pre></div>
+</div>
+</li>
+</ol>
+<p>For more allocation patterns, such as selecting a GPU by product name or memory size, sharing a GPU across containers, or requesting multiple GPUs, refer to <a class="reference external" href="https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/gpu-allocation/allocating-gpus/">Request full GPUs</a> in the upstream DRA driver documentation.</p>
+</section>
+<section id="multi-node-nvlink-and-computedomain">
+<h2>Multi-Node NVLink and ComputeDomain<a class="headerlink" href="#multi-node-nvlink-and-computedomain" title="Permalink to this headline">#</a></h2>
+<p>By default, the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource enables ComputeDomain support (<code class="docutils literal notranslate"><span class="pre">draDriver.computeDomains.enabled:</span> <span class="pre">true</span></code>), which deploys the ComputeDomain controller and kubelet plugin and publishes generic <code class="docutils literal notranslate"><span class="pre">daemon</span></code> and <code class="docutils literal notranslate"><span class="pre">channel</span></code> devices under the <code class="docutils literal notranslate"><span class="pre">compute-domain.nvidia.com</span></code> driver, even on hardware without Multi-Node NVLink (MNNVL). This is expected and does not require any additional configuration on typical GPU nodes.</p>
+<p>ComputeDomain support is intended for NVIDIA Grace Blackwell systems with Multi-Node NVLink, such as NVIDIA HGX GB200 NVL72 or NVIDIA HGX GB300 NVL72. Configuring and using ComputeDomains for multi-node workloads is out of scope for this guide. Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/dra-intro-install.html" title="(in NVIDIA GPU Operator)"><span>DRA Driver for NVIDIA GPUs</span></a> for ComputeDomain prerequisites and configuration, and to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-operator-kubevirt-dra.html" title="(in NVIDIA GPU Operator)"><span>GPU Operator with KubeVirt and DRA</span></a> for KubeVirt and OpenShift Virtualization VFIO passthrough with DRA.</p>
+</section>
+<section id="uninstall">
+<h2>Uninstall<a class="headerlink" href="#uninstall" title="Permalink to this headline">#</a></h2>
+<ol class="arabic">
+<li><p>Delete any user-created <code class="docutils literal notranslate"><span class="pre">ResourceClaims</span></code> and workload pods that reference GPUs, and confirm that the claims are removed.</p></li>
+<li><p>Delete the <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> and <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resources:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc delete nvidiadriver -n nvidia-gpu-operator --all
+<span class="gp">$ </span>oc delete gpucluster gpu-cluster
+</pre></div>
+</div>
+</li>
+<li><p>Uninstall the GPU Operator subscription and CSV. Refer to <a class="reference internal" href="clean-up.html"><span class="doc">Cleanup</span></a> for the complete uninstall procedure.</p></li>
+</ol>
+<p>For finalizer-related recovery procedures, such as recovering from an uninstall that leaves orphaned <code class="docutils literal notranslate"><span class="pre">ResourceClaims</span></code>, refer to the Troubleshooting section of <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/dra-intro-install.html" title="(in NVIDIA GPU Operator)"><span>DRA Driver for NVIDIA GPUs</span></a>.</p>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="install-gpu-ocp.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Installing the NVIDIA GPU Operator on OpenShift</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="nvaie-with-ocp.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">NVIDIA AI Enterprise with OpenShift</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-the-gpu-operator">Installing the GPU Operator</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-gpucluster-instance">Create the GPUCluster instance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-nvidiadriver-instance">Create the NVIDIADriver instance</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-the-installation">Verify the installation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-sample-dra-workload">Running a sample DRA workload</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-node-nvlink-and-computedomain">Multi-Node NVLink and ComputeDomain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uninstall">Uninstall</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2026, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
