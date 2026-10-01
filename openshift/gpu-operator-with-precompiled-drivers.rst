@@ -25,6 +25,22 @@ Red Hat publishes official precompiled NVIDIA GPU driver images for Red Hat Open
 
 The registry hosts multiple tags for the driver image, including fixed tags for specific driver releases, such as ``580.65.06``, and a floating major-version tag, such as ``580``.  The floating major-version tag always refers to the latest driver release within that major branch. Pinning to the major-version tag enables your cluster to use new driver releases automatically within the same major version as they are published. Pinning to a fixed version tag keeps the driver version constant until you change it.
 
+.. important::
+
+   **Kernel Upgrade Validation & Disabling Automatic Cluster Upgrades**
+
+   Before upgrading your Red Hat OpenShift cluster, you must verify that the precompiled driver container image corresponding to your target RHCOS kernel version is available in ``registry.redhat.io/nvidia`` (or your local container registry if mirrored).
+
+   Because cluster upgrades automatically update node kernel versions, upgrading to a kernel for which a precompiled driver image has not yet been published will cause the GPU driver pods to fail to initialize. Recovery from this state can be difficult, particularly on nodes with Secure Boot enabled or in environments where local driver compilation is disabled.
+
+   **Recommendation:**
+
+   * **Disable Automatic Cluster Upgrades:** Configure your cluster update strategy to manual approval so nodes do not upgrade to an unsupported kernel automatically.
+
+   * **Validate Image Tags:** Check ``registry.redhat.io/nvidia/gpu-driver-rhel9`` (or ``gpu-driver-rhel8``) for the tag corresponding to the destination kernel release prior to initiating the OpenShift upgrade.
+
+   * **Pin to a Fixed Driver Version:** Prefer pinning ``driver.version`` to a fixed tag (as described above) rather than a floating major-version tag, to avoid unexpected driver changes outside of planned upgrades.
+
 To use a Red Hat-provided precompiled driver image, set the ``driver`` fields of the ``ClusterPolicy`` resource as shown in the following example:
 
 .. code-block:: json
