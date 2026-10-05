@@ -25,7 +25,7 @@ such as NVIDIA ConnectX SmartNICs or BlueField DPUs, or video acquisition adapte
 GDS performs direct memory access (DMA) transfers between GPU memory and storage.
 DMA avoids a bounce buffer through the CPU.
 This direct path increases system bandwidth and decreases the latency and utilization load on the CPU.
-The GDS information on this page focuses on remote storage that transfers data over an RDMA-capable network.
+The following sections help you to configure GDS for remote storage that transfers data over an RDMA-capable network.
 For local NVMe and other GDS configurations, refer to the `GPUDirect Storage documentation <https://docs.nvidia.com/gpudirect-storage/>`__.
 
 To support GPUDirect RDMA, an application or communication library registers GPU memory with an RDMA device.
@@ -33,7 +33,9 @@ The system can register the memory through DMA-BUF in the Linux kernel or the le
 NVIDIA recommends using DMA-BUF when it is supported.
 DMA-BUF uses the Linux kernel and RDMA buffer-sharing interfaces and does not require the GPU Operator to build and load the legacy ``nvidia-peermem`` kernel module.
 DMA-BUF reduces the network driver dependencies and configuration required on each node.
-When using DMA-BUF, the application or library must explicitly request it when registering GPU memory.
+If the application uses a communication library, the communication library must support DMA-BUF.
+NCCL supports DMA-BUF and uses DMA-BUF by default when the Linux kernel, GPU driver, and network driver support DMA-BUF.
+Applications that use NCCL do not require code or configuration changes to use DMA-BUF.
 
 In conjunction with the Network Operator, the GPU Operator can be used to
 set up the networking related components such as network device kernel drivers and Kubernetes device plugins to enable
@@ -64,7 +66,8 @@ The prerequisites for configuring direct GPUDirect RDMA workloads depend on whet
      - A CUDA version that is supported by the GPU driver and the workload.
 
    * - Application
-     - The application or communication library must support DMA-BUF and explicitly select it when registering GPU memory.
+     - If the application uses a communication library, the communication library must support DMA-BUF.
+       NCCL supports DMA-BUF.
      - The application or communication library must support GPUDirect RDMA.
 
    * - GPU
@@ -125,15 +128,14 @@ For information about the supported versions, refer to :ref:`Support for GPUDire
 Installing the GPU Operator and Enabling GPUDirect RDMA
 =======================================================
 
-For DMA-BUF, install the GPU Operator with the NVIDIA Open GPU Kernel module driver:
+To use DMA-BUF, install the GPU Operator:
 
 .. code-block:: console
 
    $ helm install --wait --generate-name \
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
-        --version=${version} \
-        --set driver.kernelModuleType=open
+        --version=${version}
 
 To use the legacy ``nvidia-peermem`` kernel module, add ``--set driver.rdma.enabled=true`` to the command.
 If MLNX_OFED is installed directly on the host, also add ``--set driver.rdma.useHostMofed=true``.
@@ -367,8 +369,8 @@ Alternatively, run ``kubectl logs -n gpu-operator nvidia-driver-daemonset-xxxxx 
 Using GPUDirect Storage
 ***********************
 
-This section covers GDS with remote storage over an RDMA-capable network.
-In this configuration, GDS uses RDMA as the network transport, but the storage integration determines which network drivers and GPU memory registration mechanism are required.
+For remote storage over an RDMA-capable network, GDS uses RDMA as the network transport.
+Your storage integration determines the required network drivers and GPU memory registration mechanism.
 Follow the documentation for your storage system to configure and verify those components.
 For other storage configurations, refer to the `GPUDirect Storage documentation <https://docs.nvidia.com/gpudirect-storage/>`__.
 
@@ -381,15 +383,14 @@ See :ref:`Support for GPUDirect Storage` on the platform support page.
 Installing the GPU Operator and Enabling GPUDirect Storage
 ==========================================================
 
-The following section describes how to deploy the GPU Operator using the Helm Chart for these configurations:
-
-* Kubernetes on bare metal and on vSphere VMs with GPU passthrough and vGPU.
+Use the GPU Operator Helm chart to enable GDS on bare-metal Kubernetes clusters or on vSphere VMs with GPU passthrough or vGPU.
 
 The GPU Operator loads the ``nvidia-fs`` kernel module during the bootstrap of the NVIDIA driver daemon set.
-The Operator uses ``nvidia-fs`` version 2.17.5 or later, which requires the NVIDIA Open GPU Kernel module driver.
+The ``nvidia-fs`` kernel module requires the NVIDIA Open GPU Kernel module driver.
+The GPU Operator installs the open kernel module driver by default.
 
 Configure the RDMA network and storage software separately according to the requirements for your storage system.
-Install the GPU Operator with the open kernel module driver and GDS enabled:
+Install the GPU Operator with GDS enabled:
 
 .. code-block:: console
 
@@ -397,8 +398,7 @@ Install the GPU Operator with the open kernel module driver and GDS enabled:
         -n gpu-operator --create-namespace \
         nvidia/gpu-operator \
         --version=${version} \
-        --set gds.enabled=true \
-        --set driver.kernelModuleType=open
+        --set gds.enabled=true
 
 If the storage integration requires the legacy ``nvidia-peermem`` kernel module, also set ``driver.rdma.enabled=true``.
 If the integration uses ``nvidia-peermem`` with network device drivers that are installed on the host, also set ``driver.rdma.useHostMofed=true``.
