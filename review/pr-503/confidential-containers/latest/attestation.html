@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 21, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 05, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -513,9 +513,9 @@ Refer to the <a class="reference external" href="https://oras.land/docs/installa
 <section id="step-1-install-trustee-with-docker-compose">
 <h3>Step 1: Install Trustee with Docker Compose<a class="headerlink" href="#step-1-install-trustee-with-docker-compose" title="Permalink to this headline">#</a></h3>
 <p>Installing Trustee with Docker Compose is the recommended install path.
-Clone the upstream Trustee repository.
+Clone the upstream Trustee repository at v0.21.0.
 The repository ships with a <code class="docutils literal notranslate"><span class="pre">docker-compose.yml</span></code> that wires KBS, the Attestation Service, and the Reference Value Provider Service together.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone https://github.com/confidential-containers/trustee.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> trustee
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>git clone --branch v0.21.0 --depth <span class="m">1</span> https://github.com/confidential-containers/trustee.git <span class="o">&amp;&amp;</span> <span class="nb">cd</span> trustee
 </pre></div>
 </div>
 <p>Start the Trustee containers in the background.</p>
@@ -534,6 +534,22 @@ The repository ships with a <code class="docutils literal notranslate"><span cla
 <p class="admonition-title">Note</p>
 <p>On first run, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">-d</span></code> pulls the KBS, AS, and RVPS images before starting them.
 This step can take several minutes. The command returns after the containers start. The services may need an additional few seconds to become ready to accept requests.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Trustee v0.21.0 <a class="reference external" href="https://github.com/confidential-containers/trustee/blob/v0.21.0/docker-compose.yml">docker-compose.yml</a> still references <code class="docutils literal notranslate"><span class="pre">:latest</span></code> images for KBS, AS, and RVPS.
+While cloning that tag pins the compose configuration to a released version, <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">-d</span></code> still pulls whatever <code class="docutils literal notranslate"><span class="pre">:latest</span></code> resolves to at that time.
+<code class="docutils literal notranslate"><span class="pre">:latest</span></code> does not match Trustee v0.21.0.
+For a reproducible backend that matches this architecture, replace the three <code class="docutils literal notranslate"><span class="pre">image:</span></code> lines before you run <code class="docutils literal notranslate"><span class="pre">docker</span> <span class="pre">compose</span> <span class="pre">up</span> <span class="pre">-d</span></code>:</p>
+<ul class="simple">
+<li><p>KBS: <code class="docutils literal notranslate"><span class="pre">ghcr.io/confidential-containers/staged-images/kbs-grpc-as:258ea4acb7b9bd865fce5c63a539f2120dba8298</span></code></p></li>
+<li><p>AS: <code class="docutils literal notranslate"><span class="pre">ghcr.io/confidential-containers/staged-images/coco-as-grpc:258ea4acb7b9bd865fce5c63a539f2120dba8298</span></code></p></li>
+<li><p>RVPS: <code class="docutils literal notranslate"><span class="pre">ghcr.io/confidential-containers/staged-images/rvps:258ea4acb7b9bd865fce5c63a539f2120dba8298</span></code></p></li>
+</ul>
+<p>Those tags are the Trustee v0.21.0 commit, the same commit as the <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> artifact in the next step.
+The GHCR registry does not publish a <code class="docutils literal notranslate"><span class="pre">v0.21.0</span></code> tag for these images.
+Equivalent digest pins are <code class="docutils literal notranslate"><span class="pre">kbs-grpc-as&#64;sha256:873a1e1704965d1325b70fdf31335cc8d9c95acab4f003b0f3ece675b3584dd8</span></code>, <code class="docutils literal notranslate"><span class="pre">coco-as-grpc&#64;sha256:5319dcb609ed1d61876491bb43be1e03838f29eab7cea5673c7979892dc8015a</span></code>, and <code class="docutils literal notranslate"><span class="pre">rvps&#64;sha256:185cdc6754e544de3068a4f9c25733d62e7e6cfb8464da9f2de2ac490573b509</span></code>.
+This edit is unnecessary after Trustee starts pinning images in the release compose file.</p>
 </div>
 <p>For details on optional configuration such as the admin keypair, debug logging, and per-service config files, refer to the upstream <a class="reference external" href="https://confidentialcontainers.org/docs/attestation/installation/docker/">Install Trustee in Docker</a> guide.</p>
 </section>
@@ -566,16 +582,17 @@ Use the <code class="docutils literal notranslate"><span class="pre">kbs-client<
 <section id="step-3-install-the-kbs-client-tool">
 <h3>Step 3: Install the KBS Client Tool<a class="headerlink" href="#step-3-install-the-kbs-client-tool" title="Permalink to this headline">#</a></h3>
 <p>The KBS client tool, <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code>, is distributed as a container artifact in the Confidential Containers GitHub Container Registry.
-This tool is mainly used for configuring Trustee.</p>
-<p>Pull the <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> artifact into the current directory with ORAS.</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oras pull ghcr.io/confidential-containers/staged-images/kbs-client:latest
+This tool is mainly used for configuring Trustee.
+The registry does not publish a <code class="docutils literal notranslate"><span class="pre">v0.21.0</span></code> tag for this artifact.
+Pull the <code class="docutils literal notranslate"><span class="pre">sample_only</span></code> build for the Trustee v0.21.0 commit on <code class="docutils literal notranslate"><span class="pre">x86_64</span></code>.</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oras pull ghcr.io/confidential-containers/staged-images/kbs-client:sample_only-258ea4acb7b9bd865fce5c63a539f2120dba8298-x86_64
 </pre></div>
 </div>
 <p><em>Example Output:</em></p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">✓ Pulled      kbs-client                                    12.3/12.3 MB 100.00%</span>
-<span class="go">✓ Pulled      application/vnd.oci.image.manifest.v1+json    533/533  B  100.00%</span>
-<span class="go">Pulled [registry] ghcr.io/confidential-containers/staged-images/kbs-client:latest</span>
-<span class="go">Digest: sha256:a2a48a7cea6dc5d1bad3baea15f4162835e1262eb74fdf4847a6382d09dc5caa</span>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">Downloading 5148271f5a55 kbs-client</span>
+<span class="go">Downloaded  5148271f5a55 kbs-client</span>
+<span class="go">Pulled [registry] ghcr.io/confidential-containers/staged-images/kbs-client:sample_only-258ea4acb7b9bd865fce5c63a539f2120dba8298-x86_64</span>
+<span class="go">Digest: sha256:429be62c527e766a9854f9dac37f878010069c4aa6745d3d555d2bf393b9e82e</span>
 </pre></div>
 </div>
 <p>Confirm the <code class="docutils literal notranslate"><span class="pre">kbs-client</span></code> binary was extracted to the current directory.</p>

@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 21, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 05, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -439,8 +439,28 @@ In contrast, using container images with precompiled drivers makes the drivers i
 <span class="w">  </span><span class="nt">&quot;usePrecompiled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;registry.redhat.io/nvidia&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpu-driver-rhel9&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;580&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;580&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;imagePullSecrets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;redhat-registry-secret&quot;</span><span class="p">]</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Because <code class="docutils literal notranslate"><span class="pre">registry.redhat.io</span></code> requires authentication, <code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code> must reference a pull secret in the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace that contains valid <code class="docutils literal notranslate"><span class="pre">registry.redhat.io</span></code> credentials. Refer to <a class="reference external" href="https://access.redhat.com/articles/RegistryAuthentication">Red Hat Container Registry Authentication</a> for the supported authentication mechanisms:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The cluster-wide pull secret, <code class="docutils literal notranslate"><span class="pre">openshift-config/pull-secret</span></code>, usually already has access to <code class="docutils literal notranslate"><span class="pre">registry.redhat.io</span></code>.
+However, the pull secret is not automatically scoped to the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace.
+You still must create a namespace-scoped secret and reference it in <code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code>.</p>
+</div>
+<ul class="simple">
+<li><p><strong>Customer Portal credentials</strong>: Your individual Red Hat login. Simplest to use, but ties image pulls to a personal account.</p></li>
+<li><p><strong>Registry Service Account token</strong>: A dedicated username and token generated from the <a class="reference external" href="https://access.redhat.com/terms-based-registry/">Registry Service Account Management Application</a>, decoupled from any individual account. Recommended for shared systems such as an OpenShift cluster.</p></li>
+</ul>
+<p>Create the pull secret using either credential type:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc create secret docker-registry redhat-registry-secret <span class="se">\</span>
+    --docker-server<span class="o">=</span>registry.redhat.io <span class="se">\</span>
+    --docker-username<span class="o">=</span>&lt;username&gt; <span class="se">\</span>
+    --docker-password<span class="o">=</span>&lt;password&gt; <span class="se">\</span>
+    -n nvidia-gpu-operator
 </pre></div>
 </div>
 </section>

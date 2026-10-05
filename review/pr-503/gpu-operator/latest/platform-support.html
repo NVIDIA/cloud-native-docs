@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 21, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 05, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -469,8 +469,8 @@ All prior major versions reach end of support and no longer receive patch releas
 <p class="admonition-title">Note</p>
 <p>Upgrades are only supported within a major release or to the next major release.</p>
 </div>
-<div class="pst-scrollable-table-container"><table class="table" id="id8">
-<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id8" title="Permalink to this table">#</a></caption>
+<div class="pst-scrollable-table-container"><table class="table" id="id11">
+<caption><span class="caption-text">Support Status for Releases</span><a class="headerlink" href="#id11" title="Permalink to this table">#</a></caption>
 <colgroup>
 <col style="width: 50%" />
 <col style="width: 50%" />
@@ -507,14 +507,16 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <p><strong>D</strong> = Default driver, <strong>R</strong> = Recommended driver</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 50%" />
-<col style="width: 50%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
 </colgroup>
 <thead>
 <tr class="row-odd"><th class="head" rowspan="2"><p> Component</p></th>
-<th class="head"><p>GPU Operator Version</p></th>
+<th class="head" colspan="2"><p> GPU Operator Version</p></th>
 </tr>
 <tr class="row-even"><th class="head"><p>v26.7.0</p></th>
+<th class="head"><p>v26.7.1</p></th>
 </tr>
 </thead>
 <tbody>
@@ -523,27 +525,37 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-610-57-04/index.html">610.57.04</a></div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-91-07/index.html">595.91.07</a> (<strong>R</strong>, <strong>D</strong>)</div>
 <div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-173-02/index.html">580.173.02</a></div>
-<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-309-01/index.html">535.309.01</a></div>
+</div>
+</td>
+<td><div class="line-block">
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-615-71-09/index.html">615.71.09</a></div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-610-57-04/index.html">610.57.04</a></div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-91-07/index.html">595.91.07</a> (<strong>R</strong>, <strong>D</strong>)</div>
+<div class="line"><a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-173-02/index.html">580.173.02</a></div>
 </div>
 </td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA Driver Manager for Kubernetes</p></td>
 <td><p><a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager">v0.12.0</a></p></td>
+<td><p><a class="reference external" href="https://ngc.nvidia.com/catalog/containers/nvidia:cloud-native:k8s-driver-manager">v0.12.1</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA Container Toolkit</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/releases">1.20.0</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/nvidia-container-toolkit/releases">1.20.1</a></p></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA Device Plugin for Kubernetes</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.20.0</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.20.1</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>DRA Driver for NVIDIA GPUs</p></td>
-<td><p><a class="reference external" href="https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v0.5.0">v0.5.0</a></p></td>
+<td colspan="2"><p> <a class="reference external" href="https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v0.5.0">v0.5.0</a></p></td>
 </tr>
 <tr class="row-even"><td><p>DCGM Exporter</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">v4.6.0-4.8.3</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">v4.6.1-4.8.4</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>Node Feature Discovery</p></td>
-<td><p><a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery/releases/">v0.19.0</a></p></td>
+<td colspan="2"><p> <a class="reference external" href="https://github.com/kubernetes-sigs/node-feature-discovery/releases/">v0.19.0</a></p></td>
 </tr>
 <tr class="row-even"><td><div class="line-block">
 <div class="line">NVIDIA GPU Feature Discovery</div>
@@ -551,24 +563,29 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 </div>
 </td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.20.0</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin/releases">0.20.1</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA MIG Manager for Kubernetes</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md">0.15.0</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md">0.15.1</a></p></td>
 </tr>
 <tr class="row-even"><td><p>DCGM</p></td>
 <td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html">4.6.0-1</a></p></td>
+<td><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html">4.6.1-1</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>Validator for NVIDIA GPU Operator</p></td>
 <td><p>v26.7.0</p></td>
+<td><p>v26.7.1</p></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA KubeVirt GPU Device Plugin</p></td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin">v1.6.0</a></p></td>
+<td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/kubevirt-gpu-device-plugin">v1.6.0</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA vGPU Device Manager</p></td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">v0.5.0</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/vgpu-device-manager">v0.5.1</a></p></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA GDS Driver <a class="reference external" href="#gds-open-kernel"><sup>2</sup></a></p></td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/gds-nvidia-fs/releases">2.29.4</a></p></td>
+<td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/gds-nvidia-fs/releases">2.29.4</a></p></td>
 </tr>
 <tr class="row-odd"><td><div class="line-block">
 <div class="line">NVIDIA Confidential Computing</div>
@@ -576,12 +593,13 @@ Refer to <a class="reference internal" href="upgrade.html#upgrading-the-nvidia-g
 </div>
 </td>
 <td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-cc-manager/releases">v0.4.3</a></p></td>
+<td><p><a class="reference external" href="https://github.com/NVIDIA/k8s-cc-manager/releases">v0.4.4</a></p></td>
 </tr>
 <tr class="row-even"><td><p>NVIDIA GDRCopy Driver</p></td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/gdrcopy/releases">v2.6</a></p></td>
+<td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/gdrcopy/releases">v2.6</a></p></td>
 </tr>
 <tr class="row-odd"><td><p>NVIDIA Kata Sandbox Device Plugin</p></td>
-<td><p><a class="reference external" href="https://github.com/NVIDIA/sandbox-device-plugin/releases">v0.0.5</a></p></td>
+<td colspan="2"><p> <a class="reference external" href="https://github.com/NVIDIA/sandbox-device-plugin/releases">v0.0.5</a></p></td>
 </tr>
 </tbody>
 </table>
@@ -1256,7 +1274,7 @@ NVIDIA publishes conventional driver container images with major-version operati
 Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html">Partner Validated</a> documentation for information on other operating systems support.</p>
 </section>
 <section id="cloud-service-providers">
-<span id="id5"></span><h3>Cloud Service Providers<a class="headerlink" href="#cloud-service-providers" title="Permalink to this headline">#</a></h3>
+<span id="id8"></span><h3>Cloud Service Providers<a class="headerlink" href="#cloud-service-providers" title="Permalink to this headline">#</a></h3>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
 <col style="width: 25%" />
@@ -1309,7 +1327,7 @@ Refer to the <a class="reference external" href="https://docs.nvidia.com/datacen
 </section>
 </section>
 <section id="supported-precompiled-drivers">
-<span id="id6"></span><h2>Supported Precompiled Drivers<a class="headerlink" href="#supported-precompiled-drivers" title="Permalink to this headline">#</a></h2>
+<span id="id9"></span><h2>Supported Precompiled Drivers<a class="headerlink" href="#supported-precompiled-drivers" title="Permalink to this headline">#</a></h2>
 <p>The GPU Operator has been validated with the following precompiled drivers.
 See the <a class="reference internal" href="precompiled-drivers.html"><span class="doc">Precompiled Driver Containers</span></a> page for more information about using precompiled drivers.</p>
 <div class="pst-scrollable-table-container"><table class="table">
@@ -1411,7 +1429,7 @@ To report an issue with the GPU Operator on one of these configurations, open an
 <p>For more details about partners and their supported configurations, refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html" title="(in Partner Validated Configurations with NVIDIA GPU Operator)"><span>About Partner-Validated Configurations</span></a> page.</p>
 </section>
 <section id="supported-container-runtimes">
-<span id="id7"></span><h2>Supported Container Runtimes<a class="headerlink" href="#supported-container-runtimes" title="Permalink to this headline">#</a></h2>
+<span id="id10"></span><h2>Supported Container Runtimes<a class="headerlink" href="#supported-container-runtimes" title="Permalink to this headline">#</a></h2>
 <p>The GPU Operator has been validated for the following container runtimes:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
@@ -1608,12 +1626,8 @@ This page includes additional limitations and restrictions for using Kata Contai
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Version v2.17.5 and higher of the NVIDIA GPUDirect Storage kernel driver, <code class="docutils literal notranslate"><span class="pre">nvidia-fs</span></code>,
-requires the NVIDIA Open GPU Kernel module driver.
-You can install the open kernel modules by specifying the <code class="docutils literal notranslate"><span class="pre">driver.kernelModuleType=auto</span></code> if you are using driver container version 570.86.15, 570.124.06 or later.
-Or use <code class="docutils literal notranslate"><span class="pre">driver.kernelModuleType=open</span></code> if you are using a different driver version or branch.
-argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
-Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p>
+<p>GDS requires the NVIDIA Open GPU Kernel module driver.
+The GPU Operator installs the open kernel module driver by default.</p>
 <p>Not supported with secure boot.
 Supported storage types are local NVMe and remote NFS.</p>
 </div>

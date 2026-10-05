@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 21, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 05, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -692,12 +692,15 @@ your workload declared are allowed.</p>
 GPU passthrough with the smallest possible manifest.
 Do not treat that YAML as a production template.</p>
 <p>The Kata Containers <code class="docutils literal notranslate"><span class="pre">genpolicy</span></code> tool reads your Kubernetes YAML, infers the intended Agent API
-calls, encodes the policy in base64, and appends it as an annotation on the same file.</p>
+calls, encodes the policy in base64, and appends it as an annotation on the same file.
+The Kata agent in the guest receives that annotation.
+Use <code class="docutils literal notranslate"><span class="pre">genpolicy</span></code> 4.1.0, which is the version this architecture validates with that agent.
+Refer to <a class="reference internal" href="supported-platforms.html#coco-supported-software-components"><span class="std std-ref">Supported Software Components</span></a> for the component matrix.</p>
 <ol class="arabic">
-<li><p>Download <code class="docutils literal notranslate"><span class="pre">genpolicy</span></code> from the latest Kata Containers release that is compatible with this
-reference architecture.
+<li><p>Download <code class="docutils literal notranslate"><span class="pre">genpolicy</span></code> 4.1.0 from the
+<a class="reference external" href="https://github.com/kata-containers/kata-containers/releases/tag/4.1.0">Kata Containers 4.1.0 release</a>.
 For usage details, refer to the
-<a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/main/src/tools/genpolicy/README.md">Agent Policy generation tool</a>
+<a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/4.1.0/src/tools/genpolicy/README.md">Agent Policy generation tool</a>
 documentation.</p></li>
 <li><p>Run <code class="docutils literal notranslate"><span class="pre">genpolicy</span></code> against the manifest to deploy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>genpolicy -y cuda-vectoradd-kata.yaml

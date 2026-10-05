@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 21, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 05, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -587,16 +587,18 @@ You do not supply or install these artifacts individually.</p>
 </thead>
 <tbody>
 <tr class="row-even"><td><p>Guest OS</p></td>
-<td><p>Distroless</p></td>
+<td><p>Distroless, with <a class="reference external" href="https://github.com/NVIDIA/nvrc/releases/tag/v0.1.5">NVRC v0.1.5</a>,
+NVIDIA GPU driver 595.58.03, and
+<a class="reference external" href="https://github.com/confidential-containers/guest-components/releases/tag/v0.21.0">guest-components v0.21.0</a> artifacts.</p></td>
 </tr>
 <tr class="row-odd"><td><p>Guest kernel</p></td>
-<td><p>6.18.5</p></td>
+<td><p>6.18.35</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference external" href="https://github.com/tianocore/edk2">OVMF</a></p></td>
 <td><p>edk2-stable202511</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference external" href="https://www.qemu.org/">QEMU</a></p></td>
-<td><p>10.1 + Patches</p></td>
+<td><p>11.0.1 + Patches</p></td>
 </tr>
 </tbody>
 </table>
@@ -620,10 +622,11 @@ You do not supply or install these artifacts individually.</p>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><a class="reference external" href="https://confidentialcontainers.org/docs/attestation/">Key Broker Service (KBS) protocol</a></p></td>
-<td><p>0.4.0</p></td>
-<td><p>Required for Trustee-based attestation and secret or key release.</p></td>
-<td><p>The <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> quickstart installs a local evaluation Trustee.
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/confidential-containers/trustee/releases/tag/v0.21.0">Trustee</a></p></td>
+<td><p>v0.21.0</p></td>
+<td><p>Required for attestation and secret or key release.
+This architecture validates Trustee v0.21.0 with guest-components v0.21.0 in the Kata guest.</p></td>
+<td><p>The <a class="reference internal" href="attestation.html"><span class="doc">Attestation</span></a> quickstart installs a local evaluation Trustee v0.21.0.
 Deploy a production Trustee separately by following the upstream Confidential Containers documentation.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference external" href="https://github.com/kata-containers/lifecycle-manager">Kata Lifecycle Manager</a></p></td>
@@ -631,10 +634,11 @@ Deploy a production Trustee separately by following the upstream Confidential Co
 <td><p>Optional for Kata Containers upgrades and day-two lifecycle management.</p></td>
 <td><p>Install separately by following the upstream Kata Lifecycle Manager documentation.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/4.0.0/src/tools/genpolicy/README.md">Kata Containers genpolicy</a></p></td>
-<td><p>4.0.0</p></td>
-<td><p>Used to generate an agent security policy for attested production workloads.</p></td>
-<td><p>Download separately from the corresponding Kata Containers release.</p></td>
+<tr class="row-even"><td><p><a class="reference external" href="https://github.com/kata-containers/kata-containers/blob/4.1.0/src/tools/genpolicy/README.md">Kata Containers genpolicy</a></p></td>
+<td><p>4.1.0</p></td>
+<td><p>Used to generate an agent security policy for attested production workloads.
+Refer to <a class="reference internal" href="configure-workloads.html#kata-agent-security-policy"><span class="std std-ref">Attach a Kata Agent Security Policy</span></a>.</p></td>
+<td><p>Download <code class="docutils literal notranslate"><span class="pre">genpolicy</span></code> 4.1.0 from the <a class="reference external" href="https://github.com/kata-containers/kata-containers/releases/tag/4.1.0">Kata Containers 4.1.0 release</a>.</p></td>
 </tr>
 </tbody>
 </table>

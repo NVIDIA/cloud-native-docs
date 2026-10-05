@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 21, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 05, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -620,7 +620,7 @@ For more information, refer to <a class="reference internal" href="gpu-driver-up
 retaining cluster policy driver management:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade &lt;release-name&gt; nvidia/gpu-operator <span class="se">\</span>
     -n gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.7.0 <span class="se">\</span>
+    --version<span class="o">=</span>v26.7.1 <span class="se">\</span>
     --reuse-values <span class="se">\</span>
     --disable-openapi-validation <span class="se">\</span>
     --set operator.upgradeCRD<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
@@ -638,7 +638,7 @@ the Helm hook, refer to <a class="reference internal" href="upgrade.html"><span 
 <li><p>Upgrade the Helm release and enable NVIDIA driver custom resource management:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade &lt;release-name&gt; nvidia/gpu-operator <span class="se">\</span>
     -n gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.7.0 <span class="se">\</span>
+    --version<span class="o">=</span>v26.7.1 <span class="se">\</span>
     --reuse-values <span class="se">\</span>
     --set driver.nvidiaDriverCRD.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
     --set driver.nvidiaDriverCRD.deployDefaultCR<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
@@ -881,7 +881,7 @@ label the worker nodes to identify the driver type and version to install on eac
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.7.0 <span class="se">\</span>
+    --version<span class="o">=</span>v26.7.1 <span class="se">\</span>
     --set driver.nvidiaDriverCRD.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>
