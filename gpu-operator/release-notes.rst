@@ -186,6 +186,16 @@ Known Issues
 
         $ kubectl label node <node-name> nvidia.com/mig.config=<profile> --overwrite
 
+* On Red Hat OpenShift Container Platform, when you install the DRA Driver for NVIDIA GPUs with the ``GPUCluster`` resource and enable the ``MPSSupport`` feature gate, workloads that request MPS sharing remain in the ``ContainerCreating`` state.
+  The pod events report ``MPS control daemon is not yet ready``.
+  SCC admission rejects the MPS control daemon pods because the MPS control daemon runs with the ``default`` service account and the ``nvidia-dra-driver`` SCC does not allow host PID access.
+  (`GPU Operator PR #3008 <https://github.com/NVIDIA/gpu-operator/pull/3008>`__)
+
+* On Red Hat OpenShift Container Platform, when you install the DRA Driver for NVIDIA GPUs with the ``GPUCluster`` resource and use ComputeDomains, the ComputeDomain daemon pods fail to start.
+  OpenShift admits the pods under the ``restricted-v2`` SCC instead of the ``nvidia-dra-driver`` SCC, and the ComputeDomain daemon cannot write the ``/imexd/imexd.cfg`` file.
+  The ComputeDomain daemon role also lacks permission to delete ``ComputeDomainClique`` resources, so OpenShift rejects the owner-reference updates with ``cannot set an ownerRef on a resource you can't delete``.
+  (`GPU Operator PR #3011 <https://github.com/NVIDIA/gpu-operator/pull/3011>`__, `Issue #3010 <https://github.com/NVIDIA/gpu-operator/issues/3010>`__)
+
 ----
 
 .. _v26.7.0:
