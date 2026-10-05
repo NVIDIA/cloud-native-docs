@@ -37,9 +37,6 @@ Supported NVIDIA Data Center GPUs and Systems
 
 The following NVIDIA data center GPUs are supported on x86 based platforms:
 
-.. _open-kern-module: #requires-open-kernel-module
-.. |open-kern-module| replace:: :sup:`1`
-
 .. tab-set::
 
   .. tab-item:: GH-series Products
@@ -52,17 +49,9 @@ The following NVIDIA data center GPUs are supported on x86 based platforms:
           - Architecture
           - Notes
 
-        * - NVIDIA GH200 |open-kern-module|_
+        * - NVIDIA GH200
           - NVIDIA Grace Hopper
           -
-
-     .. _requires-open-kernel-module:
-
-     :sup:`1`
-     NVIDIA GH200 systems require the NVIDIA Open GPU Kernel module driver.
-     You can install the open kernel modules by specifying the ``driver.useOpenKernelModules=true``
-     argument to the ``helm`` command.
-     Refer to :ref:`Common Chart Customization Options` for more information.
 
   .. tab-item:: A, H and L-series Products
      :selected:
