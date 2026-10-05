@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 01, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 05, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -434,15 +434,11 @@ Starting with NVIDIA GPU Operator v26.7, you can use the <code class="docutils l
 <p>A cluster can have either a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource for DRA or a <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource for the Device Plugin, but not both.
 This page assumes a new installation. Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/dra-intro-install.html" title="(in NVIDIA GPU Operator)"><span>DRA Driver for NVIDIA GPUs</span></a> for the full DRA vs. Device Plugin capability comparison, feature-maturity matrix, and limitations, which apply equally to OpenShift.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This procedure requires GPU Operator v26.7 or later and Kubernetes v1.34.2 or later, which corresponds to Red Hat OpenShift Container Platform 4.21 or later.
-This guide is validated on Red Hat OpenShift Container Platform 4.22.</p>
-</div>
 </section>
 <section id="prerequisites">
 <h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">#</a></h2>
 <ul>
+<li><p>Red Hat OpenShift Container Platform 4.21 or later. This guide is validated on Red Hat OpenShift Container Platform 4.22.</p></li>
 <li><p>A working OpenShift cluster with a GPU worker node. Refer to <a class="reference internal" href="prerequisites.html"><span class="doc">Prerequisites for GPU Operator on OpenShift</span></a>.</p></li>
 <li><p>The Node Feature Discovery (NFD) Operator installed and running. Refer to <a class="reference internal" href="install-nfd.html#install-nfd"><span class="std std-ref">Installing the Node Feature Discovery Operator on OpenShift</span></a>.</p></li>
 <li><p>No <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource exists in the cluster:</p>
@@ -491,7 +487,7 @@ This guide is validated on Red Hat OpenShift Container Platform 4.22.</p>
 <p>Refer to <a class="reference internal" href="install-gpu-ocp.html#install-gpu-ocp"><span class="std std-ref">Installing the NVIDIA GPU Operator using the CLI</span></a> for detailed namespace and <code class="docutils literal notranslate"><span class="pre">OperatorGroup</span></code> creation steps if you have not already created them.</p>
 </div>
 </li>
-<li><p>Select the <code class="docutils literal notranslate"><span class="pre">v26.7</span></code> channel explicitly and look up the starting CSV. DRA support requires v26.7 or later, and the certified-operator default channel might still point to an earlier release:</p>
+<li><p>Select the <code class="docutils literal notranslate"><span class="pre">v26.7</span></code> channel explicitly and look up the starting CSV:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">CHANNEL</span><span class="o">=</span>v26.7
 <span class="gp">$ </span><span class="nv">STARTING_CSV</span><span class="o">=</span><span class="k">$(</span>oc get packagemanifests/gpu-operator-certified -n openshift-marketplace -ojson <span class="p">|</span> jq -r <span class="s1">&#39;.status.channels[] | select(.name == &quot;&#39;</span><span class="nv">$CHANNEL</span><span class="s1">&#39;&quot;) | .currentCSV&#39;</span><span class="k">)</span>
 </pre></div>
@@ -533,7 +529,7 @@ This guide is validated on Red Hat OpenShift Container Platform 4.22.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator <span class="nv">$STARTING_CSV</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.alm-examples}&#39;</span> <span class="p">|</span> jq -r <span class="s1">&#39;map(select(.kind == &quot;GPUCluster&quot;)) | .[0]&#39;</span> &gt; gpucluster.json
 </pre></div>
 </div>
-<p>The default example is similar to the following:</p>
+<p>The default example, stored in <code class="docutils literal notranslate"><span class="pre">gpucluster.json</span></code>, is similar to the following:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;apiVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nvidia.com/v1alpha1&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;GPUCluster&quot;</span><span class="p">,</span><span class="w"></span>
@@ -582,7 +578,7 @@ This guide is validated on Red Hat OpenShift Container Platform 4.22.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator <span class="nv">$STARTING_CSV</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.alm-examples}&#39;</span> <span class="p">|</span> jq -r <span class="s1">&#39;map(select(.kind == &quot;NVIDIADriver&quot;)) | .[0]&#39;</span> &gt; nvidiadriver.json
 </pre></div>
 </div>
-<p>The default example is similar to the following (abbreviated):</p>
+<p>The default example, stored in <code class="docutils literal notranslate"><span class="pre">nvidiadriver.json</span></code>, is similar to the following (abbreviated):</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;apiVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nvidia.com/v1alpha1&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;kind&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;NVIDIADriver&quot;</span><span class="p">,</span><span class="w"></span>
@@ -650,7 +646,7 @@ This guide is validated on Red Hat OpenShift Container Platform 4.22.</p>
 <span class="go">nvidia-gpu-driver-rhel9-59f4c8db85-pn5c5        2/2     Running   0          8m45s</span>
 </pre></div>
 </div>
-<p>The driver <code class="docutils literal notranslate"><span class="pre">DaemonSet</span></code> is named <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-driver-rhel9-&lt;hash&gt;</span></code> and its node selector includes the RHCOS <code class="docutils literal notranslate"><span class="pre">OSTREE_VERSION</span></code> label, similar to the <code class="docutils literal notranslate"><span class="pre">nvidia-driver-daemonset-&lt;RHCOS-version&gt;</span></code> naming used by <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>.</p>
+<p>The driver daemon set is named <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-driver-rhel9-&lt;hash&gt;</span></code> and its node selector includes the RHCOS <code class="docutils literal notranslate"><span class="pre">OSTREE_VERSION</span></code> label, similar to the <code class="docutils literal notranslate"><span class="pre">nvidia-driver-daemonset-&lt;RHCOS-version&gt;</span></code> naming used by <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code>.</p>
 </li>
 <li><p>Confirm that the DRA <code class="docutils literal notranslate"><span class="pre">DeviceClass</span></code> objects are available:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get deviceclass
@@ -670,7 +666,7 @@ This guide is validated on Red Hat OpenShift Container Platform 4.22.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get resourceslice -o yaml
 </pre></div>
 </div>
-<p><em>Example Output</em> (abbreviated)</p>
+<p><em>Partial Output</em></p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">resource.k8s.io/v1</span><span class="w"></span>
 <span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ResourceSlice</span><span class="w"></span>
 <span class="nt">spec</span><span class="p">:</span><span class="w"></span>
@@ -707,7 +703,7 @@ This guide is validated on Red Hat OpenShift Container Platform 4.22.</p>
 <p>Request a full GPU by creating a <code class="docutils literal notranslate"><span class="pre">ResourceClaimTemplate</span></code> and a pod that references it.</p>
 <ol class="arabic">
 <li><p>Create a project for the sample workload:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc new-project gpu-example
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc new-project gpu-dra-demo
 </pre></div>
 </div>
 </li>
@@ -716,7 +712,7 @@ This guide is validated on Red Hat OpenShift Container Platform 4.22.</p>
 <span class="go">apiVersion: resource.k8s.io/v1</span>
 <span class="go">kind: ResourceClaimTemplate</span>
 <span class="go">metadata:</span>
-<span class="go">  namespace: gpu-example</span>
+<span class="go">  namespace: gpu-dra-demo</span>
 <span class="go">  name: single-gpu</span>
 <span class="go">spec:</span>
 <span class="go">  spec:</span>
@@ -734,7 +730,7 @@ This guide is validated on Red Hat OpenShift Container Platform 4.22.</p>
 <span class="go">apiVersion: v1</span>
 <span class="go">kind: Pod</span>
 <span class="go">metadata:</span>
-<span class="go">  namespace: gpu-example</span>
+<span class="go">  namespace: gpu-dra-demo</span>
 <span class="go">  name: gpu-pod</span>
 <span class="go">spec:</span>
 <span class="go">  containers:</span>
@@ -751,16 +747,13 @@ This guide is validated on Red Hat OpenShift Container Platform 4.22.</p>
 <span class="go">EOF</span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
 <p>OpenShift can report a <code class="docutils literal notranslate"><span class="pre">PodSecurity</span></code> admission warning similar to the following. The warning does not block pod creation under the default namespace Pod Security level and can be ignored for this example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Warning: would violate PodSecurity &quot;restricted:latest&quot;: allowPrivilegeEscalation != false (container &quot;workload&quot; must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container &quot;workload&quot; must set securityContext.capabilities.drop=[&quot;ALL&quot;]), runAsNonRoot != true (pod or container &quot;workload&quot; must set securityContext.runAsNonRoot=true), seccompProfile (pod or container &quot;workload&quot; must set securityContext.seccompProfile.type to &quot;RuntimeDefault&quot; or &quot;Localhost&quot;)</span>
 </pre></div>
 </div>
-</div>
 </li>
 <li><p>Verify that the pod was allocated a GPU:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc <span class="nb">exec</span> -n gpu-example gpu-pod -- nvidia-smi -L
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc <span class="nb">exec</span> -n gpu-dra-demo gpu-pod -- nvidia-smi -L
 </pre></div>
 </div>
 <p><em>Example Output</em></p>
@@ -769,7 +762,7 @@ This guide is validated on Red Hat OpenShift Container Platform 4.22.</p>
 </div>
 </li>
 <li><p>Clean up the sample workload:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc delete project gpu-example
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc delete project gpu-dra-demo
 </pre></div>
 </div>
 </li>
