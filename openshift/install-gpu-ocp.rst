@@ -7,6 +7,12 @@
 Installing the NVIDIA GPU Operator on OpenShift
 ###############################################
 
+.. tip::
+
+   Starting with GPU Operator v${version}, you can alternatively install the DRA Driver for NVIDIA GPUs by using the ``GPUCluster`` and ``NVIDIADriver`` custom resources instead of ``ClusterPolicy``.
+   A cluster can use one or the other, but not both.
+   Refer to :doc:`dra-gpu-ocp` for the DRA installation procedure on OpenShift.
+
 ***********************************************************
 Installing the NVIDIA GPU Operator by using the web console
 ***********************************************************
