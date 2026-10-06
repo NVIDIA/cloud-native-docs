@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 29, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 06, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -436,13 +436,16 @@ In contrast, using container images with precompiled drivers makes the drivers i
 <p>The registry hosts multiple tags for the driver image, including fixed tags for specific driver releases, such as <code class="docutils literal notranslate"><span class="pre">580.65.06</span></code>, and a floating major-version tag, such as <code class="docutils literal notranslate"><span class="pre">580</span></code>.  The floating major-version tag always refers to the latest driver release within that major branch. Pinning to the major-version tag enables your cluster to use new driver releases automatically within the same major version as they are published. Pinning to a fixed version tag keeps the driver version constant until you change it.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p><strong>Kernel Upgrade Validation &amp; Disabling Automatic Cluster Upgrades</strong></p>
-<p>Before upgrading your Red Hat OpenShift cluster, you must verify that the precompiled driver container image corresponding to your target RHCOS kernel version is available in <code class="docutils literal notranslate"><span class="pre">registry.redhat.io/nvidia</span></code> (or your local container registry if mirrored).</p>
-<p>Because cluster upgrades automatically update node kernel versions, upgrading to a kernel for which a precompiled driver image has not yet been published will cause the GPU driver pods to fail to initialize. Recovery from this state can be difficult, particularly on nodes with Secure Boot enabled or in environments where local driver compilation is disabled.</p>
+<p><strong>Verify the Precompiled Driver Image Before a Cluster Update</strong></p>
+<p>An OpenShift cluster upgrade also upgrades the kernel on each node.
+Before you upgrade the cluster, verify that a precompiled driver image is available for the target RHCOS kernel version.
+Check <code class="docutils literal notranslate"><span class="pre">registry.redhat.io/nvidia</span></code> or your local registry mirror.</p>
+<p>If an image is not available for the target kernel, the GPU driver pods cannot initialize.
+Recovery is difficult, particularly when Secure Boot is enabled or local driver compilation is disabled.</p>
 <p><strong>Recommendation:</strong></p>
 <ul class="simple">
 <li><p><strong>Disable Automatic Cluster Upgrades:</strong> Configure your cluster update strategy to manual approval so nodes do not upgrade to an unsupported kernel automatically.</p></li>
-<li><p><strong>Validate Image Tags:</strong> Check <code class="docutils literal notranslate"><span class="pre">registry.redhat.io/nvidia/gpu-driver-rhel9</span></code> (or <code class="docutils literal notranslate"><span class="pre">gpu-driver-rhel8</span></code>) for the tag corresponding to the destination kernel release prior to initiating the OpenShift upgrade.</p></li>
+<li><p><strong>Validate Image Tags:</strong> Confirm that <code class="docutils literal notranslate"><span class="pre">registry.redhat.io/nvidia/gpu-driver-rhel9</span></code> contains a tag for the target kernel release.</p></li>
 <li><p><strong>Pin to a Fixed Driver Version:</strong> Prefer pinning <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> to a fixed tag (as described above) rather than a floating major-version tag, to avoid unexpected driver changes outside of planned upgrades.</p></li>
 </ul>
 </div>
@@ -451,8 +454,28 @@ In contrast, using container images with precompiled drivers makes the drivers i
 <span class="w">  </span><span class="nt">&quot;usePrecompiled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;registry.redhat.io/nvidia&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">  </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;gpu-driver-rhel9&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;580&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;580&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;imagePullSecrets&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;redhat-registry-secret&quot;</span><span class="p">]</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Because <code class="docutils literal notranslate"><span class="pre">registry.redhat.io</span></code> requires authentication, <code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code> must reference a pull secret in the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace that contains valid <code class="docutils literal notranslate"><span class="pre">registry.redhat.io</span></code> credentials. Refer to <a class="reference external" href="https://access.redhat.com/articles/RegistryAuthentication">Red Hat Container Registry Authentication</a> for the supported authentication mechanisms:</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The cluster-wide pull secret, <code class="docutils literal notranslate"><span class="pre">openshift-config/pull-secret</span></code>, usually already has access to <code class="docutils literal notranslate"><span class="pre">registry.redhat.io</span></code>.
+However, the pull secret is not automatically scoped to the <code class="docutils literal notranslate"><span class="pre">nvidia-gpu-operator</span></code> namespace.
+You still must create a namespace-scoped secret and reference it in <code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code>.</p>
+</div>
+<ul class="simple">
+<li><p><strong>Customer Portal credentials</strong>: Your individual Red Hat login. Simplest to use, but ties image pulls to a personal account.</p></li>
+<li><p><strong>Registry Service Account token</strong>: A dedicated username and token generated from the <a class="reference external" href="https://access.redhat.com/terms-based-registry/">Registry Service Account Management Application</a>, decoupled from any individual account. Recommended for shared systems such as an OpenShift cluster.</p></li>
+</ul>
+<p>Create the pull secret using either credential type:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc create secret docker-registry redhat-registry-secret <span class="se">\</span>
+    --docker-server<span class="o">=</span>registry.redhat.io <span class="se">\</span>
+    --docker-username<span class="o">=</span>&lt;username&gt; <span class="se">\</span>
+    --docker-password<span class="o">=</span>&lt;password&gt; <span class="se">\</span>
+    -n nvidia-gpu-operator
 </pre></div>
 </div>
 </section>

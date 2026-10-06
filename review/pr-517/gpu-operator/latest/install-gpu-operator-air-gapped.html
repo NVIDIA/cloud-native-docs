@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 29, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 06, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -769,8 +769,8 @@ Similarly, the certificate file format and suffix, such as <code class="docutils
 <section id="deploy-gpu-operator">
 <h2>Deploy GPU Operator<a class="headerlink" href="#deploy-gpu-operator" title="Permalink to this headline">#</a></h2>
 <p>Download and deploy GPU Operator Helm Chart with the updated <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>.</p>
-<p>Fetch the chart from the NGC repository:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm fetch https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v26.7.1.tgz
+<p>Download the chart from the NGC repository:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm pull https://helm.ngc.nvidia.com/nvidia/charts/gpu-operator-v26.7.1.tgz
 </pre></div>
 </div>
 <p>Install the GPU Operator with the customized <code class="docutils literal notranslate"><span class="pre">values.yaml</span></code>:</p>
