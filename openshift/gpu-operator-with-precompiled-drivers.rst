@@ -25,6 +25,25 @@ Red Hat publishes official precompiled NVIDIA GPU driver images for Red Hat Open
 
 The registry hosts multiple tags for the driver image, including fixed tags for specific driver releases, such as ``580.65.06``, and a floating major-version tag, such as ``580``.  The floating major-version tag always refers to the latest driver release within that major branch. Pinning to the major-version tag enables your cluster to use new driver releases automatically within the same major version as they are published. Pinning to a fixed version tag keeps the driver version constant until you change it.
 
+.. important::
+
+   **Verify the Precompiled Driver Image Before a Cluster Update**
+
+   An OpenShift cluster upgrade also upgrades the kernel on each node.
+   Before you upgrade the cluster, verify that a precompiled driver image is available for the target RHCOS kernel version.
+   Check ``registry.redhat.io/nvidia`` or your local registry mirror.
+
+   If an image is not available for the target kernel, the GPU driver pods cannot initialize.
+   Recovery is difficult, particularly when Secure Boot is enabled or local driver compilation is disabled.
+
+   **Recommendation:**
+
+   * **Disable Automatic Cluster Upgrades:** Configure your cluster update strategy to manual approval so nodes do not upgrade to an unsupported kernel automatically.
+
+   * **Validate Image Tags:** Confirm that ``registry.redhat.io/nvidia/gpu-driver-rhel9`` contains a tag for the target kernel release.
+
+   * **Pin to a Fixed Driver Version:** Prefer pinning ``driver.version`` to a fixed tag (as described above) rather than a floating major-version tag, to avoid unexpected driver changes outside of planned upgrades.
+
 To use a Red Hat-provided precompiled driver image, set the ``driver`` fields of the ``ClusterPolicy`` resource as shown in the following example:
 
 .. code-block:: json
