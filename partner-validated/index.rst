@@ -31,6 +31,7 @@ About Partner-Validated Configurations
    mirantis-mke.rst
    suse-rke2.rst
    rafay.rst
+   cozystack.rst
    NVIDIA GPU Operator Documentation <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/index.html>
 
 Partner-validated configurations help end users who want to use
