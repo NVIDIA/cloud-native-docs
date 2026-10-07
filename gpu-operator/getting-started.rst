@@ -484,8 +484,6 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        Valid values are ``auto`` (default), ``proprietary``, and ``open``. 
        
        ``Auto`` means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
-       The ``auto`` option is only supported with the 570.86.15 and 570.124.06 or later driver containers. 
-       550 and 535 branch drivers do not yet support this mode.
        ``Open`` means the open kernel module is used.
        ``Proprietary`` means the proprietary module is used.
      - ``auto``
@@ -672,7 +670,7 @@ Additionally, when using RHEL 8 with containerd as the runtime and SELinux is en
 
 Network restricted environments are not supported.
 
-You can use the standard install comamnd to install the GPU Operator on RHEL.
+You can use the standard install command to install the GPU Operator on RHEL.
 
 .. code-block:: console
 
