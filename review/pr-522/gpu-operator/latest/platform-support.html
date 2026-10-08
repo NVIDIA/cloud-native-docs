@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 07, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 08, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -391,6 +391,7 @@
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-ipv6.html">IPv6 Networks</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Platform-Specific Configurations</span></p>
 <ul class="nav bd-sidenav">
@@ -650,18 +651,13 @@ GH-series Products</label><div class="sd-tab-content docutils">
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p>NVIDIA GH200 <a class="reference external" href="#requires-open-kernel-module"><sup>1</sup></a></p></td>
+<tr class="row-even"><td><p>NVIDIA GH200</p></td>
 <td><p>NVIDIA Grace Hopper</p></td>
 <td></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p id="requires-open-kernel-module"><sup>1</sup>
-NVIDIA GH200 systems require the NVIDIA Open GPU Kernel module driver.
-You can install the open kernel modules by specifying the <code class="docutils literal notranslate"><span class="pre">driver.useOpenKernelModules=true</span></code>
-argument to the <code class="docutils literal notranslate"><span class="pre">helm</span></code> command.
-Refer to <a class="reference internal" href="getting-started.html#common-chart-customization-options"><span class="std std-ref">Common Chart Customization Options</span></a> for more information.</p>
 </div>
 <input checked="checked" id="sd-tab-item-1" name="sd-tab-set-0" type="radio">
 <label class="sd-tab-label" for="sd-tab-item-1">

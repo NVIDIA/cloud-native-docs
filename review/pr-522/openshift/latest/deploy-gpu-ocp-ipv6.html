@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>Security Considerations &#8212; NVIDIA GPU Operator</title>
+    <title>Deploy GPU Operator in an IPv6 Network &#8212; NVIDIA GPU Operator on Red Hat OpenShift Container Platform</title>
   
   
   
@@ -54,7 +54,7 @@
     <script src="_static/clipboard.min.js"></script>
     <script src="_static/copybutton.js"></script>
     <script src="_static/design-tabs.js"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'security';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'deploy-gpu-ocp-ipv6';</script>
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
@@ -69,8 +69,8 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="DRA Driver for NVIDIA GPUs" href="dra-intro-install.html" />
-    <link rel="prev" title="NVIDIA GPU Operator Government Ready" href="install-gpu-operator-gov-ready.html" />
+    <link rel="next" title="Enabling the GPU Monitoring Dashboard" href="enable-gpu-monitoring-dashboard.html" />
+    <link rel="prev" title="Deploy GPU Operators in a disconnected or airgapped environment" href="mirror-gpu-ocp-disconnected.html" />
 
 
 
@@ -159,11 +159,11 @@
       
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
   
   
-    <p class="title logo__title">NVIDIA GPU Operator</p>
+    <p class="title logo__title">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</p>
   
 </a></div>
     
@@ -277,11 +277,11 @@
       
     
     
-    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator - Home"/>
-    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
   
   
-    <p class="title logo__title">NVIDIA GPU Operator</p>
+    <p class="title logo__title">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</p>
   
 </a>
 
@@ -350,56 +350,28 @@
 <nav class="bd-docs-nav bd-links"
      aria-label="Table of Contents">
   <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
-  <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">NVIDIA GPU Operator</span></p>
-<ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="overview.html">About the Operator</a></li>
-<li class="toctree-l1"><a class="reference internal" href="getting-started.html">Install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="upgrade.html">Upgrade</a></li>
-<li class="toctree-l1"><a class="reference internal" href="uninstall.html">Uninstall</a></li>
-<li class="toctree-l1"><a class="reference internal" href="platform-support.html">Platform Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="release-notes.html">Release Notes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-driver-upgrades.html">GPU Driver Upgrades</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-vgpu.html">Using NVIDIA vGPU</a></li>
-<li class="toctree-l1 has-children"><a class="reference internal" href="install-gpu-operator-nvaie.html">NVIDIA AI Enterprise</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install-gpu-operator-gov-ready.html">Government Ready</a></li>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="steps-overview.html">Installation and Upgrade Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-nfd.html">NFD Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-ocp.html">GPU Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpu-ocp.html">Installing the NVIDIA GPU Operator with DRA on OpenShift</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="nvaie-with-ocp.html">NVIDIA AI Enterprise with OpenShift</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install-gpu-operator-gov-ready-openshift.html">Government Ready</a></li>
 </ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
 </details></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Security Considerations</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Advanced Operator Configuration</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="dra-intro-install.html">DRA Driver for NVIDIA GPUs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-mig.html">Multi-Instance GPU (MIG)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-sharing.html">Time-Slicing GPUs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-rdma.html">GPUDirect RDMA and GPUDirect Storage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-outdated-kernels.html">Outdated Kernels</a></li>
-<li class="toctree-l1"><a class="reference internal" href="custom-driver-params.html">Custom GPU Driver Parameters</a></li>
-<li class="toctree-l1"><a class="reference internal" href="precompiled-drivers.html">Precompiled Driver Containers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="nvidia-driver-configuration.html">NVIDIA Driver CRD</a></li>
-<li class="toctree-l1"><a class="reference internal" href="cdi.html">CDI and NRI Support</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Sandboxed Workloads</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt.html">   KubeVirt GPU Passthrough and vGPU</a></li>
-<li class="toctree-l1"><a class="reference internal" href="gpu-operator-kubevirt-dra.html">   KubeVirt with DRA</a></li>
-<li class="toctree-l1"><a class="reference internal" href="deploy-kata-containers.html">   Kata Containers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="confidential-containers-deploy.html">   Confidential Containers</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Specialized Networks</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
-<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-ipv6.html">IPv6 Networks</a></li>
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Platform-Specific Configurations</span></p>
-<ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="amazon-eks.html">Amazon EKS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="microsoft-aks.html">Azure AKS</a></li>
-<li class="toctree-l1"><a class="reference internal" href="google-gke.html">Google GKE</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a></li>
-<li class="toctree-l1"><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/partner-validated/latest/index.html">Partner Validated</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mig-ocp.html">MIG Support in OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clean-up.html">Cleanup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mirror-gpu-ocp-disconnected.html">Deploy GPU Operators in a disconnected or airgapped environment</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Deploy GPU Operator in an IPv6 Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html">Enabling the GPU Monitoring Dashboard</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="time-slicing-gpus-in-openshift.html">Time-slicing NVIDIA GPUs in OpenShift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openshift-virtualization.html">NVIDIA GPU Operator with OpenShift Virtualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-with-precompiled-drivers.html">Precompiled Drivers for the NVIDIA GPU Operator for RHCOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting-gpu-ocp.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-ocp.html">Appendix</a></li>
 </ul>
 </div>
 </nav></div>
@@ -434,9 +406,9 @@
       <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
     </li>
     <li class="breadcrumb-item">
-      <a href="index.html">NVIDIA GPU Operator</a>
+      <a href="index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">Security Considerations</li>
+    <li class="breadcrumb-item active" aria-current="page">Deploy GPU Operator in an IPv6 Network</li>
   </ul>
 </nav></div>
       
@@ -452,107 +424,46 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="security-considerations">
-<h1>Security Considerations<a class="headerlink" href="#security-considerations" title="Permalink to this headline">#</a></h1>
-<section id="pod-security-context-of-the-operator-and-operands">
-<h2>Pod Security Context of the Operator and Operands<a class="headerlink" href="#pod-security-context-of-the-operator-and-operands" title="Permalink to this headline">#</a></h2>
-<p>Several of the NVIDIA GPU Operator operands, such as the driver containers and container toolkit,
-require the following elevated privileges:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">privileged:</span> <span class="pre">true</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">hostPID:</span> <span class="pre">true</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">hostIPC:</span> <span class="pre">true</span></code></p></li>
-</ul>
-<p>The elevated privileges are required for the following reasons:</p>
-<ul class="simple">
-<li><p>Access to the host file system and hardware devices, such as NVIDIA GPUs.</p></li>
-<li><p>Restart system services such as containerd.</p></li>
-<li><p>Loading and unloading kernel modules.</p></li>
-</ul>
-<p>Only the Kubernetes cluster administrator needs to access or manage the Operator namespace.
-As a best practice, establish proper security policies and prevent any other users from accessing the Operator namespace.</p>
+  <section id="deploy-gpu-operator-in-an-ipv6-network">
+<span id="deploy-gpu-ocp-ipv6"></span><h1>Deploy GPU Operator in an IPv6 Network<a class="headerlink" href="#deploy-gpu-operator-in-an-ipv6-network" title="Permalink to this headline">#</a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
+<p>You can deploy the NVIDIA GPU Operator on an OpenShift Container Platform cluster that uses IPv6-only networking.
+The only component that requires IPv6-specific configuration is NVIDIA DCGM.</p>
+<p>The default <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> custom resource sets <code class="docutils literal notranslate"><span class="pre">dcgm.enabled</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+With this setting, the Operator deploys DCGM as a separate <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm</span></code> daemon set.
+DCGM Exporter connects to the DCGM host engine, <code class="docutils literal notranslate"><span class="pre">nv-hostengine</span></code>, through the <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm</span></code> service on port <code class="docutils literal notranslate"><span class="pre">5555</span></code>.</p>
+<p>The DCGM container starts the host engine with the <code class="docutils literal notranslate"><span class="pre">-b</span> <span class="pre">0.0.0.0</span></code> argument by default.
+This argument binds the host engine to IPv4 addresses only.
+In an IPv6-only cluster, DCGM Exporter cannot connect to the host engine and the exporter pods go into <code class="docutils literal notranslate"><span class="pre">CrashLoopBackOff</span></code>.</p>
 </section>
-<section id="cves">
-<h2>CVEs<a class="headerlink" href="#cves" title="Permalink to this headline">#</a></h2>
-<p>The following is a list of known CVEs in the GPU Operator or its operands.
-To view any published security bulletins for NVIDIA products published security bulletins for NVIDIA products, refer to the NVIDIA product security page at <a class="reference external" href="https://www.nvidia.com/en-us/security/">https://www.nvidia.com/en-us/security/</a>.</p>
-<div class="pst-scrollable-table-container"><table class="colwidths-given table" id="id1">
-<caption><span class="caption-text">CVEs</span><a class="headerlink" href="#id1" title="Permalink to this table">#</a></caption>
-<colgroup>
-<col style="width: 20%" />
-<col style="width: 45%" />
-<col style="width: 35%" />
-</colgroup>
-<thead>
-<tr class="row-odd"><th class="head"><p>CVE ID</p></th>
-<th class="head"><p>Affected Components</p></th>
-<th class="head"><p>Fixed Version</p></th>
-</tr>
-</thead>
-<tbody>
-<tr class="row-even"><td><p><a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5616">NVIDIA CVE-2025-23359</a></p></td>
-<td><p>NVIDIA Container Toolkit, all versions up to and including 1.17.3</p>
-<p>NVIDIA GPU Operator, all versions up to and including 24.9.1</p>
-</td>
-<td><p>NVIDIA Container Toolkit 1.17.4</p>
-<p>NVIDIA GPU Operator 24.9.2</p>
-</td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5599">NVIDIA CVE-2024-0135</a></p></td>
-<td><p>NVIDIA Container Toolkit, all versions up to and including 1.17.2</p>
-<p>NVIDIA GPU Operator, all versions up to and including 24.9.0</p>
-</td>
-<td><p>NVIDIA Container Toolkit 1.17.3</p>
-<p>NVIDIA GPU Operator 24.9.1</p>
-</td>
-</tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5599">NVIDIA CVE-2024-0136</a></p></td>
-<td><p>NVIDIA Container Toolkit, all versions up to and including 1.17.2</p>
-<p>NVIDIA GPU Operator, all versions up to and including 24.9.0</p>
-</td>
-<td><p>NVIDIA Container Toolkit 1.17.3</p>
-<p>NVIDIA GPU Operator 24.9.1</p>
-</td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5599">NVIDIA CVE-2024-0137</a></p></td>
-<td><p>NVIDIA Container Toolkit, all versions up to and including 1.17.2</p>
-<p>NVIDIA GPU Operator, all versions up to and including 24.9.0</p>
-</td>
-<td><p>NVIDIA Container Toolkit 1.17.3</p>
-<p>NVIDIA GPU Operator 24.9.1</p>
-</td>
-</tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5585">NVIDIA CVE-2024-0134</a></p></td>
-<td><p>NVIDIA Container Toolkit, all versions up to and including 1.16.2</p>
-<p>NVIDIA GPU Operator, all versions up to and including 24.6.2</p>
-</td>
-<td><p>NVIDIA Container Toolkit 1.17.0</p>
-<p>NVIDIA GPU Operator 24.9.0</p>
-</td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">NVIDIA CVE-2024-0132</a></p></td>
-<td><p>NVIDIA Container Toolkit, all versions up to and including 1.16.1</p>
-<p>NVIDIA GPU Operator, all versions up to and including 24.6.1</p>
-</td>
-<td><p>NVIDIA Container Toolkit 1.16.2</p>
-<p>NVIDIA GPU Operator 24.6.2</p>
-</td>
-</tr>
-<tr class="row-even"><td><p><a class="reference external" href="https://nvidia.custhelp.com/app/answers/detail/a_id/5582">NVIDIA CVE-2024-0133</a></p></td>
-<td><p>NVIDIA Container Toolkit, all versions up to and including 1.16.1</p>
-<p>NVIDIA GPU Operator, all versions up to and including 24.6.1</p>
-</td>
-<td><p>NVIDIA Container Toolkit 1.16.2</p>
-<p>NVIDIA GPU Operator 24.6.2</p>
-</td>
-</tr>
-</tbody>
-</table>
+<section id="configure-dcgm-for-ipv6">
+<h2>Configure DCGM for IPv6<a class="headerlink" href="#configure-dcgm-for-ipv6" title="Permalink to this headline">#</a></h2>
+<p>To bind the host engine to IPv6 addresses, set <code class="docutils literal notranslate"><span class="pre">dcgm.args</span></code> and specify <code class="docutils literal notranslate"><span class="pre">::</span></code> as the bind address.
+The <code class="docutils literal notranslate"><span class="pre">::</span></code> value binds the host engine to all interfaces for IPv4 and IPv6.
+The values in <code class="docutils literal notranslate"><span class="pre">dcgm.args</span></code> replace the default container arguments, so you must specify the complete argument list.</p>
+<p class="rubric">Prerequisites</p>
+<ul class="simple">
+<li><p>GPU Operator v26.7.1 or later.
+Earlier versions include a DCGM Exporter that cannot resolve the <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm</span></code> service name to an IPv6 address.</p></li>
+</ul>
+<p class="rubric">Procedure</p>
+<ul>
+<li><p>If you create the cluster policy from the command line, add the following <code class="docutils literal notranslate"><span class="pre">dcgm</span></code> field to the <code class="docutils literal notranslate"><span class="pre">spec</span></code> object in the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file before you apply it:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;dcgm&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;enabled&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="nt">&quot;args&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;-n&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-b&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;::&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;--log-level&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;NONE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-f&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;-&quot;</span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
 </div>
-<section id="report-a-vulnerability">
-<h3>Report a Vulnerability<a class="headerlink" href="#report-a-vulnerability" title="Permalink to this headline">#</a></h3>
-<p>For details on reporting a suspected vulnerability, refer to the  <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/blob/main/SECURITY.md/">GPU Operator Security policies</a> page.</p>
-</section>
+</li>
+<li><p>If the cluster policy already exists, patch it:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc patch clusterpolicy gpu-cluster-policy --type<span class="o">=</span>merge <span class="se">\</span>
+    -p <span class="s1">&#39;{&quot;spec&quot;:{&quot;dcgm&quot;:{&quot;args&quot;:[&quot;-n&quot;,&quot;-b&quot;,&quot;::&quot;,&quot;--log-level&quot;,&quot;NONE&quot;,&quot;-f&quot;,&quot;-&quot;]}}}&#39;</span>
+</pre></div>
+</div>
+</li>
+</ul>
 </section>
 </section>
 
@@ -567,20 +478,20 @@ To view any published security bulletins for NVIDIA products published security 
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="install-gpu-operator-gov-ready.html"
+       href="mirror-gpu-ocp-disconnected.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">NVIDIA GPU Operator Government Ready</p>
+        <p class="prev-next-title">Deploy GPU Operators in a disconnected or airgapped environment</p>
       </div>
     </a>
     <a class="right-next"
-       href="dra-intro-install.html"
+       href="enable-gpu-monitoring-dashboard.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">DRA Driver for NVIDIA GPUs</p>
+        <p class="prev-next-title">Enabling the GPU Monitoring Dashboard</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -605,11 +516,8 @@ To view any published security bulletins for NVIDIA products published security 
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pod-security-context-of-the-operator-and-operands">Pod Security Context of the Operator and Operands</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cves">CVEs</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#report-a-vulnerability">Report a Vulnerability</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-dcgm-for-ipv6">Configure DCGM for IPv6</a></li>
 </ul>
   </nav></div>
 

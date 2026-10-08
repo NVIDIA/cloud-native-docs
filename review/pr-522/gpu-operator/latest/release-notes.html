@@ -79,7 +79,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 07, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 08, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -393,6 +393,7 @@
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-ipv6.html">IPv6 Networks</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Platform-Specific Configurations</span></p>
 <ul class="nav bd-sidenav">
@@ -483,7 +484,8 @@ The MPS control daemon now runs with the DRA driver service account, and the <co
 <li><p>Fixed an issue on Red Hat OpenShift Container Platform where ComputeDomain daemon pods failed to start when you install the DRA Driver for NVIDIA GPUs with the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource and use ComputeDomains.
 The ComputeDomain daemon service account can now use the <code class="docutils literal notranslate"><span class="pre">anyuid</span></code> SCC, and the ComputeDomain daemon role can now delete <code class="docutils literal notranslate"><span class="pre">ComputeDomainClique</span></code> resources.
 (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/3011">GPU Operator PR #3011</a>, <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/3010">Issue #3010</a>)</p></li>
-<li><p>Fixed an issue where changing a node label used by an <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> node selector did not reassign the node to the matching <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resource when the node was owned by the default <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resource or had no owner.
+<li><p>Fixed an issue where changing a node label used in an <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> node selector did not always reassign the node to the matching NVIDIA driver resource.
+The Operator now reconciles driver ownership when any label in any NVIDIA driver node selector is added, changed, or removed.
 (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/3003">GPU Operator PR #3003</a>, <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/3004">Issue #3004</a>)</p></li>
 <li><p>Fixed an issue where the MPS control daemon did not reload after an MPS sharing configuration change.
 The configuration manager now signals the <code class="docutils literal notranslate"><span class="pre">mps-control-daemon</span></code> process by the process name that the container starts.

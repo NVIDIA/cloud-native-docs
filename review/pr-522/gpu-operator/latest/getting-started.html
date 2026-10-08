@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 07, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 08, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -391,6 +391,7 @@
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-ipv6.html">IPv6 Networks</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Platform-Specific Configurations</span></p>
 <ul class="nav bd-sidenav">
@@ -889,8 +890,6 @@ Set this value to <code class="docutils literal notranslate"><span class="pre">f
 <td><p>Specifies the type of the NVIDIA GPU Kernel modules to use.
 Valid values are <code class="docutils literal notranslate"><span class="pre">auto</span></code> (default), <code class="docutils literal notranslate"><span class="pre">proprietary</span></code>, and <code class="docutils literal notranslate"><span class="pre">open</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Auto</span></code> means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
-The <code class="docutils literal notranslate"><span class="pre">auto</span></code> option is only supported with the 570.86.15 and 570.124.06 or later driver containers.
-550 and 535 branch drivers do not yet support this mode.
 <code class="docutils literal notranslate"><span class="pre">Open</span></code> means the open kernel module is used.
 <code class="docutils literal notranslate"><span class="pre">Proprietary</span></code> means the proprietary module is used.</p>
 </td>
@@ -1067,7 +1066,7 @@ To prevent installing the driver on a GPU worker node, label the node like the f
 <p>When using RHEL 8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
 Additionally, when using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode) at the host level, containerd must also be configured for SELinux, by setting the <code class="docutils literal notranslate"><span class="pre">enable_selinux=true</span></code> configuration option.</p>
 <p>Network restricted environments are not supported.</p>
-<p>You can use the standard install comamnd to install the GPU Operator on RHEL.</p>
+<p>You can use the standard install command to install the GPU Operator on RHEL.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
