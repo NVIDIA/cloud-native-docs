@@ -33,6 +33,53 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v26.7.2:
+
+26.7.2
+======
+
+Improvements
+------------
+
+* The NVIDIA DCGM and NVIDIA DCGM Exporter daemon sets, pods, and services now include the ``app.kubernetes.io/component`` label with the value ``nvidia-dcgm`` or ``nvidia-dcgm-exporter``.
+  The label applies to deployments managed by the ``ClusterPolicy`` resource and by the ``GPUCluster`` resource.
+  If you specify the ``app.kubernetes.io/component`` label in the ``daemonsets.labels`` field, the Operator does not apply your value to operands that already have the label, such as NVIDIA DCGM, NVIDIA DCGM Exporter, and the NVIDIA GPU Driver.
+  The Operator logs a message when it skips a conflicting value.
+  (`GPU Operator PR #3017 <https://github.com/NVIDIA/gpu-operator/pull/3017>`__)
+
+Fixed Issues
+------------
+
+* Fixed an issue on Red Hat OpenShift Container Platform where workloads that request MPS sharing remained in the ``ContainerCreating`` state when you install the DRA Driver for NVIDIA GPUs with the ``GPUCluster`` resource and enable the ``MPSSupport`` feature gate.
+  The MPS control daemon now runs with the DRA driver service account, and the ``nvidia-dra-driver`` SCC now allows host PID access.
+  (`GPU Operator PR #3008 <https://github.com/NVIDIA/gpu-operator/pull/3008>`__)
+
+* Fixed an issue on Red Hat OpenShift Container Platform where ComputeDomain daemon pods failed to start when you install the DRA Driver for NVIDIA GPUs with the ``GPUCluster`` resource and use ComputeDomains.
+  The ComputeDomain daemon service account can now use the ``anyuid`` SCC, and the ComputeDomain daemon role can now delete ``ComputeDomainClique`` resources.
+  (`GPU Operator PR #3011 <https://github.com/NVIDIA/gpu-operator/pull/3011>`__, `Issue #3010 <https://github.com/NVIDIA/gpu-operator/issues/3010>`__)
+
+* Fixed an issue where changing a node label used in an ``NVIDIADriver`` node selector did not always reassign the node to the matching NVIDIA driver resource.
+  The Operator now reconciles driver ownership when any label in any NVIDIA driver node selector is added, changed, or removed.
+  (`GPU Operator PR #3003 <https://github.com/NVIDIA/gpu-operator/pull/3003>`__, `Issue #3004 <https://github.com/NVIDIA/gpu-operator/issues/3004>`__)
+
+* Fixed an issue where the MPS control daemon did not reload after an MPS sharing configuration change.
+  The configuration manager now signals the ``mps-control-daemon`` process by the process name that the container starts.
+  (`GPU Operator PR #2974 <https://github.com/NVIDIA/gpu-operator/pull/2974>`__)
+
+* Fixed an issue where the Operator could not update recurring Kubernetes events, such as ``GPUDriverUpgrade`` events.
+  The Operator cluster role now includes the ``patch`` verb for events.
+  (`GPU Operator PR #2995 <https://github.com/NVIDIA/gpu-operator/pull/2995>`__)
+
+* Fixed an issue where OLM installations on Arm64 GPU nodes failed to start NVIDIA vGPU Device Manager with ``Exec format error``.
+  The OLM bundle now pins the multi-architecture image index digest for NVIDIA vGPU Device Manager v0.5.1.
+  (`GPU Operator PR #3013 <https://github.com/NVIDIA/gpu-operator/pull/3013>`__, `Issue #3012 <https://github.com/NVIDIA/gpu-operator/issues/3012>`__)
+
+* Fixed the ``GPUCluster`` example in the OLM bundle, which specified an outdated DRA Driver for NVIDIA GPUs image.
+  The example now uses the default DRA driver image that the Operator configures.
+  (`GPU Operator PR #2960 <https://github.com/NVIDIA/gpu-operator/pull/2960>`__)
+
+----
+
 .. _v26.7.1:
 
 26.7.1
