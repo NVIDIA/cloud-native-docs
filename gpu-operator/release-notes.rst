@@ -186,6 +186,11 @@ Known Issues
 
         $ kubectl label node <node-name> nvidia.com/mig.config=<profile> --overwrite
 
+Post-Release Documentation Updates
+----------------------------------
+
+* Updated :doc:`gpu-operator-rdma` to clarify the DMA-BUF and ``nvidia-peermem`` requirements and installation steps, correct the MacVLAN verification example, and scope the GDS guidance to remote storage over RDMA.
+
 ----
 
 .. _v26.7.0:
@@ -362,7 +367,6 @@ Post-Release Documentation Updates
 * Corrected the ``kata-deploy`` Helm install on the :doc:`Kata Containers with GPU Operator <deploy-kata-containers>` page.
   The previous ``--set`` used a GPU Operator chart key that the ``kata-deploy`` chart ignores.
 * Added a DRA installation guide for Red Hat OpenShift Container Platform. Refer to :external+ocp:doc:`dra-gpu-ocp`.
-
 
 ----
 
