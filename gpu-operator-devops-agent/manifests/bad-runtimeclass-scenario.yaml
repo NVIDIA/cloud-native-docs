@@ -1,0 +1,19 @@
+apiVersion: node.k8s.io/v1
+kind: RuntimeClass
+metadata:
+  name: abtest-bad-nvidia
+handler: definitely-not-real-nvidia-handler
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: abtest-bad-runtime
+spec:
+  restartPolicy: Never
+  runtimeClassName: abtest-bad-nvidia
+  containers:
+  - name: cuda-vectoradd
+    image: "nvcr.io/nvidia/k8s/cuda-sample:vectoradd-cuda12.5.0-ubuntu22.04"
+    resources:
+      limits:
+        nvidia.com/gpu: 1

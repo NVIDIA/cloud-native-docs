@@ -1,0 +1,24 @@
+# Claim Ledger
+
+| Claim | Source | Scope | Verification | Fallback if false |
+|---|---|---|---|---|
+| GPU Operator default install deploys NFD, driver, toolkit, device plugin, DCGM Exporter, MIG Manager, and validators according to chart values and node eligibility. | docs `getting-started.rst`; source `values.yaml` | v26.3.3 Helm | `helm show values`; pods/ds | inspect custom values and disabled operands |
+| `ClusterPolicy` ready is necessary but not sufficient for install success. | docs verification section | all installs | pods, ds, allocatable GPU, workload manifest | troubleshoot earliest failed layer |
+| CUDA VectorAdd validation should use a manifest, not `kubectl run --limits`. | docs `getting-started.rst` | workload validation | `kubectl apply -f manifests/cuda-vectoradd.yaml`; logs | create equivalent manifest for target namespace |
+| CDI is enabled by default in GPU Operator v25.10.0+. | docs `cdi.rst`; source `values.yaml` | v25.10+ | ClusterPolicy `.spec.cdi.enabled` | explicitly enable or document override |
+| NRI requires CDI and supported container runtime versions. | docs `cdi.rst`; chart `validations.yaml` | NRI path | runtime version, Helm render | do not enable NRI; use legacy toolkit branch |
+| With CDI+NRI, non-standard K3s/k0s/RKE2 containerd paths do not require `CONTAINERD_CONFIG`, `CONTAINERD_SOCKET`, or `RUNTIME_CONFIG_SOURCE`. | docs `cdi.rst`, `getting-started.rst` | NRI mode | toolkit logs, runtime behavior | legacy env settings after exact path proof |
+| Documented NRI containerd ranges are `1.7.30`, `2.1.x`, and `2.2.x`; newer containerd is not automatically known-tested. | docs `cdi.rst`, `platform-support.rst` | support matrix | runtime version | caveat plus extra validation or stop |
+| GPU Operator v26.3.3 with K3s `v1.36.2+k3s1`, containerd `2.3.2-k3s2`, host driver `580.159.03`, CDI+NRI, and A100 passed live Brev install, VectorAdd, time-slicing, same-version Helm reconciliation, and bad RuntimeClass recovery. | live A100 GPU instance | sandbox evidence, newer-than-documented NRI range | repeat workload/example suite in target environment | do not generalize beyond this sandbox without fresh public-source and live evidence |
+| K3s kubeconfig commonly lives at `/etc/rancher/k3s/k3s.yaml`; shells that do not load it must set `KUBECONFIG` explicitly before Helm/kubectl mutation. | K3s documentation; live target evidence | K3s sandbox | `echo $KUBECONFIG`, `kubectl get nodes` | export `/etc/rancher/k3s/k3s.yaml` |
+| In K3s/Brev shells, Helm may require an explicit `KUBECONFIG=/etc/rancher/k3s/k3s.yaml` even when `kubectl` commands work from the shell. | live A100 GPU instance | K3s sandbox command context | `helm list -A` with explicit kubeconfig | set inline `KUBECONFIG` for every Helm command |
+| Time-slicing rollout availability proves scheduling capacity, but each verification pod should log `Test PASSED` before declaring CUDA execution success. | docs `gpu-sharing.rst`; live A100 GPU instance | optional example validation | pod logs per replica | wait for logs or reduce replica count |
+| Direct `ClusterPolicy` patches and Helm values can diverge; cleanup must verify both live ClusterPolicy and Helm values. | live A100 GPU instance | optional example and maintenance cleanup | `kubectl get clusterpolicy`; `helm get values` | patch live ClusterPolicy and reconcile Helm values |
+| NFD should be disabled if an owned NFD already labels nodes. | docs `getting-started.rst`; chart values | install | feature labels and existing NFD pods | chart-managed NFD |
+| Pod Security Admission restricted/baseline can block privileged operands. | docs `getting-started.rst` | PSA clusters | namespace events/labels | label `gpu-operator` privileged with approval |
+| GPU Operator only manages containerized drivers, not host-preinstalled driver lifecycle. | docs `gpu-driver-upgrades.rst` | driver maintenance | `driver.enabled` and host evidence | use host/provider runbook |
+| Chart upgrade CRD hook is enabled by default in v24.9.0+ and requires `--disable-openapi-validation`. | docs `upgrade.rst`; `values.yaml` | chart upgrade | values and Helm output | manual CRD path |
+| Driver upgrade controller is enabled by default and uses node state labels/events. | docs `gpu-driver-upgrades.rst` | driver upgrades | node labels/events | k8s-driver-manager fallback |
+| `driver.upgradePolicy.drain.enable=true` is disruptive and should be last resort after GPU pod deletion controls. | docs `gpu-driver-upgrades.rst` | driver upgrades | ClusterPolicy | tune GPU pod deletion or stop |
+| MIG changes can terminate workloads and may require reboot. | docs `gpu-operator-mig.rst` | MIG-capable GPUs | workload inventory, MIG labels | schedule window or do not change |
+| Critical Xid errors can make device plugin mark GPUs unhealthy. | docs `troubleshooting.rst` | runtime GPU health | dmesg/device-plugin logs | hardware/driver escalation |
