@@ -79,7 +79,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 08, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 12, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -499,6 +499,14 @@ The OLM bundle now pins the multi-architecture image index digest for NVIDIA vGP
 <li><p>Fixed the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> example in the OLM bundle, which specified an outdated DRA Driver for NVIDIA GPUs image.
 The example now uses the default DRA driver image that the Operator configures.
 (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2960">GPU Operator PR #2960</a>)</p></li>
+</ul>
+</section>
+<section id="documentation-improvements">
+<h3>Documentation Improvements<a class="headerlink" href="#documentation-improvements" title="Permalink to this headline">#</a></h3>
+<ul class="simple">
+<li><p>Added documentation to describe how to coordinate the installation of GPU and DOCA-OFED drivers managed by GPU Operator and Network Operator.
+For configuration steps, refer to <a class="reference internal" href="gpu-operator-rdma.html#doca-ofed-driver-coordination"><span class="std std-ref">Special Considerations for Network Operator</span></a> for Kubernetes or
+<a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/install-gpu-ocp.html#openshift-doca-ofed-driver-coordination" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Special Considerations for Network Operator</span></a> for OpenShift.</p></li>
 </ul>
 <hr class="docutils" />
 </section>
@@ -3749,6 +3757,7 @@ would not be available after reboot.</p></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v26-7-2">26.7.2</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#improvements">Improvements</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-issues">Fixed Issues</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation-improvements">Documentation Improvements</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v26-7-1">26.7.1</a><ul class="nav section-nav flex-column">
