@@ -499,6 +499,9 @@ The OLM bundle now pins the multi-architecture image index digest for NVIDIA vGP
 <li><p>Fixed the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> example in the OLM bundle, which specified an outdated DRA Driver for NVIDIA GPUs image.
 The example now uses the default DRA driver image that the Operator configures.
 (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2960">GPU Operator PR #2960</a>)</p></li>
+<li><p>Fixed an issue where Operator Lifecycle Manager (OLM) upgrades could fail with <code class="docutils literal notranslate"><span class="pre">spec.default:</span> <span class="pre">Required</span> <span class="pre">value</span></code> when validating existing <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resources.
+The <code class="docutils literal notranslate"><span class="pre">spec.default</span></code> and <code class="docutils literal notranslate"><span class="pre">spec.driverType</span></code> fields are now optional, with defaults of <code class="docutils literal notranslate"><span class="pre">false</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu</span></code>, respectively.
+(<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/3046">GPU Operator PR #3046</a>)</p></li>
 </ul>
 </section>
 <section id="documentation-improvements">
