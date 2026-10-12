@@ -314,13 +314,13 @@ The following table describes some of the fields in the custom resource.
      - None
 
    * - ``default``
-     - Specifies whether the resource is the fallback driver configuration for GPU nodes that do not
+     - Optional. Specifies whether the resource is the fallback driver configuration for GPU nodes that do not
        match a non-default resource.
        Only one resource can be the default, and a default resource cannot specify ``nodeSelector``.
      - ``false``
 
    * - ``driverType``
-     - Specifies one of the following:
+     - Optional. Specifies one of the following:
 
        - ``gpu`` to use the NVIDIA data-center GPU driver.
        - ``vgpu`` to use the NVIDIA vGPU guest driver.

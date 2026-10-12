@@ -78,6 +78,10 @@ Fixed Issues
   The example now uses the default DRA driver image that the Operator configures.
   (`GPU Operator PR #2960 <https://github.com/NVIDIA/gpu-operator/pull/2960>`__)
 
+* Fixed an issue where Operator Lifecycle Manager (OLM) upgrades could fail with ``spec.default: Required value`` when validating existing ``NVIDIADriver`` resources.
+  The ``spec.default`` and ``spec.driverType`` fields are now optional, with defaults of ``false`` and ``gpu``, respectively.
+  (`GPU Operator PR #3046 <https://github.com/NVIDIA/gpu-operator/pull/3046>`__)
+
 Documentation Improvements
 --------------------------
 
