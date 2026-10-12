@@ -139,7 +139,7 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
       subscription.operators.coreos.com/gpu-operator-certified created
 
-#. Optional: Log in to the web console and navigate to the **Ecosystem** > **Installed Operators** and select **NVIDIA GPU Operator**. 
+#. Optional: Log in to the web console and navigate to the **Ecosystem** > **Installed Operators** and select **NVIDIA GPU Operator**.
     In versions before 4.20, navigate to **Operators** > **Installed Operators** and select **NVIDIA GPU Operator**.
 
     In the ``Project: nvidia-gpu-operator`` the following is displayed:
@@ -183,6 +183,104 @@ As a cluster administrator, you can install the **NVIDIA GPU Operator** using th
 
    .. image:: graphics/cluster_policy_succeed.png
 
+.. _openshift-doca-ofed-driver-coordination:
+
+*******************************************
+Special Considerations for Network Operator
+*******************************************
+
+If you use GPU Operator and Network Operator to manage the GPU and DOCA-OFED drivers on the same nodes,
+the GPU driver software must stop before a DOCA-OFED update.
+Network Operator manages this sequence by using the ``network.nvidia.com/operator.mofed.wait`` node label.
+GPU Operator uses this label in the NVIDIADriver node selector.
+When Network Operator sets the label to ``true``, the node no longer matches the selector, and GPU Operator stops the GPU driver pod.
+When the label returns to ``false``, GPU Operator restores driver ownership and schedules the GPU driver pod on the node.
+
+The sequence relies on not configuring a default NVIDIA driver resource.
+The following procedure configures a non-default NVIDIA driver resource to select nodes only when the label is ``"false"``.
+
+Before You Begin
+================
+
+* Use GPU Operator v26.7.2 or later.
+* Configure Network Operator to manage the DOCA-OFED drivers.
+* Use a deployment that supports DMA-BUF; the following configuration leaves legacy ``nvidia-peermem`` support disabled.
+* Log in with cluster administrator privileges and stop GPU workloads before changing driver management.
+
+Configure Driver Coordination
+=============================
+
+#. List the cluster policy resources to find the name of your policy:
+
+   .. code-block:: console
+
+      $ oc get clusterpolicy
+
+#. Edit the cluster policy resource:
+
+   .. code-block:: console
+
+      $ oc edit clusterpolicy <policy-name>
+
+   Set the following fields, retaining the other settings, and save the resource:
+
+   .. code-block:: yaml
+
+      spec:
+        driver:
+          useNvidiaDriverCRD: true
+          rdma:
+            enabled: false
+
+#. In the web console, open **Installed Operators**, select **NVIDIA GPU Operator**, and create a non-default ``NVIDIADriver`` resource.
+
+   In the YAML configuration, set the following fields along with the driver settings required by your deployment:
+
+   .. code-block:: yaml
+
+      apiVersion: nvidia.com/v1alpha1
+      kind: NVIDIADriver
+      metadata:
+        name: demo-network-coordinated-driver
+      spec:
+        default: false
+        repository: nvcr.io/nvidia
+        image: driver
+        version: "${recommended}"
+        nodeSelector:
+          network.nvidia.com/operator.mofed.wait: "false"
+
+   Save the resource.
+
+#. Check for a default driver resource:
+
+   .. code-block:: console
+
+      $ oc get nvidiadriver -o custom-columns=NAME:.metadata.name,DEFAULT:.spec.default
+
+   Ensure no resource has ``DEFAULT`` set to ``true``.
+
+Verify Driver Recovery
+======================
+
+#. After the DOCA-OFED update, check the label on the GPU nodes:
+
+   .. code-block:: console
+
+      $ oc get nodes -l nvidia.com/gpu.present=true -L network.nvidia.com/operator.mofed.wait
+
+   During the update, ``"true"`` excludes the node from the driver selector so that the GPU driver pod can stop.
+   After the update, ``"false"`` makes the node match the selector so that GPU Operator can restore driver ownership and scheduling.
+   A missing label does not match the selector.
+
+#. Check that GPU driver pods become ready:
+
+   .. code-block:: console
+
+      $ oc get pods -n nvidia-gpu-operator -o wide
+
+   Ensure that the GPU driver pods show ``Running``.
+
 .. _create-cluster-policy:
 
 *********************************
@@ -199,7 +297,7 @@ when using **NVIDIA vGPU**. Refer to the appropriate sections below.
 .. _create-cluster-policy-web-console:
 
 Create the cluster policy using the web console
------------------------------------------------
+===============================================
 
 #. In the OpenShift Container Platform web console, from the side menu, select **Ecosystem** > **Installed Operators** (for versions before 4.20, look for **Operators** > **Installed Operators**), and click **NVIDIA GPU Operator**.
 
@@ -224,14 +322,13 @@ Create the cluster policy using the web console
 .. _verify-gpu-operator-install-ocp:
 
 Create the cluster policy using the CLI
----------------------------------------
-
+=======================================
 
 #. Create the ClusterPolicy:
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator $STARTING_CSV -o jsonpath='{.metadata.annotations.alm-examples}' | jq -r 'map(select(.kind == "ClusterPolicy")) | .[0]' > clusterpolicy.json 
+      $ oc get csv -n nvidia-gpu-operator $STARTING_CSV -o jsonpath='{.metadata.annotations.alm-examples}' | jq -r 'map(select(.kind == "ClusterPolicy")) | .[0]' > clusterpolicy.json
 
    .. note:: $STARTING_CSV is the value of the ``startingCSV`` field in the ``Subscription`` CR sample created in the :ref:`install-gpu-ocp` section.
 
@@ -258,7 +355,7 @@ Create the ClusterPolicy instance with NVIDIA vGPU
 ***************************************************************************
 
 Prerequisites
---------------
+==============
 
 Before creating the ClusterPolicy for NVIDIA vGPU, ensure the following:
 
@@ -288,7 +385,7 @@ Before creating the ClusterPolicy for NVIDIA vGPU, ensure the following:
          -n nvidia-gpu-operator
 
 Create the cluster policy using the web console
------------------------------------------------
+===============================================
 
 #. In the OpenShift Container Platform web console, from the side menu, select **Ecosystem** > **Installed Operators** and select **NVIDIA GPU Operator**.
    In versions before 4.20, navigate to **Operators** > **Installed Operators** and select **NVIDIA GPU Operator**.
@@ -296,8 +393,8 @@ Create the cluster policy using the web console
 #. Select the **ClusterPolicy** tab, then click **Create ClusterPolicy**. The platform assigns the default name *gpu-cluster-policy*.
 
 #. Under the  **NVIDIA GPU/vGPU Driver config** section fill in the following information
-   
-   * Specify the ``secretName`` as the name of the licensing ``Secret`` created during the prerequisite steps for NVIDIA vGPU (for example, ``licensing-config``). 
+
+   * Specify the ``secretName`` as the name of the licensing ``Secret`` created during the prerequisite steps for NVIDIA vGPU (for example, ``licensing-config``).
 
    .. note::
 
@@ -319,13 +416,13 @@ Create the cluster policy using the web console
 
 
 Create the cluster policy using the CLI
----------------------------------------
+=======================================
 
 #. Create the ClusterPolicy:
 
    .. code-block:: console
 
-      $ oc get csv -n nvidia-gpu-operator $STARTING_CSV -o jsonpath='{.metadata.annotations.alm-examples}' | jq -r 'map(select(.kind == "ClusterPolicy")) | .[0]') > clusterpolicy.json 
+      $ oc get csv -n nvidia-gpu-operator $STARTING_CSV -o jsonpath='{.metadata.annotations.alm-examples}' | jq -r 'map(select(.kind == "ClusterPolicy")) | .[0]') > clusterpolicy.json
 
    .. note:: $STARTING_CSV is the value of the ``startingCSV`` field in the ``Subscription`` CR sample created in the :ref:`install-gpu-ocp` section.
 

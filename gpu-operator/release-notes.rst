@@ -78,6 +78,13 @@ Fixed Issues
   The example now uses the default DRA driver image that the Operator configures.
   (`GPU Operator PR #2960 <https://github.com/NVIDIA/gpu-operator/pull/2960>`__)
 
+Documentation Improvements
+--------------------------
+
+* Added documentation to describe how to coordinate the installation of GPU and DOCA-OFED drivers managed by GPU Operator and Network Operator.
+  For configuration steps, refer to :ref:`doca-ofed-driver-coordination` for Kubernetes or
+  :ref:`openshift-doca-ofed-driver-coordination` for OpenShift.
+
 ----
 
 .. _v26.7.1:
