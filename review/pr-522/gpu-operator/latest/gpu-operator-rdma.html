@@ -577,89 +577,6 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <p>To use the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module instead of DMA-BUF, add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.rdma.enabled=true</span></code> to either of the preceding commands.
 Add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.kernelModuleType=open</span></code> if you are using a driver version from a branch earlier than R570.</p>
 </section>
-<section id="special-considerations-for-network-operator">
-<span id="doca-ofed-driver-coordination"></span><h3>Special Considerations for Network Operator<a class="headerlink" href="#special-considerations-for-network-operator" title="Permalink to this headline">#</a></h3>
-<p>If you use GPU Operator and Network Operator to manage the GPU and DOCA-OFED drivers on the same nodes,
-the GPU driver software must stop before a DOCA-OFED update.
-Network Operator manages this sequence by using the <code class="docutils literal notranslate"><span class="pre">network.nvidia.com/operator.mofed.wait</span></code> node label.
-GPU Operator uses this label in the NVIDIADriver node selector.
-When Network Operator sets the label to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the node no longer matches the selector, and GPU Operator stops the GPU driver pod.
-When the label returns to <code class="docutils literal notranslate"><span class="pre">false</span></code>, GPU Operator restores driver ownership and schedules the GPU driver pod on the node.</p>
-<p>The sequence relies on not configuring a default NVIDIA driver resource.
-The following procedure configures a non-default NVIDIA driver resource to select nodes only when the label is <code class="docutils literal notranslate"><span class="pre">&quot;false&quot;</span></code>.</p>
-<section id="before-you-begin">
-<h4>Before You Begin<a class="headerlink" href="#before-you-begin" title="Permalink to this headline">#</a></h4>
-<ul class="simple">
-<li><p>Use GPU Operator v26.7.2 or later.</p></li>
-<li><p>Configure Network Operator to manage the DOCA-OFED drivers.</p></li>
-<li><p>For an existing installation that uses cluster policy driver management, complete
-<a class="reference internal" href="nvidia-driver-configuration.html#migrating-from-cluster-policy-driver-management"><span class="std std-ref">Migrating from Cluster Policy Driver Management</span></a> before applying this configuration.</p></li>
-</ul>
-</section>
-<section id="configure-driver-coordination">
-<h4>Configure Driver Coordination<a class="headerlink" href="#configure-driver-coordination" title="Permalink to this headline">#</a></h4>
-<ol class="arabic">
-<li><p>Install GPU Operator with driver coordination enabled:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install gpu-operator nvidia/gpu-operator <span class="se">\</span>
-    -n gpu-operator --create-namespace <span class="se">\</span>
-    --version<span class="o">=</span>v26.7.2 <span class="se">\</span>
-    --set driver.nvidiaDriverCRD.enabled<span class="o">=</span><span class="nb">true</span> <span class="se">\</span>
-    --set driver.nvidiaDriverCRD.deployDefaultCR<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
-    --set driver.rdma.enabled<span class="o">=</span><span class="nb">false</span>
-</pre></div>
-</div>
-<p>These arguments enable driver custom resource management, disable chart creation of a default driver resource, and use DMA-BUF instead of the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module.
-For an existing installation, use the same three <code class="docutils literal notranslate"><span class="pre">--set</span></code> arguments with your Helm upgrade command after completing any required driver management migration.</p>
-</li>
-<li><p>Create a file, such as <code class="docutils literal notranslate"><span class="pre">network-coordinated-driver.yaml</span></code>, with contents like the following example:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/v1alpha1</span><span class="w"></span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIADriver</span><span class="w"></span>
-<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demo-network-coordinated-driver</span><span class="w"></span>
-<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
-<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
-<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
-<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;595.91.07&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">network.nvidia.com/operator.mofed.wait</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="w"></span>
-</pre></div>
-</div>
-<p>If you already manage these nodes with an <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resource, add the coordination selector and set <code class="docutils literal notranslate"><span class="pre">default:</span> <span class="pre">false</span></code> on that resource instead.</p>
-</li>
-<li><p>Apply the driver manifest:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl apply -f network-coordinated-driver.yaml
-</pre></div>
-</div>
-</li>
-<li><p>Check for a default driver resource:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nvidiadriver -o custom-columns<span class="o">=</span>NAME:.metadata.name,DEFAULT:.spec.default
-</pre></div>
-</div>
-<p>Ensure no resource shows <code class="docutils literal notranslate"><span class="pre">DEFAULT</span></code> set to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
-</li>
-</ol>
-</section>
-<section id="verify-driver-recovery">
-<h4>Verify Driver Recovery<a class="headerlink" href="#verify-driver-recovery" title="Permalink to this headline">#</a></h4>
-<ol class="arabic">
-<li><p>After the DOCA-OFED update, check the label on the GPU nodes:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get nodes -l nvidia.com/gpu.present<span class="o">=</span><span class="nb">true</span> -L network.nvidia.com/operator.mofed.wait
-</pre></div>
-</div>
-<p>During the update, <code class="docutils literal notranslate"><span class="pre">&quot;true&quot;</span></code> excludes the node from the driver selector so that the GPU driver pod can stop.
-After the update, <code class="docutils literal notranslate"><span class="pre">&quot;false&quot;</span></code> makes the node match the selector so that GPU Operator can restore driver ownership and scheduling.
-A missing label does not match the selector.</p>
-</li>
-<li><p>Check that GPU driver pods become ready:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator -o wide
-</pre></div>
-</div>
-<p>Ensure that the GPU driver pods show <code class="docutils literal notranslate"><span class="pre">Running</span></code>.</p>
-</li>
-</ol>
-</section>
-</section>
 <section id="verifying-the-installation-of-gpudirect-with-rdma">
 <h3>Verifying the Installation of GPUDirect with RDMA<a class="headerlink" href="#verifying-the-installation-of-gpudirect-with-rdma" title="Permalink to this headline">#</a></h3>
 <p>During the installation, the NVIDIA driver daemon set runs an <cite>init container</cite> to wait on the network device kernel drivers to be ready.
@@ -1115,12 +1032,6 @@ After the verification completes, the nvidia-fs-ctr container starts inside the 
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#configuring-gpudirect-rdma">Configuring GPUDirect RDMA</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#platform-support">Platform Support</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-the-gpu-operator-and-enabling-gpudirect-rdma">Installing the GPU Operator and Enabling GPUDirect RDMA</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#special-considerations-for-network-operator">Special Considerations for Network Operator</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#before-you-begin">Before You Begin</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-driver-coordination">Configure Driver Coordination</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-driver-recovery">Verify Driver Recovery</a></li>
-</ul>
-</li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verifying-the-installation-of-gpudirect-with-rdma">Verifying the Installation of GPUDirect with RDMA</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verifying-the-installation-by-performing-a-data-transfer">Verifying the Installation by Performing a Data Transfer</a></li>
 </ul>

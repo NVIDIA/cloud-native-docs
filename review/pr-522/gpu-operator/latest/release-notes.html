@@ -506,20 +506,9 @@ The Operator cluster role now includes the <code class="docutils literal notrans
 <li><p>Fixed an issue where OLM installations on Arm64 GPU nodes failed to start NVIDIA vGPU Device Manager with <code class="docutils literal notranslate"><span class="pre">Exec</span> <span class="pre">format</span> <span class="pre">error</span></code>.
 The OLM bundle now pins the multi-architecture image index digest for NVIDIA vGPU Device Manager v0.5.1.
 (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/3013">GPU Operator PR #3013</a>, <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/3012">Issue #3012</a>)</p></li>
-<li><p>Fixed the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> example in the OLM bundle, which specified an outdated DRA Driver for NVIDIA GPUs image.
-The example now uses the default DRA driver image that the Operator configures.
-(<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/2960">GPU Operator PR #2960</a>)</p></li>
 <li><p>Fixed an issue where Operator Lifecycle Manager (OLM) upgrades could fail with <code class="docutils literal notranslate"><span class="pre">spec.default:</span> <span class="pre">Required</span> <span class="pre">value</span></code> when validating existing <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resources.
 The <code class="docutils literal notranslate"><span class="pre">spec.default</span></code> and <code class="docutils literal notranslate"><span class="pre">spec.driverType</span></code> fields are now optional, with defaults of <code class="docutils literal notranslate"><span class="pre">false</span></code> and <code class="docutils literal notranslate"><span class="pre">gpu</span></code>, respectively.
 (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/3046">GPU Operator PR #3046</a>)</p></li>
-</ul>
-</section>
-<section id="documentation-improvements">
-<h3>Documentation Improvements<a class="headerlink" href="#documentation-improvements" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
-<li><p>Added documentation to describe how to coordinate the installation of GPU and DOCA-OFED drivers managed by GPU Operator and Network Operator.
-For configuration steps, refer to <a class="reference internal" href="gpu-operator-rdma.html#doca-ofed-driver-coordination"><span class="std std-ref">Special Considerations for Network Operator</span></a> for Kubernetes or
-<a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/install-gpu-ocp.html#openshift-doca-ofed-driver-coordination" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Special Considerations for Network Operator</span></a> for OpenShift.</p></li>
 </ul>
 <hr class="docutils" />
 </section>
@@ -3771,7 +3760,6 @@ would not be available after reboot.</p></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#new-features">New Features</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#improvements">Improvements</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed-issues">Fixed Issues</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation-improvements">Documentation Improvements</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#v26-7-1">26.7.1</a><ul class="nav section-nav flex-column">

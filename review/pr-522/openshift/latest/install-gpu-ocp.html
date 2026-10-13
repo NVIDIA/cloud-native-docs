@@ -582,91 +582,6 @@ If you install in any other namespace other than <code class="docutils literal n
 </li>
 </ol>
 </section>
-<section id="special-considerations-for-network-operator">
-<span id="openshift-doca-ofed-driver-coordination"></span><h2>Special Considerations for Network Operator<a class="headerlink" href="#special-considerations-for-network-operator" title="Permalink to this headline">#</a></h2>
-<p>If you use GPU Operator and Network Operator to manage the GPU and DOCA-OFED drivers on the same nodes,
-the GPU driver software must stop before a DOCA-OFED update.
-Network Operator manages this sequence by using the <code class="docutils literal notranslate"><span class="pre">network.nvidia.com/operator.mofed.wait</span></code> node label.
-GPU Operator uses this label in the NVIDIADriver node selector.
-When Network Operator sets the label to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the node no longer matches the selector, and GPU Operator stops the GPU driver pod.
-When the label returns to <code class="docutils literal notranslate"><span class="pre">false</span></code>, GPU Operator restores driver ownership and schedules the GPU driver pod on the node.</p>
-<p>The sequence relies on not configuring a default NVIDIA driver resource.
-The following procedure configures a non-default NVIDIA driver resource to select nodes only when the label is <code class="docutils literal notranslate"><span class="pre">&quot;false&quot;</span></code>.</p>
-<section id="before-you-begin">
-<h3>Before You Begin<a class="headerlink" href="#before-you-begin" title="Permalink to this headline">#</a></h3>
-<ul class="simple">
-<li><p>Use GPU Operator v26.7.2 or later.</p></li>
-<li><p>Configure Network Operator to manage the DOCA-OFED drivers.</p></li>
-<li><p>Use a deployment that supports DMA-BUF; the following configuration leaves legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> support disabled.</p></li>
-<li><p>Log in with cluster administrator privileges and stop GPU workloads before changing driver management.</p></li>
-</ul>
-</section>
-<section id="configure-driver-coordination">
-<h3>Configure Driver Coordination<a class="headerlink" href="#configure-driver-coordination" title="Permalink to this headline">#</a></h3>
-<ol class="arabic">
-<li><p>List the cluster policy resources to find the name of your policy:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get clusterpolicy
-</pre></div>
-</div>
-</li>
-<li><p>Edit the cluster policy resource:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc edit clusterpolicy &lt;policy-name&gt;
-</pre></div>
-</div>
-<p>Set the following fields, retaining the other settings, and save the resource:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">useNvidiaDriverCRD</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
-<span class="w">    </span><span class="nt">rdma</span><span class="p">:</span><span class="w"></span>
-<span class="w">      </span><span class="nt">enabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
-</pre></div>
-</div>
-</li>
-<li><p>In the web console, open <strong>Installed Operators</strong>, select <strong>NVIDIA GPU Operator</strong>, and create a non-default <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resource.</p>
-<p>In the YAML configuration, set the following fields along with the driver settings required by your deployment:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvidia.com/v1alpha1</span><span class="w"></span>
-<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NVIDIADriver</span><span class="w"></span>
-<span class="nt">metadata</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">demo-network-coordinated-driver</span><span class="w"></span>
-<span class="nt">spec</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"></span>
-<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
-<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
-<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;${recommended}&quot;</span><span class="w"></span>
-<span class="w">  </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w"></span>
-<span class="w">    </span><span class="nt">network.nvidia.com/operator.mofed.wait</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;false&quot;</span><span class="w"></span>
-</pre></div>
-</div>
-<p>Save the resource.</p>
-</li>
-<li><p>Check for a default driver resource:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get nvidiadriver -o custom-columns<span class="o">=</span>NAME:.metadata.name,DEFAULT:.spec.default
-</pre></div>
-</div>
-<p>Ensure no resource has <code class="docutils literal notranslate"><span class="pre">DEFAULT</span></code> set to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p>
-</li>
-</ol>
-</section>
-<section id="verify-driver-recovery">
-<h3>Verify Driver Recovery<a class="headerlink" href="#verify-driver-recovery" title="Permalink to this headline">#</a></h3>
-<ol class="arabic">
-<li><p>After the DOCA-OFED update, check the label on the GPU nodes:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get nodes -l nvidia.com/gpu.present<span class="o">=</span><span class="nb">true</span> -L network.nvidia.com/operator.mofed.wait
-</pre></div>
-</div>
-<p>During the update, <code class="docutils literal notranslate"><span class="pre">&quot;true&quot;</span></code> excludes the node from the driver selector so that the GPU driver pod can stop.
-After the update, <code class="docutils literal notranslate"><span class="pre">&quot;false&quot;</span></code> makes the node match the selector so that GPU Operator can restore driver ownership and scheduling.
-A missing label does not match the selector.</p>
-</li>
-<li><p>Check that GPU driver pods become ready:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get pods -n nvidia-gpu-operator -o wide
-</pre></div>
-</div>
-<p>Ensure that the GPU driver pods show <code class="docutils literal notranslate"><span class="pre">Running</span></code>.</p>
-</li>
-</ol>
-</section>
-</section>
 <section id="create-the-clusterpolicy-instance">
 <span id="create-cluster-policy"></span><h2>Create the ClusterPolicy instance<a class="headerlink" href="#create-the-clusterpolicy-instance" title="Permalink to this headline">#</a></h2>
 <p>When you install the <strong>NVIDIA GPU Operator</strong> in the OpenShift Container Platform, a custom resource definition for a ClusterPolicy is created. The ClusterPolicy configures the GPU stack, configuring the image names and repository, pod restrictions and credentials, and more.</p>
@@ -1067,12 +982,6 @@ If the label is defined, the GPU Operator will not change its value.</p>
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-the-nvidia-gpu-operator-by-using-the-web-console">Installing the NVIDIA GPU Operator by using the web console</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installing-the-nvidia-gpu-operator-using-the-cli">Installing the NVIDIA GPU Operator using the CLI</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#special-considerations-for-network-operator">Special Considerations for Network Operator</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#before-you-begin">Before You Begin</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#configure-driver-coordination">Configure Driver Coordination</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#verify-driver-recovery">Verify Driver Recovery</a></li>
-</ul>
-</li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-clusterpolicy-instance">Create the ClusterPolicy instance</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-cluster-policy-using-the-web-console">Create the cluster policy using the web console</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#create-the-cluster-policy-using-the-cli">Create the cluster policy using the CLI</a></li>
