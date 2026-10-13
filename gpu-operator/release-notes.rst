@@ -81,20 +81,10 @@ Fixed Issues
   The OLM bundle now pins the multi-architecture image index digest for NVIDIA vGPU Device Manager v0.5.1.
   (`GPU Operator PR #3013 <https://github.com/NVIDIA/gpu-operator/pull/3013>`__, `Issue #3012 <https://github.com/NVIDIA/gpu-operator/issues/3012>`__)
 
-* Fixed the ``GPUCluster`` example in the OLM bundle, which specified an outdated DRA Driver for NVIDIA GPUs image.
-  The example now uses the default DRA driver image that the Operator configures.
-  (`GPU Operator PR #2960 <https://github.com/NVIDIA/gpu-operator/pull/2960>`__)
-
 * Fixed an issue where Operator Lifecycle Manager (OLM) upgrades could fail with ``spec.default: Required value`` when validating existing ``NVIDIADriver`` resources.
   The ``spec.default`` and ``spec.driverType`` fields are now optional, with defaults of ``false`` and ``gpu``, respectively.
   (`GPU Operator PR #3046 <https://github.com/NVIDIA/gpu-operator/pull/3046>`__)
 
-Documentation Improvements
---------------------------
-
-* Added documentation to describe how to coordinate the installation of GPU and DOCA-OFED drivers managed by GPU Operator and Network Operator.
-  For configuration steps, refer to :ref:`doca-ofed-driver-coordination` for Kubernetes or
-  :ref:`openshift-doca-ofed-driver-coordination` for OpenShift.
 
 ----
 

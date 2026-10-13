@@ -133,10 +133,6 @@ This setting can help you meet any of the following goals:
    that selects one of the same nodes.
 
 
-For clusters with that use Network Operator to manage the DOCA-OFED driver, refer to
-:ref:`doca-ofed-driver-coordination` for information about coordinating installation of the GPU driver.
-
-
 Feature Compatibility
 =====================
 
