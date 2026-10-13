@@ -38,6 +38,13 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 26.7.2
 ======
 
+New Features
+------------
+
+* Updated software component versions:
+
+  - DRA Driver for NVIDIA GPUs v0.5.1
+
 Improvements
 ------------
 

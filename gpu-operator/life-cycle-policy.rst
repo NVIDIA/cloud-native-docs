@@ -120,7 +120,8 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
      - :cspan:`1` `0.20.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - DRA Driver for NVIDIA GPUs
-     - :cspan:`2` `v${dra_version} <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v${dra_version}>`__
+     - :cspan:`1` `v0.5.0 <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v0.5.0>`__
+     - `v${dra_version} <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v${dra_version}>`__
 
    * - DCGM Exporter
      - `v4.6.0-4.8.3 <https://github.com/NVIDIA/dcgm-exporter/releases>`__
