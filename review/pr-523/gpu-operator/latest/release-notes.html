@@ -524,7 +524,8 @@ This reference prevents the DOCA-OFED driver container from proceeding with inst
 <p>NVIDIA recommends the following alternatives before using this workaround:
 - Install the DOCA-OFED driver on the host and not use a containerized driver.
 - Use the _inbox_ drivers provided by the operating system.
-- If neither of those alternatives are viable, use this workaround.</p>
+- These alternatives are not applicable to OpenShift Container Platform.</p>
+<p>If neither of the preceding alternatives are viable, use this workaround.</p>
 <p>As a workaround, use GPU Operator v26.7.2 or later and configure a non-default <code class="docutils literal notranslate"><span class="pre">NVIDIADriver</span></code> resource with the <code class="docutils literal notranslate"><span class="pre">network.nvidia.com/operator.mofed.wait</span></code> node label in its selector.
 Do not configure a default NVIDIA driver resource.
 When Network Operator sets the label to <code class="docutils literal notranslate"><span class="pre">&quot;true&quot;</span></code>, the node no longer matches the selector, and GPU Operator stops the GPU driver pod.
