@@ -515,7 +515,12 @@ The <code class="docutils literal notranslate"><span class="pre">spec.default</s
 <h3>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h3>
 <ul>
 <li><p>When GPU Operator and Network Operator manage containerized drivers on the same nodes, GPU driver pods can remain running during a DOCA-OFED update.
-The GPU driver software must stop before Network Operator can update the DOCA-OFED driver.</p>
+The issue can occur on GPU nodes with NVLink 5 or later, such as NVIDIA HGX B200 and HGX B300 systems.</p>
+<dl class="simple">
+<dt>On these systems, the GPU driver container starts the NVLink Subnet Manager (<code class="docutils literal notranslate"><span class="pre">nvlsm</span></code>) service alongside NVIDIA Fabric Manager.</dt><dd><p>While running, <code class="docutils literal notranslate"><span class="pre">nvlsm</span></code> holds a reference to the <code class="docutils literal notranslate"><span class="pre">ib_umad</span></code> kernel module.
+This reference prevents the DOCA-OFED driver container from proceeding with installation.</p>
+</dd>
+</dl>
 <p>NVIDIA recommends the following alternatives before using this workaround:
 - Install the DOCA-OFED driver on the host and not use a containerized driver.
 - Use the _inbox_ drivers provided by the operating system.
