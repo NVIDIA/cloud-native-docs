@@ -660,3 +660,120 @@ Refer to this `GitHub issue <https://github.com/cri-o/cri-o/issues/9521>`_ for d
 The errors will eventually resolve on their own after the driver daemonset is installed or the upgrade is complete.
 
 This issue was fixed in GPU Operator v25.10.1 and later.
+
+**************************************************************************
+Driver/Library Version Mismatch After Unattended Upgrades on Ubuntu Nodes
+**************************************************************************
+
+.. rubric:: Issue
+   :class: h4
+
+This issue applies when you use a GPU driver that is pre-installed on the host, such as when you set ``driver.enabled=false``.
+On Ubuntu, the ``unattended-upgrades`` package can upgrade the NVIDIA driver packages in the background.
+The upgrade replaces the user-space driver libraries and utilities.
+The kernel module that is already loaded stays at the previous version until you reload it or reboot the node.
+
+.. rubric:: Observation
+   :class: h4
+
+- Pods that request GPUs fail to start.
+  The pod events include an error that ends with ``nvidia-persistenced/socket: no such file or directory``.
+
+- Running ``nvidia-smi`` on the host fails:
+
+  .. code-block:: console
+
+     $ nvidia-smi
+
+  *Example Output*
+
+  .. code-block:: output
+
+     Failed to initialize NVML: Driver/library version mismatch
+
+- The version of the loaded kernel module differs from the version of the installed driver packages.
+  Display the version of the loaded kernel module:
+
+  .. code-block:: console
+
+     $ cat /proc/driver/nvidia/version
+
+  Display the versions of the installed driver packages:
+
+  .. code-block:: console
+
+     $ dpkg -l | grep -i nvidia
+
+  Check whether ``unattended-upgrades`` upgraded the driver packages:
+
+  .. code-block:: console
+
+     $ grep -i nvidia /var/log/unattended-upgrades/unattended-upgrades.log
+
+.. rubric:: Root Cause
+   :class: h4
+
+The loaded kernel module and the user-space driver libraries have different versions.
+NVML does not initialize when the versions differ.
+The ``nvidia-persistenced`` daemon from the upgraded packages also fails to start.
+Its socket file does not exist, so containers that expect to mount the socket fail to start.
+
+.. rubric:: Action
+   :class: h4
+
+Load the kernel module that matches the upgraded libraries.
+
+#. Drain the node:
+
+   .. code-block:: console
+
+      $ kubectl drain <node-name> --ignore-daemonsets --delete-emptydir-data
+
+#. Reboot the node:
+
+   .. code-block:: console
+
+      $ sudo reboot
+
+#. After the node is ready, uncordon the node:
+
+   .. code-block:: console
+
+      $ kubectl uncordon <node-name>
+
+If you cannot reboot the node, you can reload the kernel modules instead.
+You must first stop all processes that use the GPU.
+If a module is still in use, the unload fails and you must reboot the node.
+
+.. code-block:: console
+
+   $ sudo modprobe -r nvidia_uvm nvidia_drm nvidia_modeset nvidia
+
+.. code-block:: console
+
+   $ sudo modprobe nvidia
+
+To prevent the issue, exclude the driver packages from unattended upgrades.
+Upgrade the driver during a planned maintenance window and reboot the node afterward.
+Use one of the following methods:
+
+- Hold the installed NVIDIA driver packages.
+  Replace the placeholder with the package names that ``dpkg -l | grep -i nvidia`` reports:
+
+  .. code-block:: console
+
+     $ sudo apt-mark hold <nvidia-package-name>
+
+  You must run ``sudo apt-mark unhold <nvidia-package-name>`` before you upgrade the driver.
+
+- Add the driver packages to the ``Unattended-Upgrade::Package-Blacklist`` list.
+  The entries are regular expressions that match the start of the package name:
+
+  .. code-block:: console
+
+     $ sudo tee /etc/apt/apt.conf.d/51nvidia-unattended-upgrades <<'EOT'
+     Unattended-Upgrade::Package-Blacklist {
+         "nvidia-";
+         "libnvidia-";
+     };
+     EOT
