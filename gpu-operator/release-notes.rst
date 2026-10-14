@@ -85,6 +85,177 @@ Fixed Issues
   The ``spec.default`` and ``spec.driverType`` fields are now optional, with defaults of ``false`` and ``gpu``, respectively.
   (`GPU Operator PR #3046 <https://github.com/NVIDIA/gpu-operator/pull/3046>`__)
 
+Known Issues
+------------
+
+* When GPU Operator and Network Operator manage containerized drivers on the same nodes, GPU driver pods can remain running during a DOCA-OFED update.
+  The issue can occur on GPU nodes with NVLink 5 or later, such as NVIDIA HGX B200 and HGX B300 systems.
+
+  On these systems, the GPU driver container starts the NVLink Subnet Manager (``nvlsm``) service alongside NVIDIA Fabric Manager.
+    While running, ``nvlsm`` holds a reference to the ``ib_umad`` kernel module.
+    This reference prevents the DOCA-OFED driver container from proceeding with installation.
+
+  NVIDIA recommends the following alternatives before using this workaround:
+  - Install the DOCA-OFED driver on the host and not use a containerized driver.
+  - Use the _inbox_ drivers provided by the operating system.
+  - These alternatives are not applicable to OpenShift Container Platform.
+    
+  If neither of the preceding alternatives are viable, use this workaround.
+
+  As a workaround, use GPU Operator v26.7.2 or later and configure a non-default ``NVIDIADriver`` resource with the ``network.nvidia.com/operator.mofed.wait`` node label in its selector.
+  Do not configure a default NVIDIA driver resource.
+  When Network Operator sets the label to ``"true"``, the node no longer matches the selector, and GPU Operator stops the GPU driver pod.
+  When the label returns to ``"false"``, GPU Operator restores driver ownership and schedules the GPU driver pod on the node.
+
+  Before you begin, configure Network Operator to manage the DOCA-OFED drivers and verify that your deployment meets the :ref:`DMA-BUF prerequisites <Common Prerequisites>`.
+  This workaround leaves the legacy ``nvidia-peermem`` kernel module disabled.
+  Log in with cluster administrator privileges and stop GPU workloads before changing driver management.
+
+  #. Enable NVIDIA driver custom resource management for your installation:
+
+     .. tab-set::
+
+        .. tab-item:: Kubernetes
+           :sync: kubernetes
+
+           For a new Helm installation, run the following command:
+
+           .. code-block:: console
+
+              $ helm install gpu-operator nvidia/gpu-operator \
+                  -n gpu-operator --create-namespace \
+                  --version=v26.7.2 \
+                  --set driver.nvidiaDriverCRD.enabled=true \
+                  --set driver.nvidiaDriverCRD.deployDefaultCR=false \
+                  --set driver.rdma.enabled=false
+
+           These arguments enable driver custom resource management, prevent the chart from creating a default driver resource, and disable the legacy ``nvidia-peermem`` kernel module.
+           For an existing Helm installation that uses cluster policy driver management, first complete :ref:`migrating-from-cluster-policy-driver-management`.
+           Then use the same three ``--set`` arguments with your Helm upgrade command, retaining your other Helm values.
+
+        .. tab-item:: OpenShift
+           :sync: openshift
+
+           List the cluster policy resources to find the name of your policy:
+
+           .. code-block:: console
+
+              $ oc get clusterpolicy
+
+           Edit the cluster policy resource:
+
+           .. code-block:: console
+
+              $ oc edit clusterpolicy <policy-name>
+
+           Set the following fields, retain the other settings, and save the resource:
+
+           .. code-block:: yaml
+
+              spec:
+                driver:
+                  useNvidiaDriverCRD: true
+                  rdma:
+                    enabled: false
+
+  #. Create a file, such as ``network-coordinated-driver.yaml``, with contents like the following example:
+
+     .. code-block:: yaml
+
+        apiVersion: nvidia.com/v1alpha1
+        kind: NVIDIADriver
+        metadata:
+          name: demo-network-coordinated-driver
+        spec:
+          default: false
+          repository: nvcr.io/nvidia
+          image: driver
+          version: "${recommended}"
+          nodeSelector:
+            network.nvidia.com/operator.mofed.wait: "false"
+
+     If you already manage these nodes with an ``NVIDIADriver`` resource, update that resource instead of creating another resource that selects the same nodes.
+     Add the coordination label to its node selector and set ``spec.default: false``, retaining the other driver settings and node selector labels.
+
+  #. Apply the driver manifest:
+
+     .. tab-set::
+
+        .. tab-item:: Kubernetes
+           :sync: kubernetes
+
+           .. code-block:: console
+
+              $ kubectl apply -f network-coordinated-driver.yaml
+
+        .. tab-item:: OpenShift
+           :sync: openshift
+
+           .. code-block:: console
+
+              $ oc apply -f network-coordinated-driver.yaml
+
+  #. Check for a default driver resource:
+
+     .. tab-set::
+
+        .. tab-item:: Kubernetes
+           :sync: kubernetes
+
+           .. code-block:: console
+
+              $ kubectl get nvidiadriver -o custom-columns=NAME:.metadata.name,DEFAULT:.spec.default
+
+        .. tab-item:: OpenShift
+           :sync: openshift
+
+           .. code-block:: console
+
+              $ oc get nvidiadriver -o custom-columns=NAME:.metadata.name,DEFAULT:.spec.default
+
+     Ensure no resource has ``DEFAULT`` set to ``true``.
+     If a default resource remains, update it to use ``spec.default: false`` and an appropriate node selector, or remove it after configuring the required non-default resources.
+     A default resource would act as a fallback when the coordination label is ``"true"``, preventing the GPU driver pods from stopping.
+
+  #. After the DOCA-OFED update, check the label on the GPU nodes:
+
+     .. tab-set::
+
+        .. tab-item:: Kubernetes
+           :sync: kubernetes
+
+           .. code-block:: console
+
+              $ kubectl get nodes -l nvidia.com/gpu.present=true -L network.nvidia.com/operator.mofed.wait
+
+        .. tab-item:: OpenShift
+           :sync: openshift
+
+           .. code-block:: console
+
+              $ oc get nodes -l nvidia.com/gpu.present=true -L network.nvidia.com/operator.mofed.wait
+
+     Verify that Network Operator has returned the label to ``"false"`` so that GPU Operator can restore driver ownership and scheduling.
+     A missing label does not match the selector and prevents the GPU driver pod from being scheduled.
+
+  #. Check that the GPU driver pods are running and all their containers are ready:
+
+     .. tab-set::
+
+        .. tab-item:: Kubernetes
+           :sync: kubernetes
+
+           .. code-block:: console
+
+              $ kubectl get pods -n gpu-operator -o wide
+
+        .. tab-item:: OpenShift
+           :sync: openshift
+
+           .. code-block:: console
+
+              $ oc get pods -n nvidia-gpu-operator -o wide
+
 
 ----
 
