@@ -462,22 +462,25 @@ is an open specification for container runtimes that abstracts what access to a 
 and standardizes access across container runtimes. Popular container runtimes can read and process the specification to
 ensure that a device is available in a container. CDI simplifies adding support for devices such as NVIDIA GPUs because
 the specification is applicable to all container runtimes that support CDI.</p>
-<p>Starting with GPU Operator v25.10.0, CDI is used by default for enabling GPU support in containers running on Kubernetes.
-Specifically, CDI support in container runtimes, like containerd and cri-o, is used to inject GPU(s) into workload
-containers. This differs from prior GPU Operator releases where CDI was used via a CDI-enabled <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class.</p>
-<p>If you are upgrading from a version of the GPU Operator prior to v25.10.0, where CDI was disabled by default, and you are upgrading to v25.10.0 or later, where CDI is enabled by default, no configuration changes are required for standard workloads using GPU allocation through the Device Plugin.
-For workloads that already have <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> set in their pod spec YAML, no change is necessary.</p>
+<p>Starting with GPU Operator v25.10.0, container runtimes such as containerd and CRI-O process CDI specifications to make GPUs available inside workload containers.
+In earlier GPU Operator releases, enabling CDI relied on the NVIDIA container runtime to process CDI specifications.
+The NVIDIA container runtime was available through a CDI-enabled <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class.</p>
+<p>In GPU Operator releases prior to v25.10.0, CDI was disabled by default.
+Before upgrading from one of these releases to v25.10.0 or later, review the existing configuration as described in <a class="reference internal" href="#cdi-configuration-prerequisites"><span class="std std-ref">Before Enabling CDI or Upgrading</span></a>.
+For workloads using GPU allocation through the Device Plugin, no configuration changes are required if you use the Operator’s default device-list and container-toolkit settings.
+GPU access for these workloads uses the container runtime’s CDI support, so <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> is optional.
+With these default settings, existing workloads can retain <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> if the <code class="docutils literal notranslate"><span class="pre">nvidia</span></code> runtime class is available in the cluster.</p>
 <p>Use of CDI is transparent to cluster administrators and application developers.
 The benefits of CDI are largely to reduce development and support for runtime-specific
 plugins.</p>
-<p>CDI support and configuration is enabled through the NVIDIA Container Toolkit.
+<p>NVIDIA Container Toolkit provides tools and libraries for generating CDI specifications for NVIDIA GPUs.
 Refer to the <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/cdi-support.html" title="(in NVIDIA Container Toolkit)"><span>Support for Container Device Interface</span></a> page for more information on using CDI.</p>
 <section id="cdi-and-gpu-management-containers">
 <h3>CDI and GPU Management Containers<a class="headerlink" href="#cdi-and-gpu-management-containers" title="Permalink to this headline">#</a></h3>
-<p>When CDI is enabled in GPU Operator versions v25.10.0 and later, GPU Management Containers that use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable to get GPU access, bypassing GPU allocation via the Device Plugin or DRA Driver for GPUs, must set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification.
+<p>When you enable CDI in GPU Operator v25.10.0 or later, GPU Management Containers that use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable to get GPU access, bypassing GPU allocation via the Device Plugin or DRA Driver for GPUs, must set <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification.
 A GPU Management Container is a container that requires access to all GPUs without them being allocated by Kubernetes.
 Examples of GPU Management Containers include monitoring agents and device plugins.</p>
-<p>It is recommended that <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> only be used by GPU Management Containers.</p>
+<p>NVIDIA recommends using <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> for GPU Management Containers only.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Setting <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> in the pod specification is not required when the NRI Plugin is enabled in GPU Operator.
@@ -486,37 +489,83 @@ Refer to <a class="reference internal" href="#nri-plugin"><span class="std std-r
 </section>
 <section id="cdi-and-device-list-settings">
 <span id="cdi-device-list-strategy"></span><h3>CDI and Device List Settings<a class="headerlink" href="#cdi-and-device-list-settings" title="Permalink to this headline">#</a></h3>
-<p>When CDI is enabled, the GPU Operator configures the NVIDIA Device Plugin to use the <code class="docutils literal notranslate"><span class="pre">cdi-cri,cdi-annotations</span></code> device list strategies.
-The <code class="docutils literal notranslate"><span class="pre">cdi-annotations</span></code> strategy is a fallback for Kubernetes versions and container engines that do not support CDI devices in the Container Runtime Interface (CRI).
-You do not need to set the <code class="docutils literal notranslate"><span class="pre">DEVICE_LIST_STRATEGY</span></code> environment variable in the cluster policy.</p>
-<p>If your cluster policy sets either of the following environment variables, update the cluster policy:</p>
+<p>When Kubernetes allocates a GPU to a workload, the NVIDIA Device Plugin passes information about that GPU to the container runtime.
+The runtime uses this information to make the GPU available inside the container.
+The method used to pass the GPU information is called a <em>device-list strategy</em>.</p>
+<p>With CDI enabled, the device plugin identifies GPUs by using names that refer to CDI device specifications.
+These specifications describe the device files, libraries, and other settings needed to provide GPU access.</p>
+<p>NVIDIA recommends using the GPU Operator’s default device-list settings when CDI is enabled.
+The Operator configures these settings automatically.
+You do not need to set <code class="docutils literal notranslate"><span class="pre">DEVICE_LIST_STRATEGY</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">DEVICE_LIST_STRATEGY</span></code> environment variable controls how the device plugin communicates GPU allocations to the container runtime.
+The Operator’s default value with CDI enabled, <code class="docutils literal notranslate"><span class="pre">cdi-cri,cdi-annotations</span></code>, enables two delivery methods:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">DEVICE_LIST_STRATEGY</span></code> in <code class="docutils literal notranslate"><span class="pre">devicePlugin.env</span></code>.
-A value that you set in the cluster policy replaces the value that the GPU Operator sets.
-When CDI is enabled, the <code class="docutils literal notranslate"><span class="pre">DEVICE_LIST_STRATEGY</span></code> value must contain only the CDI strategies, <code class="docutils literal notranslate"><span class="pre">cdi-cri,cdi-annotations</span></code>.
-Remove other strategies, such as <code class="docutils literal notranslate"><span class="pre">volume-mounts</span></code> or <code class="docutils literal notranslate"><span class="pre">envvar</span></code>, from the value, or remove the <code class="docutils literal notranslate"><span class="pre">DEVICE_LIST_STRATEGY</span></code> entry.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ACCEPT_NVIDIA_VISIBLE_DEVICES_AS_VOLUME_MOUNTS</span></code> in <code class="docutils literal notranslate"><span class="pre">toolkit.env</span></code>.
-When CDI is enabled, remove the <code class="docutils literal notranslate"><span class="pre">ACCEPT_NVIDIA_VISIBLE_DEVICES_AS_VOLUME_MOUNTS</span></code> entry.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cdi-cri</span></code> passes CDI device names through the <code class="docutils literal notranslate"><span class="pre">CDIDevices</span></code> field of the Container Runtime Interface (CRI), the API Kubernetes uses to communicate with the container runtime.
+Both Kubernetes and the container runtime must support this field.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cdi-annotations</span></code> passes the same names through container metadata called annotations.
+This strategy provides another delivery method when support for the dedicated field is unavailable.
+The container runtime must support CDI annotations.</p></li>
 </ul>
-<p>If these settings are incorrect, GPU pods fail to start, and the pod events show an error similar to the following example:</p>
-<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">failed to inject CDI devices: unresolvable CDI devices management.nvidia.com/gpu=GPU-&lt;uuid&gt;</span>
-</pre></div>
-</div>
-<p>The following example shows a device plugin setting that is valid when CDI is enabled:</p>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">devicePlugin</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
-<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DEVICE_LIST_STRATEGY</span><span class="w"></span>
-<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">cdi-cri,cdi-annotations</span><span class="w"></span>
-</pre></div>
-</div>
+<p>When both strategies are enabled, the device plugin communicates the same allocation through both methods.
+Specifying both strategies does not allocate additional GPUs.</p>
 </section>
+</section>
+<section id="before-enabling-cdi-or-upgrading">
+<span id="cdi-configuration-prerequisites"></span><h2>Before Enabling CDI or Upgrading<a class="headerlink" href="#before-enabling-cdi-or-upgrading" title="Permalink to this headline">#</a></h2>
+<p>For an existing installation, review the current cluster policy before enabling CDI.
+This review also applies when upgrading from GPU Operator releases prior to v25.10.0, where CDI was disabled by default, to v25.10.0 or later.
+Check for device-list and container-toolkit overrides that can interfere with CDI.</p>
+<p>The cluster policy stores the configuration used by the GPU Operator.
+The following commands inspect the cluster policy without changing the cluster.</p>
+<ol class="arabic">
+<li><p>Find the cluster policy name:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get clusterpolicies.nvidia.com
+</pre></div>
+</div>
+<p>The name is typically <code class="docutils literal notranslate"><span class="pre">cluster-policy</span></code>.</p>
+</li>
+<li><p>Display the configuration, replacing <code class="docutils literal notranslate"><span class="pre">&lt;policy-name&gt;</span></code> with the name returned above:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get clusterpolicies.nvidia.com &lt;policy-name&gt; -o yaml
+</pre></div>
+</div>
+</li>
+<li><p>Look for the following environment-variable entries:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">DEVICE_LIST_STRATEGY</span></code> under <code class="docutils literal notranslate"><span class="pre">spec.devicePlugin.env</span></code>.
+A value supplied here overrides the Operator’s default.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ACCEPT_NVIDIA_VISIBLE_DEVICES_AS_VOLUME_MOUNTS</span></code> under <code class="docutils literal notranslate"><span class="pre">spec.toolkit.env</span></code>.
+This setting controls whether the NVIDIA runtime interprets special device-list mounts as GPU requests.
+This setting does not affect ordinary application volume mounts.</p></li>
+</ul>
+<p>For example, the following configuration contains settings to fix before enabling CDI:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">spec</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">devicePlugin</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DEVICE_LIST_STRATEGY</span><span class="w"></span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">volume-mounts</span><span class="w"></span>
+<span class="w">  </span><span class="nt">toolkit</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ACCEPT_NVIDIA_VISIBLE_DEVICES_AS_VOLUME_MOUNTS</span><span class="w"></span>
+<span class="w">        </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Update the environment variables only if they contain legacy settings:</p>
+<ul class="simple">
+<li><p><strong>Device-list strategy:</strong> If <code class="docutils literal notranslate"><span class="pre">DEVICE_LIST_STRATEGY</span></code> includes <code class="docutils literal notranslate"><span class="pre">envvar</span></code> or <code class="docutils literal notranslate"><span class="pre">volume-mounts</span></code>, remove the entry to use the Operator’s defaults when CDI is enabled.
+If you prefer an explicit value, set <code class="docutils literal notranslate"><span class="pre">DEVICE_LIST_STRATEGY</span></code> to <code class="docutils literal notranslate"><span class="pre">cdi-cri,cdi-annotations</span></code>.</p></li>
+<li><p><strong>Mount acceptance:</strong> If <code class="docutils literal notranslate"><span class="pre">ACCEPT_NVIDIA_VISIBLE_DEVICES_AS_VOLUME_MOUNTS</span></code> is <code class="docutils literal notranslate"><span class="pre">&quot;true&quot;</span></code>, remove the entry or set its value to <code class="docutils literal notranslate"><span class="pre">&quot;false&quot;</span></code>.</p></li>
+</ul>
+<p>If neither condition applies, leave the environment-variable settings unchanged.</p>
+</li>
+</ol>
 </section>
 <section id="enabling-cdi">
 <h2>Enabling CDI<a class="headerlink" href="#enabling-cdi" title="Permalink to this headline">#</a></h2>
 <p>CDI is enabled by default during installation in GPU Operator v25.10.0 and later.
 Follow the instructions for installing the Operator with Helm on the <a class="reference internal" href="getting-started.html"><span class="doc">Installing the NVIDIA GPU Operator</span></a> page.</p>
 <p>CDI is also enabled by default during a Helm upgrade to GPU Operator v25.10.0 and later.
-If your cluster policy sets <code class="docutils literal notranslate"><span class="pre">DEVICE_LIST_STRATEGY</span></code> for the device plugin or <code class="docutils literal notranslate"><span class="pre">ACCEPT_NVIDIA_VISIBLE_DEVICES_AS_VOLUME_MOUNTS</span></code> for the container toolkit, refer to <a class="reference internal" href="#cdi-device-list-strategy"><span class="std std-ref">CDI and Device List Settings</span></a> before you upgrade.</p>
+Before upgrading an existing installation, complete the review in <a class="reference internal" href="#cdi-configuration-prerequisites"><span class="std std-ref">Before Enabling CDI or Upgrading</span></a>.</p>
 <section id="enabling-cdi-after-installation">
 <h3>Enabling CDI After Installation<a class="headerlink" href="#enabling-cdi-after-installation" title="Permalink to this headline">#</a></h3>
 <p>CDI is enabled by default in GPU Operator v25.10.0 and later.
@@ -533,7 +582,7 @@ Use the following procedure to enable CDI if you disabled CDI during installatio
 </pre></div>
 </div>
 </li>
-<li><p>(Optional) Confirm that the container toolkit and device plugin pods restart:</p>
+<li><p>Optional: Confirm that the container toolkit and device plugin pods restart:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl get pods -n gpu-operator
 </pre></div>
 </div>
@@ -594,6 +643,20 @@ column to determine if your nodes use CRI-O.</p>
 </div>
 </li>
 </ol>
+</section>
+<section id="troubleshooting-cdi">
+<h2>Troubleshooting CDI<a class="headerlink" href="#troubleshooting-cdi" title="Permalink to this headline">#</a></h2>
+<p>Combining the <code class="docutils literal notranslate"><span class="pre">volume-mounts</span></code> device-list strategy with <code class="docutils literal notranslate"><span class="pre">ACCEPT_NVIDIA_VISIBLE_DEVICES_AS_VOLUME_MOUNTS=true</span></code> can prevent GPU containers from starting when they use the NVIDIA container runtime in CDI mode.
+This runtime can be selected through <code class="docutils literal notranslate"><span class="pre">runtimeClassName:</span> <span class="pre">nvidia</span></code> or through the node’s default runtime configuration.</p>
+<p>Pod events can contain an error similar to the following example:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">failed to inject CDI devices: unresolvable CDI devices management.nvidia.com/gpu=GPU-&lt;uuid&gt;</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">volume-mounts</span></code> strategy encodes allocated GPU identifiers in special device-list mounts.
+These identifiers do not include a CDI kind, so the NVIDIA runtime uses the Operator-configured default kind, <code class="docutils literal notranslate"><span class="pre">management.nvidia.com/gpu</span></code>.
+That kind contains only the device named <code class="docutils literal notranslate"><span class="pre">all</span></code>, so individual GPU identifiers cannot resolve through this mechanism.
+Additional CDI device-list strategies do not prevent this failure when the NVIDIA runtime also processes the device-list mounts.</p>
+<p>To resolve this error, restore the recommended settings described in <a class="reference internal" href="#cdi-configuration-prerequisites"><span class="std std-ref">Before Enabling CDI or Upgrading</span></a>.</p>
 </section>
 <section id="about-the-node-resource-interface-nri-plugin">
 <span id="nri-plugin"></span><h2>About the Node Resource Interface (NRI) Plugin<a class="headerlink" href="#about-the-node-resource-interface-nri-plugin" title="Permalink to this headline">#</a></h2>
@@ -819,11 +882,13 @@ are managed by the GPU Operator.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cdi-and-device-list-settings">CDI and Device List Settings</a></li>
 </ul>
 </li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#before-enabling-cdi-or-upgrading">Before Enabling CDI or Upgrading</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-cdi">Enabling CDI</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-cdi-after-installation">Enabling CDI After Installation</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#disabling-cdi">Disabling CDI</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#troubleshooting-cdi">Troubleshooting CDI</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#about-the-node-resource-interface-nri-plugin">About the Node Resource Interface (NRI) Plugin</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-the-nri-plugin">Enabling the NRI Plugin</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#enabling-the-nri-plugin-after-installation">Enabling the NRI Plugin After Installation</a></li>
