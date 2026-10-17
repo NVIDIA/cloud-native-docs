@@ -716,7 +716,11 @@ The kernel module that is already loaded stays at the previous version until you
 The loaded kernel module and the user-space driver libraries have different versions.
 NVML does not initialize when the versions differ.
 The ``nvidia-persistenced`` daemon from the upgraded packages also fails to start.
-Its socket file does not exist, so containers that expect to mount the socket fail to start.
+
+The Container Device Interface (CDI) specifications on the node also become stale.
+The NVIDIA Container Toolkit and the NVIDIA Device Plugin generate the files in ``/var/run/cdi`` only when their pods start.
+The files list the driver libraries by their versioned file names, such as ``libcuda.so.<version>``, and the ``nvidia-persistenced`` socket.
+The upgrade removes the libraries of the previous version, and the socket does not exist, so containers that are created from these specifications fail to start.
 
 .. rubric:: Action
    :class: h4
@@ -752,6 +756,25 @@ If a module is still in use, the unload fails and you must reboot the node.
 .. code-block:: console
 
    $ sudo modprobe nvidia
+
+After you reload the modules, restart the NVIDIA Container Toolkit and NVIDIA Device Plugin pods on the node so that they regenerate the CDI specifications.
+You do not need this step after a reboot, because the pods restart with the node.
+
+.. code-block:: console
+
+   $ kubectl delete pod -n gpu-operator -l app=nvidia-container-toolkit-daemonset \
+       --field-selector spec.nodeName=<node-name>
+
+.. code-block:: console
+
+   $ kubectl delete pod -n gpu-operator -l app=nvidia-device-plugin-daemonset \
+       --field-selector spec.nodeName=<node-name>
+
+To confirm that the CDI specifications match the loaded driver, compare the library versions in the specifications on the node with the version in ``/proc/driver/nvidia/version``:
+
+.. code-block:: console
+
+   $ grep -oh 'libcuda.so.[0-9.]*[0-9]' /var/run/cdi/* | sort | uniq -c
 
 To prevent the issue, exclude the driver packages from unattended upgrades.
 Upgrade the driver during a planned maintenance window and reboot the node afterward.
