@@ -145,6 +145,9 @@ Consider the following limitations before selecting DRA driver v${dra_version}:
 * Alpha feature gates have compatibility constraints.
   ``DynamicMIG`` conflicts with ``PassthroughSupport``, ``NVMLDeviceHealthCheck``, and ``MPSSupport``.
   ``PassthroughSupport`` conflicts with ``NVMLDeviceHealthCheck``, and ``DeviceMetadata`` requires ``PassthroughSupport``.
+* DRA cannot be used with MIG mode enabled on Ampere GPUs, such as A100.
+  When MIG mode is enabled on an Ampere GPU, the DRA driver advertises MIG devices only and does not advertise the full GPU.
+  As a result, the scheduler cannot allocate the DRA validator and DCGM Exporter claims on a node where every GPU is an Ampere GPU with MIG mode enabled.
 * Kubernetes does not support preemption for DRA resources.
   Injecting DRA-allocated devices requires a preconfigured CDI-compatible container runtime.
   The managed ``gpu.nvidia.com`` ``DeviceClass`` does not set ``spec.extendedResourceName`` to ``nvidia.com/gpu``.
