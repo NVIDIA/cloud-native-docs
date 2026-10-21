@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 20, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 21, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -928,7 +928,8 @@ you need to use legacy <code class="docutils literal notranslate"><span class="p
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">driver.rdma.useHostMofed</span></code></p></td>
-<td><p>Indicate if MLNX_OFED (MOFED) drivers are pre-installed on the host.</p></td>
+<td><p>Controls whether the driver daemon set builds the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module against MLNX_OFED drivers that are installed on the host.
+This option applies only when <code class="docutils literal notranslate"><span class="pre">driver.rdma.enabled=true</span></code>.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">driver.secretEnv</span></code></p></td>

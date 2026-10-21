@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 20, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 21, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -575,7 +575,7 @@ for the authoritative support status, maturity, and default values.</p>
 <section id="dra-driver-limitations">
 <h3>DRA Driver Limitations<a class="headerlink" href="#dra-driver-limitations" title="Permalink to this headline">#</a></h3>
 <p>Consider the following limitations before selecting DRA driver v0.5.1:</p>
-<ul class="simple">
+<ul>
 <li><p><code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code> is alpha and disabled by default.
 The gRPC health probe reports kubelet plugin availability, and DCGM provides telemetry.
 Neither provides DRA allocation health status.</p></li>
@@ -589,9 +589,15 @@ MPS cannot be used when consumable capacity is configured through <code class="d
 <li><p>Alpha feature gates have compatibility constraints.
 <code class="docutils literal notranslate"><span class="pre">DynamicMIG</span></code> conflicts with <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code>, <code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code>, and <code class="docutils literal notranslate"><span class="pre">MPSSupport</span></code>.
 <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code> conflicts with <code class="docutils literal notranslate"><span class="pre">NVMLDeviceHealthCheck</span></code>, and <code class="docutils literal notranslate"><span class="pre">DeviceMetadata</span></code> requires <code class="docutils literal notranslate"><span class="pre">PassthroughSupport</span></code>.</p></li>
-<li><p>DRA cannot be used with MIG mode enabled on Ampere GPUs, such as A100.
-When MIG mode is enabled on an Ampere GPU, the DRA driver advertises MIG devices only and does not advertise the full GPU.
-As a result, the scheduler cannot allocate the DRA validator and DCGM Exporter claims on a node where every GPU is an Ampere GPU with MIG mode enabled.</p></li>
+<li><p>The DRA validator and DCGM Exporter use admin-access claims on the <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com</span></code> device class, and the DRA driver allows admin access only on full GPUs.
+The DRA driver does not publish the full GPU in the following cases:</p>
+<ul class="simple">
+<li><p>MIG mode is enabled and <code class="docutils literal notranslate"><span class="pre">DynamicMIG</span></code> is disabled, on any GPU architecture.</p></li>
+<li><p>MIG mode is enabled and <code class="docutils literal notranslate"><span class="pre">DynamicMIG</span></code> is enabled on an Ampere GPU, such as A100 or A30.</p></li>
+</ul>
+<p>On a node where the DRA driver publishes no full GPU, the DRA validator and DCGM Exporter pods remain in the <code class="docutils literal notranslate"><span class="pre">Pending</span></code> state.
+MIG workloads on the node are not affected.</p>
+</li>
 <li><p>Kubernetes does not support preemption for DRA resources.
 Injecting DRA-allocated devices requires a preconfigured CDI-compatible container runtime.
 The managed <code class="docutils literal notranslate"><span class="pre">gpu.nvidia.com</span></code> <code class="docutils literal notranslate"><span class="pre">DeviceClass</span></code> does not set <code class="docutils literal notranslate"><span class="pre">spec.extendedResourceName</span></code> to <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code>.</p></li>
