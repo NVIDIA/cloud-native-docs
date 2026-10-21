@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 05, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 21, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -391,6 +391,7 @@
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-proxy.html">HTTP Proxy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-air-gapped.html">Air-Gapped Network</a></li>
 <li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-service-mesh.html">Service Mesh</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-operator-ipv6.html">IPv6 Networks</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Platform-Specific Configurations</span></p>
 <ul class="nav bd-sidenav">
@@ -455,7 +456,7 @@
 <span id="operator-install-guide"></span><span id="install-gpu-operator"></span><h1>Installing the NVIDIA GPU Operator<a class="headerlink" href="#installing-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
 <div class="admonition-version admonition">
 <p class="admonition-title">Version</p>
-<p>The current patch release of this version of the NVIDIA GPU Operator is <code class="docutils literal notranslate"><span class="pre">v26.7.1</span></code>.</p>
+<p>The current patch release of this version of the NVIDIA GPU Operator is <code class="docutils literal notranslate"><span class="pre">v26.7.2</span></code>.</p>
 </div>
 <div class="tip admonition">
 <p class="admonition-title">Red Hat OpenShift Container Platform Install</p>
@@ -516,7 +517,7 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>cosign verify <span class="se">\</span>
     --key https://api.ngc.nvidia.com/v2/catalog/containers/public-key <span class="se">\</span>
     --insecure-ignore-tlog <span class="se">\</span>
-    nvcr.io/nvidia/cloud-native-charts/gpu-operator:v26.7.1
+    nvcr.io/nvidia/cloud-native-charts/gpu-operator:v26.7.2
 </pre></div>
 </div>
 </li>
@@ -534,7 +535,7 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait gpu-operator <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     oci://nvcr.io/nvidia/cloud-native-charts/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.7.1
+    --version<span class="o">=</span>v26.7.2
 </pre></div>
 </div>
 </li>
@@ -542,7 +543,7 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.7.1
+    --version<span class="o">=</span>v26.7.2
 </pre></div>
 </div>
 </li>
@@ -550,7 +551,7 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.7.1 <span class="se">\</span>
+    --version<span class="o">=</span>v26.7.2 <span class="se">\</span>
     --set &lt;option-name&gt;<span class="o">=</span>&lt;option-value&gt;
 </pre></div>
 </div>
@@ -889,8 +890,6 @@ Set this value to <code class="docutils literal notranslate"><span class="pre">f
 <td><p>Specifies the type of the NVIDIA GPU Kernel modules to use.
 Valid values are <code class="docutils literal notranslate"><span class="pre">auto</span></code> (default), <code class="docutils literal notranslate"><span class="pre">proprietary</span></code>, and <code class="docutils literal notranslate"><span class="pre">open</span></code>.</p>
 <p><code class="docutils literal notranslate"><span class="pre">Auto</span></code> means that the recommended kernel module type (open or proprietary) is chosen based on the GPU devices on the host and the driver branch used.
-The <code class="docutils literal notranslate"><span class="pre">auto</span></code> option is only supported with the 570.86.15 and 570.124.06 or later driver containers.
-550 and 535 branch drivers do not yet support this mode.
 <code class="docutils literal notranslate"><span class="pre">Open</span></code> means the open kernel module is used.
 <code class="docutils literal notranslate"><span class="pre">Proprietary</span></code> means the proprietary module is used.</p>
 </td>
@@ -913,7 +912,7 @@ Refer to <a class="reference internal" href="dra-intro-install.html"><span class
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">draDriver.version</span></code></p></td>
 <td><p>Version of the DRA Driver for NVIDIA GPUs deployed by the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> stack.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">v0.5.0</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">v0.5.1</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">gpuCluster.deployCR</span></code></p></td>
 <td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the chart creates the <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> resource for the DRA enablement stack.
@@ -1040,7 +1039,7 @@ For example, to install the GPU Operator in the <code class="docutils literal no
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n nvidia-gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.7.1 <span class="se">\</span>
+     --version<span class="o">=</span>v26.7.2 <span class="se">\</span>
 </pre></div>
 </div>
 <p>If you do not specify a namespace during installation, all GPU Operator components are installed in the <code class="docutils literal notranslate"><span class="pre">default</span></code> namespace.</p>
@@ -1068,11 +1067,11 @@ To prevent installing the driver on a GPU worker node, label the node like the f
 <p>When using RHEL 8 with Kubernetes, SELinux must be enabled either in permissive or enforcing mode for use with the GPU Operator.
 Additionally, when using RHEL 8 with containerd as the runtime and SELinux is enabled (either in permissive or enforcing mode) at the host level, containerd must also be configured for SELinux, by setting the <code class="docutils literal notranslate"><span class="pre">enable_selinux=true</span></code> configuration option.</p>
 <p>Network restricted environments are not supported.</p>
-<p>You can use the standard install comamnd to install the GPU Operator on RHEL.</p>
+<p>You can use the standard install command to install the GPU Operator on RHEL.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.7.1
+     --version<span class="o">=</span>v26.7.2
 </pre></div>
 </div>
 </section>
@@ -1082,7 +1081,7 @@ Additionally, when using RHEL 8 with containerd as the runtime and SELinux is en
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.7.1 <span class="se">\</span>
+     --version<span class="o">=</span>v26.7.2 <span class="se">\</span>
      --set driver.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
@@ -1104,7 +1103,7 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.7.1 <span class="se">\</span>
+     --version<span class="o">=</span>v26.7.2 <span class="se">\</span>
      --set driver.enabled<span class="o">=</span><span class="nb">false</span> <span class="se">\</span>
      --set toolkit.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
@@ -1123,7 +1122,7 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
     -n gpu-operator --create-namespace <span class="se">\</span>
     nvidia/gpu-operator <span class="se">\</span>
-    --version<span class="o">=</span>v26.7.1 <span class="se">\</span>
+    --version<span class="o">=</span>v26.7.2 <span class="se">\</span>
     --set toolkit.enabled<span class="o">=</span><span class="nb">false</span>
 </pre></div>
 </div>
@@ -1155,7 +1154,7 @@ the Helm install command. For example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.7.1 <span class="se">\</span>
+     --version<span class="o">=</span>v26.7.2 <span class="se">\</span>
      --set driver.repository<span class="o">=</span>docker.io/nvidia <span class="se">\</span>
      --set driver.version<span class="o">=</span><span class="s2">&quot;580.126.20&quot;</span>
 </pre></div>
@@ -1184,7 +1183,7 @@ options are used with the container-toolkit deployed with GPU Operator:</p>
 <p>If you need to specify custom values, refer to the following sample command for the syntax:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm install gpu-operator -n gpu-operator --create-namespace \</span>
 <span class="go">  nvidia/gpu-operator $HELM_OPTIONS \</span>
-<span class="go">    --version=v26.7.1 \</span>
+<span class="go">    --version=v26.7.2 \</span>
 <span class="go">    --set toolkit.env[0].name=CONTAINERD_CONFIG \</span>
 <span class="go">    --set toolkit.env[0].value=/etc/containerd/containerd.toml \</span>
 <span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
@@ -1242,7 +1241,7 @@ in the RKE2 documentation.</p>
 <p>These options can be passed to GPU Operator during install time as below.</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">helm install gpu-operator -n gpu-operator --create-namespace \</span>
 <span class="go">  nvidia/gpu-operator $HELM_OPTIONS \</span>
-<span class="go">    --version=v26.7.1 \</span>
+<span class="go">    --version=v26.7.2 \</span>
 <span class="go">    --set toolkit.env[0].name=CONTAINERD_CONFIG \</span>
 <span class="go">    --set toolkit.env[0].value=/var/snap/microk8s/current/args/containerd-template.toml \</span>
 <span class="go">    --set toolkit.env[1].name=CONTAINERD_SOCKET \</span>
