@@ -80,6 +80,9 @@ Also, modify the ``prometheusSpec.serviceMonitorSelectorNilUsesHelmValues`` sett
     ##
     serviceMonitorSelectorNilUsesHelmValues: false
 
+The GPU Operator already creates a ``ServiceMonitor`` for DCGM Exporter.
+You need the hand-written scrape configuration below only when you do not use that ``ServiceMonitor``.
+
 Add the following ``configMap`` to the section on ``additionalScrapeConfigs`` in the Helm chart.
 
 .. code-block:: console
