@@ -45,6 +45,16 @@ Because DCGM Exporter starts `nv-hostengine` as an embedded process (for collect
 appropriate configuration options should be used if DCGM Exporter is run on systems (such as
 NVIDIA DGX) that have DCGM (or rather `nv-hostengine`) running.
 
+.. note::
+
+   More information about DCGM Exporter is available in the DCGM documentation:
+
+   * `Install DCGM Exporter <https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html>`__
+   * `Command-line and YAML reference <https://docs.nvidia.com/datacenter/dcgm/latest/reference/command-line-reference/dcgm-exporter.html>`__
+   * `Metrics reference <https://docs.nvidia.com/datacenter/dcgm/latest/reference/dcgm-exporter-metrics.html>`__
+   * `Configure Prometheus for DCGM Exporter <https://docs.nvidia.com/datacenter/dcgm/latest/learn/getting-started-for-system-administrators/configure-prometheus-for-dcgm-exporter.html>`__
+   * `Release notes and migration <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html>`__
+
 *********************
 Running DCGM Exporter
 *********************
@@ -168,12 +178,12 @@ In this scenario, we use the ``-r`` option to connect to an existing `nv-hosteng
 
 .. code-block:: console
 
-   $ DCGM_EXPORTER_VERSION=2.1.4-2.3.1 &&
+   $ DCGM_EXPORTER_VERSION=4.9.0 &&
    docker run -d --rm \
       --gpus all \
       --net host \
       --cap-add SYS_ADMIN \
-      nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION}-ubuntu20.04 \
+      nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION} \
       -r localhost:5555 -f /etc/dcgm-exporter/default-counters.csv
 
 Connecting to a DCGM standalone container
@@ -210,12 +220,12 @@ Second, start the dcgm-exporter container with ``r`` option to connect to an exi
 
 .. code-block:: console
 
-   $DCGM_EXPORTER_VERSION=2.2.9-2.5.0 &&
+   $ DCGM_EXPORTER_VERSION=4.9.0 &&
    docker run -d --rm \
       --gpus all \
       --net host \
       --cap-add SYS_ADMIN \
-      nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION}-ubuntu20.04 \
+      nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION} \
       -r localhost:5555 -f /etc/dcgm-exporter/default-counters.csv
 
 In this scenario `dcgmi` commands run on the host will also connect to the `nv-hostengine` running in the standalone
@@ -240,15 +250,47 @@ Custom Metrics Files
 ********************
 
 You can pass your own CSV file to DCGM Exporter with the ``-f`` flag or the ``DCGM_EXPORTER_COLLECTORS`` environment variable.
-In the GPU Operator, you provide the file in a ConfigMap that the ``dcgmExporter.metricsConfig`` value references.
+In the GPU Operator, you provide the file in a ConfigMap and reference it with the ``dcgmExporter.config.name`` value.
 Each row has three fields: the DCGM field, the Prometheus metric type, and the help text.
 
-Starting with DCGM Exporter 4.9.0, you must use the DCGM 4.7 field names in your file.
+Starting with DCGM Exporter 4.9.0, the default metrics use new DCGM 4.7 field names, and NVIDIA recommends the new names in your file.
+DCGM Exporter 4.9.0 still loads the old names, but they are deprecated.
+Metrics that use an old name keep that name and their old units.
 Start from ``default-counters.csv`` and replace each old name with the new name from the table in the GPU Operator release notes.
 For example, use ``DCGM_FI_DEV_GPU_UTIL_RATIO`` instead of ``DCGM_FI_DEV_GPU_UTIL``, and ``DCGM_FI_DEV_FB_USED_BYTES`` instead of ``DCGM_FI_DEV_FB_USED``.
 The new names change some units.
 For example, utilization is a ratio from 0 to 1, clocks are in hertz, and framebuffer memory is in bytes.
 Update dashboards and alerts that use the metrics.
+
+To use a custom metrics file with the GPU Operator:
+
+#. Create a ConfigMap in the Operator namespace.
+   The file must be stored under the key ``dcgm-metrics.csv``:
+
+   .. code-block:: console
+
+      $ kubectl create configmap custom-dcgm-exporter-metrics -n gpu-operator \
+          --from-file=dcgm-metrics.csv=./dcgm-metrics.csv
+
+#. Reference the ConfigMap by name.
+   Set the value when you install or upgrade the Operator with Helm:
+
+   .. code-block:: console
+
+      $ helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator \
+          --reuse-values --set dcgmExporter.config.name=custom-dcgm-exporter-metrics
+
+   Alternatively, patch the cluster policy:
+
+   .. code-block:: console
+
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type=merge \
+          -p '{"spec": {"dcgmExporter": {"config": {"name": "custom-dcgm-exporter-metrics"}}}}'
+
+The Operator mounts the ``dcgm-metrics.csv`` file at ``/etc/dcgm-exporter/dcgm-metrics.csv`` and points DCGM Exporter at it.
+DCGM Exporter reloads the file when it changes.
+The ConfigMap replaces only the metrics file.
+The default ``/etc/dcgm-exporter/config.yaml`` in the image still applies.
 
 ********************************
 Multi-Instance GPU (MIG) Support
@@ -259,12 +301,6 @@ securely partitioned into up to seven separate GPU Instances for CUDA applicatio
 with separate GPU resources for optimal GPU utilization.
 
 For more information on MIG, refer to the MIG `User Guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html>`_.
-
-.. note::
-
-   Support for MIG in DCGM Exporter was added starting with ``2.4.0-rc.2``. Replace the container image with this tag in the
-   command line examples above: ``2.1.8-2.4.0-rc.2-ubuntu20.04``. If you are connecting to an existing DCGM on the host system,
-   ensure that you upgrade to at least 2.1.8 on the host system.
 
 DCGM Exporter publishes metrics for both the entire GPU as well as individual MIG devices (or GPU instances)
 as can be seen in the output below:

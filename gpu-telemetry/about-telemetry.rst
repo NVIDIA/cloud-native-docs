@@ -34,7 +34,8 @@ GPU metrics for Prometheus and can be visualized using Grafana.  DCGM Exporter i
 scraped by Prometheus. A ``ServiceMonitor`` is also included to expose endpoints.
 
 .. note::
-   DCGM and DCGM Exporter are deployed by default with the `NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/>`_.
+   The `NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/>`_ deploys DCGM Exporter by default.
+   The standalone DCGM hostengine is optional and is not deployed by default.
 
 
 *************************
