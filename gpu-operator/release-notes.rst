@@ -33,6 +33,93 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. DRAFT: Release notes for the next GPU Operator release, which ships DCGM Exporter 4.9.0.
+   Release notes are written when a release is published. Move this text into a new
+   version section above and replace the placeholders, then delete this comment.
+   The release number and date are not final.
+
+   New Features
+   ------------
+
+   * Updated software component versions:
+
+     - NVIDIA DCGM Exporter v4.7.0-4.9.0
+     - NVIDIA DCGM 4.7.0-2
+
+   * DCGM Exporter 4.9.0 renames its default metrics to the DCGM 4.7 names and changes several units.
+     Update dashboards, alerts, and recording rules that query the old names.
+     The following table lists the default metrics that changed.
+
+     .. list-table::
+        :header-rows: 1
+
+        * - Old Metric
+          - New Metric
+          - Unit Change
+        * - ``DCGM_FI_DEV_GPU_UTIL``
+          - ``DCGM_FI_DEV_GPU_UTIL_RATIO``
+          - Percent to a ratio from 0 to 1
+        * - ``DCGM_FI_DEV_MEM_COPY_UTIL``
+          - ``DCGM_FI_DEV_MEMORY_UTIL_RATIO``
+          - Percent to a ratio from 0 to 1
+        * - ``DCGM_FI_DEV_ENC_UTIL``, ``DCGM_FI_DEV_DEC_UTIL``
+          - ``DCGM_FI_DEV_ENC_UTIL_RATIO``, ``DCGM_FI_DEV_DEC_UTIL_RATIO``
+          - Percent to a ratio from 0 to 1
+        * - ``DCGM_FI_DEV_SM_CLOCK``
+          - ``DCGM_FI_DEV_SM_CLOCK_HERTZ``
+          - MHz to Hz
+        * - ``DCGM_FI_DEV_MEM_CLOCK``
+          - ``DCGM_FI_DEV_MEMORY_CLOCK_HERTZ``
+          - MHz to Hz
+        * - ``DCGM_FI_DEV_GPU_TEMP``, ``DCGM_FI_DEV_MEMORY_TEMP``
+          - ``DCGM_FI_DEV_GPU_TEMP_CELSIUS``, ``DCGM_FI_DEV_MEMORY_TEMP_CELSIUS``
+          - None
+        * - ``DCGM_FI_DEV_POWER_USAGE``
+          - ``DCGM_FI_DEV_BOARD_POWER_WATTS``
+          - None
+        * - ``DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION``
+          - ``DCGM_FI_DEV_GPU_ENERGY_JOULES_TOTAL``
+          - mJ to J
+        * - ``DCGM_FI_DEV_PCIE_REPLAY_COUNTER``
+          - ``DCGM_FI_DEV_PCIE_REPLAY_TOTAL``
+          - None
+        * - ``DCGM_FI_DEV_XID_ERRORS``
+          - ``DCGM_FI_DEV_XID_ERROR``
+          - None
+        * - ``DCGM_FI_DEV_FB_FREE``, ``DCGM_FI_DEV_FB_USED``, ``DCGM_FI_DEV_FB_RESERVED``
+          - ``DCGM_FI_DEV_FB_FREE_BYTES``, ``DCGM_FI_DEV_FB_USED_BYTES``, ``DCGM_FI_DEV_FB_RESERVED_BYTES``
+          - MiB to bytes
+        * - ``DCGM_FI_DEV_NVLINK_BANDWIDTH_TOTAL``
+          - ``DCGM_FI_DEV_NVLINK_THROUGHPUT_BYTES_PER_SECOND``
+          - MB/s to bytes per second
+        * - ``DCGM_FI_DEV_UNCORRECTABLE_REMAPPED_ROWS``, ``DCGM_FI_DEV_CORRECTABLE_REMAPPED_ROWS``, ``DCGM_FI_DEV_ROW_REMAP_FAILURE``
+          - ``DCGM_FI_DEV_ROW_REMAP_UNCORRECTABLE_TOTAL``, ``DCGM_FI_DEV_ROW_REMAP_CORRECTABLE_TOTAL``, ``DCGM_FI_DEV_ROW_REMAP_FAILED``
+          - None
+        * - ``DCGM_FI_PROF_GR_ENGINE_ACTIVE``, ``DCGM_FI_PROF_PIPE_TENSOR_ACTIVE``, ``DCGM_FI_PROF_DRAM_ACTIVE``
+          - ``DCGM_FI_PROF_GR_ENGINE_UTIL_RATIO``, ``DCGM_FI_PROF_TENSOR_UTIL_RATIO``, ``DCGM_FI_PROF_DRAM_UTIL_RATIO``
+          - None
+        * - Label ``DCGM_FI_DRIVER_VERSION``
+          - Label ``DCGM_FI_SYSTEM_DRIVER_VERSION``
+          - None
+
+   * The default metrics file is ``/etc/dcgm-exporter/default-counters.csv``.
+     The ``dcp-metrics-included.csv`` file is deprecated.
+     It has the same content as ``default-counters.csv`` and is kept only so that existing paths continue to work.
+     The default set now includes ``DCGM_FI_DEV_FB_CAPACITY_BYTES``.
+
+   * On OpenShift, the ``accelerator_*`` recording rules read the new metric names and fall back to the old names.
+     Dashboards and alerts that use the ``accelerator_*`` series continue to work during a rolling update of the DCGM Exporter daemon set.
+
+   Upgrade Notes
+   -------------
+
+   * If you use a custom metrics file, update the field names to the DCGM 4.7 names.
+     Refer to :ref:`custom metrics files <dcgm-exporter-custom-metrics>` for details.
+
+   * If you roll the GPU Operator back to a release whose recording rules read the old metric names while nodes run DCGM Exporter 4.9.0,
+     the ``accelerator_*`` series are empty.
+     Roll back the DCGM Exporter version together with the Operator.
+
 .. _v26.7.2:
 
 26.7.2
