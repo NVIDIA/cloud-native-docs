@@ -514,10 +514,25 @@ the mixed MIG strategy.</p>
 <section id="limitations">
 <h3>Limitations<a class="headerlink" href="#limitations" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>DCGM-Exporter does not support associating metrics to containers when GPU time-slicing is enabled with the NVIDIA Kubernetes Device Plugin.</p></li>
 <li><p>The Operator does not monitor changes to a time-slicing config map.
 Refer to <a class="reference internal" href="#time-slicing-update-config-map"><span class="std std-ref">Updating a Time-Slicing Config Map</span></a>.</p></li>
 </ul>
+<p>To have DCGM Exporter capture metrics for the virtual GPUs that the device plugin exposes with GPU sharing,
+such as time-slicing or MPS, set the <code class="docutils literal notranslate"><span class="pre">KUBERNETES_VIRTUAL_GPUS</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">true</span></code>.
+Set it with the <code class="docutils literal notranslate"><span class="pre">dcgmExporter.env</span></code> value.
+The variable requires DCGM Exporter 4.8.4 or later.
+For example, in the Helm values:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dcgmExporter</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">KUBERNETES_VIRTUAL_GPUS</span><span class="w"></span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;true&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Or patch the cluster policy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span>merge <span class="se">\</span>
+    -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;dcgmExporter&quot;: {&quot;env&quot;: [{&quot;name&quot;: &quot;KUBERNETES_VIRTUAL_GPUS&quot;, &quot;value&quot;: &quot;true&quot;}]}}}&#39;</span>
+</pre></div>
+</div>
 </section>
 <section id="changes-to-node-labels">
 <h3>Changes to Node Labels<a class="headerlink" href="#changes-to-node-labels" title="Permalink to this headline">#</a></h3>

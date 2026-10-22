@@ -424,6 +424,17 @@ daemonset on GPU nodes in a Kubernetes cluster.</p>
 <p>Because DCGM Exporter starts <cite>nv-hostengine</cite> as an embedded process (for collecting metrics),
 appropriate configuration options should be used if DCGM Exporter is run on systems (such as
 NVIDIA DGX) that have DCGM (or rather <cite>nv-hostengine</cite>) running.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>More information about DCGM Exporter is available in the DCGM documentation:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html">Install DCGM Exporter</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/reference/command-line-reference/dcgm-exporter.html">Command-line and YAML reference</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/reference/dcgm-exporter-metrics.html">Metrics reference</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/learn/getting-started-for-system-administrators/configure-prometheus-for-dcgm-exporter.html">Configure Prometheus for DCGM Exporter</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html">Release notes and migration</a></p></li>
+</ul>
+</div>
 </section>
 <section id="running-dcgm-exporter">
 <h2>Running DCGM Exporter<a class="headerlink" href="#running-dcgm-exporter" title="Permalink to this headline">#</a></h2>
@@ -569,12 +580,12 @@ greater than or equal to (but not less than) the version of DCGM running on the 
 comparing the version tags of the DCGM Exporter image and by running <code class="docutils literal notranslate"><span class="pre">nv-hostengine</span> <span class="pre">--version</span></code> on the host.</p>
 </div>
 <p>In this scenario, we use the <code class="docutils literal notranslate"><span class="pre">-r</span></code> option to connect to an existing <cite>nv-hostengine</cite> process:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">DCGM_EXPORTER_VERSION</span><span class="o">=</span><span class="m">2</span>.1.4-2.3.1 <span class="o">&amp;&amp;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">DCGM_EXPORTER_VERSION</span><span class="o">=</span><span class="m">4</span>.9.0 <span class="o">&amp;&amp;</span>
 <span class="go">docker run -d --rm \</span>
 <span class="go">   --gpus all \</span>
 <span class="go">   --net host \</span>
 <span class="go">   --cap-add SYS_ADMIN \</span>
-<span class="go">   nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION}-ubuntu20.04 \</span>
+<span class="go">   nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION} \</span>
 <span class="go">   -r localhost:5555 -f /etc/dcgm-exporter/default-counters.csv</span>
 </pre></div>
 </div>
@@ -604,12 +615,12 @@ container. This can be easily determined by comparing the version tags of the DC
 </pre></div>
 </div>
 <p>Second, start the dcgm-exporter container with <code class="docutils literal notranslate"><span class="pre">r</span></code> option to connect to an existing <cite>nv-hostengine</cite> port:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span><span class="nv">DCGM_EXPORTER_VERSION</span><span class="o">=</span><span class="m">2</span>.2.9-2.5.0 <span class="o">&amp;&amp;</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">DCGM_EXPORTER_VERSION</span><span class="o">=</span><span class="m">4</span>.9.0 <span class="o">&amp;&amp;</span>
 <span class="go">docker run -d --rm \</span>
 <span class="go">   --gpus all \</span>
 <span class="go">   --net host \</span>
 <span class="go">   --cap-add SYS_ADMIN \</span>
-<span class="go">   nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION}-ubuntu20.04 \</span>
+<span class="go">   nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION} \</span>
 <span class="go">   -r localhost:5555 -f /etc/dcgm-exporter/default-counters.csv</span>
 </pre></div>
 </div>
@@ -631,14 +642,42 @@ DCGM container:</p>
 <section id="custom-metrics-files">
 <span id="dcgm-exporter-custom-metrics"></span><h2>Custom Metrics Files<a class="headerlink" href="#custom-metrics-files" title="Permalink to this headline">#</a></h2>
 <p>You can pass your own CSV file to DCGM Exporter with the <code class="docutils literal notranslate"><span class="pre">-f</span></code> flag or the <code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_COLLECTORS</span></code> environment variable.
-In the GPU Operator, you provide the file in a ConfigMap that the <code class="docutils literal notranslate"><span class="pre">dcgmExporter.metricsConfig</span></code> value references.
+In the GPU Operator, you provide the file in a ConfigMap and reference it with the <code class="docutils literal notranslate"><span class="pre">dcgmExporter.config.name</span></code> value.
 Each row has three fields: the DCGM field, the Prometheus metric type, and the help text.</p>
-<p>Starting with DCGM Exporter 4.9.0, you must use the DCGM 4.7 field names in your file.
+<p>Starting with DCGM Exporter 4.9.0, the default metrics use new DCGM 4.7 field names, and NVIDIA recommends the new names in your file.
+DCGM Exporter 4.9.0 still loads the old names, but they are deprecated.
+Metrics that use an old name keep that name and their old units.
 Start from <code class="docutils literal notranslate"><span class="pre">default-counters.csv</span></code> and replace each old name with the new name from the table in the GPU Operator release notes.
 For example, use <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL_RATIO</span></code> instead of <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL</span></code>, and <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_FB_USED_BYTES</span></code> instead of <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_FB_USED</span></code>.
 The new names change some units.
 For example, utilization is a ratio from 0 to 1, clocks are in hertz, and framebuffer memory is in bytes.
 Update dashboards and alerts that use the metrics.</p>
+<p>To use a custom metrics file with the GPU Operator:</p>
+<ol class="arabic">
+<li><p>Create a ConfigMap in the Operator namespace.
+The file must be stored under the key <code class="docutils literal notranslate"><span class="pre">dcgm-metrics.csv</span></code>:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap custom-dcgm-exporter-metrics -n gpu-operator <span class="se">\</span>
+    --from-file<span class="o">=</span>dcgm-metrics.csv<span class="o">=</span>./dcgm-metrics.csv
+</pre></div>
+</div>
+</li>
+<li><p>Reference the ConfigMap by name.
+Set the value when you install or upgrade the Operator with Helm:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator <span class="se">\</span>
+    --reuse-values --set dcgmExporter.config.name<span class="o">=</span>custom-dcgm-exporter-metrics
+</pre></div>
+</div>
+<p>Alternatively, patch the cluster policy:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span>merge <span class="se">\</span>
+    -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;dcgmExporter&quot;: {&quot;config&quot;: {&quot;name&quot;: &quot;custom-dcgm-exporter-metrics&quot;}}}}&#39;</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>The Operator mounts the <code class="docutils literal notranslate"><span class="pre">dcgm-metrics.csv</span></code> file at <code class="docutils literal notranslate"><span class="pre">/etc/dcgm-exporter/dcgm-metrics.csv</span></code> and points DCGM Exporter at it.
+DCGM Exporter reloads the file when it changes.
+The ConfigMap replaces only the metrics file.
+The default <code class="docutils literal notranslate"><span class="pre">/etc/dcgm-exporter/config.yaml</span></code> in the image still applies.</p>
 </section>
 <section id="multi-instance-gpu-mig-support">
 <h2>Multi-Instance GPU (MIG) Support<a class="headerlink" href="#multi-instance-gpu-mig-support" title="Permalink to this headline">#</a></h2>
@@ -646,12 +685,6 @@ Update dashboards and alerts that use the metrics.</p>
 securely partitioned into up to seven separate GPU Instances for CUDA applications, providing multiple users
 with separate GPU resources for optimal GPU utilization.</p>
 <p>For more information on MIG, refer to the MIG <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html">User Guide</a>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Support for MIG in DCGM Exporter was added starting with <code class="docutils literal notranslate"><span class="pre">2.4.0-rc.2</span></code>. Replace the container image with this tag in the
-command line examples above: <code class="docutils literal notranslate"><span class="pre">2.1.8-2.4.0-rc.2-ubuntu20.04</span></code>. If you are connecting to an existing DCGM on the host system,
-ensure that you upgrade to at least 2.1.8 on the host system.</p>
-</div>
 <p>DCGM Exporter publishes metrics for both the entire GPU as well as individual MIG devices (or GPU instances)
 as can be seen in the output below:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">DCGM_FI_DEV_SM_CLOCK_HERTZ{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 1215000000</span>
