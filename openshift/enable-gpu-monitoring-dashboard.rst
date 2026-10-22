@@ -31,6 +31,12 @@ Configuring the NVIDIA DCGM Exporter Dashboard
 
       $ curl -LfO https://github.com/NVIDIA/dcgm-exporter/raw/main/grafana/dcgm-exporter-dashboard.json
 
+   .. note::
+
+      The dashboard on the ``main`` branch queries the metric names that DCGM Exporter 4.9.0 and later use.
+      If your cluster runs an earlier version of DCGM Exporter, download the file from the tag that matches your version instead.
+      The GPU Operator recording rules that produce the ``accelerator_*`` series read both the new and the old metric names.
+
 #. Create a config map from the downloaded file in the ``openshift-config-managed`` namespace:
 
    .. code-block:: console
@@ -93,9 +99,9 @@ The following table provides a brief description of the graphs on the default da
 +--------------------------+------------------------------------------------------------+
 | GPU SM Clocks            | SM clock frequency in hertz.                               |
 +--------------------------+------------------------------------------------------------+
-| GPU Utilization          | GPU utilization, percent.                                  |
+| GPU Utilization          | GPU utilization.                                           |
 +--------------------------+------------------------------------------------------------+
-| GPU Framebuffer Mem Used | Frame buffer memory used in MB.                            |
+| GPU Framebuffer Mem Used | Frame buffer memory used.                                  |
 +--------------------------+------------------------------------------------------------+
-| Tensor Core Utilization  | Ratio of cycles the tensor (HMMA) pipe is active, percent. |
+| Tensor Core Utilization  | Ratio of cycles the tensor (HMMA) pipe is active.          |
 +--------------------------+------------------------------------------------------------+
