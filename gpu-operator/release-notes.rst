@@ -36,7 +36,7 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 .. DRAFT: Release notes for the next GPU Operator release, which ships DCGM Exporter 4.9.0.
    Release notes are written when a release is published. Move this text into a new
    version section above and replace the placeholders, then delete this comment.
-   The release number and date are not final.
+   This is a comment only because the GPU Operator version number and date are not known yet.
 
    New Features
    ------------
@@ -113,8 +113,18 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
    Upgrade Notes
    -------------
 
-   * If you use a custom metrics file, update the field names to the DCGM 4.7 names.
+   * If you use a custom metrics file, NVIDIA recommends updating the field names to the DCGM 4.7 names.
+     DCGM Exporter 4.9.0 still loads the old names, but they are deprecated and keep their old names and units.
      Refer to :ref:`custom metrics files <dcgm-exporter-custom-metrics>` for details.
+
+   * Rescale alert thresholds and autoscaler (HPA or KEDA) rules that use GPU utilization.
+     The new utilization metrics are a ratio from 0 to 1 instead of a percent.
+
+   * The ``DCGM_FI_DRIVER_VERSION`` label is renamed to ``DCGM_FI_SYSTEM_DRIVER_VERSION``.
+     The rename starts a new time series for each GPU.
+
+   * For the full list of changes and migration steps, refer to the DCGM Exporter release notes at
+     https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html.
 
    * If you roll the GPU Operator back to a release whose recording rules read the old metric names while nodes run DCGM Exporter 4.9.0,
      the ``accelerator_*`` series are empty.
