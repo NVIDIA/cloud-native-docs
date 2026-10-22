@@ -298,11 +298,16 @@ You can view the services setup as part of the operator and DCGM Exporter:
    prometheus    prometheus-operated                                         ClusterIP   None            <none>        9090/TCP                       28m
 
 You can observe that the Prometheus server is available at port 30090 on the node's IP address. Open your browser to ``http://<machine-ip-address>:30090``.
-It may take a few minutes for DCGM to start publishing the metrics to Prometheus. The metrics availability can be verified by typing ``DCGM_FI_DEV_GPU_UTIL``
+It may take a few minutes for DCGM to start publishing the metrics to Prometheus. The metrics availability can be verified by typing ``DCGM_FI_DEV_GPU_UTIL_RATIO``
 in the event bar to determine if the GPU metrics are visible:
 
 .. image:: graphics/dcgm-e2e/001-dcgm-e2e-prom-screenshot.png
    :width: 800
+
+.. note::
+
+   ``DCGM_FI_DEV_GPU_UTIL_RATIO`` is the metric name in DCGM Exporter 4.9.0 and later, and its value is a ratio from 0 to 1.
+   Earlier versions use ``DCGM_FI_DEV_GPU_UTIL``, with values in percent.
 
 *************
 Using Grafana
@@ -415,6 +420,12 @@ To access the dashboard, navigate from the Grafana home page to Dashboards -> Ma
 
 Import the NVIDIA dashboard from ``https://grafana.com/grafana/dashboards/12239``
 and choose *Prometheus* as the data source in the drop down:
+
+.. note::
+
+   The dashboard at that address queries the metric names that DCGM Exporter used before 4.9.0.
+   If you run DCGM Exporter 4.9.0 or later, import ``dcgm-exporter-dashboard.json`` from the
+   `DCGM Exporter repository <https://github.com/NVIDIA/dcgm-exporter/tree/main/grafana>`_ instead.
 
 .. image:: graphics/dcgm-e2e/006-dcgm-e2e-grafana-import-screenshot.png
    :width: 800

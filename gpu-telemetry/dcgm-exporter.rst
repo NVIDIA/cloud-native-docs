@@ -57,13 +57,13 @@ starts `nv-hostengine` as an embedded process and starts publishing metrics:
 
 .. code-block:: console
 
-   $ DCGM_EXPORTER_VERSION=2.1.4-2.3.1 && \
+   $ DCGM_EXPORTER_VERSION=4.9.0 && \
    docker run -d --rm \
       --gpus all \
       --net host \
       --cap-add SYS_ADMIN \
-      nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION}-ubuntu20.04 \
-      -f /etc/dcgm-exporter/dcp-metrics-included.csv
+      nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION} \
+      -f /etc/dcgm-exporter/default-counters.csv
 
 Retrieve the metrics:
 
@@ -73,16 +73,16 @@ Retrieve the metrics:
 
 .. code-block:: console
 
-   # HELP DCGM_FI_DEV_SM_CLOCK SM clock frequency (in MHz).
-   # TYPE DCGM_FI_DEV_SM_CLOCK gauge
-   # HELP DCGM_FI_DEV_MEM_CLOCK Memory clock frequency (in MHz).
-   # TYPE DCGM_FI_DEV_MEM_CLOCK gauge
-   # HELP DCGM_FI_DEV_MEMORY_TEMP Memory temperature (in C).
-   # TYPE DCGM_FI_DEV_MEMORY_TEMP gauge
+   # HELP DCGM_FI_DEV_SM_CLOCK_HERTZ SM clock frequency in hertz.
+   # TYPE DCGM_FI_DEV_SM_CLOCK_HERTZ gauge
+   # HELP DCGM_FI_DEV_MEMORY_CLOCK_HERTZ Memory clock frequency in hertz.
+   # TYPE DCGM_FI_DEV_MEMORY_CLOCK_HERTZ gauge
+   # HELP DCGM_FI_DEV_MEMORY_TEMP_CELSIUS Memory temperature (in C).
+   # TYPE DCGM_FI_DEV_MEMORY_TEMP_CELSIUS gauge
    ...
-   DCGM_FI_DEV_SM_CLOCK{gpu="0", UUID="GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52"} 139
-   DCGM_FI_DEV_MEM_CLOCK{gpu="0", UUID="GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52"} 405
-   DCGM_FI_DEV_MEMORY_TEMP{gpu="0", UUID="GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52"} 9223372036854775794
+   DCGM_FI_DEV_SM_CLOCK_HERTZ{gpu="0", UUID="GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52"} 139000000
+   DCGM_FI_DEV_MEMORY_CLOCK_HERTZ{gpu="0", UUID="GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52"} 405000000
+   DCGM_FI_DEV_MEMORY_TEMP_CELSIUS{gpu="0", UUID="GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52"} 45
    ...
 
 ***************************
@@ -96,6 +96,10 @@ DCGM-Exporter has various options for adjusting its default behavior. Each optio
 +==================================+======================================================================+=====================+==================================+
 | ``$DCGM_EXPORTER_COLLECTORS``    | Path to file containing DCGM fields to collect. Default:             | ``-f``              | File Path                        |
 |                                  | "/etc/dcgm-exporter/default-counters.csv"                            |                     |                                  |
++----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
+| ``$DCGM_EXPORTER_CONFIG_FILE``   | Path to a YAML configuration file. The container images set it to    | ``--config-file``   | File Path                        |
+|                                  | "/etc/dcgm-exporter/config.yaml". Flags and environment variables    |                     |                                  |
+|                                  | override the file.                                                   |                     |                                  |
 +----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
 | ``$DCGM_EXPORTER_LISTEN``        | Address of listening http server. Default: ":9400"                   | ``-a``              | Address                          |
 +----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
@@ -113,6 +117,14 @@ DCGM-Exporter has various options for adjusting its default behavior. Each optio
 | ``$DCGM_EXPORTER_DEVICES_STR``   | Specify which devices to monitor. Default: all GPU instances in      | ``-d``              | Device String                    |
 |                                  | MIG mode, all GPUs if MIG disabled.                                  |                     | (see following note)             |
 +----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
+
+The default metrics file, ``default-counters.csv``, enables 27 metrics, including ``DCGM_FI_DEV_FB_CAPACITY_BYTES``.
+The ``dcp-metrics-included.csv`` file is deprecated.
+It has the same content as ``default-counters.csv``, and you should use ``default-counters.csv`` instead.
+
+In the YAML configuration file, each enrichment switch accepts ``true``, ``false``, or ``auto``.
+A switch that you leave out means ``auto``.
+The exporter does not start if you set ``--enable-dcgm-log`` together with a remote hostengine.
 
 .. note::
    Device String Syntax: ``[f] | [g[:id1[,-id2]]] | [i[:id1[,-id2]]]``
@@ -162,7 +174,7 @@ In this scenario, we use the ``-r`` option to connect to an existing `nv-hosteng
       --net host \
       --cap-add SYS_ADMIN \
       nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION}-ubuntu20.04 \
-      -r localhost:5555 -f /etc/dcgm-exporter/dcp-metrics-included.csv
+      -r localhost:5555 -f /etc/dcgm-exporter/default-counters.csv
 
 Connecting to a DCGM standalone container
 =========================================
@@ -204,7 +216,7 @@ Second, start the dcgm-exporter container with ``r`` option to connect to an exi
       --net host \
       --cap-add SYS_ADMIN \
       nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION}-ubuntu20.04 \
-      -r localhost:5555 -f /etc/dcgm-exporter/dcp-metrics-included.csv
+      -r localhost:5555 -f /etc/dcgm-exporter/default-counters.csv
 
 In this scenario `dcgmi` commands run on the host will also connect to the `nv-hostengine` running in the standalone
 DCGM container:
@@ -220,6 +232,23 @@ DCGM container:
    |        | PCI Bus ID: 00000000:65:00.0                                         |
    |        | Device UUID: GPU-2f6576bf-3c29-1fbb-068d-e74c4a97f0c5                |
    +--------+----------------------------------------------------------------------+
+
+.. _dcgm-exporter-custom-metrics:
+
+********************
+Custom Metrics Files
+********************
+
+You can pass your own CSV file to DCGM Exporter with the ``-f`` flag or the ``DCGM_EXPORTER_COLLECTORS`` environment variable.
+In the GPU Operator, you provide the file in a ConfigMap that the ``dcgmExporter.metricsConfig`` value references.
+Each row has three fields: the DCGM field, the Prometheus metric type, and the help text.
+
+Starting with DCGM Exporter 4.9.0, you must use the DCGM 4.7 field names in your file.
+Start from ``default-counters.csv`` and replace each old name with the new name from the table in the GPU Operator release notes.
+For example, use ``DCGM_FI_DEV_GPU_UTIL_RATIO`` instead of ``DCGM_FI_DEV_GPU_UTIL``, and ``DCGM_FI_DEV_FB_USED_BYTES`` instead of ``DCGM_FI_DEV_FB_USED``.
+The new names change some units.
+For example, utilization is a ratio from 0 to 1, clocks are in hertz, and framebuffer memory is in bytes.
+Update dashboards and alerts that use the metrics.
 
 ********************************
 Multi-Instance GPU (MIG) Support
@@ -242,29 +271,32 @@ as can be seen in the output below:
 
 .. code-block:: console
 
-   DCGM_FI_DEV_SM_CLOCK{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 1215
-   DCGM_FI_DEV_MEM_CLOCK{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 1215
-   DCGM_FI_DEV_MEMORY_TEMP{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 69
-   DCGM_FI_DEV_GPU_TEMP{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 61
-   DCGM_FI_DEV_POWER_USAGE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 409.692000
-   DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 319159391
-   DCGM_FI_DEV_PCIE_REPLAY_COUNTER{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0
-   DCGM_FI_DEV_XID_ERRORS{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0
-   DCGM_FI_DEV_FB_FREE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 35690
-   DCGM_FI_DEV_FB_USED{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 4845
-   DCGM_FI_DEV_NVLINK_BANDWIDTH_TOTAL{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0
+   DCGM_FI_DEV_SM_CLOCK_HERTZ{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 1215000000
+   DCGM_FI_DEV_MEMORY_CLOCK_HERTZ{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 1215000000
+   DCGM_FI_DEV_MEMORY_TEMP_CELSIUS{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 69
+   DCGM_FI_DEV_GPU_TEMP_CELSIUS{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 61
+   DCGM_FI_DEV_BOARD_POWER_WATTS{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 409.692000
+   DCGM_FI_DEV_GPU_ENERGY_JOULES_TOTAL{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 319159.391
+   DCGM_FI_DEV_PCIE_REPLAY_TOTAL{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0
+   DCGM_FI_DEV_XID_ERROR{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0
+   DCGM_FI_DEV_FB_FREE_BYTES{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 37423677440
+   DCGM_FI_DEV_FB_USED_BYTES{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 5080350720
+   DCGM_FI_DEV_NVLINK_THROUGHPUT_BYTES_PER_SECOND{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0
    DCGM_FI_DEV_VGPU_LICENSE_STATUS{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0
-   DCGM_FI_PROF_GR_ENGINE_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0.995630
-   DCGM_FI_PROF_PIPE_TENSOR_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0.929260
-   DCGM_FI_PROF_DRAM_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0.690789
+   DCGM_FI_PROF_GR_ENGINE_UTIL_RATIO{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0.995630
+   DCGM_FI_PROF_TENSOR_UTIL_RATIO{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0.929260
+   DCGM_FI_PROF_DRAM_UTIL_RATIO{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0.690789
    DCGM_FI_PROF_PCIE_TX_BYTES{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 33011804
    DCGM_FI_PROF_PCIE_RX_BYTES{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 97863601
 
-   DCGM_FI_DEV_XID_ERRORS{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0
-   DCGM_FI_PROF_GR_ENGINE_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0.995687
-   DCGM_FI_PROF_PIPE_TENSOR_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0.930433
-   DCGM_FI_PROF_DRAM_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0.800339
+   DCGM_FI_DEV_XID_ERROR{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0
+   DCGM_FI_PROF_GR_ENGINE_UTIL_RATIO{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0.995687
+   DCGM_FI_PROF_TENSOR_UTIL_RATIO{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0.930433
+   DCGM_FI_PROF_DRAM_UTIL_RATIO{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0.800339
 
+
+The sample output is illustrative.
+The metrics that you see depend on the metrics file that you use.
 
 For more information on the profiling metrics and how to interpret the metrics, refer to :external+dcgm:ref:`profiling metrics` in the `NVIDIA DCGM User Guide`.
 
