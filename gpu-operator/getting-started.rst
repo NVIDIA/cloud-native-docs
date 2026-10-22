@@ -459,6 +459,65 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        NVIDIA recommends configuring this allowlist in clusters with many pod labels to reduce Prometheus cardinality.
      - ``none``
 
+   * - ``dcgmExporter.config.name``
+     - Name of a ConfigMap that holds a custom metrics file for DCGM Exporter.
+       The ConfigMap must be in the Operator namespace and the file must be stored under the key ``dcgm-metrics.csv``.
+       Refer to `Custom Metrics Files <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html#custom-metrics-files>`_ for details.
+     - ``none``
+
+   * - ``dcgmExporter.serviceMonitor.enabled``
+     - When set to ``true``, the Operator creates a Prometheus ``ServiceMonitor`` for DCGM Exporter.
+       Available values are ``true`` (default) or ``false``.
+     - ``true``
+
+   * - ``dcgmExporter.serviceMonitor.interval``
+     - Interval at which Prometheus scrapes DCGM Exporter.
+     - ``15s``
+
+   * - ``dcgmExporter.serviceMonitor.scrapeTimeout``
+     - Timeout for a scrape of DCGM Exporter. The value must not be greater than the interval.
+     - ``10s``
+
+   * - ``dcgmExporter.serviceMonitor.honorLabels``
+     - When set to ``true``, the metric labels are kept when they collide with target labels.
+     - ``false``
+
+   * - ``dcgmExporter.serviceMonitor.additionalLabels``
+     - Map of labels to add to the ``ServiceMonitor``.
+     - ``{}``
+
+   * - ``dcgmExporter.serviceMonitor.relabelings``
+     - List of Prometheus relabeling rules that rewrite the labels of the scrape target.
+     - ``[]``
+
+   * - ``dcgmExporter.serviceMonitor.metricRelabelings``
+     - List of Prometheus relabeling rules that rewrite the labels of scraped samples before ingestion.
+     - ``[]``
+
+   * - ``dcgmExporter.hpcJobMapping.enabled``
+     - When set to ``true``, DCGM Exporter labels GPU metrics with HPC job information that a workload manager writes to the job mapping directory.
+     - ``none``
+
+   * - ``dcgmExporter.hpcJobMapping.directory``
+     - Directory that holds the HPC job mapping files.
+     - ``/var/lib/dcgm-exporter/job-mapping``
+
+   * - ``dcgmExporter.env``
+     - List of environment variables to set in the DCGM Exporter container.
+     - ``[]``
+
+   * - ``dcgmExporter.args``
+     - List of command-line arguments to pass to DCGM Exporter.
+     - ``none``
+
+   * - ``dcgmExporter.resources``
+     - Resource requests and limits for the DCGM Exporter pods.
+     - ``{}``
+
+   * - ``dcgmExporter.hostPID``
+     - When set to ``true``, the DCGM Exporter daemon set can access the host's process ID namespace.
+     - ``false``
+
    * - ``devicePlugin.config``
      - Specifies the configuration for the NVIDIA Device Plugin as a config map.
 
