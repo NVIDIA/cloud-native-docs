@@ -84,9 +84,37 @@ the mixed MIG strategy.
 Limitations
 ===========
 
-- DCGM-Exporter does not support associating metrics to containers when GPU time-slicing is enabled with the NVIDIA Kubernetes Device Plugin.
 - The Operator does not monitor changes to a time-slicing config map.
   Refer to :ref:`time-slicing-update-config-map`.
+
+
+.. _time-slicing-gpu-metrics:
+
+GPU Metrics with Time-Slicing
+=============================
+
+By default, DCGM Exporter does not associate GPU metrics with the pods that share a GPU through time-slicing or MPS.
+To associate them, set the ``KUBERNETES_VIRTUAL_GPUS`` environment variable to ``true`` in ``dcgmExporter.env``.
+The variable requires DCGM Exporter 4.8.4 or later.
+For example, in the Helm values:
+
+.. code-block:: yaml
+
+   dcgmExporter:
+     env:
+     - name: KUBERNETES_VIRTUAL_GPUS
+       value: "true"
+
+Or patch the cluster policy.
+The patch replaces the whole ``env`` list, so include any variables that you already set:
+
+.. code-block:: console
+
+   $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type=merge \
+       -p '{"spec": {"dcgmExporter": {"env": [{"name": "KUBERNETES_VIRTUAL_GPUS", "value": "true"}]}}}'
+
+For the other DCGM Exporter settings in the Operator, refer to
+`DCGM Exporter with the NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html>`__.
 
 
 Changes to Node Labels

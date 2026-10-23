@@ -84,6 +84,10 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
 **D** = Default driver, **R** = Recommended driver
 
+.. TODO: When the next GPU Operator release is published, add a column for it.
+   Set DCGM Exporter to v4.7.0-4.9.0 and DCGM to 4.7.0-2 in the new column, or to the versions that the release ships.
+   DCGM Exporter 4.9.0 needs DCGM 4.7 or later, so the two rows must change together.
+
 .. flat-table::
    :header-rows: 2
 

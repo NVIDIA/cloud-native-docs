@@ -16,255 +16,356 @@
 
 .. headings (h1/h2/h3/h4/h5) are # * = -
 
-.. Date: April 13 2021
-.. Author: pramarao
+.. _dcgm-exporter-gpu-operator:
 
-#############
-DCGM Exporter
-#############
+##########################################
+DCGM Exporter with the NVIDIA GPU Operator
+##########################################
 
-************
-Introduction
-************
+`DCGM Exporter <https://github.com/NVIDIA/dcgm-exporter>`__ reads GPU metrics from
+`NVIDIA DCGM <https://developer.nvidia.com/dcgm>`__ and exposes them for Prometheus at ``/metrics``.
+The NVIDIA GPU Operator deploys DCGM Exporter on every GPU node by default.
 
-`DCGM-Exporter <https://github.com/NVIDIA/dcgm-exporter>`__ is a tool based on the
-Go APIs to `NVIDIA DCGM <https://developer.nvidia.com/dcgm>`__ that allows you to gather
-GPU metrics and understand workload behavior or monitor GPUs in clusters. DCGM Exporter is
-written in Go and exposes GPU metrics at an HTTP endpoint (``/metrics``) for monitoring solutions
-such as Prometheus.
+This page covers what the GPU Operator does for DCGM Exporter and how you configure it through the Operator.
+For DCGM Exporter itself, refer to the DCGM Exporter documentation:
 
-For information on the profiling metrics available from DCGM, refer to
-:external+dcgm:ref:`profiling` in the DCGM documentation.
+* `Install DCGM Exporter <https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html>`__,
+  including standalone containers, packages, and the exporter's own Helm chart.
+* `Command-line and YAML reference <https://docs.nvidia.com/datacenter/dcgm/latest/reference/command-line-reference/dcgm-exporter.html>`__
+  for options, environment variables, and the configuration file.
+* `DCGM Exporter metrics <https://docs.nvidia.com/datacenter/dcgm/latest/reference/dcgm-exporter-metrics.html>`__
+  for metric names, units, labels, and MIG behavior.
+* `Configure Prometheus for DCGM Exporter <https://docs.nvidia.com/datacenter/dcgm/latest/learn/getting-started-for-system-administrators/configure-prometheus-for-dcgm-exporter.html>`__.
+* `DCGM Exporter release notes <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html>`__,
+  including the metric name changes in DCGM Exporter 4.9.0.
 
-.. TODO: include a high-level diagram of the dcgm-exporter stack in Kubernetes
 
-You can run DCGM Exporter as a standalone container or deployed as a
-daemonset on GPU nodes in a Kubernetes cluster.
+*************************
+What the Operator Deploys
+*************************
 
-Because DCGM Exporter starts `nv-hostengine` as an embedded process (for collecting metrics),
-appropriate configuration options should be used if DCGM Exporter is run on systems (such as
-NVIDIA DGX) that have DCGM (or rather `nv-hostengine`) running.
+The Operator creates the following resources in the Operator namespace, such as ``gpu-operator``:
 
-*********************
-Running DCGM Exporter
-*********************
+.. list-table::
+   :widths: 30 70
+   :header-rows: 1
 
-The DCGM Exporter container can be run using a container engine such as Docker. In this mode, DCGM Exporter
-starts `nv-hostengine` as an embedded process and starts publishing metrics:
+   * - Resource
+     - Description
 
-.. image:: graphics/dcgm-exporter_embedded.png
-   :width: 800
+   * - DaemonSet ``nvidia-dcgm-exporter``
+     - Runs one DCGM Exporter pod on each node that has the ``nvidia.com/gpu.deploy.dcgm-exporter=true`` label.
+       The pods have the ``app=nvidia-dcgm-exporter`` label.
+
+   * - Service ``nvidia-dcgm-exporter``
+     - Exposes port ``9400``, named ``gpu-metrics``.
+
+   * - ServiceMonitor ``nvidia-dcgm-exporter``
+     - Tells the Prometheus Operator to scrape ``/metrics`` on the ``gpu-metrics`` port.
+       The GPU Operator creates it only when ``dcgmExporter.serviceMonitor.enabled`` is ``true``
+       and the ``ServiceMonitor`` custom resource definition exists in the cluster.
+
+   * - PrometheusRule ``nvidia-dcgm-exporter``
+     - OpenShift only.
+       Records the ``accelerator_*`` series that the OpenShift console uses.
+       Refer to :external+ocp:ref:`enable-gpu-monitoring-dashboard`.
+
+By default, DCGM Exporter runs an embedded DCGM host engine inside its container.
+
+The Operator sets the following environment variables on the exporter container:
+
+* ``DCGM_EXPORTER_LISTEN=:9400``
+* ``DCGM_EXPORTER_KUBERNETES=true``, which adds pod, namespace, and container labels to the metrics of GPUs that pods use.
+* ``DCGM_EXPORTER_COLLECTORS=/etc/dcgm-exporter/default-counters.csv``, the default metrics file in the image.
+  When you supply a custom metrics file, the value is ``/etc/dcgm-exporter/dcgm-metrics.csv``.
+* ``DCGM_REMOTE_HOSTENGINE_INFO=nvidia-dcgm:5555``, only when the standalone DCGM host engine is enabled.
+
+Variables in ``dcgmExporter.env`` are applied last and replace these values.
+Environment variables also take precedence over the exporter's configuration file, ``/etc/dcgm-exporter/config.yaml``, in the image.
+
+Starting with DCGM Exporter 4.9.0, the exporter checks its settings at startup.
+An invalid value in ``dcgmExporter.env`` or ``dcgmExporter.args`` stops the pod with an error message.
+To see the message, view the pod logs:
 
 .. code-block:: console
 
-   $ DCGM_EXPORTER_VERSION=2.1.4-2.3.1 && \
-   docker run -d --rm \
-      --gpus all \
-      --net host \
-      --cap-add SYS_ADMIN \
-      nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION}-ubuntu20.04 \
-      -f /etc/dcgm-exporter/dcp-metrics-included.csv
+   $ kubectl logs -n gpu-operator -l app=nvidia-dcgm-exporter
 
-Retrieve the metrics:
 
-.. code-block:: console
+*************************
+DCGM Exporter Helm Values
+*************************
 
-   $ curl localhost:9400/metrics
+Set these values when you install or upgrade the Operator with Helm.
+The same fields are under ``spec.dcgmExporter`` in the ``ClusterPolicy`` resource,
+except ``config.create`` and ``config.data``, which only the Helm chart uses.
 
-.. code-block:: console
+.. list-table::
+   :widths: 35 45 20
+   :header-rows: 1
 
-   # HELP DCGM_FI_DEV_SM_CLOCK SM clock frequency (in MHz).
-   # TYPE DCGM_FI_DEV_SM_CLOCK gauge
-   # HELP DCGM_FI_DEV_MEM_CLOCK Memory clock frequency (in MHz).
-   # TYPE DCGM_FI_DEV_MEM_CLOCK gauge
-   # HELP DCGM_FI_DEV_MEMORY_TEMP Memory temperature (in C).
-   # TYPE DCGM_FI_DEV_MEMORY_TEMP gauge
-   ...
-   DCGM_FI_DEV_SM_CLOCK{gpu="0", UUID="GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52"} 139
-   DCGM_FI_DEV_MEM_CLOCK{gpu="0", UUID="GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52"} 405
-   DCGM_FI_DEV_MEMORY_TEMP{gpu="0", UUID="GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52"} 9223372036854775794
-   ...
+   * - Parameter
+     - Description
+     - Default
 
-***************************
-DCGM-Exporter Customization
-***************************
+   * - ``dcgmExporter.enabled``
+     - When set to ``true``, the Operator deploys DCGM Exporter.
+     - ``true``
 
-DCGM-Exporter has various options for adjusting its default behavior. Each option supports both a command-line flag and environment variable.
+   * - ``dcgmExporter.repository``, ``image``, ``version``
+     - Image of DCGM Exporter.
+       The default version is the one that the Operator release ships.
+     - Refer to ``helm show values``
 
-+----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
-| Environment Variable             | Description                                                          | Command-Line Flag   | Value                            |
-+==================================+======================================================================+=====================+==================================+
-| ``$DCGM_EXPORTER_COLLECTORS``    | Path to file containing DCGM fields to collect. Default:             | ``-f``              | File Path                        |
-|                                  | "/etc/dcgm-exporter/default-counters.csv"                            |                     |                                  |
-+----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
-| ``$DCGM_EXPORTER_LISTEN``        | Address of listening http server. Default: ":9400"                   | ``-a``              | Address                          |
-+----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
-| ``$DCGM_EXPORTER_INTERVAL``      | Interval of time at which point metrics are collected. Unit is       | ``-c``              | Interval                         |
-|                                  | milliseconds. Default: 30000                                         |                     |                                  |
-+----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
-| ``$DCGM_EXPORTER_KUBERNETES``    | Enable kubernetes mapping metrics to kubernetes pods. Default: false | ``-k``              | Boolean                          |
-+----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
-| ``$DCGM_EXPORTER_CONFIGMAP_DATA``| ConfigMap namespace and name containing DCGM fields to collect.      | ``-m``              | Namespace:Name                   |
-|                                  | Default: "none"                                                      |                     |                                  |
-+----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
-| ``$DCGM_REMOTE_HOSTENGINE_INFO`` | Connect to remote hostengine at Host:Port. Default: NA               | ``-r``              | Host:Port                        |
-|                                  | (dcgm-exporter will start in embedded mode)                          |                     |                                  |
-+----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
-| ``$DCGM_EXPORTER_DEVICES_STR``   | Specify which devices to monitor. Default: all GPU instances in      | ``-d``              | Device String                    |
-|                                  | MIG mode, all GPUs if MIG disabled.                                  |                     | (see following note)             |
-+----------------------------------+----------------------------------------------------------------------+---------------------+----------------------------------+
+   * - ``dcgmExporter.env``
+     - List of environment variables, as ``name`` and ``value`` pairs, to set in the DCGM Exporter container.
+     - ``[]``
+
+   * - ``dcgmExporter.args``
+     - List of command-line arguments to pass to DCGM Exporter.
+     - ``none``
+
+   * - ``dcgmExporter.resources``
+     - Resource requests and limits for the DCGM Exporter pods.
+     - ``{}``
+
+   * - ``dcgmExporter.annotations``
+     - Map of custom annotations to add to the DCGM Exporter pods.
+     - ``{}``
+
+   * - ``dcgmExporter.config.name``
+     - Name of a ConfigMap that holds a custom metrics file.
+       Refer to :ref:`dcgm-exporter-custom-metrics`.
+     - ``none``
+
+   * - ``dcgmExporter.config.create``
+     - Helm only.
+       When set to ``true`` and ``config.data`` is set, the chart creates the ConfigMap named by ``config.name``.
+     - ``none``
+
+   * - ``dcgmExporter.config.data``
+     - Helm only.
+       Contents of the metrics file for the ConfigMap that the chart creates.
+     - ``none``
+
+   * - ``dcgmExporter.serviceMonitor.enabled``
+     - When set to ``true``, the Operator creates a ``ServiceMonitor`` for DCGM Exporter.
+     - ``true``
+
+   * - ``dcgmExporter.serviceMonitor.interval``
+     - Interval at which Prometheus scrapes DCGM Exporter.
+     - ``15s``
+
+   * - ``dcgmExporter.serviceMonitor.scrapeTimeout``
+     - Timeout for one scrape. The value must not be greater than the interval.
+     - ``10s``
+
+   * - ``dcgmExporter.serviceMonitor.honorLabels``
+     - When set to ``true``, Prometheus keeps the metric labels when they collide with target labels.
+     - ``false``
+
+   * - ``dcgmExporter.serviceMonitor.additionalLabels``
+     - Map of labels to add to the ``ServiceMonitor``.
+     - ``{}``
+
+   * - ``dcgmExporter.serviceMonitor.relabelings``
+     - List of Prometheus relabeling rules for the scrape target.
+     - ``[]``
+
+   * - ``dcgmExporter.serviceMonitor.metricRelabelings``
+     - List of Prometheus relabeling rules for scraped samples, applied before ingestion.
+     - ``[]``
+
+   * - ``dcgmExporter.service.type``
+     - Type of the ``nvidia-dcgm-exporter`` service.
+     - ``ClusterIP``
+
+   * - ``dcgmExporter.service.internalTrafficPolicy``
+     - `Internal traffic policy <https://kubernetes.io/docs/concepts/services-networking/service/#traffic-policies>`__
+       of the ``nvidia-dcgm-exporter`` service.
+     - ``Cluster``
+
+   * - ``dcgmExporter.hostNetwork``
+     - When set to ``true``, the DCGM Exporter pods use the host's network namespace.
+     - ``false``
+
+   * - ``dcgmExporter.hostPID``
+     - When set to ``true``, the DCGM Exporter pods use the host's process ID namespace.
+     - ``false``
+
+   * - ``dcgmExporter.enablePodLabels``
+     - When set to ``true``, pod labels are added to the GPU metrics.
+       The Operator grants the exporter read access to pods.
+     - ``false``
+
+   * - ``dcgmExporter.enablePodUID``
+     - When set to ``true``, the pod UID is added to the GPU metrics.
+       The Operator grants the exporter read access to pods.
+     - ``false``
+
+   * - ``dcgmExporter.podLabelAllowlistRegex``
+     - List of regular expressions that select which pod labels are added.
+       Use it to limit the number of Prometheus series.
+     - ``none``
+
+   * - ``dcgmExporter.hpcJobMapping.enabled``
+     - When set to ``true``, GPU metrics get HPC job labels from files that a workload manager, such as Slurm, writes on the node.
+       The Operator mounts the job mapping directory from the host.
+     - ``none``
+
+   * - ``dcgmExporter.hpcJobMapping.directory``
+     - Host directory that holds the HPC job mapping files.
+     - ``/var/lib/dcgm-exporter/job-mapping``
+
+   * - ``dcgm.enabled``
+     - When set to ``true``, the Operator deploys the standalone DCGM host engine.
+       Refer to :ref:`dcgm-exporter-hostengine`.
+     - ``false``
+
+For the other Operator options, refer to :external+gpuop:ref:`chart-customization-options`.
+
+
+.. _dcgm-exporter-custom-metrics:
+
+********************
+Custom Metrics Files
+********************
+
+By default, DCGM Exporter collects the metrics in ``/etc/dcgm-exporter/default-counters.csv`` in the image.
+To collect a different set, supply your own metrics file in a ConfigMap.
+For the file format and the available metrics, refer to
+`DCGM Exporter metrics <https://docs.nvidia.com/datacenter/dcgm/latest/reference/dcgm-exporter-metrics.html>`__.
+
+DCGM Exporter 4.9.0 uses the DCGM 4.7 field names, such as ``DCGM_FI_DEV_GPU_UTIL_RATIO``.
+It still loads the older names, such as ``DCGM_FI_DEV_GPU_UTIL``, but they are deprecated.
+A metric that uses an older name keeps that name and its older unit.
+
+#. Create a ConfigMap in the Operator namespace.
+   Store the file under the key ``dcgm-metrics.csv``:
+
+   .. code-block:: console
+
+      $ kubectl create configmap custom-dcgm-exporter-metrics -n gpu-operator \
+          --from-file=dcgm-metrics.csv=./dcgm-metrics.csv
+
+#. Set ``dcgmExporter.config.name`` to the ConfigMap name.
+   With Helm:
+
+   .. code-block:: console
+
+      $ helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator \
+          --reuse-values --set dcgmExporter.config.name=custom-dcgm-exporter-metrics
+
+   Or patch the cluster policy:
+
+   .. code-block:: console
+
+      $ kubectl patch clusterpolicies.nvidia.com/cluster-policy --type=merge \
+          -p '{"spec": {"dcgmExporter": {"config": {"name": "custom-dcgm-exporter-metrics"}}}}'
+
+The Operator mounts the file at ``/etc/dcgm-exporter/dcgm-metrics.csv``
+and sets ``DCGM_EXPORTER_COLLECTORS`` to that path.
+The ConfigMap replaces only the metrics file.
+The configuration file in the image still applies.
+
+Instead of the first step, you can have the Helm chart create the ConfigMap.
+Set ``dcgmExporter.config.create=true`` and put the file contents in ``dcgmExporter.config.data``.
 
 .. note::
-   Device String Syntax: ``[f] | [g[:id1[,-id2]]] | [i[:id1[,-id2]]]``
 
-   If an id list is used, then devices with matching IDs must exist on the system. For example:
+   The Operator mounts the file with ``subPath``, so Kubernetes does not update the file in running pods when you edit the ConfigMap.
+   After you change the ConfigMap, restart the DCGM Exporter pods:
 
-   * ``f`` = Monitor all GPUs if MIG is disabled, or all GPU instances if MIG is enabled
-   * ``g`` = Monitor all GPUs
-   * ``i`` = Monitor all GPU instances
-   * ``g:0,1`` = monitor GPUs 0 and 1
-   * ``i:0,2-4`` = monitor GPU instances 0, 2, 3, and 4.
+   .. code-block:: console
 
-.. warning::
-   1. ``-i`` cannot be specified unless MIG mode is enabled.
+      $ kubectl delete pod -n gpu-operator -l app=nvidia-dcgm-exporter
 
-   2. Any time indices are specified, those indices must exist on the system.
-
-   3. In MIG mode, only ``f`` or ``i`` with a range can be specified. GPUs are not assigned to pods and therefore reporting must occur at the GPU instance level. (default: ``f``)
+Do not use the ``DCGM_EXPORTER_CONFIGMAP_DATA`` environment variable to read metrics from a ConfigMap.
+It is deprecated in DCGM Exporter 4.9.0 and logs a warning at each start.
 
 
-
-Connecting to an existing DCGM agent
-======================================
-
-In this scenario, system images include DCGM and have `nv-hostengine` running already. Examples include
-the DGX systems that bundles drivers, DCGM, etc. in the system image. To avoid any compatibility issues,
-it is recommended to have DCGM Exporter connect to the existing `nv-hostengine` daemon to gather/publish
-GPU telemetry data.
-
-.. warning::
-
-   The DCGM Exporter container image includes a DCGM client library (``libdcgm.so``) to communicate with
-   `nv-hostengine`. In this deployment scenario we have DCGM Exporter (or rather ``libdcgm.so``) connect
-   to an existing `nv-hostengine` running on the host. The DCGM client library uses an internal protocol to exchange
-   information with `nv-hostengine`. To avoid any potential incompatibilities between the container image's DCGM client library
-   and the host's `nv-hostengine`, it is strongly recommended to use a version of DCGM on which DCGM Exporter is based is
-   greater than or equal to (but not less than) the version of DCGM running on the host. This can be easily determined by
-   comparing the version tags of the DCGM Exporter image and by running ``nv-hostengine --version`` on the host.
-
-In this scenario, we use the ``-r`` option to connect to an existing `nv-hostengine` process:
-
-.. code-block:: console
-
-   $ DCGM_EXPORTER_VERSION=2.1.4-2.3.1 &&
-   docker run -d --rm \
-      --gpus all \
-      --net host \
-      --cap-add SYS_ADMIN \
-      nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION}-ubuntu20.04 \
-      -r localhost:5555 -f /etc/dcgm-exporter/dcp-metrics-included.csv
-
-Connecting to a DCGM standalone container
-=========================================
-
-In this scenario the DCGM `nv-hostengine` runs in a separate container on the same host making its client port available to
-DCGM-Exporter as well as dcgmi client commands.
-
-.. image:: graphics/dcgm_and_dcgm-exporter.png
-   :width: 800
-
-.. warning::
-
-   Similar to the warning when connecting to an existing DCGM agent, the DCGM Exporter container image includes a
-   DCGM client library (``libdcgm.so``) to communicate with `nv-hostengine` running in a separate container.
-   The DCGM client library in use by DCGM-Exporter uses an internal protocol to exchange information with `nv-hostengine`.
-   To avoid any potential incompatibilities between the container image's DCGM client library
-   and the standalone DCGM container's `nv-hostengine`, it is strongly recommended to ensure the version of DCGM on which
-   DCGM Exporter is based is greater than or equal to (but not less than) the version of DCGM running in the standalone
-   container. This can be easily determined by comparing the version tags of the DCGM Exporter and `dcgm` standalone image.
-
-First, start the standalone DCGM container with the `nv-hostengine` port available to external applications:
-
-.. code-block:: console
-
-   $DCGM_VERSION=2.2.9 &&
-   docker run -d --rm \
-      --gpus all \
-      --cap-add SYS_ADMIN \
-      -p 5555:5555 \
-      nvidia/dcgm:${DCGM_VERSION}-ubuntu20.04
-
-Second, start the dcgm-exporter container with ``r`` option to connect to an existing `nv-hostengine` port:
-
-.. code-block:: console
-
-   $DCGM_EXPORTER_VERSION=2.2.9-2.5.0 &&
-   docker run -d --rm \
-      --gpus all \
-      --net host \
-      --cap-add SYS_ADMIN \
-      nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION}-ubuntu20.04 \
-      -r localhost:5555 -f /etc/dcgm-exporter/dcp-metrics-included.csv
-
-In this scenario `dcgmi` commands run on the host will also connect to the `nv-hostengine` running in the standalone
-DCGM container:
-
-.. code-block:: console
-
-   dcgmi discovery -l
-   1 GPU found.
-   +--------+----------------------------------------------------------------------+
-   | GPU ID | Device Information                                                   |
-   +--------+----------------------------------------------------------------------+
-   | 0      | Name: Quadro RTX 6000                                                |
-   |        | PCI Bus ID: 00000000:65:00.0                                         |
-   |        | Device UUID: GPU-2f6576bf-3c29-1fbb-068d-e74c4a97f0c5                |
-   +--------+----------------------------------------------------------------------+
+.. _dcgm-exporter-prometheus-scrape:
 
 ********************************
-Multi-Instance GPU (MIG) Support
+Collecting Metrics in Prometheus
 ********************************
 
-The new Multi-Instance GPU (MIG) feature allows the GPUs based on the NVIDIA Ampere architecture to be
-securely partitioned into up to seven separate GPU Instances for CUDA applications, providing multiple users
-with separate GPU resources for optimal GPU utilization.
+If your cluster runs the `Prometheus Operator <https://prometheus-operator.dev/>`__,
+for example through the ``kube-prometheus-stack`` Helm chart,
+install it, or at least its custom resource definitions, before the GPU Operator.
+The GPU Operator then creates the ``nvidia-dcgm-exporter`` ``ServiceMonitor``.
 
-For more information on MIG, refer to the MIG `User Guide <https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html>`_.
+Prometheus must select the ``ServiceMonitor``.
+By default, ``kube-prometheus-stack`` selects only ``ServiceMonitor`` objects that have its ``release`` label.
+Do one of the following:
 
-.. note::
+* Add the label through the GPU Operator:
 
-   Support for MIG in DCGM Exporter was added starting with ``2.4.0-rc.2``. Replace the container image with this tag in the
-   command line examples above: ``2.1.8-2.4.0-rc.2-ubuntu20.04``. If you are connecting to an existing DCGM on the host system,
-   ensure that you upgrade to at least 2.1.8 on the host system.
+  .. code-block:: console
 
-DCGM Exporter publishes metrics for both the entire GPU as well as individual MIG devices (or GPU instances)
-as can be seen in the output below:
+     $ helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator \
+         --reuse-values --set dcgmExporter.serviceMonitor.additionalLabels.release=<prometheus-release-name>
 
-.. code-block:: console
+* Configure Prometheus to select all ``ServiceMonitor`` objects.
+  In ``kube-prometheus-stack``, set ``prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false``.
 
-   DCGM_FI_DEV_SM_CLOCK{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 1215
-   DCGM_FI_DEV_MEM_CLOCK{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 1215
-   DCGM_FI_DEV_MEMORY_TEMP{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 69
-   DCGM_FI_DEV_GPU_TEMP{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 61
-   DCGM_FI_DEV_POWER_USAGE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 409.692000
-   DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 319159391
-   DCGM_FI_DEV_PCIE_REPLAY_COUNTER{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0
-   DCGM_FI_DEV_XID_ERRORS{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0
-   DCGM_FI_DEV_FB_FREE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 35690
-   DCGM_FI_DEV_FB_USED{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 4845
-   DCGM_FI_DEV_NVLINK_BANDWIDTH_TOTAL{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0
-   DCGM_FI_DEV_VGPU_LICENSE_STATUS{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0
-   DCGM_FI_PROF_GR_ENGINE_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0.995630
-   DCGM_FI_PROF_PIPE_TENSOR_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0.929260
-   DCGM_FI_PROF_DRAM_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 0.690789
-   DCGM_FI_PROF_PCIE_TX_BYTES{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 33011804
-   DCGM_FI_PROF_PCIE_RX_BYTES{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",Hostname="ub20-a100-k8s"} 97863601
+To check that Prometheus collects the metrics, query a default metric, such as ``DCGM_FI_DEV_GPU_UTIL_RATIO``.
+DCGM Exporter 4.9.0 and later use this name, and the value is a ratio from 0 to 1.
+Earlier versions use ``DCGM_FI_DEV_GPU_UTIL``, in percent.
 
-   DCGM_FI_DEV_XID_ERRORS{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0
-   DCGM_FI_PROF_GR_ENGINE_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0.995687
-   DCGM_FI_PROF_PIPE_TENSOR_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0.930433
-   DCGM_FI_PROF_DRAM_ACTIVE{gpu="0",UUID="GPU-34319582-d595-d1c7-d1d2-179bcfa61660",device="nvidia0",GPU_I_PROFILE="1g.5gb",GPU_I_ID="13",Hostname="ub20-a100-k8s"} 0.800339
+If you do not use the Prometheus Operator, scrape the ``nvidia-dcgm-exporter`` service on port ``9400``.
+Refer to `Configure Prometheus for DCGM Exporter <https://docs.nvidia.com/datacenter/dcgm/latest/learn/getting-started-for-system-administrators/configure-prometheus-for-dcgm-exporter.html>`__.
+
+For a Grafana dashboard, import ``dcgm-exporter-dashboard.json`` from the
+`DCGM Exporter repository <https://github.com/NVIDIA/dcgm-exporter/tree/main/grafana>`__.
+The dashboard on the ``main`` branch uses the metric names of DCGM Exporter 4.9.0 and later.
+For an earlier version, use the file from the matching release tag.
+On OpenShift, refer to :external+ocp:ref:`enable-gpu-monitoring-dashboard`.
 
 
-For more information on the profiling metrics and how to interpret the metrics, refer to :external+dcgm:ref:`profiling metrics` in the `NVIDIA DCGM User Guide`.
+*******************************
+Metrics for Shared GPUs and MIG
+*******************************
 
+With GPU time-slicing or MPS, set ``KUBERNETES_VIRTUAL_GPUS=true`` in ``dcgmExporter.env``
+so that the metrics are associated with the pods that share the GPU.
+Refer to :external+gpuop:ref:`gpu-sharing`.
+
+With MIG, DCGM Exporter reports metrics for each GPU instance.
+The MIG Manager stops the DCGM Exporter pods while it changes the MIG configuration of a node.
+For the MIG labels and metrics, refer to
+`DCGM Exporter metrics <https://docs.nvidia.com/datacenter/dcgm/latest/reference/dcgm-exporter-metrics.html>`__.
+
+
+.. _dcgm-exporter-hostengine:
+
+*********************************
+Using a Separate DCGM Host Engine
+*********************************
+
+By default, each DCGM Exporter pod runs its own embedded DCGM host engine.
+You can use a separate host engine instead:
+
+* **Standalone DCGM from the Operator.**
+  Set ``dcgm.enabled=true``.
+  The Operator deploys the ``nvidia-dcgm`` daemon set and points DCGM Exporter at the ``nvidia-dcgm`` service on port ``5555``.
+  The default ``ClusterPolicy`` on OpenShift sets ``dcgm.enabled`` to ``true``.
+
+* **DCGM on the host**, such as on NVIDIA DGX systems.
+  Keep ``dcgm.enabled=false`` and point DCGM Exporter at the host engine on the node:
+
+  .. code-block:: yaml
+
+     dcgmExporter:
+       hostNetwork: true
+       env:
+       - name: DCGM_REMOTE_HOSTENGINE_INFO
+         value: localhost:5555
+
+The host engine must run DCGM 4.7 or later for DCGM Exporter 4.9.0.
+With an older host engine, DCGM Exporter 4.9.0 exits at startup, because its default metrics use DCGM 4.7 fields.
+Use the DCGM and DCGM Exporter versions that the Operator release ships.
+If you set ``dcgm.version``, upgrade it together with ``dcgmExporter.version``.
+
+For more information, refer to
+`Connect to a DCGM host engine <https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html#connect-to-a-dcgm-host-engine>`__.

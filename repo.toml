@@ -241,6 +241,10 @@ project = "gpu-telemetry"
 name = "NVIDIA GPU Telemetry"
 version = "1.0.0"
 copyright_start = 2020
+redirects = [
+  { path="integrating-telemetry-kubernetes.html", project="gpu-operator", target="getting-started.html" },
+  { path="kube-prometheus.html", target="dcgm-exporter.html#dcgm-exporter-prometheus-scrape" },
+]
 
 [repo_docs.projects.gpu-telemetry.builds.linkcheck]
 build_by_default = false
