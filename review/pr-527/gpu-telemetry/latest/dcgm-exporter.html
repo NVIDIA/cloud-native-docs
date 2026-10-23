@@ -10,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
-    <title>DCGM Exporter &#8212; NVIDIA GPU Telemetry</title>
+    <title>DCGM Exporter with the NVIDIA GPU Operator &#8212; NVIDIA GPU Telemetry</title>
   
   
   
@@ -69,7 +69,6 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Integrating GPU Telemetry into Kubernetes" href="integrating-telemetry-kubernetes.html" />
     <link rel="prev" title="About GPU Telemetry" href="about-telemetry.html" />
 
 
@@ -77,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 22, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 23, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -353,9 +352,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">DCGM Exporter</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="about-telemetry.html">About GPU Telemetry</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">DCGM Exporter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="integrating-telemetry-kubernetes.html">Integrating GPU Telemetry into Kubernetes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="kube-prometheus.html">Setting up Prometheus</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">DCGM Exporter with the NVIDIA GPU Operator</a></li>
 </ul>
 </div>
 </nav></div>
@@ -392,7 +389,7 @@
     <li class="breadcrumb-item">
       <a href="index.html">NVIDIA GPU Telemetry</a>
     </li>
-    <li class="breadcrumb-item active" aria-current="page">DCGM Exporter</li>
+    <li class="breadcrumb-item active" aria-current="page">DCGM Exporter with the NVIDIA GPU Operator</li>
   </ul>
 </nav></div>
       
@@ -408,312 +405,326 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="dcgm-exporter">
-<h1>DCGM Exporter<a class="headerlink" href="#dcgm-exporter" title="Permalink to this headline">#</a></h1>
-<section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">#</a></h2>
-<p><a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter">DCGM-Exporter</a> is a tool based on the
-Go APIs to <a class="reference external" href="https://developer.nvidia.com/dcgm">NVIDIA DCGM</a> that allows you to gather
-GPU metrics and understand workload behavior or monitor GPUs in clusters. DCGM Exporter is
-written in Go and exposes GPU metrics at an HTTP endpoint (<code class="docutils literal notranslate"><span class="pre">/metrics</span></code>) for monitoring solutions
-such as Prometheus.</p>
-<p>For information on the profiling metrics available from DCGM, refer to
-<a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/dcgm-api/dcgm-api-profiling.html#profiling" title="(in NVIDIA DCGM Documentation vVersion: 3.3 (Latest))"><span>Profiling</span></a> in the DCGM documentation.</p>
-<p>You can run DCGM Exporter as a standalone container or deployed as a
-daemonset on GPU nodes in a Kubernetes cluster.</p>
-<p>Because DCGM Exporter starts <cite>nv-hostengine</cite> as an embedded process (for collecting metrics),
-appropriate configuration options should be used if DCGM Exporter is run on systems (such as
-NVIDIA DGX) that have DCGM (or rather <cite>nv-hostengine</cite>) running.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>More information about DCGM Exporter is available in the DCGM documentation:</p>
+  <section id="dcgm-exporter-with-the-nvidia-gpu-operator">
+<span id="dcgm-exporter-gpu-operator"></span><h1>DCGM Exporter with the NVIDIA GPU Operator<a class="headerlink" href="#dcgm-exporter-with-the-nvidia-gpu-operator" title="Permalink to this headline">#</a></h1>
+<p><a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter">DCGM Exporter</a> reads GPU metrics from
+<a class="reference external" href="https://developer.nvidia.com/dcgm">NVIDIA DCGM</a> and exposes them for Prometheus at <code class="docutils literal notranslate"><span class="pre">/metrics</span></code>.
+The NVIDIA GPU Operator deploys DCGM Exporter on every GPU node by default.</p>
+<p>This page covers what the GPU Operator does for DCGM Exporter and how you configure it through the Operator.
+For DCGM Exporter itself, refer to the DCGM Exporter documentation:</p>
 <ul class="simple">
-<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html">Install DCGM Exporter</a></p></li>
-<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/reference/command-line-reference/dcgm-exporter.html">Command-line and YAML reference</a></p></li>
-<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/reference/dcgm-exporter-metrics.html">Metrics reference</a></p></li>
-<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/learn/getting-started-for-system-administrators/configure-prometheus-for-dcgm-exporter.html">Configure Prometheus for DCGM Exporter</a></p></li>
-<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html">Release notes and migration</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html">Install DCGM Exporter</a>,
+including standalone containers, packages, and the exporter’s own Helm chart.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/reference/command-line-reference/dcgm-exporter.html">Command-line and YAML reference</a>
+for options, environment variables, and the configuration file.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/reference/dcgm-exporter-metrics.html">DCGM Exporter metrics</a>
+for metric names, units, labels, and MIG behavior.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/learn/getting-started-for-system-administrators/configure-prometheus-for-dcgm-exporter.html">Configure Prometheus for DCGM Exporter</a>.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html">DCGM Exporter release notes</a>,
+including the metric name changes in DCGM Exporter 4.9.0.</p></li>
 </ul>
-</div>
-</section>
-<section id="running-dcgm-exporter">
-<h2>Running DCGM Exporter<a class="headerlink" href="#running-dcgm-exporter" title="Permalink to this headline">#</a></h2>
-<p>The DCGM Exporter container can be run using a container engine such as Docker. In this mode, DCGM Exporter
-starts <cite>nv-hostengine</cite> as an embedded process and starts publishing metrics:</p>
-<a class="reference internal image-reference" href="_images/dcgm-exporter_embedded.png"><img alt="_images/dcgm-exporter_embedded.png" src="_images/dcgm-exporter_embedded.png" style="width: 800px;" /></a>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">DCGM_EXPORTER_VERSION</span><span class="o">=</span><span class="m">4</span>.9.0 <span class="o">&amp;&amp;</span> <span class="se">\</span>
-docker run -d --rm <span class="se">\</span>
-   --gpus all <span class="se">\</span>
-   --net host <span class="se">\</span>
-   --cap-add SYS_ADMIN <span class="se">\</span>
-   nvcr.io/nvidia/k8s/dcgm-exporter:<span class="si">${</span><span class="nv">DCGM_EXPORTER_VERSION</span><span class="si">}</span> <span class="se">\</span>
-   -f /etc/dcgm-exporter/default-counters.csv
-</pre></div>
-</div>
-<p>Retrieve the metrics:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl localhost:9400/metrics
-</pre></div>
-</div>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp"># </span>HELP DCGM_FI_DEV_SM_CLOCK_HERTZ SM clock frequency <span class="k">in</span> hertz.
-<span class="gp"># </span>TYPE DCGM_FI_DEV_SM_CLOCK_HERTZ gauge
-<span class="gp"># </span>HELP DCGM_FI_DEV_MEMORY_CLOCK_HERTZ Memory clock frequency <span class="k">in</span> hertz.
-<span class="gp"># </span>TYPE DCGM_FI_DEV_MEMORY_CLOCK_HERTZ gauge
-<span class="gp"># </span>HELP DCGM_FI_DEV_MEMORY_TEMP_CELSIUS Memory temperature <span class="o">(</span><span class="k">in</span> C<span class="o">)</span>.
-<span class="gp"># </span>TYPE DCGM_FI_DEV_MEMORY_TEMP_CELSIUS gauge
-<span class="go">...</span>
-<span class="go">DCGM_FI_DEV_SM_CLOCK_HERTZ{gpu=&quot;0&quot;, UUID=&quot;GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52&quot;} 139000000</span>
-<span class="go">DCGM_FI_DEV_MEMORY_CLOCK_HERTZ{gpu=&quot;0&quot;, UUID=&quot;GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52&quot;} 405000000</span>
-<span class="go">DCGM_FI_DEV_MEMORY_TEMP_CELSIUS{gpu=&quot;0&quot;, UUID=&quot;GPU-604ac76c-d9cf-fef3-62e9-d92044ab6e52&quot;} 45</span>
-<span class="go">...</span>
-</pre></div>
-</div>
-</section>
-<section id="dcgm-exporter-customization">
-<h2>DCGM-Exporter Customization<a class="headerlink" href="#dcgm-exporter-customization" title="Permalink to this headline">#</a></h2>
-<p>DCGM-Exporter has various options for adjusting its default behavior. Each option supports both a command-line flag and environment variable.</p>
-<div class="pst-scrollable-table-container"><table class="table">
+<section id="what-the-operator-deploys">
+<h2>What the Operator Deploys<a class="headerlink" href="#what-the-operator-deploys" title="Permalink to this headline">#</a></h2>
+<p>The Operator creates the following resources in the Operator namespace, such as <code class="docutils literal notranslate"><span class="pre">gpu-operator</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
 <colgroup>
-<col style="width: 21%" />
-<col style="width: 44%" />
-<col style="width: 13%" />
-<col style="width: 21%" />
+<col style="width: 30%" />
+<col style="width: 70%" />
 </colgroup>
 <thead>
-<tr class="row-odd"><th class="head"><p>Environment Variable</p></th>
+<tr class="row-odd"><th class="head"><p>Resource</p></th>
 <th class="head"><p>Description</p></th>
-<th class="head"><p>Command-Line Flag</p></th>
-<th class="head"><p>Value</p></th>
 </tr>
 </thead>
 <tbody>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$DCGM_EXPORTER_COLLECTORS</span></code></p></td>
-<td><p>Path to file containing DCGM fields to collect. Default:
-“/etc/dcgm-exporter/default-counters.csv”</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">-f</span></code></p></td>
-<td><p>File Path</p></td>
+<tr class="row-even"><td><p>DaemonSet <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter</span></code></p></td>
+<td><p>Runs one DCGM Exporter pod on each node that has the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.deploy.dcgm-exporter=true</span></code> label.
+The pods have the <code class="docutils literal notranslate"><span class="pre">app=nvidia-dcgm-exporter</span></code> label.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$DCGM_EXPORTER_CONFIG_FILE</span></code></p></td>
-<td><p>Path to a YAML configuration file. The container images set it to
-“/etc/dcgm-exporter/config.yaml”. Flags and environment variables
-override the file.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">--config-file</span></code></p></td>
-<td><p>File Path</p></td>
+<tr class="row-odd"><td><p>Service <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter</span></code></p></td>
+<td><p>Exposes port <code class="docutils literal notranslate"><span class="pre">9400</span></code>, named <code class="docutils literal notranslate"><span class="pre">gpu-metrics</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$DCGM_EXPORTER_LISTEN</span></code></p></td>
-<td><p>Address of listening http server. Default: “:9400”</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">-a</span></code></p></td>
-<td><p>Address</p></td>
+<tr class="row-even"><td><p>ServiceMonitor <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter</span></code></p></td>
+<td><p>Tells the Prometheus Operator to scrape <code class="docutils literal notranslate"><span class="pre">/metrics</span></code> on the <code class="docutils literal notranslate"><span class="pre">gpu-metrics</span></code> port.
+The GPU Operator creates it only when <code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.enabled</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>
+and the <code class="docutils literal notranslate"><span class="pre">ServiceMonitor</span></code> custom resource definition exists in the cluster.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$DCGM_EXPORTER_INTERVAL</span></code></p></td>
-<td><p>Interval of time at which point metrics are collected. Unit is
-milliseconds. Default: 30000</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">-c</span></code></p></td>
-<td><p>Interval</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$DCGM_EXPORTER_KUBERNETES</span></code></p></td>
-<td><p>Enable kubernetes mapping metrics to kubernetes pods. Default: false</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">-k</span></code></p></td>
-<td><p>Boolean</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$DCGM_EXPORTER_CONFIGMAP_DATA</span></code></p></td>
-<td><p>ConfigMap namespace and name containing DCGM fields to collect.
-Default: “none”</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">-m</span></code></p></td>
-<td><p>Namespace:Name</p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">$DCGM_REMOTE_HOSTENGINE_INFO</span></code></p></td>
-<td><p>Connect to remote hostengine at Host:Port. Default: NA
-(dcgm-exporter will start in embedded mode)</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">-r</span></code></p></td>
-<td><p>Host:Port</p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">$DCGM_EXPORTER_DEVICES_STR</span></code></p></td>
-<td><p>Specify which devices to monitor. Default: all GPU instances in
-MIG mode, all GPUs if MIG disabled.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">-d</span></code></p></td>
-<td><p>Device String
-(see following note)</p></td>
+<tr class="row-odd"><td><p>PrometheusRule <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter</span></code></p></td>
+<td><p>OpenShift only.
+Records the <code class="docutils literal notranslate"><span class="pre">accelerator_*</span></code> series that the OpenShift console uses.
+Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/enable-gpu-monitoring-dashboard.html#enable-gpu-monitoring-dashboard" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Enabling the GPU Monitoring Dashboard</span></a>.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>The default metrics file, <code class="docutils literal notranslate"><span class="pre">default-counters.csv</span></code>, enables 27 metrics, including <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_FB_CAPACITY_BYTES</span></code>.
-The <code class="docutils literal notranslate"><span class="pre">dcp-metrics-included.csv</span></code> file is deprecated.
-It has the same content as <code class="docutils literal notranslate"><span class="pre">default-counters.csv</span></code>, and you should use <code class="docutils literal notranslate"><span class="pre">default-counters.csv</span></code> instead.</p>
-<p>In the YAML configuration file, each enrichment switch accepts <code class="docutils literal notranslate"><span class="pre">true</span></code>, <code class="docutils literal notranslate"><span class="pre">false</span></code>, or <code class="docutils literal notranslate"><span class="pre">auto</span></code>.
-A switch that you leave out means <code class="docutils literal notranslate"><span class="pre">auto</span></code>.
-The exporter does not start if you set <code class="docutils literal notranslate"><span class="pre">--enable-dcgm-log</span></code> together with a remote hostengine.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Device String Syntax: <code class="docutils literal notranslate"><span class="pre">[f]</span> <span class="pre">|</span> <span class="pre">[g[:id1[,-id2]]]</span> <span class="pre">|</span> <span class="pre">[i[:id1[,-id2]]]</span></code></p>
-<p>If an id list is used, then devices with matching IDs must exist on the system. For example:</p>
+<p>By default, DCGM Exporter runs an embedded DCGM host engine inside its container.</p>
+<p>The Operator sets the following environment variables on the exporter container:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">f</span></code> = Monitor all GPUs if MIG is disabled, or all GPU instances if MIG is enabled</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">g</span></code> = Monitor all GPUs</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">i</span></code> = Monitor all GPU instances</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">g:0,1</span></code> = monitor GPUs 0 and 1</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">i:0,2-4</span></code> = monitor GPU instances 0, 2, 3, and 4.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_LISTEN=:9400</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_KUBERNETES=true</span></code>, which adds pod, namespace, and container labels to the metrics of GPUs that pods use.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_COLLECTORS=/etc/dcgm-exporter/default-counters.csv</span></code>, the default metrics file in the image.
+When you supply a custom metrics file, the value is <code class="docutils literal notranslate"><span class="pre">/etc/dcgm-exporter/dcgm-metrics.csv</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DCGM_REMOTE_HOSTENGINE_INFO=nvidia-dcgm:5555</span></code>, only when the standalone DCGM host engine is enabled.</p></li>
 </ul>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<ol class="arabic simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">-i</span></code> cannot be specified unless MIG mode is enabled.</p></li>
-<li><p>Any time indices are specified, those indices must exist on the system.</p></li>
-<li><p>In MIG mode, only <code class="docutils literal notranslate"><span class="pre">f</span></code> or <code class="docutils literal notranslate"><span class="pre">i</span></code> with a range can be specified. GPUs are not assigned to pods and therefore reporting must occur at the GPU instance level. (default: <code class="docutils literal notranslate"><span class="pre">f</span></code>)</p></li>
-</ol>
-</div>
-<section id="connecting-to-an-existing-dcgm-agent">
-<h3>Connecting to an existing DCGM agent<a class="headerlink" href="#connecting-to-an-existing-dcgm-agent" title="Permalink to this headline">#</a></h3>
-<p>In this scenario, system images include DCGM and have <cite>nv-hostengine</cite> running already. Examples include
-the DGX systems that bundles drivers, DCGM, etc. in the system image. To avoid any compatibility issues,
-it is recommended to have DCGM Exporter connect to the existing <cite>nv-hostengine</cite> daemon to gather/publish
-GPU telemetry data.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The DCGM Exporter container image includes a DCGM client library (<code class="docutils literal notranslate"><span class="pre">libdcgm.so</span></code>) to communicate with
-<cite>nv-hostengine</cite>. In this deployment scenario we have DCGM Exporter (or rather <code class="docutils literal notranslate"><span class="pre">libdcgm.so</span></code>) connect
-to an existing <cite>nv-hostengine</cite> running on the host. The DCGM client library uses an internal protocol to exchange
-information with <cite>nv-hostengine</cite>. To avoid any potential incompatibilities between the container image’s DCGM client library
-and the host’s <cite>nv-hostengine</cite>, it is strongly recommended to use a version of DCGM on which DCGM Exporter is based is
-greater than or equal to (but not less than) the version of DCGM running on the host. This can be easily determined by
-comparing the version tags of the DCGM Exporter image and by running <code class="docutils literal notranslate"><span class="pre">nv-hostengine</span> <span class="pre">--version</span></code> on the host.</p>
-</div>
-<p>In this scenario, we use the <code class="docutils literal notranslate"><span class="pre">-r</span></code> option to connect to an existing <cite>nv-hostengine</cite> process:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">DCGM_EXPORTER_VERSION</span><span class="o">=</span><span class="m">4</span>.9.0 <span class="o">&amp;&amp;</span>
-<span class="go">docker run -d --rm \</span>
-<span class="go">   --gpus all \</span>
-<span class="go">   --net host \</span>
-<span class="go">   --cap-add SYS_ADMIN \</span>
-<span class="go">   nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION} \</span>
-<span class="go">   -r localhost:5555 -f /etc/dcgm-exporter/default-counters.csv</span>
+<p>Variables in <code class="docutils literal notranslate"><span class="pre">dcgmExporter.env</span></code> are applied last and replace these values.
+Environment variables also take precedence over the exporter’s configuration file, <code class="docutils literal notranslate"><span class="pre">/etc/dcgm-exporter/config.yaml</span></code>, in the image.</p>
+<p>Starting with DCGM Exporter 4.9.0, the exporter checks its settings at startup.
+An invalid value in <code class="docutils literal notranslate"><span class="pre">dcgmExporter.env</span></code> or <code class="docutils literal notranslate"><span class="pre">dcgmExporter.args</span></code> stops the pod with an error message.
+To see the message, view the pod logs:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator -l <span class="nv">app</span><span class="o">=</span>nvidia-dcgm-exporter
 </pre></div>
 </div>
 </section>
-<section id="connecting-to-a-dcgm-standalone-container">
-<h3>Connecting to a DCGM standalone container<a class="headerlink" href="#connecting-to-a-dcgm-standalone-container" title="Permalink to this headline">#</a></h3>
-<p>In this scenario the DCGM <cite>nv-hostengine</cite> runs in a separate container on the same host making its client port available to
-DCGM-Exporter as well as dcgmi client commands.</p>
-<a class="reference internal image-reference" href="_images/dcgm_and_dcgm-exporter.png"><img alt="_images/dcgm_and_dcgm-exporter.png" src="_images/dcgm_and_dcgm-exporter.png" style="width: 800px;" /></a>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Similar to the warning when connecting to an existing DCGM agent, the DCGM Exporter container image includes a
-DCGM client library (<code class="docutils literal notranslate"><span class="pre">libdcgm.so</span></code>) to communicate with <cite>nv-hostengine</cite> running in a separate container.
-The DCGM client library in use by DCGM-Exporter uses an internal protocol to exchange information with <cite>nv-hostengine</cite>.
-To avoid any potential incompatibilities between the container image’s DCGM client library
-and the standalone DCGM container’s <cite>nv-hostengine</cite>, it is strongly recommended to ensure the version of DCGM on which
-DCGM Exporter is based is greater than or equal to (but not less than) the version of DCGM running in the standalone
-container. This can be easily determined by comparing the version tags of the DCGM Exporter and <cite>dcgm</cite> standalone image.</p>
+<section id="dcgm-exporter-helm-values">
+<h2>DCGM Exporter Helm Values<a class="headerlink" href="#dcgm-exporter-helm-values" title="Permalink to this headline">#</a></h2>
+<p>Set these values when you install or upgrade the Operator with Helm.
+The same fields are under <code class="docutils literal notranslate"><span class="pre">spec.dcgmExporter</span></code> in the <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> resource,
+except <code class="docutils literal notranslate"><span class="pre">config.create</span></code> and <code class="docutils literal notranslate"><span class="pre">config.data</span></code>, which only the Helm chart uses.</p>
+<div class="pst-scrollable-table-container"><table class="colwidths-given table">
+<colgroup>
+<col style="width: 35%" />
+<col style="width: 45%" />
+<col style="width: 20%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Default</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.enabled</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Operator deploys DCGM Exporter.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.repository</span></code>, <code class="docutils literal notranslate"><span class="pre">image</span></code>, <code class="docutils literal notranslate"><span class="pre">version</span></code></p></td>
+<td><p>Image of DCGM Exporter.
+The default version is the one that the Operator release ships.</p></td>
+<td><p>Refer to <code class="docutils literal notranslate"><span class="pre">helm</span> <span class="pre">show</span> <span class="pre">values</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.env</span></code></p></td>
+<td><p>List of environment variables, as <code class="docutils literal notranslate"><span class="pre">name</span></code> and <code class="docutils literal notranslate"><span class="pre">value</span></code> pairs, to set in the DCGM Exporter container.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.args</span></code></p></td>
+<td><p>List of command-line arguments to pass to DCGM Exporter.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.resources</span></code></p></td>
+<td><p>Resource requests and limits for the DCGM Exporter pods.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.annotations</span></code></p></td>
+<td><p>Map of custom annotations to add to the DCGM Exporter pods.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.config.name</span></code></p></td>
+<td><p>Name of a ConfigMap that holds a custom metrics file.
+Refer to <a class="reference internal" href="#dcgm-exporter-custom-metrics"><span class="std std-ref">Custom Metrics Files</span></a>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.config.create</span></code></p></td>
+<td><p>Helm only.
+When set to <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">config.data</span></code> is set, the chart creates the ConfigMap named by <code class="docutils literal notranslate"><span class="pre">config.name</span></code>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.config.data</span></code></p></td>
+<td><p>Helm only.
+Contents of the metrics file for the ConfigMap that the chart creates.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.enabled</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Operator creates a <code class="docutils literal notranslate"><span class="pre">ServiceMonitor</span></code> for DCGM Exporter.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.interval</span></code></p></td>
+<td><p>Interval at which Prometheus scrapes DCGM Exporter.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">15s</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.scrapeTimeout</span></code></p></td>
+<td><p>Timeout for one scrape. The value must not be greater than the interval.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">10s</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.honorLabels</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, Prometheus keeps the metric labels when they collide with target labels.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.additionalLabels</span></code></p></td>
+<td><p>Map of labels to add to the <code class="docutils literal notranslate"><span class="pre">ServiceMonitor</span></code>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.relabelings</span></code></p></td>
+<td><p>List of Prometheus relabeling rules for the scrape target.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.metricRelabelings</span></code></p></td>
+<td><p>List of Prometheus relabeling rules for scraped samples, applied before ingestion.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.service.type</span></code></p></td>
+<td><p>Type of the <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter</span></code> service.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ClusterIP</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.service.internalTrafficPolicy</span></code></p></td>
+<td><p><a class="reference external" href="https://kubernetes.io/docs/concepts/services-networking/service/#traffic-policies">Internal traffic policy</a>
+of the <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter</span></code> service.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">Cluster</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.hostNetwork</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the DCGM Exporter pods use the host’s network namespace.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.hostPID</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the DCGM Exporter pods use the host’s process ID namespace.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodLabels</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, pod labels are added to the GPU metrics.
+The Operator grants the exporter read access to pods.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodUID</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the pod UID is added to the GPU metrics.
+The Operator grants the exporter read access to pods.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.podLabelAllowlistRegex</span></code></p></td>
+<td><p>List of regular expressions that select which pod labels are added.
+Use it to limit the number of Prometheus series.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.hpcJobMapping.enabled</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, GPU metrics get HPC job labels from files that a workload manager, such as Slurm, writes on the node.
+The Operator mounts the job mapping directory from the host.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.hpcJobMapping.directory</span></code></p></td>
+<td><p>Host directory that holds the HPC job mapping files.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">/var/lib/dcgm-exporter/job-mapping</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgm.enabled</span></code></p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Operator deploys the standalone DCGM host engine.
+Refer to <a class="reference internal" href="#dcgm-exporter-hostengine"><span class="std std-ref">Using a Separate DCGM Host Engine</span></a>.</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
+</tr>
+</tbody>
+</table>
 </div>
-<p>First, start the standalone DCGM container with the <cite>nv-hostengine</cite> port available to external applications:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$</span><span class="nv">DCGM_VERSION</span><span class="o">=</span><span class="m">2</span>.2.9 <span class="o">&amp;&amp;</span>
-<span class="go">docker run -d --rm \</span>
-<span class="go">   --gpus all \</span>
-<span class="go">   --cap-add SYS_ADMIN \</span>
-<span class="go">   -p 5555:5555 \</span>
-<span class="go">   nvidia/dcgm:${DCGM_VERSION}-ubuntu20.04</span>
-</pre></div>
-</div>
-<p>Second, start the dcgm-exporter container with <code class="docutils literal notranslate"><span class="pre">r</span></code> option to connect to an existing <cite>nv-hostengine</cite> port:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span><span class="nv">DCGM_EXPORTER_VERSION</span><span class="o">=</span><span class="m">4</span>.9.0 <span class="o">&amp;&amp;</span>
-<span class="go">docker run -d --rm \</span>
-<span class="go">   --gpus all \</span>
-<span class="go">   --net host \</span>
-<span class="go">   --cap-add SYS_ADMIN \</span>
-<span class="go">   nvcr.io/nvidia/k8s/dcgm-exporter:${DCGM_EXPORTER_VERSION} \</span>
-<span class="go">   -r localhost:5555 -f /etc/dcgm-exporter/default-counters.csv</span>
-</pre></div>
-</div>
-<p>In this scenario <cite>dcgmi</cite> commands run on the host will also connect to the <cite>nv-hostengine</cite> running in the standalone
-DCGM container:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">dcgmi discovery -l</span>
-<span class="go">1 GPU found.</span>
-<span class="go">+--------+----------------------------------------------------------------------+</span>
-<span class="go">| GPU ID | Device Information                                                   |</span>
-<span class="go">+--------+----------------------------------------------------------------------+</span>
-<span class="go">| 0      | Name: Quadro RTX 6000                                                |</span>
-<span class="go">|        | PCI Bus ID: 00000000:65:00.0                                         |</span>
-<span class="go">|        | Device UUID: GPU-2f6576bf-3c29-1fbb-068d-e74c4a97f0c5                |</span>
-<span class="go">+--------+----------------------------------------------------------------------+</span>
-</pre></div>
-</div>
-</section>
+<p>For the other Operator options, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/getting-started.html#chart-customization-options" title="(in NVIDIA GPU Operator)"><span>Common Chart Customization Options</span></a>.</p>
 </section>
 <section id="custom-metrics-files">
 <span id="dcgm-exporter-custom-metrics"></span><h2>Custom Metrics Files<a class="headerlink" href="#custom-metrics-files" title="Permalink to this headline">#</a></h2>
-<p>You can pass your own CSV file to DCGM Exporter with the <code class="docutils literal notranslate"><span class="pre">-f</span></code> flag or the <code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_COLLECTORS</span></code> environment variable.
-In the GPU Operator, you provide the file in a ConfigMap and reference it with the <code class="docutils literal notranslate"><span class="pre">dcgmExporter.config.name</span></code> value.
-Each row has three fields: the DCGM field, the Prometheus metric type, and the help text.</p>
-<p>Starting with DCGM Exporter 4.9.0, the default metrics use new DCGM 4.7 field names, and NVIDIA recommends the new names in your file.
-DCGM Exporter 4.9.0 still loads the old names, but they are deprecated.
-Metrics that use an old name keep that name and their old units.
-Start from <code class="docutils literal notranslate"><span class="pre">default-counters.csv</span></code> and replace each old name with the new name from the table in the GPU Operator release notes.
-For example, use <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL_RATIO</span></code> instead of <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL</span></code>, and <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_FB_USED_BYTES</span></code> instead of <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_FB_USED</span></code>.
-The new names change some units.
-For example, utilization is a ratio from 0 to 1, clocks are in hertz, and framebuffer memory is in bytes.
-Update dashboards and alerts that use the metrics.</p>
-<p>To use a custom metrics file with the GPU Operator:</p>
+<p>By default, DCGM Exporter collects the metrics in <code class="docutils literal notranslate"><span class="pre">/etc/dcgm-exporter/default-counters.csv</span></code> in the image.
+To collect a different set, supply your own metrics file in a ConfigMap.
+For the file format and the available metrics, refer to
+<a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/reference/dcgm-exporter-metrics.html">DCGM Exporter metrics</a>.</p>
+<p>DCGM Exporter 4.9.0 uses the DCGM 4.7 field names, such as <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL_RATIO</span></code>.
+It still loads the older names, such as <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL</span></code>, but they are deprecated.
+A metric that uses an older name keeps that name and its older unit.</p>
 <ol class="arabic">
 <li><p>Create a ConfigMap in the Operator namespace.
-The file must be stored under the key <code class="docutils literal notranslate"><span class="pre">dcgm-metrics.csv</span></code>:</p>
+Store the file under the key <code class="docutils literal notranslate"><span class="pre">dcgm-metrics.csv</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl create configmap custom-dcgm-exporter-metrics -n gpu-operator <span class="se">\</span>
     --from-file<span class="o">=</span>dcgm-metrics.csv<span class="o">=</span>./dcgm-metrics.csv
 </pre></div>
 </div>
 </li>
-<li><p>Reference the ConfigMap by name.
-Set the value when you install or upgrade the Operator with Helm:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade --install gpu-operator nvidia/gpu-operator -n gpu-operator <span class="se">\</span>
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">dcgmExporter.config.name</span></code> to the ConfigMap name.
+With Helm:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator <span class="se">\</span>
     --reuse-values --set dcgmExporter.config.name<span class="o">=</span>custom-dcgm-exporter-metrics
 </pre></div>
 </div>
-<p>Alternatively, patch the cluster policy:</p>
+<p>Or patch the cluster policy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy --type<span class="o">=</span>merge <span class="se">\</span>
     -p <span class="s1">&#39;{&quot;spec&quot;: {&quot;dcgmExporter&quot;: {&quot;config&quot;: {&quot;name&quot;: &quot;custom-dcgm-exporter-metrics&quot;}}}}&#39;</span>
 </pre></div>
 </div>
 </li>
 </ol>
-<p>The Operator mounts the <code class="docutils literal notranslate"><span class="pre">dcgm-metrics.csv</span></code> file at <code class="docutils literal notranslate"><span class="pre">/etc/dcgm-exporter/dcgm-metrics.csv</span></code> and points DCGM Exporter at it.
-DCGM Exporter reloads the file when it changes.
+<p>The Operator mounts the file at <code class="docutils literal notranslate"><span class="pre">/etc/dcgm-exporter/dcgm-metrics.csv</span></code>
+and sets <code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_COLLECTORS</span></code> to that path.
 The ConfigMap replaces only the metrics file.
-The default <code class="docutils literal notranslate"><span class="pre">/etc/dcgm-exporter/config.yaml</span></code> in the image still applies.</p>
-</section>
-<section id="multi-instance-gpu-mig-support">
-<h2>Multi-Instance GPU (MIG) Support<a class="headerlink" href="#multi-instance-gpu-mig-support" title="Permalink to this headline">#</a></h2>
-<p>The new Multi-Instance GPU (MIG) feature allows the GPUs based on the NVIDIA Ampere architecture to be
-securely partitioned into up to seven separate GPU Instances for CUDA applications, providing multiple users
-with separate GPU resources for optimal GPU utilization.</p>
-<p>For more information on MIG, refer to the MIG <a class="reference external" href="https://docs.nvidia.com/datacenter/tesla/mig-user-guide/index.html">User Guide</a>.</p>
-<p>DCGM Exporter publishes metrics for both the entire GPU as well as individual MIG devices (or GPU instances)
-as can be seen in the output below:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">DCGM_FI_DEV_SM_CLOCK_HERTZ{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 1215000000</span>
-<span class="go">DCGM_FI_DEV_MEMORY_CLOCK_HERTZ{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 1215000000</span>
-<span class="go">DCGM_FI_DEV_MEMORY_TEMP_CELSIUS{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 69</span>
-<span class="go">DCGM_FI_DEV_GPU_TEMP_CELSIUS{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 61</span>
-<span class="go">DCGM_FI_DEV_BOARD_POWER_WATTS{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 409.692000</span>
-<span class="go">DCGM_FI_DEV_GPU_ENERGY_JOULES_TOTAL{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 319159.391</span>
-<span class="go">DCGM_FI_DEV_PCIE_REPLAY_TOTAL{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 0</span>
-<span class="go">DCGM_FI_DEV_XID_ERROR{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 0</span>
-<span class="go">DCGM_FI_DEV_FB_FREE_BYTES{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 37423677440</span>
-<span class="go">DCGM_FI_DEV_FB_USED_BYTES{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 5080350720</span>
-<span class="go">DCGM_FI_DEV_NVLINK_THROUGHPUT_BYTES_PER_SECOND{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 0</span>
-<span class="go">DCGM_FI_DEV_VGPU_LICENSE_STATUS{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 0</span>
-<span class="go">DCGM_FI_PROF_GR_ENGINE_UTIL_RATIO{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 0.995630</span>
-<span class="go">DCGM_FI_PROF_TENSOR_UTIL_RATIO{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 0.929260</span>
-<span class="go">DCGM_FI_PROF_DRAM_UTIL_RATIO{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 0.690789</span>
-<span class="go">DCGM_FI_PROF_PCIE_TX_BYTES{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 33011804</span>
-<span class="go">DCGM_FI_PROF_PCIE_RX_BYTES{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 97863601</span>
-
-<span class="go">DCGM_FI_DEV_XID_ERROR{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,GPU_I_PROFILE=&quot;1g.5gb&quot;,GPU_I_ID=&quot;13&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 0</span>
-<span class="go">DCGM_FI_PROF_GR_ENGINE_UTIL_RATIO{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,GPU_I_PROFILE=&quot;1g.5gb&quot;,GPU_I_ID=&quot;13&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 0.995687</span>
-<span class="go">DCGM_FI_PROF_TENSOR_UTIL_RATIO{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,GPU_I_PROFILE=&quot;1g.5gb&quot;,GPU_I_ID=&quot;13&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 0.930433</span>
-<span class="go">DCGM_FI_PROF_DRAM_UTIL_RATIO{gpu=&quot;0&quot;,UUID=&quot;GPU-34319582-d595-d1c7-d1d2-179bcfa61660&quot;,device=&quot;nvidia0&quot;,GPU_I_PROFILE=&quot;1g.5gb&quot;,GPU_I_ID=&quot;13&quot;,Hostname=&quot;ub20-a100-k8s&quot;} 0.800339</span>
+The configuration file in the image still applies.</p>
+<p>Instead of the first step, you can have the Helm chart create the ConfigMap.
+Set <code class="docutils literal notranslate"><span class="pre">dcgmExporter.config.create=true</span></code> and put the file contents in <code class="docutils literal notranslate"><span class="pre">dcgmExporter.config.data</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Operator mounts the file with <code class="docutils literal notranslate"><span class="pre">subPath</span></code>, so Kubernetes does not update the file in running pods when you edit the ConfigMap.
+After you change the ConfigMap, restart the DCGM Exporter pods:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl delete pod -n gpu-operator -l <span class="nv">app</span><span class="o">=</span>nvidia-dcgm-exporter
 </pre></div>
 </div>
-<p>The sample output is illustrative.
-The metrics that you see depend on the metrics file that you use.</p>
-<p>For more information on the profiling metrics and how to interpret the metrics, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/user-guide/feature-overview.html#profiling-metrics" title="(in NVIDIA DCGM Documentation vVersion: 3.3 (Latest))"><span>Profiling Metrics</span></a> in the <cite>NVIDIA DCGM User Guide</cite>.</p>
+</div>
+<p>Do not use the <code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_CONFIGMAP_DATA</span></code> environment variable to read metrics from a ConfigMap.
+It is deprecated in DCGM Exporter 4.9.0 and logs a warning at each start.</p>
+</section>
+<section id="collecting-metrics-in-prometheus">
+<span id="dcgm-exporter-prometheus-scrape"></span><h2>Collecting Metrics in Prometheus<a class="headerlink" href="#collecting-metrics-in-prometheus" title="Permalink to this headline">#</a></h2>
+<p>If your cluster runs the <a class="reference external" href="https://prometheus-operator.dev/">Prometheus Operator</a>,
+for example through the <code class="docutils literal notranslate"><span class="pre">kube-prometheus-stack</span></code> Helm chart,
+install it, or at least its custom resource definitions, before the GPU Operator.
+The GPU Operator then creates the <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter</span></code> <code class="docutils literal notranslate"><span class="pre">ServiceMonitor</span></code>.</p>
+<p>Prometheus must select the <code class="docutils literal notranslate"><span class="pre">ServiceMonitor</span></code>.
+By default, <code class="docutils literal notranslate"><span class="pre">kube-prometheus-stack</span></code> selects only <code class="docutils literal notranslate"><span class="pre">ServiceMonitor</span></code> objects that have its <code class="docutils literal notranslate"><span class="pre">release</span></code> label.
+Do one of the following:</p>
+<ul>
+<li><p>Add the label through the GPU Operator:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm upgrade gpu-operator nvidia/gpu-operator -n gpu-operator <span class="se">\</span>
+    --reuse-values --set dcgmExporter.serviceMonitor.additionalLabels.release<span class="o">=</span>&lt;prometheus-release-name&gt;
+</pre></div>
+</div>
+</li>
+<li><p>Configure Prometheus to select all <code class="docutils literal notranslate"><span class="pre">ServiceMonitor</span></code> objects.
+In <code class="docutils literal notranslate"><span class="pre">kube-prometheus-stack</span></code>, set <code class="docutils literal notranslate"><span class="pre">prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false</span></code>.</p></li>
+</ul>
+<p>To check that Prometheus collects the metrics, query a default metric, such as <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL_RATIO</span></code>.
+DCGM Exporter 4.9.0 and later use this name, and the value is a ratio from 0 to 1.
+Earlier versions use <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL</span></code>, in percent.</p>
+<p>If you do not use the Prometheus Operator, scrape the <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter</span></code> service on port <code class="docutils literal notranslate"><span class="pre">9400</span></code>.
+Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/learn/getting-started-for-system-administrators/configure-prometheus-for-dcgm-exporter.html">Configure Prometheus for DCGM Exporter</a>.</p>
+<p>For a Grafana dashboard, import <code class="docutils literal notranslate"><span class="pre">dcgm-exporter-dashboard.json</span></code> from the
+<a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/tree/main/grafana">DCGM Exporter repository</a>.
+The dashboard on the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch uses the metric names of DCGM Exporter 4.9.0 and later.
+For an earlier version, use the file from the matching release tag.
+On OpenShift, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/enable-gpu-monitoring-dashboard.html#enable-gpu-monitoring-dashboard" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Enabling the GPU Monitoring Dashboard</span></a>.</p>
+</section>
+<section id="metrics-for-shared-gpus-and-mig">
+<h2>Metrics for Shared GPUs and MIG<a class="headerlink" href="#metrics-for-shared-gpus-and-mig" title="Permalink to this headline">#</a></h2>
+<p>With GPU time-slicing or MPS, set <code class="docutils literal notranslate"><span class="pre">KUBERNETES_VIRTUAL_GPUS=true</span></code> in <code class="docutils literal notranslate"><span class="pre">dcgmExporter.env</span></code>
+so that the metrics are associated with the pods that share the GPU.
+Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-sharing.html#gpu-sharing" title="(in NVIDIA GPU Operator)"><span>Time-Slicing GPUs in Kubernetes</span></a>.</p>
+<p>With MIG, DCGM Exporter reports metrics for each GPU instance.
+The MIG Manager stops the DCGM Exporter pods while it changes the MIG configuration of a node.
+For the MIG labels and metrics, refer to
+<a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/reference/dcgm-exporter-metrics.html">DCGM Exporter metrics</a>.</p>
+</section>
+<section id="using-a-separate-dcgm-host-engine">
+<span id="dcgm-exporter-hostengine"></span><h2>Using a Separate DCGM Host Engine<a class="headerlink" href="#using-a-separate-dcgm-host-engine" title="Permalink to this headline">#</a></h2>
+<p>By default, each DCGM Exporter pod runs its own embedded DCGM host engine.
+You can use a separate host engine instead:</p>
+<ul>
+<li><p><strong>Standalone DCGM from the Operator.</strong>
+Set <code class="docutils literal notranslate"><span class="pre">dcgm.enabled=true</span></code>.
+The Operator deploys the <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm</span></code> daemon set and points DCGM Exporter at the <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm</span></code> service on port <code class="docutils literal notranslate"><span class="pre">5555</span></code>.
+The default <code class="docutils literal notranslate"><span class="pre">ClusterPolicy</span></code> on OpenShift sets <code class="docutils literal notranslate"><span class="pre">dcgm.enabled</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>.</p></li>
+<li><p><strong>DCGM on the host</strong>, such as on NVIDIA DGX systems.
+Keep <code class="docutils literal notranslate"><span class="pre">dcgm.enabled=false</span></code> and point DCGM Exporter at the host engine on the node:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dcgmExporter</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">hostNetwork</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">true</span><span class="w"></span>
+<span class="w">  </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DCGM_REMOTE_HOSTENGINE_INFO</span><span class="w"></span>
+<span class="w">    </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost:5555</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+</ul>
+<p>The host engine must run DCGM 4.7 or later for DCGM Exporter 4.9.0.
+With an older host engine, DCGM Exporter 4.9.0 exits at startup, because its default metrics use DCGM 4.7 fields.
+Use the DCGM and DCGM Exporter versions that the Operator release ships.
+If you set <code class="docutils literal notranslate"><span class="pre">dcgm.version</span></code>, upgrade it together with <code class="docutils literal notranslate"><span class="pre">dcgmExporter.version</span></code>.</p>
+<p>For more information, refer to
+<a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html#connect-to-a-dcgm-host-engine">Connect to a DCGM host engine</a>.</p>
 </section>
 </section>
 
@@ -736,15 +747,6 @@ The metrics that you see depend on the metrics file that you use.</p>
         <p class="prev-next-title">About GPU Telemetry</p>
       </div>
     </a>
-    <a class="right-next"
-       href="integrating-telemetry-kubernetes.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Integrating GPU Telemetry into Kubernetes</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -766,15 +768,12 @@ The metrics that you see depend on the metrics file that you use.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#introduction">Introduction</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-dcgm-exporter">Running DCGM Exporter</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dcgm-exporter-customization">DCGM-Exporter Customization</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connecting-to-an-existing-dcgm-agent">Connecting to an existing DCGM agent</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#connecting-to-a-dcgm-standalone-container">Connecting to a DCGM standalone container</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-the-operator-deploys">What the Operator Deploys</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dcgm-exporter-helm-values">DCGM Exporter Helm Values</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#custom-metrics-files">Custom Metrics Files</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#multi-instance-gpu-mig-support">Multi-Instance GPU (MIG) Support</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#collecting-metrics-in-prometheus">Collecting Metrics in Prometheus</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#metrics-for-shared-gpus-and-mig">Metrics for Shared GPUs and MIG</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-a-separate-dcgm-host-engine">Using a Separate DCGM Host Engine</a></li>
 </ul>
   </nav></div>
 

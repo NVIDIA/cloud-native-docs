@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 22, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 23, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -830,6 +830,8 @@ When set to <code class="docutils literal notranslate"><span class="pre">true</s
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.enabled</span></code></p></td>
 <td><p>By default, the Operator gathers GPU telemetry in Kubernetes using <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html">DCGM Exporter</a>.
 Set this value to <code class="docutils literal notranslate"><span class="pre">false</span></code> to disable it.
+For all DCGM Exporter values, such as custom metrics files and the <code class="docutils literal notranslate"><span class="pre">ServiceMonitor</span></code>, refer to
+<a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html#dcgm-exporter-helm-values">DCGM Exporter Helm Values</a>.
 Available values are <code class="docutils literal notranslate"><span class="pre">true</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
 </tr>
@@ -865,65 +867,6 @@ For a <code class="docutils literal notranslate"><span class="pre">GPUCluster</s
 <td><p>List of regular expressions that filter which pod labels are emitted as Prometheus dimensions when <code class="docutils literal notranslate"><span class="pre">dcgmExporter.enablePodLabels</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code>.
 NVIDIA recommends configuring this allowlist in clusters with many pod labels to reduce Prometheus cardinality.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.config.name</span></code></p></td>
-<td><p>Name of a ConfigMap that holds a custom metrics file for DCGM Exporter.
-The ConfigMap must be in the Operator namespace and the file must be stored under the key <code class="docutils literal notranslate"><span class="pre">dcgm-metrics.csv</span></code>.
-Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html#custom-metrics-files">Custom Metrics Files</a> for details.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.enabled</span></code></p></td>
-<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the Operator creates a Prometheus <code class="docutils literal notranslate"><span class="pre">ServiceMonitor</span></code> for DCGM Exporter.
-Available values are <code class="docutils literal notranslate"><span class="pre">true</span></code> (default) or <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">true</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.interval</span></code></p></td>
-<td><p>Interval at which Prometheus scrapes DCGM Exporter.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">15s</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.scrapeTimeout</span></code></p></td>
-<td><p>Timeout for a scrape of DCGM Exporter. The value must not be greater than the interval.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">10s</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.honorLabels</span></code></p></td>
-<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the metric labels are kept when they collide with target labels.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.additionalLabels</span></code></p></td>
-<td><p>Map of labels to add to the <code class="docutils literal notranslate"><span class="pre">ServiceMonitor</span></code>.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.relabelings</span></code></p></td>
-<td><p>List of Prometheus relabeling rules that rewrite the labels of the scrape target.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.metricRelabelings</span></code></p></td>
-<td><p>List of Prometheus relabeling rules that rewrite the labels of scraped samples before ingestion.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.hpcJobMapping.enabled</span></code></p></td>
-<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, DCGM Exporter labels GPU metrics with HPC job information that a workload manager writes to the job mapping directory.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.hpcJobMapping.directory</span></code></p></td>
-<td><p>Directory that holds the HPC job mapping files.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">/var/lib/dcgm-exporter/job-mapping</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.env</span></code></p></td>
-<td><p>List of environment variables to set in the DCGM Exporter container.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">[]</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.args</span></code></p></td>
-<td><p>List of command-line arguments to pass to DCGM Exporter.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">none</span></code></p></td>
-</tr>
-<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.resources</span></code></p></td>
-<td><p>Resource requests and limits for the DCGM Exporter pods.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">{}</span></code></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.hostPID</span></code></p></td>
-<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the DCGM Exporter daemon set can access the host’s process ID namespace.</p></td>
-<td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">devicePlugin.config</span></code></p></td>
 <td><p>Specifies the configuration for the NVIDIA Device Plugin as a config map.</p>

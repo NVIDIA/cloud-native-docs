@@ -69,7 +69,7 @@
     <link rel="shortcut icon" href="_static/favicon.ico"/>
 
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="DCGM Exporter" href="dcgm-exporter.html" />
+    <link rel="next" title="DCGM Exporter with the NVIDIA GPU Operator" href="dcgm-exporter.html" />
     <link rel="prev" title="About GPU Telemetry" href="index.html" />
 
 
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 22, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 23, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -353,9 +353,7 @@
   <div class="bd-toc-item navbar-nav"><p aria-level="2" class="caption" role="heading"><span class="caption-text">DCGM Exporter</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">About GPU Telemetry</a></li>
-<li class="toctree-l1"><a class="reference internal" href="dcgm-exporter.html">DCGM Exporter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="integrating-telemetry-kubernetes.html">Integrating GPU Telemetry into Kubernetes</a></li>
-<li class="toctree-l1"><a class="reference internal" href="kube-prometheus.html">Setting up Prometheus</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dcgm-exporter.html">DCGM Exporter with the NVIDIA GPU Operator</a></li>
 </ul>
 </div>
 </nav></div>
@@ -410,37 +408,27 @@
                   
   <section id="about-gpu-telemetry">
 <h1>About GPU Telemetry<a class="headerlink" href="#about-gpu-telemetry" title="Permalink to this headline">#</a></h1>
-<p>Monitoring stacks usually consist of a collector, a time-series database to store metrics and a visualization layer.
-A popular open-source stack is <a class="reference external" href="https://prometheus.io/">Prometheus</a> used along with <a class="reference external" href="https://grafana.com/">Grafana</a> as
-the visualization tool to create rich dashboards. Prometheus also includes an <a class="reference external" href="https://github.com/prometheus/alertmanager">Alertmanager</a>,
-to create and manage alerts. Prometheus is deployed along with <a class="reference external" href="https://github.com/kubernetes/kube-state-metrics">kube-state-metrics</a> and
-<a class="reference external" href="https://github.com/prometheus/node_exporter">node_exporter</a> to expose cluster-level metrics for Kubernetes API objects and node-level
-metrics such as CPU utilization.</p>
-<p>To gather GPU telemetry in Kubernetes, its recommended to use DCGM Exporter.  DCGM Exporter, based on <a class="reference external" href="https://developer.nvidia.com/dcgm">DCGM</a> exposes
-GPU metrics for Prometheus and can be visualized using Grafana.  DCGM Exporter is architected to take advantage of
-<code class="docutils literal notranslate"><span class="pre">KubeletPodResources</span></code> <a class="reference external" href="https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/">API</a> and exposes GPU metrics in a format that can be
-scraped by Prometheus. A <code class="docutils literal notranslate"><span class="pre">ServiceMonitor</span></code> is also included to expose endpoints.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/">NVIDIA GPU Operator</a> deploys DCGM Exporter by default.
-The standalone DCGM hostengine is optional and is not deployed by default.</p>
-</div>
-<section id="benefits-of-gpu-telemetry">
-<h2>Benefits of GPU Telemetry<a class="headerlink" href="#benefits-of-gpu-telemetry" title="Permalink to this headline">#</a></h2>
-<p>Understanding GPU usage provides important insights for IT administrators managing a data center.
-Trends in GPU metrics correlate with workload behavior and make it possible to optimize resource allocation,
-diagnose anomalies, and increase overall data center efficiency.
-As GPUs become more mainstream, users would like to get access to GPU metrics to monitor GPU resources, just
-like they do today for CPUs.</p>
-</section>
+<p>The NVIDIA GPU Operator deploys NVIDIA DCGM Exporter on every GPU node by default.
+DCGM Exporter reads GPU metrics from <a class="reference external" href="https://developer.nvidia.com/dcgm">NVIDIA DCGM</a>
+and exposes them for <a class="reference external" href="https://prometheus.io/">Prometheus</a>.
+You can view the metrics in Grafana or, on Red Hat OpenShift, in the web console.</p>
+<p>This documentation covers what the GPU Operator does for GPU telemetry:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="dcgm-exporter.html"><span class="doc">DCGM Exporter with the NVIDIA GPU Operator</span></a> describes the resources that the Operator creates,
+the Operator values for DCGM Exporter, custom metrics files, Prometheus scraping, and a separate DCGM host engine.</p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/enable-gpu-monitoring-dashboard.html" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Enabling the GPU Monitoring Dashboard</span></a> describes the GPU dashboard in the OpenShift web console.</p></li>
+</ul>
+<p>For DCGM Exporter itself, such as standalone and Helm installs, the configuration file, command-line options,
+and the list of metrics, refer to the
+<a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html">DCGM Exporter documentation</a>.</p>
 <section id="quick-links">
 <h2>Quick Links<a class="headerlink" href="#quick-links" title="Permalink to this headline">#</a></h2>
 <ul class="simple">
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/">NVIDIA GPU Operator documentation</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html">DCGM Exporter documentation</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html">DCGM Exporter release notes</a></p></li>
 <li><p><a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter">DCGM Exporter GitHub repository</a></p></li>
-<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/">DCGM Documentation</a></p></li>
-<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/dcgm-exporter.html">DCGM Exporter Documentation</a></p></li>
-<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/integrating-telemetry-kubernetes.html">Integrating GPU Telemetry into Kubernetes</a></p></li>
-<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/">NVIDIA GPU Operator Documentation</a></p></li>
+<li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/">DCGM documentation</a></p></li>
 </ul>
 </section>
 </section>
@@ -469,7 +457,7 @@ like they do today for CPUs.</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">DCGM Exporter</p>
+        <p class="prev-next-title">DCGM Exporter with the NVIDIA GPU Operator</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -494,7 +482,6 @@ like they do today for CPUs.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#benefits-of-gpu-telemetry">Benefits of GPU Telemetry</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-links">Quick Links</a></li>
 </ul>
   </nav></div>
