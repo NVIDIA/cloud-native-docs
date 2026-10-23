@@ -47,27 +47,36 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
      - NVIDIA DCGM 4.7.0-2
 
    * DCGM Exporter 4.9.0 renames its default metrics to the DCGM 4.7 field names and changes several units.
-     For example, ``DCGM_FI_DEV_GPU_UTIL`` in percent is now ``DCGM_FI_DEV_GPU_UTIL_RATIO``, a ratio from 0 to 1.
-     For the full list, refer to the
+     For example, ``DCGM_FI_DEV_GPU_UTIL`` in percent is now ``DCGM_FI_DEV_GPU_UTIL_RATIO``, a ratio from 0 to 1,
+     and the ``DCGM_FI_DRIVER_VERSION`` label is now ``DCGM_FI_SYSTEM_DRIVER_VERSION``.
+     Before you upgrade, update dashboards, alerts, recording rules, and autoscaler rules, such as HPA or KEDA, that use DCGM Exporter metrics,
+     and rescale thresholds for the unit changes, for example ``> 80`` becomes ``> 0.8`` for GPU utilization.
+     Re-import the Grafana dashboard from the DCGM Exporter repository.
+     For the full list of names and units, refer to the
      `DCGM Exporter release notes <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html>`__.
 
-   * The Operator sets ``/etc/dcgm-exporter/default-counters.csv`` as the default metrics file.
-     ``dcp-metrics-included.csv`` is deprecated and has the same metrics.
+   Improvements
+   ------------
 
-   * On OpenShift, the ``accelerator_*`` recording rules read the new metric names and fall back to the old names.
-     The OpenShift console dashboards keep working during the upgrade.
+   * The Operator sets ``/etc/dcgm-exporter/default-counters.csv`` as the default DCGM Exporter metrics file.
+     (`GPU Operator PR #3110 <https://github.com/NVIDIA/gpu-operator/pull/3110>`__)
 
-   Upgrade Notes
-   -------------
+   * On Red Hat OpenShift Container Platform, the ``accelerator_*`` recording rules read the new DCGM Exporter metric names and fall back to the old names,
+     so the OpenShift console dashboards keep working during the upgrade.
+     (`GPU Operator PR #3110 <https://github.com/NVIDIA/gpu-operator/pull/3110>`__)
 
-   * Update dashboards, alerts, recording rules, and autoscaler rules, such as HPA or KEDA, that use DCGM Exporter metrics.
-     Rescale thresholds for the unit changes, for example ``> 80`` becomes ``> 0.8`` for GPU utilization.
-     The ``DCGM_FI_DRIVER_VERSION`` label is now ``DCGM_FI_SYSTEM_DRIVER_VERSION``.
-     Re-import the Grafana dashboard from the DCGM Exporter repository.
+   * The DCGM Exporter daemon set has a startup probe that allows up to five minutes for the exporter to start before the liveness probe applies.
+     (`GPU Operator PR #3110 <https://github.com/NVIDIA/gpu-operator/pull/3110>`__)
 
-   * DCGM Exporter 4.9.0 needs a DCGM 4.7 or later host engine.
-     With DCGM 4.6.1, the exporter exits at startup.
-     This matters when the Operator runs the standalone DCGM host engine, that is ``dcgm.enabled=true``,
+   * DCGM Exporter 4.9.0 checks its settings at startup.
+     An invalid value in ``dcgmExporter.env`` or ``dcgmExporter.args`` stops the pod with an error message in the pod log.
+
+   Known Issues
+   ------------
+
+   * DCGM Exporter 4.9.0 needs a DCGM 4.7 or later host engine. With an older host engine, such as DCGM 4.6.1, the exporter exits at startup
+     with an error that names both DCGM versions.
+     This affects clusters where the Operator runs the standalone DCGM host engine, that is ``dcgm.enabled=true``,
      which is the default on OpenShift, or a ``GPUCluster`` with standalone DCGM:
 
      - Upgrade the ``dcgm`` and ``dcgmExporter`` images together.
@@ -77,17 +86,19 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
      - If you must keep an older host engine, use a custom metrics file with the older field names.
        The DCGM Exporter release notes list the old and new names.
 
-   * Custom metrics files with the older field names still work, but the names are deprecated.
-     NVIDIA recommends the DCGM 4.7 names.
+   * If you roll the Operator back to a release whose ``accelerator_*`` rules read only the old metric names,
+     also roll back DCGM Exporter, or the ``accelerator_*`` series are empty.
+     DCGM Exporter 4.8.x works with DCGM 4.7.
+
+   Removals and Deprecations
+   -------------------------
+
+   * ``/etc/dcgm-exporter/dcp-metrics-included.csv`` is deprecated. It has the same metrics as ``default-counters.csv``.
+
+   * The older DCGM field names in custom metrics files still work but are deprecated. NVIDIA recommends the DCGM 4.7 names.
      Refer to `Custom Metrics Files <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html#dcgm-exporter-custom-metrics>`__.
 
-   * DCGM Exporter 4.9.0 checks its settings at startup.
-     An invalid value in ``dcgmExporter.env`` or ``dcgmExporter.args`` stops the pod with an error message in the pod log.
-     The ``DCGM_EXPORTER_CONFIGMAP_DATA`` variable is deprecated. Use ``dcgmExporter.config.name`` instead.
-
-   * Rolling back DCGM Exporter to 4.8.x works with DCGM 4.7.
-     If you roll the Operator back to a release whose ``accelerator_*`` rules read only the old metric names,
-     also roll back DCGM Exporter, or the ``accelerator_*`` series are empty.
+   * The ``DCGM_EXPORTER_CONFIGMAP_DATA`` environment variable is deprecated. Use ``dcgmExporter.config.name`` instead.
 
 .. _v26.7.2:
 
