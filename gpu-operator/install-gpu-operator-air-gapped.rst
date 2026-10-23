@@ -207,7 +207,7 @@ Sample of ``values.yaml`` for GPU Operator v1.9.0:
     dcgmExporter:
       repository: <repo.example.com:port>
       image: dcgm-exporter
-      version: 4.9.0
+      version: 2.3.1-2.6.0-ubuntu20.04
       imagePullSecrets: []
 
     gfd:
