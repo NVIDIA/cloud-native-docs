@@ -46,89 +46,48 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
      - NVIDIA DCGM Exporter v4.7.0-4.9.0
      - NVIDIA DCGM 4.7.0-2
 
-   * DCGM Exporter 4.9.0 renames its default metrics to the DCGM 4.7 names and changes several units.
-     Update dashboards, alerts, and recording rules that query the old names.
-     The following table lists the default metrics that changed.
+   * DCGM Exporter 4.9.0 renames its default metrics to the DCGM 4.7 field names and changes several units.
+     For example, ``DCGM_FI_DEV_GPU_UTIL`` in percent is now ``DCGM_FI_DEV_GPU_UTIL_RATIO``, a ratio from 0 to 1.
+     For the full list, refer to the
+     `DCGM Exporter release notes <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html>`__.
 
-     .. list-table::
-        :header-rows: 1
-
-        * - Old Metric
-          - New Metric
-          - Unit Change
-        * - ``DCGM_FI_DEV_GPU_UTIL``
-          - ``DCGM_FI_DEV_GPU_UTIL_RATIO``
-          - Percent to a ratio from 0 to 1
-        * - ``DCGM_FI_DEV_MEM_COPY_UTIL``
-          - ``DCGM_FI_DEV_MEMORY_UTIL_RATIO``
-          - Percent to a ratio from 0 to 1
-        * - ``DCGM_FI_DEV_ENC_UTIL``, ``DCGM_FI_DEV_DEC_UTIL``
-          - ``DCGM_FI_DEV_ENC_UTIL_RATIO``, ``DCGM_FI_DEV_DEC_UTIL_RATIO``
-          - Percent to a ratio from 0 to 1
-        * - ``DCGM_FI_DEV_SM_CLOCK``
-          - ``DCGM_FI_DEV_SM_CLOCK_HERTZ``
-          - MHz to Hz
-        * - ``DCGM_FI_DEV_MEM_CLOCK``
-          - ``DCGM_FI_DEV_MEMORY_CLOCK_HERTZ``
-          - MHz to Hz
-        * - ``DCGM_FI_DEV_GPU_TEMP``, ``DCGM_FI_DEV_MEMORY_TEMP``
-          - ``DCGM_FI_DEV_GPU_TEMP_CELSIUS``, ``DCGM_FI_DEV_MEMORY_TEMP_CELSIUS``
-          - None
-        * - ``DCGM_FI_DEV_POWER_USAGE``
-          - ``DCGM_FI_DEV_BOARD_POWER_WATTS``
-          - None
-        * - ``DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION``
-          - ``DCGM_FI_DEV_GPU_ENERGY_JOULES_TOTAL``
-          - mJ to J
-        * - ``DCGM_FI_DEV_PCIE_REPLAY_COUNTER``
-          - ``DCGM_FI_DEV_PCIE_REPLAY_TOTAL``
-          - None
-        * - ``DCGM_FI_DEV_XID_ERRORS``
-          - ``DCGM_FI_DEV_XID_ERROR``
-          - None
-        * - ``DCGM_FI_DEV_FB_FREE``, ``DCGM_FI_DEV_FB_USED``, ``DCGM_FI_DEV_FB_RESERVED``
-          - ``DCGM_FI_DEV_FB_FREE_BYTES``, ``DCGM_FI_DEV_FB_USED_BYTES``, ``DCGM_FI_DEV_FB_RESERVED_BYTES``
-          - MiB to bytes
-        * - ``DCGM_FI_DEV_NVLINK_BANDWIDTH_TOTAL``
-          - ``DCGM_FI_DEV_NVLINK_THROUGHPUT_BYTES_PER_SECOND``
-          - MB/s to bytes per second
-        * - ``DCGM_FI_DEV_UNCORRECTABLE_REMAPPED_ROWS``, ``DCGM_FI_DEV_CORRECTABLE_REMAPPED_ROWS``, ``DCGM_FI_DEV_ROW_REMAP_FAILURE``
-          - ``DCGM_FI_DEV_ROW_REMAP_UNCORRECTABLE_TOTAL``, ``DCGM_FI_DEV_ROW_REMAP_CORRECTABLE_TOTAL``, ``DCGM_FI_DEV_ROW_REMAP_FAILED``
-          - None
-        * - ``DCGM_FI_PROF_GR_ENGINE_ACTIVE``, ``DCGM_FI_PROF_PIPE_TENSOR_ACTIVE``, ``DCGM_FI_PROF_DRAM_ACTIVE``
-          - ``DCGM_FI_PROF_GR_ENGINE_UTIL_RATIO``, ``DCGM_FI_PROF_TENSOR_UTIL_RATIO``, ``DCGM_FI_PROF_DRAM_UTIL_RATIO``
-          - None
-        * - Label ``DCGM_FI_DRIVER_VERSION``
-          - Label ``DCGM_FI_SYSTEM_DRIVER_VERSION``
-          - None
-
-   * The default metrics file is ``/etc/dcgm-exporter/default-counters.csv``.
-     The ``dcp-metrics-included.csv`` file is deprecated.
-     It has the same content as ``default-counters.csv`` and is kept only so that existing paths continue to work.
-     The default set now includes ``DCGM_FI_DEV_FB_CAPACITY_BYTES``.
+   * The Operator sets ``/etc/dcgm-exporter/default-counters.csv`` as the default metrics file.
+     ``dcp-metrics-included.csv`` is deprecated and has the same metrics.
 
    * On OpenShift, the ``accelerator_*`` recording rules read the new metric names and fall back to the old names.
-     Dashboards and alerts that use the ``accelerator_*`` series continue to work during a rolling update of the DCGM Exporter daemon set.
+     The OpenShift console dashboards keep working during the upgrade.
 
    Upgrade Notes
    -------------
 
-   * If you use a custom metrics file, NVIDIA recommends updating the field names to the DCGM 4.7 names.
-     DCGM Exporter 4.9.0 still loads the old names, but they are deprecated and keep their old names and units.
-     Refer to :ref:`custom metrics files <dcgm-exporter-custom-metrics>` for details.
+   * Update dashboards, alerts, recording rules, and autoscaler rules, such as HPA or KEDA, that use DCGM Exporter metrics.
+     Rescale thresholds for the unit changes, for example ``> 80`` becomes ``> 0.8`` for GPU utilization.
+     The ``DCGM_FI_DRIVER_VERSION`` label is now ``DCGM_FI_SYSTEM_DRIVER_VERSION``.
+     Re-import the Grafana dashboard from the DCGM Exporter repository.
 
-   * Rescale alert thresholds and autoscaler (HPA or KEDA) rules that use GPU utilization.
-     The new utilization metrics are a ratio from 0 to 1 instead of a percent.
+   * DCGM Exporter 4.9.0 needs a DCGM 4.7 or later host engine.
+     With DCGM 4.6.1, the exporter exits at startup.
+     This matters when the Operator runs the standalone DCGM host engine, that is ``dcgm.enabled=true``,
+     which is the default on OpenShift, or a ``GPUCluster`` with standalone DCGM:
 
-   * The ``DCGM_FI_DRIVER_VERSION`` label is renamed to ``DCGM_FI_SYSTEM_DRIVER_VERSION``.
-     The rename starts a new time series for each GPU.
+     - Upgrade the ``dcgm`` and ``dcgmExporter`` images together.
+       If you set ``dcgm.version`` or ``dcgmExporter.version``, change both.
+     - During the upgrade, the exporter pod on a node can restart a few times until the DCGM pod on that node runs 4.7.
+     - If you run DCGM on the host, upgrade it to 4.7 or later.
+     - If you must keep an older host engine, use a custom metrics file with the older field names.
+       The DCGM Exporter release notes list the old and new names.
 
-   * For the full list of changes and migration steps, refer to the DCGM Exporter release notes at
-     https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html.
+   * Custom metrics files with the older field names still work, but the names are deprecated.
+     NVIDIA recommends the DCGM 4.7 names.
+     Refer to `Custom Metrics Files <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html#dcgm-exporter-custom-metrics>`__.
 
-   * If you roll the GPU Operator back to a release whose recording rules read the old metric names while nodes run DCGM Exporter 4.9.0,
-     the ``accelerator_*`` series are empty.
-     Roll back the DCGM Exporter version together with the Operator.
+   * DCGM Exporter 4.9.0 checks its settings at startup.
+     An invalid value in ``dcgmExporter.env`` or ``dcgmExporter.args`` stops the pod with an error message in the pod log.
+     The ``DCGM_EXPORTER_CONFIGMAP_DATA`` variable is deprecated. Use ``dcgmExporter.config.name`` instead.
+
+   * Rolling back DCGM Exporter to 4.8.x works with DCGM 4.7.
+     If you roll the Operator back to a release whose ``accelerator_*`` rules read only the old metric names,
+     also roll back DCGM Exporter, or the ``accelerator_*`` series are empty.
 
 .. _v26.7.2:
 
