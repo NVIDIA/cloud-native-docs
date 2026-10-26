@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 23, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 26, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -464,11 +464,12 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <li><p><code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_KUBERNETES=true</span></code>, which adds pod, namespace, and container labels to the metrics of GPUs that pods use.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_COLLECTORS=/etc/dcgm-exporter/default-counters.csv</span></code>, the default metrics file in the image.
 When you supply a custom metrics file, the value is <code class="docutils literal notranslate"><span class="pre">/etc/dcgm-exporter/dcgm-metrics.csv</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">DCGM_REMOTE_HOSTENGINE_INFO=nvidia-dcgm:5555</span></code>, only when the standalone DCGM host engine is enabled.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DCGM_REMOTE_HOSTENGINE_INFO=nvidia-dcgm:5555</span></code>, only when the standalone DCGM host engine is enabled.
+For a <code class="docutils literal notranslate"><span class="pre">GPUCluster</span></code> with standalone DCGM, the value is <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-dra:5555</span></code>.</p></li>
 </ul>
 <p>Variables in <code class="docutils literal notranslate"><span class="pre">dcgmExporter.env</span></code> are applied last and replace these values.
 Environment variables also take precedence over the exporter’s configuration file, <code class="docutils literal notranslate"><span class="pre">/etc/dcgm-exporter/config.yaml</span></code>, in the image.</p>
-<p>Starting with DCGM Exporter 4.9.0, the exporter checks its settings at startup.
+<p>DCGM Exporter 4.9.0 stops at startup on more invalid settings.
 An invalid value in <code class="docutils literal notranslate"><span class="pre">dcgmExporter.env</span></code> or <code class="docutils literal notranslate"><span class="pre">dcgmExporter.args</span></code> stops the pod with an error message.
 To see the message, view the pod logs:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator -l <span class="nv">app</span><span class="o">=</span>nvidia-dcgm-exporter

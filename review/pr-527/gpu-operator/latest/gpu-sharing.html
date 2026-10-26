@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 23, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 26, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -522,7 +522,6 @@ Refer to <a class="reference internal" href="#time-slicing-update-config-map"><s
 <span id="time-slicing-gpu-metrics"></span><h3>GPU Metrics with Time-Slicing<a class="headerlink" href="#gpu-metrics-with-time-slicing" title="Permalink to this headline">#</a></h3>
 <p>By default, DCGM Exporter does not associate GPU metrics with the pods that share a GPU through time-slicing or MPS.
 To associate them, set the <code class="docutils literal notranslate"><span class="pre">KUBERNETES_VIRTUAL_GPUS</span></code> environment variable to <code class="docutils literal notranslate"><span class="pre">true</span></code> in <code class="docutils literal notranslate"><span class="pre">dcgmExporter.env</span></code>.
-The variable requires DCGM Exporter 4.8.4 or later.
 For example, in the Helm values:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">dcgmExporter</span><span class="p">:</span><span class="w"></span>
 <span class="w">  </span><span class="nt">env</span><span class="p">:</span><span class="w"></span>
