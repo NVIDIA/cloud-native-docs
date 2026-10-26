@@ -95,7 +95,6 @@ GPU Metrics with Time-Slicing
 
 By default, DCGM Exporter does not associate GPU metrics with the pods that share a GPU through time-slicing or MPS.
 To associate them, set the ``KUBERNETES_VIRTUAL_GPUS`` environment variable to ``true`` in ``dcgmExporter.env``.
-The variable requires DCGM Exporter 4.8.4 or later.
 For example, in the Helm values:
 
 .. code-block:: yaml

@@ -68,14 +68,18 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
    * The DCGM Exporter daemon set has a startup probe that allows up to five minutes for the exporter to start before the liveness probe applies.
      (`GPU Operator PR #3110 <https://github.com/NVIDIA/gpu-operator/pull/3110>`__)
 
-   * DCGM Exporter 4.9.0 checks its settings at startup.
+   * On Red Hat OpenShift Container Platform, ``accelerator_memory_used_bytes`` reports framebuffer memory used in bytes instead of memory-copy utilization,
+     and ``accelerator_memory_total_bytes`` is populated with the default metrics.
+     (`GPU Operator PR #3110 <https://github.com/NVIDIA/gpu-operator/pull/3110>`__)
+
+   * DCGM Exporter 4.9.0 stops at startup on more invalid settings.
      An invalid value in ``dcgmExporter.env`` or ``dcgmExporter.args`` stops the pod with an error message in the pod log.
 
    Known Issues
    ------------
 
    * DCGM Exporter 4.9.0 needs a DCGM 4.7 or later host engine. With an older host engine, such as DCGM 4.6.1, the exporter exits at startup
-     with an error that names both DCGM versions.
+     with the error ``the DCGM hostengine refused these fields: ...``, which lists the fields the host engine does not support.
      This affects clusters where the Operator runs the standalone DCGM host engine, that is ``dcgm.enabled=true``,
      which is the default on OpenShift, or a ``GPUCluster`` with standalone DCGM:
 
@@ -85,10 +89,11 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
      - If you run DCGM on the host, upgrade it to 4.7 or later.
      - If you must keep an older host engine, use a custom metrics file with the older field names.
        The DCGM Exporter release notes list the old and new names.
+       This pairing is untested and unsupported.
 
    * If you roll the Operator back to a release whose ``accelerator_*`` rules read only the old metric names,
      also roll back DCGM Exporter, or the ``accelerator_*`` series are empty.
-     DCGM Exporter 4.8.x works with DCGM 4.7.
+     Roll back the ``dcgm`` and ``dcgmExporter`` images together, to the versions that Operator release ships.
 
    Removals and Deprecations
    -------------------------

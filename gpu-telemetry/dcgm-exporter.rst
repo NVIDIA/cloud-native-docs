@@ -79,11 +79,12 @@ The Operator sets the following environment variables on the exporter container:
 * ``DCGM_EXPORTER_COLLECTORS=/etc/dcgm-exporter/default-counters.csv``, the default metrics file in the image.
   When you supply a custom metrics file, the value is ``/etc/dcgm-exporter/dcgm-metrics.csv``.
 * ``DCGM_REMOTE_HOSTENGINE_INFO=nvidia-dcgm:5555``, only when the standalone DCGM host engine is enabled.
+  For a ``GPUCluster`` with standalone DCGM, the value is ``nvidia-dcgm-dra:5555``.
 
 Variables in ``dcgmExporter.env`` are applied last and replace these values.
 Environment variables also take precedence over the exporter's configuration file, ``/etc/dcgm-exporter/config.yaml``, in the image.
 
-Starting with DCGM Exporter 4.9.0, the exporter checks its settings at startup.
+DCGM Exporter 4.9.0 stops at startup on more invalid settings.
 An invalid value in ``dcgmExporter.env`` or ``dcgmExporter.args`` stops the pod with an error message.
 To see the message, view the pod logs:
 
