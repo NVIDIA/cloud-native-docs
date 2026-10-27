@@ -365,6 +365,8 @@ In your values.yaml file, set ``migManager.config.create`` to ``true``, set ``mi
    .. literalinclude:: manifests/input/mig-cm-values.yaml
       :language: yaml
 
+   The ``custom-mig`` configuration leaves MIG mode disabled on GPU 0 and uses more than one MIG profile on GPUs 1 to 3.
+
 .. note::
    Custom ConfigMaps must contain a key named "config.yaml"
 
@@ -376,13 +378,15 @@ In your values.yaml file, set ``migManager.config.create`` to ``true``, set ``mi
           nvidia/gpu-operator --version=${version} \
           -f values.yaml
 
-#. If the custom configuration specifies more than one instance profile, set the strategy to ``mixed``:
+#. If the custom configuration uses more than one MIG profile or leaves MIG mode disabled on any GPU, set the strategy to ``mixed``:
 
    .. code-block:: console
 
       $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
           --type='json' \
           -p='[{"op":"replace", "path":"/spec/mig/strategy", "value":"mixed"}]'
+
+   The ``single`` strategy supports only a configuration that enables MIG mode on every GPU and uses a single MIG profile.
 
 #. Label the nodes with the profile to configure:
 
@@ -446,13 +450,15 @@ You can create and apply a ConfigMap yourself if the default profiles do not mee
 
       $ kubectl apply -n gpu-operator -f custom-mig-config.yaml
 
-#. If the custom configuration specifies more than one instance profile, set the strategy to ``mixed``:
+#. If the custom configuration uses more than one MIG profile or leaves MIG mode disabled on any GPU, set the strategy to ``mixed``:
 
    .. code-block:: console
 
       $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
           --type='json' \
           -p='[{"op":"replace", "path":"/spec/mig/strategy", "value":"mixed"}]'
+
+   The ``single`` strategy supports only a configuration that enables MIG mode on every GPU and uses a single MIG profile.
 
 #. Patch the cluster policy so MIG Manager uses the custom ConfigMap:
 
