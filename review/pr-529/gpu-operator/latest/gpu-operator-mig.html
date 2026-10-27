@@ -844,6 +844,7 @@ The following steps show how to update a GPU on a node to the <code class="docut
 <span class="w">                </span><span class="no">&quot;4g.40gb&quot;: 1</span><span class="w"></span>
 </pre></div>
 </div>
+<p>The <code class="docutils literal notranslate"><span class="pre">custom-mig</span></code> configuration leaves MIG mode disabled on GPU 0 and uses more than one MIG profile on GPUs 1 to 3.</p>
 </li>
 </ol>
 <div class="admonition note">
@@ -858,12 +859,13 @@ The following steps show how to update a GPU on a node to the <code class="docut
 </pre></div>
 </div>
 </li>
-<li><p>If the custom configuration specifies more than one instance profile, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
+<li><p>If the custom configuration uses more than one MIG profile or leaves MIG mode disabled on any GPU, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
     --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
     -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/mig/strategy&quot;, &quot;value&quot;:&quot;mixed&quot;}]&#39;</span>
 </pre></div>
 </div>
+<p>The <code class="docutils literal notranslate"><span class="pre">single</span></code> strategy supports only a configuration that enables MIG mode on every GPU and uses a single MIG profile.</p>
 </li>
 <li><p>Label the nodes with the profile to configure:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>custom-mig --overwrite
@@ -939,12 +941,13 @@ The following steps show how to update a GPU on a node to the <code class="docut
 </pre></div>
 </div>
 </li>
-<li><p>If the custom configuration specifies more than one instance profile, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
+<li><p>If the custom configuration uses more than one MIG profile or leaves MIG mode disabled on any GPU, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
     --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
     -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/mig/strategy&quot;, &quot;value&quot;:&quot;mixed&quot;}]&#39;</span>
 </pre></div>
 </div>
+<p>The <code class="docutils literal notranslate"><span class="pre">single</span></code> strategy supports only a configuration that enables MIG mode on every GPU and uses a single MIG profile.</p>
 </li>
 <li><p>Patch the cluster policy so MIG Manager uses the custom ConfigMap:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
