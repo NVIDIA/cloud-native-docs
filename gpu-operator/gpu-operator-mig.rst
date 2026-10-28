@@ -386,7 +386,7 @@ In your values.yaml file, set ``migManager.config.create`` to ``true``, set ``mi
           --type='json' \
           -p='[{"op":"replace", "path":"/spec/mig/strategy", "value":"mixed"}]'
 
-   The ``single`` strategy supports only a configuration that enables MIG mode on every GPU and uses a single MIG profile.
+   The ``single`` strategy supports only a configuration that enables MIG mode on every GPU and uses a single MIG profile, or a configuration that disables MIG mode on every GPU.
 
 #. Label the nodes with the profile to configure:
 
@@ -458,7 +458,7 @@ You can create and apply a ConfigMap yourself if the default profiles do not mee
           --type='json' \
           -p='[{"op":"replace", "path":"/spec/mig/strategy", "value":"mixed"}]'
 
-   The ``single`` strategy supports only a configuration that enables MIG mode on every GPU and uses a single MIG profile.
+   The ``single`` strategy supports only a configuration that enables MIG mode on every GPU and uses a single MIG profile, or a configuration that disables MIG mode on every GPU.
 
 #. Patch the cluster policy so MIG Manager uses the custom ConfigMap:
 
