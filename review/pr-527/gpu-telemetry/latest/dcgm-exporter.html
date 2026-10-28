@@ -720,10 +720,8 @@ Keep <code class="docutils literal notranslate"><span class="pre">dcgm.enabled=f
 </div>
 </li>
 </ul>
-<p>DCGM Exporter 4.9.0 needs a DCGM 4.7.0 host engine.
+<p>DCGM Exporter 4.9.0 is tested with DCGM 4.7.0.
 With an older host engine, DCGM Exporter 4.9.0 exits at startup, because its default metrics use DCGM 4.7 fields.
-With a newer host engine, such as DCGM 4.7.1, NVSwitch discovery fails.
-Other pairings are untested and unsupported.
 Use the DCGM and DCGM Exporter versions that the Operator release ships.
 If you set <code class="docutils literal notranslate"><span class="pre">dcgm.version</span></code>, upgrade it together with <code class="docutils literal notranslate"><span class="pre">dcgmExporter.version</span></code>.</p>
 <p>For more information, refer to
