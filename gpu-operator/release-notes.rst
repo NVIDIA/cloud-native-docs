@@ -78,15 +78,16 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
    Known Issues
    ------------
 
-   * DCGM Exporter 4.9.0 needs a DCGM 4.7 or later host engine. With an older host engine, such as DCGM 4.6.1, the exporter exits at startup
+   * DCGM Exporter 4.9.0 needs a DCGM 4.7.0 host engine. With an older host engine, such as DCGM 4.6.1, the exporter exits at startup
      with the error ``the DCGM hostengine refused these fields: ...``, which lists the fields the host engine does not support.
+     With a newer host engine, such as DCGM 4.7.1, NVSwitch discovery fails.
      This affects clusters where the Operator runs the standalone DCGM host engine, that is ``dcgm.enabled=true``,
      which is the default on OpenShift, or a ``GPUCluster`` with standalone DCGM:
 
      - Upgrade the ``dcgm`` and ``dcgmExporter`` images together.
        If you set ``dcgm.version`` or ``dcgmExporter.version``, change both.
-     - During the upgrade, the exporter pod on a node can restart a few times until the DCGM pod on that node runs 4.7.
-     - If you run DCGM on the host, upgrade it to 4.7 or later.
+     - During the upgrade, the exporter pod on a node can restart a few times until the DCGM pod on that node runs 4.7.0.
+     - If you run DCGM on the host, use DCGM 4.7.0.
      - If you must keep an older host engine, use a custom metrics file with the older field names.
        The DCGM Exporter release notes list the old and new names.
        This pairing is untested and unsupported.

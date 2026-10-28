@@ -363,8 +363,10 @@ You can use a separate host engine instead:
        - name: DCGM_REMOTE_HOSTENGINE_INFO
          value: localhost:5555
 
-The host engine must run DCGM 4.7 or later for DCGM Exporter 4.9.0.
+DCGM Exporter 4.9.0 needs a DCGM 4.7.0 host engine.
 With an older host engine, DCGM Exporter 4.9.0 exits at startup, because its default metrics use DCGM 4.7 fields.
+With a newer host engine, such as DCGM 4.7.1, NVSwitch discovery fails.
+Other pairings are untested and unsupported.
 Use the DCGM and DCGM Exporter versions that the Operator release ships.
 If you set ``dcgm.version``, upgrade it together with ``dcgmExporter.version``.
 
