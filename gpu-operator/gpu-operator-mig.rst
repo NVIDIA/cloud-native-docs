@@ -57,10 +57,22 @@ Use the following steps to enable MIG and deploy MIG Manager.
 
 
    This example sets ``single``  as the MIG strategy.
+
+   The MIG strategy controls how the device plugin and GPU Feature Discovery present MIG devices to Kubernetes.
+   The MIG strategy does not enable MIG mode.
+   MIG Manager enables MIG mode and creates MIG devices when you apply a MIG configuration.
    Available MIG strategy options:
 
-   * ``single``: MIG mode is enabled on all GPUs on a node.
-   * ``mixed``: MIG mode is not enabled on all GPUs on a node.
+   * ``single``: The device plugin exposes each MIG device as an ``nvidia.com/gpu`` resource.
+     If MIG mode is enabled on any GPU on the node, MIG mode must be enabled on every GPU, every GPU must have at least one MIG device, and all MIG devices must use the same MIG profile.
+     If the node does not meet these requirements, the device plugin reports an invalid MIG configuration and GPU Feature Discovery sets the ``nvidia.com/gpu.product`` label to ``<model>-MIG-INVALID``.
+   * ``mixed``: The device plugin exposes each MIG device as a resource for the MIG profile, such as ``nvidia.com/mig-1g.10gb``.
+     The device plugin exposes each GPU with MIG mode disabled as an ``nvidia.com/gpu`` resource.
+     Use this strategy when the node uses more than one MIG profile or when some GPUs on the node have MIG mode disabled.
+
+   For more information about the resource names and labels for each strategy, refer to the
+   `MIG_STRATEGY <https://github.com/NVIDIA/k8s-device-plugin#configuration-option-details>`__
+   option in the NVIDIA Kubernetes Device Plugin repository on GitHub.
 
    In a cloud service provider (CSP) environment such as Google Cloud, also specify
    ``--set migManager.env[0].name=WITH_REBOOT --set-string migManager.env[0].value=true``
@@ -117,7 +129,7 @@ The ConfigMap is named ``<node-name>-mig-config``, where ``<node-name>`` is the 
 Each ConfigMap contains a complete mig-parted config, including ``all-disabled``, ``all-enabled``, per-profile configs such as ``all-1g.10gb``, and ``all-balanced`` with device-filter support for mixed GPU types.
 When a new MIG-capable GPU is added to a node, the new GPU is automatically added to the ConfigMap.
 
-If you need custom profiles, you can use a custom MIG configuration instead of the generated one. 
+If you need custom profiles, you can use a custom MIG configuration instead of the generated one.
 You can use the Helm chart to create a ConfigMap from values at install time, or create and reference your own ConfigMap.
 For an example, refer to :ref:`dynamically-creating-the-mig-configuration-configmap`.
 
@@ -342,9 +354,9 @@ The following steps show how to update a GPU on a node to the ``3g.40gb`` profil
 Example: Custom MIG Configuration During Installation
 =====================================================
 
-If you need to use custom profiles, you can create a custom ConfigMap during installation by passing in a name and data for the ConfigMap with the Helm command. 
+If you need to use custom profiles, you can create a custom ConfigMap during installation by passing in a name and data for the ConfigMap with the Helm command.
 
-The MIG Manager daemonset is configured to use this ConfigMap instead of the auto-generated one. 
+The MIG Manager daemonset is configured to use this ConfigMap instead of the auto-generated one.
 
 In your values.yaml file, set ``migManager.config.create`` to ``true``, set ``migManager.config.name``, and add the ConfigMap data under ``migManager.config.data``, for example:
 
@@ -352,6 +364,8 @@ In your values.yaml file, set ``migManager.config.create`` to ``true``, set ``mi
 
    .. literalinclude:: manifests/input/mig-cm-values.yaml
       :language: yaml
+
+   The ``custom-mig`` configuration leaves MIG mode disabled on GPU 0 and uses more than one MIG profile on GPUs 1 to 3.
 
 .. note::
    Custom ConfigMaps must contain a key named "config.yaml"
@@ -364,13 +378,15 @@ In your values.yaml file, set ``migManager.config.create`` to ``true``, set ``mi
           nvidia/gpu-operator --version=${version} \
           -f values.yaml
 
-#. If the custom configuration specifies more than one instance profile, set the strategy to ``mixed``:
+#. If the custom configuration uses more than one MIG profile or leaves MIG mode disabled on any GPU, set the strategy to ``mixed``:
 
    .. code-block:: console
 
       $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
           --type='json' \
           -p='[{"op":"replace", "path":"/spec/mig/strategy", "value":"mixed"}]'
+
+   The ``single`` strategy supports only a configuration that enables MIG mode on every GPU and uses a single MIG profile, or a configuration that disables MIG mode on every GPU.
 
 #. Label the nodes with the profile to configure:
 
@@ -434,13 +450,15 @@ You can create and apply a ConfigMap yourself if the default profiles do not mee
 
       $ kubectl apply -n gpu-operator -f custom-mig-config.yaml
 
-#. If the custom configuration specifies more than one instance profile, set the strategy to ``mixed``:
+#. If the custom configuration uses more than one MIG profile or leaves MIG mode disabled on any GPU, set the strategy to ``mixed``:
 
    .. code-block:: console
 
       $ kubectl patch clusterpolicies.nvidia.com/cluster-policy \
           --type='json' \
           -p='[{"op":"replace", "path":"/spec/mig/strategy", "value":"mixed"}]'
+
+   The ``single`` strategy supports only a configuration that enables MIG mode on every GPU and uses a single MIG profile, or a configuration that disables MIG mode on every GPU.
 
 #. Patch the cluster policy so MIG Manager uses the custom ConfigMap:
 
