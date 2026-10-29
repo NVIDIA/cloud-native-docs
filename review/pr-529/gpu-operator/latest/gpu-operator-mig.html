@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 28, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 29, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -484,7 +484,7 @@ MIG Manager enables MIG mode and creates MIG devices when you apply a MIG config
 Available MIG strategy options:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">single</span></code>: The device plugin exposes each MIG device as an <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> resource.
-Every GPU on the node must have MIG mode enabled, and every MIG device on the node must use the same MIG profile on the same GPU model.
+If MIG mode is enabled on any GPU on the node, MIG mode must be enabled on every GPU, every GPU must have at least one MIG device, and all MIG devices must use the same MIG profile.
 If the node does not meet these requirements, the device plugin reports an invalid MIG configuration and GPU Feature Discovery sets the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.product</span></code> label to <code class="docutils literal notranslate"><span class="pre">&lt;model&gt;-MIG-INVALID</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">mixed</span></code>: The device plugin exposes each MIG device as a resource for the MIG profile, such as <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig-1g.10gb</span></code>.
 The device plugin exposes each GPU with MIG mode disabled as an <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> resource.
