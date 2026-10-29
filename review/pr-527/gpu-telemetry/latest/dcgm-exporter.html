@@ -457,7 +457,7 @@ Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 </tbody>
 </table>
 </div>
-<p>By default, DCGM Exporter runs an embedded DCGM host engine inside its container.</p>
+<p>By default, DCGM Exporter runs an embedded DCGM host engine, the DCGM process that reads the GPUs, inside its container.</p>
 <p>The Operator sets the following environment variables on the exporter container:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_LISTEN=:9400</span></code></p></li>
@@ -547,7 +547,7 @@ Contents of the metrics file for the ConfigMap that the chart creates.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">10s</span></code></p></td>
 </tr>
 <tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.honorLabels</span></code></p></td>
-<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, Prometheus keeps the metric labels when they collide with target labels.</p></td>
+<td><p>When set to <code class="docutils literal notranslate"><span class="pre">true</span></code>, Prometheus keeps a metric’s label when it has the same name as a label that Prometheus adds.</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">false</span></code></p></td>
 </tr>
 <tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">dcgmExporter.serviceMonitor.additionalLabels</span></code></p></td>
@@ -619,10 +619,8 @@ Refer to <a class="reference internal" href="#dcgm-exporter-hostengine"><span cl
 To collect a different set, supply your own metrics file in a ConfigMap.
 For the file format and the available metrics, refer to
 <a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/reference/dcgm-exporter-metrics.html">DCGM Exporter metrics</a>.</p>
-<p>Metric names and units depend on the DCGM Exporter version.
-Newer releases use the DCGM 4.7 field names, such as <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL_RATIO</span></code>, and still load the older names, such as <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL</span></code>.
-A metric that uses an older name keeps that name and its older unit.
-The DCGM Exporter release notes list the names each release uses.</p>
+<p>Metric names depend on the DCGM Exporter version; the
+<a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html">DCGM Exporter release notes</a> list them.</p>
 <ol class="arabic">
 <li><p>Create a ConfigMap in the Operator namespace.
 Store the file under the key <code class="docutils literal notranslate"><span class="pre">dcgm-metrics.csv</span></code>:</p>
