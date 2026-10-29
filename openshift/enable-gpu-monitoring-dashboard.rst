@@ -25,17 +25,20 @@ Prerequisites
 Configuring the NVIDIA DCGM Exporter Dashboard
 **********************************************
 
-#. Download the latest NVIDIA DCGM Exporter Dashboard from the DCGM Exporter repository on GitHub:
+#. Download the NVIDIA DCGM Exporter Dashboard from the DCGM Exporter repository on GitHub,
+   from the release tag that matches the DCGM Exporter version in your cluster.
+   For example, for the image ``4.6.1-4.8.4-distroless``, the tag is ``4.8.4``.
+   The `releases page <https://github.com/NVIDIA/dcgm-exporter/releases>`__ lists the tags:
 
    .. code-block:: console
 
-      $ curl -LfO https://github.com/NVIDIA/dcgm-exporter/raw/main/grafana/dcgm-exporter-dashboard.json
+      $ curl -LfO https://github.com/NVIDIA/dcgm-exporter/raw/<tag>/grafana/dcgm-exporter-dashboard.json
 
    .. note::
 
-      The dashboard on the ``main`` branch queries the metric names that DCGM Exporter 4.9.0 and later use.
-      If your cluster runs an earlier version of DCGM Exporter, download the file from the tag that matches your version instead.
-      The GPU Operator recording rules that produce the ``accelerator_*`` series read both the new and the old metric names.
+      Metric names depend on the DCGM Exporter version, so a dashboard from another release can show empty panels.
+      The GPU Operator recording rules that produce the ``accelerator_*`` series read both the newer and the older metric names
+      and report the same values with either.
 
 #. Create a config map from the downloaded file in the ``openshift-config-managed`` namespace:
 

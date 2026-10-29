@@ -37,7 +37,7 @@ For DCGM Exporter itself, refer to the DCGM Exporter documentation:
   for metric names, units, labels, and MIG behavior.
 * `Configure Prometheus for DCGM Exporter <https://docs.nvidia.com/datacenter/dcgm/latest/learn/getting-started-for-system-administrators/configure-prometheus-for-dcgm-exporter.html>`__.
 * `DCGM Exporter release notes <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html>`__,
-  including the metric name changes in DCGM Exporter 4.9.0.
+  including metric name changes and the DCGM version each release is tested with.
 
 
 *************************
@@ -84,7 +84,7 @@ The Operator sets the following environment variables on the exporter container:
 Variables in ``dcgmExporter.env`` are applied last and replace these values.
 Environment variables also take precedence over the exporter's configuration file, ``/etc/dcgm-exporter/config.yaml``, in the image.
 
-DCGM Exporter 4.9.0 stops at startup on more invalid settings.
+DCGM Exporter can stop at startup on an invalid setting.
 An invalid value in ``dcgmExporter.env`` or ``dcgmExporter.args`` stops the pod with an error message.
 To see the message, view the pod logs:
 
@@ -237,9 +237,10 @@ To collect a different set, supply your own metrics file in a ConfigMap.
 For the file format and the available metrics, refer to
 `DCGM Exporter metrics <https://docs.nvidia.com/datacenter/dcgm/latest/reference/dcgm-exporter-metrics.html>`__.
 
-DCGM Exporter 4.9.0 uses the DCGM 4.7 field names, such as ``DCGM_FI_DEV_GPU_UTIL_RATIO``.
-It still loads the older names, such as ``DCGM_FI_DEV_GPU_UTIL``, but they are deprecated.
+Metric names and units depend on the DCGM Exporter version.
+Newer releases use the DCGM 4.7 field names, such as ``DCGM_FI_DEV_GPU_UTIL_RATIO``, and still load the older names, such as ``DCGM_FI_DEV_GPU_UTIL``.
 A metric that uses an older name keeps that name and its older unit.
+The DCGM Exporter release notes list the names each release uses.
 
 #. Create a ConfigMap in the Operator namespace.
    Store the file under the key ``dcgm-metrics.csv``:
@@ -282,7 +283,7 @@ Set ``dcgmExporter.config.create=true`` and put the file contents in ``dcgmExpor
       $ kubectl delete pod -n gpu-operator -l app=nvidia-dcgm-exporter
 
 Do not use the ``DCGM_EXPORTER_CONFIGMAP_DATA`` environment variable to read metrics from a ConfigMap.
-It is deprecated in DCGM Exporter 4.9.0 and logs a warning at each start.
+It is deprecated.
 
 
 .. _dcgm-exporter-prometheus-scrape:
@@ -310,17 +311,18 @@ Do one of the following:
 * Configure Prometheus to select all ``ServiceMonitor`` objects.
   In ``kube-prometheus-stack``, set ``prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false``.
 
-To check that Prometheus collects the metrics, query a default metric, such as ``DCGM_FI_DEV_GPU_UTIL_RATIO``.
-DCGM Exporter 4.9.0 and later use this name, and the value is a ratio from 0 to 1.
-Earlier versions use ``DCGM_FI_DEV_GPU_UTIL``, in percent.
+To check that Prometheus collects the metrics, query GPU utilization.
+Depending on the DCGM Exporter version, the metric is ``DCGM_FI_DEV_GPU_UTIL``, in percent,
+or ``DCGM_FI_DEV_GPU_UTIL_RATIO``, a ratio from 0 to 1.
 
 If you do not use the Prometheus Operator, scrape the ``nvidia-dcgm-exporter`` service on port ``9400``.
 Refer to `Configure Prometheus for DCGM Exporter <https://docs.nvidia.com/datacenter/dcgm/latest/learn/getting-started-for-system-administrators/configure-prometheus-for-dcgm-exporter.html>`__.
 
 For a Grafana dashboard, import ``dcgm-exporter-dashboard.json`` from the
 `DCGM Exporter repository <https://github.com/NVIDIA/dcgm-exporter/tree/main/grafana>`__.
-The dashboard on the ``main`` branch uses the metric names of DCGM Exporter 4.9.0 and later.
-For an earlier version, use the file from the matching release tag.
+Use the file from the release tag that matches your DCGM Exporter version, such as ``4.8.4`` for the image ``4.6.1-4.8.4-distroless``,
+so that the dashboard queries the metric names your exporter serves.
+The `releases page <https://github.com/NVIDIA/dcgm-exporter/releases>`__ lists the tags.
 On OpenShift, refer to :external+ocp:ref:`enable-gpu-monitoring-dashboard`.
 
 
@@ -363,10 +365,10 @@ You can use a separate host engine instead:
        - name: DCGM_REMOTE_HOSTENGINE_INFO
          value: localhost:5555
 
-DCGM Exporter 4.9.0 is tested with DCGM 4.7.0.
-With an older host engine, DCGM Exporter 4.9.0 exits at startup, because its default metrics use DCGM 4.7 fields.
-Use the DCGM and DCGM Exporter versions that the Operator release ships.
-If you set ``dcgm.version``, upgrade it together with ``dcgmExporter.version``.
+Each DCGM Exporter release is tested with one DCGM version, which its release notes name.
+With an older host engine, DCGM Exporter can exit at startup with an error that lists the fields the host engine refuses.
+If you set ``dcgmExporter.version``, also set ``dcgm.version``, or the DCGM on the host, to the DCGM version that release is tested with,
+and change them together.
 
 For more information, refer to
 `Connect to a DCGM host engine <https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html#connect-to-a-dcgm-host-engine>`__.
