@@ -64,7 +64,7 @@ Use the following steps to enable MIG and deploy MIG Manager.
    Available MIG strategy options:
 
    * ``single``: The device plugin exposes each MIG device as an ``nvidia.com/gpu`` resource.
-     Every GPU on the node must have MIG mode enabled, and every MIG device on the node must use the same MIG profile on the same GPU model.
+     If MIG mode is enabled on any GPU on the node, MIG mode must be enabled on every GPU, every GPU must have at least one MIG device, and all MIG devices must use the same MIG profile.
      If the node does not meet these requirements, the device plugin reports an invalid MIG configuration and GPU Feature Discovery sets the ``nvidia.com/gpu.product`` label to ``<model>-MIG-INVALID``.
    * ``mixed``: The device plugin exposes each MIG device as a resource for the MIG profile, such as ``nvidia.com/mig-1g.10gb``.
      The device plugin exposes each GPU with MIG mode disabled as an ``nvidia.com/gpu`` resource.
