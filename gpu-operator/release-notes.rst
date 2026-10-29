@@ -33,44 +33,6 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
-.. DRAFT: Release notes for the next GPU Operator release.
-   Release notes are written when a release is published. Move this text into a new
-   version section above, then delete this comment.
-   This is a comment only because the GPU Operator version number and date are not known yet.
-
-   Improvements
-   ------------
-
-   * The Operator supports DCGM Exporter releases that use the DCGM 4.7 field names, in addition to the releases it supported before.
-     To use such a release, set ``dcgmExporter.version`` and ``dcgm.version`` together, to the DCGM version that the DCGM Exporter release is tested with.
-     These releases rename metrics and change several units, so update dashboards, alerts, recording rules, and autoscaler rules, such as HPA or KEDA, before you change the version.
-     The `DCGM Exporter release notes <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html>`__ list the names and units.
-     (`GPU Operator PR #3110 <https://github.com/NVIDIA/gpu-operator/pull/3110>`__)
-
-   * The Operator sets ``/etc/dcgm-exporter/default-counters.csv`` as the default DCGM Exporter metrics file.
-     It has the same metrics as ``dcp-metrics-included.csv``.
-     (`GPU Operator PR #3110 <https://github.com/NVIDIA/gpu-operator/pull/3110>`__)
-
-   * On Red Hat OpenShift Container Platform, the ``accelerator_*`` recording rules read both the newer and the older DCGM Exporter metric names
-     and report the same values with either, so the OpenShift console dashboards keep working when you change the DCGM Exporter version.
-     ``accelerator_memory_total_bytes`` is now populated with the default metrics.
-     (`GPU Operator PR #3110 <https://github.com/NVIDIA/gpu-operator/pull/3110>`__)
-
-   * The DCGM Exporter daemon set has a startup probe that allows up to five minutes for the exporter to start before the liveness probe applies.
-     (`GPU Operator PR #3110 <https://github.com/NVIDIA/gpu-operator/pull/3110>`__)
-
-   Known Issues
-   ------------
-
-   * A DCGM Exporter release whose default metrics use newer DCGM fields exits at startup with an older DCGM host engine.
-     The error ``the DCGM hostengine refused these fields: ...`` lists the fields the host engine does not support.
-     This affects clusters where the Operator runs the standalone DCGM host engine, that is ``dcgm.enabled=true``,
-     which is the default on OpenShift, or a ``GPUCluster`` with standalone DCGM, and clusters that use DCGM on the host:
-
-     - Change the ``dcgm`` and ``dcgmExporter`` images together, and roll them back together.
-     - During the change, the exporter pod on a node can restart a few times until the DCGM pod on that node runs the new version.
-     - If you run DCGM on the host, upgrade it to the version the DCGM Exporter release is tested with.
-
 .. _v26.7.2:
 
 26.7.2
