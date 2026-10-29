@@ -421,7 +421,7 @@ for options, environment variables, and the configuration file.</p></li>
 for metric names, units, labels, and MIG behavior.</p></li>
 <li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/learn/getting-started-for-system-administrators/configure-prometheus-for-dcgm-exporter.html">Configure Prometheus for DCGM Exporter</a>.</p></li>
 <li><p><a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html">DCGM Exporter release notes</a>,
-including the metric name changes in DCGM Exporter 4.9.0.</p></li>
+including metric name changes and the DCGM version each release is tested with.</p></li>
 </ul>
 <section id="what-the-operator-deploys">
 <h2>What the Operator Deploys<a class="headerlink" href="#what-the-operator-deploys" title="Permalink to this headline">#</a></h2>
@@ -469,7 +469,7 @@ For a <code class="docutils literal notranslate"><span class="pre">GPUCluster</s
 </ul>
 <p>Variables in <code class="docutils literal notranslate"><span class="pre">dcgmExporter.env</span></code> are applied last and replace these values.
 Environment variables also take precedence over the exporter’s configuration file, <code class="docutils literal notranslate"><span class="pre">/etc/dcgm-exporter/config.yaml</span></code>, in the image.</p>
-<p>DCGM Exporter 4.9.0 stops at startup on more invalid settings.
+<p>DCGM Exporter can stop at startup on an invalid setting.
 An invalid value in <code class="docutils literal notranslate"><span class="pre">dcgmExporter.env</span></code> or <code class="docutils literal notranslate"><span class="pre">dcgmExporter.args</span></code> stops the pod with an error message.
 To see the message, view the pod logs:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl logs -n gpu-operator -l <span class="nv">app</span><span class="o">=</span>nvidia-dcgm-exporter
@@ -619,9 +619,10 @@ Refer to <a class="reference internal" href="#dcgm-exporter-hostengine"><span cl
 To collect a different set, supply your own metrics file in a ConfigMap.
 For the file format and the available metrics, refer to
 <a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/reference/dcgm-exporter-metrics.html">DCGM Exporter metrics</a>.</p>
-<p>DCGM Exporter 4.9.0 uses the DCGM 4.7 field names, such as <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL_RATIO</span></code>.
-It still loads the older names, such as <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL</span></code>, but they are deprecated.
-A metric that uses an older name keeps that name and its older unit.</p>
+<p>Metric names and units depend on the DCGM Exporter version.
+Newer releases use the DCGM 4.7 field names, such as <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL_RATIO</span></code>, and still load the older names, such as <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL</span></code>.
+A metric that uses an older name keeps that name and its older unit.
+The DCGM Exporter release notes list the names each release uses.</p>
 <ol class="arabic">
 <li><p>Create a ConfigMap in the Operator namespace.
 Store the file under the key <code class="docutils literal notranslate"><span class="pre">dcgm-metrics.csv</span></code>:</p>
@@ -658,7 +659,7 @@ After you change the ConfigMap, restart the DCGM Exporter pods:</p>
 </div>
 </div>
 <p>Do not use the <code class="docutils literal notranslate"><span class="pre">DCGM_EXPORTER_CONFIGMAP_DATA</span></code> environment variable to read metrics from a ConfigMap.
-It is deprecated in DCGM Exporter 4.9.0 and logs a warning at each start.</p>
+It is deprecated.</p>
 </section>
 <section id="collecting-metrics-in-prometheus">
 <span id="dcgm-exporter-prometheus-scrape"></span><h2>Collecting Metrics in Prometheus<a class="headerlink" href="#collecting-metrics-in-prometheus" title="Permalink to this headline">#</a></h2>
@@ -679,15 +680,16 @@ Do one of the following:</p>
 <li><p>Configure Prometheus to select all <code class="docutils literal notranslate"><span class="pre">ServiceMonitor</span></code> objects.
 In <code class="docutils literal notranslate"><span class="pre">kube-prometheus-stack</span></code>, set <code class="docutils literal notranslate"><span class="pre">prometheus.prometheusSpec.serviceMonitorSelectorNilUsesHelmValues=false</span></code>.</p></li>
 </ul>
-<p>To check that Prometheus collects the metrics, query a default metric, such as <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL_RATIO</span></code>.
-DCGM Exporter 4.9.0 and later use this name, and the value is a ratio from 0 to 1.
-Earlier versions use <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL</span></code>, in percent.</p>
+<p>To check that Prometheus collects the metrics, query GPU utilization.
+Depending on the DCGM Exporter version, the metric is <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL</span></code>, in percent,
+or <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL_RATIO</span></code>, a ratio from 0 to 1.</p>
 <p>If you do not use the Prometheus Operator, scrape the <code class="docutils literal notranslate"><span class="pre">nvidia-dcgm-exporter</span></code> service on port <code class="docutils literal notranslate"><span class="pre">9400</span></code>.
 Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/learn/getting-started-for-system-administrators/configure-prometheus-for-dcgm-exporter.html">Configure Prometheus for DCGM Exporter</a>.</p>
 <p>For a Grafana dashboard, import <code class="docutils literal notranslate"><span class="pre">dcgm-exporter-dashboard.json</span></code> from the
 <a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/tree/main/grafana">DCGM Exporter repository</a>.
-The dashboard on the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch uses the metric names of DCGM Exporter 4.9.0 and later.
-For an earlier version, use the file from the matching release tag.
+Use the file from the release tag that matches your DCGM Exporter version, such as <code class="docutils literal notranslate"><span class="pre">4.8.4</span></code> for the image <code class="docutils literal notranslate"><span class="pre">4.6.1-4.8.4-distroless</span></code>,
+so that the dashboard queries the metric names your exporter serves.
+The <a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">releases page</a> lists the tags.
 On OpenShift, refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/enable-gpu-monitoring-dashboard.html#enable-gpu-monitoring-dashboard" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Enabling the GPU Monitoring Dashboard</span></a>.</p>
 </section>
 <section id="metrics-for-shared-gpus-and-mig">
@@ -720,10 +722,10 @@ Keep <code class="docutils literal notranslate"><span class="pre">dcgm.enabled=f
 </div>
 </li>
 </ul>
-<p>DCGM Exporter 4.9.0 is tested with DCGM 4.7.0.
-With an older host engine, DCGM Exporter 4.9.0 exits at startup, because its default metrics use DCGM 4.7 fields.
-Use the DCGM and DCGM Exporter versions that the Operator release ships.
-If you set <code class="docutils literal notranslate"><span class="pre">dcgm.version</span></code>, upgrade it together with <code class="docutils literal notranslate"><span class="pre">dcgmExporter.version</span></code>.</p>
+<p>Each DCGM Exporter release is tested with one DCGM version, which its release notes name.
+With an older host engine, DCGM Exporter can exit at startup with an error that lists the fields the host engine refuses.
+If you set <code class="docutils literal notranslate"><span class="pre">dcgmExporter.version</span></code>, also set <code class="docutils literal notranslate"><span class="pre">dcgm.version</span></code>, or the DCGM on the host, to the DCGM version that release is tested with,
+and change them together.</p>
 <p>For more information, refer to
 <a class="reference external" href="https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html#connect-to-a-dcgm-host-engine">Connect to a DCGM host engine</a>.</p>
 </section>

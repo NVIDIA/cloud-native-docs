@@ -439,15 +439,18 @@ These metrics can be visualized using a monitoring dashboard based on Grafana.</
 <section id="configuring-the-nvidia-dcgm-exporter-dashboard">
 <h2>Configuring the NVIDIA DCGM Exporter Dashboard<a class="headerlink" href="#configuring-the-nvidia-dcgm-exporter-dashboard" title="Permalink to this headline">#</a></h2>
 <ol class="arabic">
-<li><p>Download the latest NVIDIA DCGM Exporter Dashboard from the DCGM Exporter repository on GitHub:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -LfO https://github.com/NVIDIA/dcgm-exporter/raw/main/grafana/dcgm-exporter-dashboard.json
+<li><p>Download the NVIDIA DCGM Exporter Dashboard from the DCGM Exporter repository on GitHub,
+from the release tag that matches the DCGM Exporter version in your cluster.
+For example, for the image <code class="docutils literal notranslate"><span class="pre">4.6.1-4.8.4-distroless</span></code>, the tag is <code class="docutils literal notranslate"><span class="pre">4.8.4</span></code>.
+The <a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases">releases page</a> lists the tags:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>curl -LfO https://github.com/NVIDIA/dcgm-exporter/raw/&lt;tag&gt;/grafana/dcgm-exporter-dashboard.json
 </pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The dashboard on the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch queries the metric names that DCGM Exporter 4.9.0 and later use.
-If your cluster runs an earlier version of DCGM Exporter, download the file from the tag that matches your version instead.
-The GPU Operator recording rules that produce the <code class="docutils literal notranslate"><span class="pre">accelerator_*</span></code> series read both the new and the old metric names.</p>
+<p>Metric names depend on the DCGM Exporter version, so a dashboard from another release can show empty panels.
+The GPU Operator recording rules that produce the <code class="docutils literal notranslate"><span class="pre">accelerator_*</span></code> series read both the newer and the older metric names
+and report the same values with either.</p>
 </div>
 </li>
 <li><p>Create a config map from the downloaded file in the <code class="docutils literal notranslate"><span class="pre">openshift-config-managed</span></code> namespace:</p>
