@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Oct 28, 2026"/>
+    <meta name="docbuild:last-update" content="Oct 29, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -477,12 +477,22 @@ You must enable MIG during installation by choosing a MIG strategy before you ca
     --set mig.strategy<span class="o">=</span>single
 </pre></div>
 </div>
-<p>This example sets <code class="docutils literal notranslate"><span class="pre">single</span></code>  as the MIG strategy.
+<p>This example sets <code class="docutils literal notranslate"><span class="pre">single</span></code>  as the MIG strategy.</p>
+<p>The MIG strategy controls how the device plugin and GPU Feature Discovery present MIG devices to Kubernetes.
+The MIG strategy does not enable MIG mode.
+MIG Manager enables MIG mode and creates MIG devices when you apply a MIG configuration.
 Available MIG strategy options:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">single</span></code>: MIG mode is enabled on all GPUs on a node.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">mixed</span></code>: MIG mode is not enabled on all GPUs on a node.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">single</span></code>: The device plugin exposes each MIG device as an <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> resource.
+If MIG mode is enabled on any GPU on the node, MIG mode must be enabled on every GPU, every GPU must have at least one MIG device, and all MIG devices must use the same MIG profile.
+If the node does not meet these requirements, the device plugin reports an invalid MIG configuration and GPU Feature Discovery sets the <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu.product</span></code> label to <code class="docutils literal notranslate"><span class="pre">&lt;model&gt;-MIG-INVALID</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mixed</span></code>: The device plugin exposes each MIG device as a resource for the MIG profile, such as <code class="docutils literal notranslate"><span class="pre">nvidia.com/mig-1g.10gb</span></code>.
+The device plugin exposes each GPU with MIG mode disabled as an <code class="docutils literal notranslate"><span class="pre">nvidia.com/gpu</span></code> resource.
+Use this strategy when the node uses more than one MIG profile or when some GPUs on the node have MIG mode disabled.</p></li>
 </ul>
+<p>For more information about the resource names and labels for each strategy, refer to the
+<a class="reference external" href="https://github.com/NVIDIA/k8s-device-plugin#configuration-option-details">MIG_STRATEGY</a>
+option in the NVIDIA Kubernetes Device Plugin repository on GitHub.</p>
 <p>In a cloud service provider (CSP) environment such as Google Cloud, also specify
 <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">migManager.env[0].name=WITH_REBOOT</span> <span class="pre">--set-string</span> <span class="pre">migManager.env[0].value=true</span></code>
 to ensure that the node reboots and can apply the MIG configuration.</p>
@@ -834,6 +844,7 @@ The following steps show how to update a GPU on a node to the <code class="docut
 <span class="w">                </span><span class="no">&quot;4g.40gb&quot;: 1</span><span class="w"></span>
 </pre></div>
 </div>
+<p>The <code class="docutils literal notranslate"><span class="pre">custom-mig</span></code> configuration leaves MIG mode disabled on GPU 0 and uses more than one MIG profile on GPUs 1 to 3.</p>
 </li>
 </ol>
 <div class="admonition note">
@@ -848,12 +859,13 @@ The following steps show how to update a GPU on a node to the <code class="docut
 </pre></div>
 </div>
 </li>
-<li><p>If the custom configuration specifies more than one instance profile, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
+<li><p>If the custom configuration uses more than one MIG profile or leaves MIG mode disabled on any GPU, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
     --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
     -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/mig/strategy&quot;, &quot;value&quot;:&quot;mixed&quot;}]&#39;</span>
 </pre></div>
 </div>
+<p>The <code class="docutils literal notranslate"><span class="pre">single</span></code> strategy supports only a configuration that enables MIG mode on every GPU and uses a single MIG profile, or a configuration that disables MIG mode on every GPU.</p>
 </li>
 <li><p>Label the nodes with the profile to configure:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl label nodes &lt;node-name&gt; nvidia.com/mig.config<span class="o">=</span>custom-mig --overwrite
@@ -929,12 +941,13 @@ The following steps show how to update a GPU on a node to the <code class="docut
 </pre></div>
 </div>
 </li>
-<li><p>If the custom configuration specifies more than one instance profile, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
+<li><p>If the custom configuration uses more than one MIG profile or leaves MIG mode disabled on any GPU, set the strategy to <code class="docutils literal notranslate"><span class="pre">mixed</span></code>:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
     --type<span class="o">=</span><span class="s1">&#39;json&#39;</span> <span class="se">\</span>
     -p<span class="o">=</span><span class="s1">&#39;[{&quot;op&quot;:&quot;replace&quot;, &quot;path&quot;:&quot;/spec/mig/strategy&quot;, &quot;value&quot;:&quot;mixed&quot;}]&#39;</span>
 </pre></div>
 </div>
+<p>The <code class="docutils literal notranslate"><span class="pre">single</span></code> strategy supports only a configuration that enables MIG mode on every GPU and uses a single MIG profile, or a configuration that disables MIG mode on every GPU.</p>
 </li>
 <li><p>Patch the cluster policy so MIG Manager uses the custom ConfigMap:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>kubectl patch clusterpolicies.nvidia.com/cluster-policy <span class="se">\</span>
