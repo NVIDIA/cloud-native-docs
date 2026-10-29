@@ -70,7 +70,7 @@ The Operator creates the following resources in the Operator namespace, such as 
        Records the ``accelerator_*`` series that the OpenShift console uses.
        Refer to :external+ocp:ref:`enable-gpu-monitoring-dashboard`.
 
-By default, DCGM Exporter runs an embedded DCGM host engine inside its container.
+By default, DCGM Exporter runs an embedded DCGM host engine, the DCGM process that reads the GPUs, inside its container.
 
 The Operator sets the following environment variables on the exporter container:
 
@@ -162,7 +162,7 @@ except ``config.create`` and ``config.data``, which only the Helm chart uses.
      - ``10s``
 
    * - ``dcgmExporter.serviceMonitor.honorLabels``
-     - When set to ``true``, Prometheus keeps the metric labels when they collide with target labels.
+     - When set to ``true``, Prometheus keeps a metric's label when it has the same name as a label that Prometheus adds.
      - ``false``
 
    * - ``dcgmExporter.serviceMonitor.additionalLabels``
@@ -237,10 +237,8 @@ To collect a different set, supply your own metrics file in a ConfigMap.
 For the file format and the available metrics, refer to
 `DCGM Exporter metrics <https://docs.nvidia.com/datacenter/dcgm/latest/reference/dcgm-exporter-metrics.html>`__.
 
-Metric names and units depend on the DCGM Exporter version.
-Newer releases use the DCGM 4.7 field names, such as ``DCGM_FI_DEV_GPU_UTIL_RATIO``, and still load the older names, such as ``DCGM_FI_DEV_GPU_UTIL``.
-A metric that uses an older name keeps that name and its older unit.
-The DCGM Exporter release notes list the names each release uses.
+Metric names depend on the DCGM Exporter version; the
+`DCGM Exporter release notes <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html>`__ list them.
 
 #. Create a ConfigMap in the Operator namespace.
    Store the file under the key ``dcgm-metrics.csv``:
