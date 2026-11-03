@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.20.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 11, 2026"/>
+    <meta name="docbuild:last-update" content="Nov 03, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -632,6 +632,13 @@ The output should show only the UUIDs of the requested devices.</p>
 and validation errors, refer to
 <a class="reference internal" href="docker-specialized.html#id1"><span class="std std-doc">Requesting IMEX Channels</span></a>.</p>
 </section>
+<section id="mig-management-devices">
+<span id="using-cdi-with-mig-management-devices"></span><h3>MIG Management Devices<a class="headerlink" href="#mig-management-devices" title="Permalink to this headline">#</a></h3>
+<p>JIT-CDI mode injects MIG management capability device nodes when the <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_CONFIG_DEVICES</span></code> or <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_MONITOR_DEVICES</span></code> environment variable is set to <code class="docutils literal notranslate"><span class="pre">all</span></code>.
+This injects the <code class="docutils literal notranslate"><span class="pre">/dev/nvidia-caps/</span></code> device nodes that tools such as <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span> <span class="pre">mig</span></code> need to create, destroy, and monitor MIG partitions.
+The container must have <code class="docutils literal notranslate"><span class="pre">CAP_SYS_ADMIN</span></code>.</p>
+<p>For supported values, constraints, and an example, refer to <a class="reference internal" href="docker-specialized.html#id2"><span class="std std-doc">MIG Management Devices</span></a>.</p>
+</section>
 </section>
 <section id="using-cdi-with-non-cdi-enabled-runtimes">
 <h2>Using CDI with Non-CDI-Enabled Runtimes<a class="headerlink" href="#using-cdi-with-non-cdi-enabled-runtimes" title="Permalink to this headline">#</a></h2>
@@ -744,6 +751,7 @@ The NVIDIA Container Toolkit performs the configuration for you.</p></li>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#running-a-workload-with-cdi">Running a Workload with CDI</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#imex-channels">IMEX Channels</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mig-management-devices">MIG Management Devices</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-cdi-with-non-cdi-enabled-runtimes">Using CDI with Non-CDI-Enabled Runtimes</a><ul class="nav section-nav flex-column">

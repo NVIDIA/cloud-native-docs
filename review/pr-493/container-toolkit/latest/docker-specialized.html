@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.20.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.20.1';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -76,7 +76,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Sep 11, 2026"/>
+    <meta name="docbuild:last-update" content="Nov 03, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -540,6 +540,31 @@ identifies the invalid or missing channel. Inspect
 <code class="docutils literal notranslate"><span class="pre">/dev/nvidia-caps-imex-channels/</span></code> on the host and request only the channel IDs
 that are present.</p>
 </section>
+<section id="mig-management-devices">
+<span id="id2"></span><h3>MIG Management Devices<a class="headerlink" href="#mig-management-devices" title="Permalink to this headline">#</a></h3>
+<p>Use the <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_CONFIG_DEVICES</span></code> and <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_MONITOR_DEVICES</span></code> environment variables to inject MIG management capability device nodes into a container.
+These device nodes are in the <code class="docutils literal notranslate"><span class="pre">/dev/nvidia-caps/</span></code> directory and enable tools such as <code class="docutils literal notranslate"><span class="pre">nvidia-smi</span> <span class="pre">mig</span></code> to create, destroy, and monitor MIG partitions from within the container.</p>
+<p>Set either variable to <code class="docutils literal notranslate"><span class="pre">all</span></code> to inject the corresponding capability devices.
+No other value is supported.</p>
+<p>The following command injects both MIG config and monitor devices:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>docker run --rm --runtime<span class="o">=</span>nvidia --cap-add<span class="o">=</span>SYS_ADMIN <span class="se">\</span>
+    -e <span class="nv">NVIDIA_VISIBLE_DEVICES</span><span class="o">=</span>all <span class="se">\</span>
+    -e <span class="nv">NVIDIA_MIG_CONFIG_DEVICES</span><span class="o">=</span>all <span class="se">\</span>
+    -e <span class="nv">NVIDIA_MIG_MONITOR_DEVICES</span><span class="o">=</span>all <span class="se">\</span>
+    &lt;image&gt; nvidia-smi mig -lgip
+</pre></div>
+</div>
+<p>The following constraints apply:</p>
+<ul class="simple">
+<li><p>The container must have <code class="docutils literal notranslate"><span class="pre">CAP_SYS_ADMIN</span></code>.</p></li>
+<li><p>The only accepted value is <code class="docutils literal notranslate"><span class="pre">all</span></code>.</p></li>
+<li><p>You cannot combine MIG management device injection with per-MIG-instance visibility.
+For example, setting <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES=0:0</span></code> together with <code class="docutils literal notranslate"><span class="pre">NVIDIA_MIG_CONFIG_DEVICES=all</span></code> is not supported.</p></li>
+<li><p>On systems that do not support MIG, the variables are silently ignored.</p></li>
+</ul>
+<p>These variables are distinct from using MIG compute instances as accelerators.
+For information about running workloads on specific MIG instances, refer to <a class="reference internal" href="cdi-support.html#mig-management-devices"><span class="std std-doc">MIG Management Devices</span></a>.</p>
+</section>
 <section id="driver-capabilities">
 <h3>Driver Capabilities<a class="headerlink" href="#driver-capabilities" title="Permalink to this headline">#</a></h3>
 <p>The <code class="docutils literal notranslate"><span class="pre">NVIDIA_DRIVER_CAPABILITIES</span></code> variable controls which driver libraries and binaries are mounted inside the container.</p>
@@ -754,6 +779,7 @@ set the environment variables inside the Dockerfile, you do not need to set them
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#environment-variables-oci-spec">Environment Variables (OCI Spec)</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#gpu-enumeration">GPU Enumeration</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#requesting-imex-channels">Requesting IMEX Channels</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mig-management-devices">MIG Management Devices</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#driver-capabilities">Driver Capabilities</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints">Constraints</a><ul class="nav section-nav flex-column">
 <li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#nvidia-require-constraints">NVIDIA_REQUIRE_* Constraints</a></li>
