@@ -446,6 +446,7 @@ Install the NVIDIA GPU Operator and configure it to deploy Kata Container compon
          --version=${version} \
          --set sandboxWorkloads.enabled=true \
          --set sandboxWorkloads.mode=kata \
+         --set ccManager.defaultMode=off \
          --set nfd.enabled=true \
          --set nfd.nodefeaturerules=true
 
@@ -498,7 +499,8 @@ Install the NVIDIA GPU Operator and configure it to deploy Kata Container compon
    .. note::
 
       The NVIDIA Confidential Computing (CC) Manager for Kubernetes (``nvidia-cc-manager``) is deployed to all nodes :ref:`configured to run Kata containers <label-nodes-kata-containers>`, even if you are not planning to run Confidential Containers.
-      This manager sets the confidential computing mode on the NVIDIA GPUs, if your GPU is capable of Confidential Computing, but will not be used if you are deploying in Kata Containers only.
+      This manager sets the confidential computing mode on the NVIDIA GPUs, if your GPU is capable of Confidential Computing.
+      The installation command sets the default mode to ``off`` so that non-confidential Kata workloads can run.
       Refer to :ref:`Confidential Containers <confidential-containers-deploy>` for more details.
 
 #. Optional: If you have host access to the worker node, you can perform the following validation step:
@@ -548,6 +550,7 @@ The following example installs the GPU Operator with both ``P_GPU_ALIAS`` and ``
       --version=${version} \
       --set sandboxWorkloads.enabled=true \
       --set sandboxWorkloads.mode=kata \
+      --set ccManager.defaultMode=off \
       --set nfd.enabled=true \
       --set nfd.nodefeaturerules=true \
       --set kataSandboxDevicePlugin.env[0].name=P_GPU_ALIAS \
@@ -673,13 +676,12 @@ Also confirm in the ClusterPolicy that ``sandboxWorkloads`` is configured for Ka
 
 .. code-block:: console
 
-   $ kubectl describe clusterpolicy | grep sandboxWorkloads
+   $ kubectl get clusterpolicy cluster-policy \
+      -o custom-columns='ENABLED:.spec.sandboxWorkloads.enabled,DEFAULT-WORKLOAD:.spec.sandboxWorkloads.defaultWorkload,MODE:.spec.sandboxWorkloads.mode'
 
 *Example Output:*
 
 .. code-block:: output
 
-   sandboxWorkloads:
-     enabled: true
-     defaultWorkload: vm-passthrough
-     mode: kata
+   ENABLED   DEFAULT-WORKLOAD   MODE
+   true      container          kata
