@@ -60,6 +60,12 @@ Prerequisites
 
 #. Nodes must be configured with a container engine such as CRI-O or containerd.
 
+#. The client machine and GPU worker nodes must have outbound HTTPS access to
+   ``nvcr.io`` and ``ngc.download.nvidia.com``. The Operator pulls container
+   images from NGC, and driver installation may download driver packages from
+   the NGC download service. If your cluster is behind a firewall or proxy,
+   allow TCP port 443 to both endpoints before installing the Operator.
+
 #. If your cluster uses Pod Security Admission (PSA) to restrict the behavior of pods,
    label the namespace for the Operator to set the enforcement policy to privileged:
 
