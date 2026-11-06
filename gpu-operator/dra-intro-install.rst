@@ -21,7 +21,11 @@ DRA Driver for NVIDIA GPUs
 ##########################
 
 Dynamic Resource Allocation (DRA) is a Kubernetes API for flexibly requesting, configuring, and sharing specialized devices such as GPUs.
-This page describes how to use the GPU Operator to install and manage DRA Driver for NVIDIA GPUs v${dra_version}.
+For example, workloads can request GPUs by attributes, such as model, memory, and compute capability.
+Workloads use resource claims to request GPUs and share allocated devices across containers or pods.
+
+By default, the Operator does not install the DRA Driver.
+Refer to :ref:`Install the DRA Driver <dra-driver-install>` for the commands.
 
 Before using the DRA Driver for NVIDIA GPUs, familiarize yourself with the following documentation:
 
@@ -32,8 +36,8 @@ Before using the DRA Driver for NVIDIA GPUs, familiarize yourself with the follo
 Comparison: DRA and Device Plugin
 *********************************
 
-GPU Operator supports the DRA Driver as a more recent alternative to the NVIDIA Device Plugin for Kubernetes.
-However, some features of the DRA driver have alpha support status.
+The GPU Operator supports the DRA Driver as a more recent alternative to the NVIDIA Kubernetes Device Plugin.
+However, some features of the DRA Driver have alpha support status.
 
 A cluster can have either a ``GPUCluster`` resource for DRA or a ``ClusterPolicy`` resource for the Device Plugin, but not both.
 
@@ -79,11 +83,28 @@ The following table compares the GPU allocation capabilities of the two mechanis
        gRPC health probes report kubelet plugin availability only.
      - Reports unhealthy devices through the Kubernetes Device Plugin API.
 
-   * - Device Injection and Managed Components
+   * - Device Injection
      - Requires a Container Device Interface (CDI)-compatible runtime.
-       ``GPUCluster`` manages DRA, ComputeDomains, NVIDIA Data Center GPU Manager (DCGM), DCGM Exporter, and the DRA validator.
      - Supports multiple device injection strategies.
-       ``ClusterPolicy`` manages NVIDIA Container Toolkit, GPU Feature Discovery, MIG Manager, the sandbox device plugin, Kata Containers, KubeVirt, and NVIDIA vGPU Manager.
+
+   * - Components Managed by the Operator
+     - With ``GPUCluster``, the Operator manages:
+
+       * DRA Driver kubelet plugin
+       * ComputeDomain controller and kubelet plugin, when enabled
+       * DRA validator
+       * DCGM Exporter, when enabled
+       * Standalone NVIDIA Data Center GPU Manager (DCGM), when enabled
+
+     - With ``ClusterPolicy``, the Operator manages:
+
+       * NVIDIA Container Toolkit
+       * GPU Feature Discovery
+       * MIG Manager
+       * Sandbox device plugin
+       * Kata Containers
+       * KubeVirt
+       * NVIDIA vGPU Manager
 
    * - Kubernetes Scheduling
      - Allocation through a ``ResourceClaim``, which can be referenced by multiple containers or Pods.
@@ -92,7 +113,7 @@ The following table compares the GPU allocation capabilities of the two mechanis
 DRA Driver Feature Maturity
 ===========================
 
-The following table groups the DRA driver capabilities by maturity:
+The following table groups the DRA Driver capabilities by maturity:
 
 .. list-table:: DRA Driver Capability Maturity
    :header-rows: 1
@@ -123,14 +144,14 @@ The following table groups the DRA driver capabilities by maturity:
      - Disabled
      - ``draDriver.featureGates``
 
-Refer to the `DRA driver v${dra_version} overview <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/blob/v${dra_version}/README.md#overview>`__
+Refer to the `DRA Driver v${dra_version} overview <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/blob/v${dra_version}/README.md#overview>`__
 and `feature-gate definitions <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/blob/v${dra_version}/pkg/featuregates/featuregates.go>`__
 for the authoritative support status, maturity, and default values.
 
 DRA Driver Limitations
 ======================
 
-Consider the following limitations before selecting DRA driver v${dra_version}:
+Consider the following limitations before selecting DRA Driver v${dra_version}:
 
 * ``NVMLDeviceHealthCheck`` is alpha and disabled by default.
   The gRPC health probe reports kubelet plugin availability, and DCGM provides telemetry.
@@ -139,7 +160,7 @@ Consider the following limitations before selecting DRA driver v${dra_version}:
   When enabled, the feature provides scheduler-accounted capacity sharing among independent ``ResourceClaim`` objects for full GPUs and MIG devices.
   Kubernetes v1.34 and v1.35 require enabling the ``DRAConsumableCapacity`` feature gate.
   Kubernetes v1.36 and later enable the feature by default.
-  You must also set the ``CONSUMABLE_SHARES`` environment variable for the DRA GPU kubelet plugin to ``memory``, ``unlimited``, or a positive integer.
+  You must also set the ``CONSUMABLE_SHARES`` environment variable for the DRA Driver kubelet plugin to ``memory``, ``unlimited``, or a positive integer.
   Set the environment variable through ``draDriver.gpus.kubeletPlugin.env``.
   MPS cannot be used when consumable capacity is configured through ``ConsumableShares``.
 * Alpha feature gates have compatibility constraints.
@@ -149,39 +170,14 @@ Consider the following limitations before selecting DRA driver v${dra_version}:
   Injecting DRA-allocated devices requires a preconfigured CDI-compatible container runtime.
   The managed ``gpu.nvidia.com`` ``DeviceClass`` does not set ``spec.extendedResourceName`` to ``nvidia.com/gpu``.
 
-********
-Overview
-********
-
-The GPU Operator manages DRA components through the ``GPUCluster`` custom resource.
-``GPUCluster`` is a cluster-scoped singleton and its name must be ``gpu-cluster``.
-The Helm chart creates this resource when you set ``gpuCluster.deployCR=true``.
-
-A cluster can have either a ``GPUCluster`` or a ``ClusterPolicy`` resource, but not both.
-The GPU Operator uses ``ClusterPolicy`` to manage components for Device Plugin-based allocation
-and ``GPUCluster`` to manage components for DRA-based allocation.
-
-For ``GPUCluster``, the GPU Operator manages the following components:
-
-* The DRA driver GPU capability for ``gpu.nvidia.com``, ``mig.nvidia.com``, and ``vfio.gpu.nvidia.com`` devices.
-  This capability is always enabled, although VFIO passthrough is unusable without the Alpha ``PassthroughSupport`` feature gate which is off by default.
-* The ComputeDomain controller and kubelet plugin for Multi-Node NVLink (MNNVL).
-  ComputeDomain support is enabled by default and can be disabled.
-* A DRA validator that allocates a GPU by using a ``ResourceClaim`` and verifies that the device is usable.
-* DCGM Exporter, which is enabled by default.
-* Standalone DCGM, which is disabled by default.
-
-The ``GPUCluster`` resource does not manage the NVIDIA GPU driver.
-Use an ``NVIDIADriver`` resource to install a containerized driver or use a driver that is pre-installed on the host.
-The Operator automatically assigns the ``nvidia.com/gpu.deploy.*`` labels that control operand placement.
-
-GPUCluster Limitations
-======================
+************************
+Installation Limitations
+************************
 
 * Use this workflow for a new installation.
-  An in-place migration from a standalone DRA driver Helm release or from ``ClusterPolicy`` to ``GPUCluster`` is not supported.
+  An in-place migration from a standalone DRA Driver Helm release or from ``ClusterPolicy`` to ``GPUCluster`` is not supported.
 * ``GPUCluster`` does not expose the controller affinity, priority class, toleration,
-  and kubelet-plugin node selector overrides that were used by the previous standalone DRA driver procedure for Google Kubernetes Engine (GKE).
+  and kubelet-plugin node selector overrides that were used by the previous standalone DRA Driver procedure for Google Kubernetes Engine (GKE).
   This page does not provide a managed DRA installation procedure for GKE.
 
 *************
@@ -192,7 +188,8 @@ In addition to ensuring that your GPUs and cluster align with the :ref:`GPU Oper
 
 * Kubernetes v1.34.2 or later with a ``resource.k8s.io`` ``DeviceClass`` API available.
 * NVIDIA GPU driver version 580 or later.
-* An underlying container runtime that supports CDI and is configured to use CDI for injecting DRA-allocated devices.
+  The Operator can install the driver or you can use a pre-installed driver.
+* A container runtime that supports CDI and is configured to use CDI for injecting DRA-allocated devices.
 * No ``ClusterPolicy`` resource exists in the cluster.
 
   .. code-block:: console
@@ -203,7 +200,7 @@ In addition to ensuring that your GPUs and cluster align with the :ref:`GPU Oper
 
 .. note::
 
-   To use an extended-resource request with the DRA driver, enable the
+   To use an extended-resource request with the DRA Driver, enable the
    `DRAExtendedResource <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#extended-resource>`_ feature gate.
    This feature gate is enabled by default in Kubernetes v1.36.0 and later.
    Request ``deviceclass.resource.kubernetes.io/gpu.nvidia.com`` to use the managed ``gpu.nvidia.com`` ``DeviceClass``.
@@ -216,20 +213,39 @@ For ComputeDomain support, verify the following additional prerequisites:
 * NVIDIA Grace Blackwell GPUs with Multi-Node NVLink available on your cluster,
   such as NVIDIA HGX GB200 NVL72 or NVIDIA HGX GB300 NVL72.
   Refer to the `NVIDIA Multi-Node NVLink Systems documentation <https://docs.nvidia.com/multi-node-nvlink-systems/index.html>`_ for more information.
-* If you use a pre-installed GPU driver, install the corresponding ``nvidia-imex-*`` packages through the Linux distribution package manager.
-* If you use a pre-installed GPU driver, disable and mask the IMEX systemd service on every GPU node before installing the GPU Operator:
+* If you use a pre-installed NVIDIA GPU driver:
 
-  .. code-block:: console
+  * Install the corresponding ``nvidia-imex-*`` packages through the Linux distribution package manager.
+  * Disable and mask the IMEX systemd service on every GPU node before installing the GPU Operator:
 
-     $ systemctl disable --now nvidia-imex.service
-     $ systemctl mask nvidia-imex.service
+    .. code-block:: console
+
+       $ systemctl disable --now nvidia-imex.service
+       $ systemctl mask nvidia-imex.service
+
+.. _dra-driver-install:
 
 *******
 Install
 *******
 
-The following procedures install the GPU Operator and create the ``gpu-cluster`` resource.
-The Operator deploys the DRA driver operands in the GPU Operator namespace.
+The following procedures install the GPU Operator with the DRA Driver.
+The GPU Operator runs the DRA Driver in the GPU Operator namespace.
+The Helm chart creates the cluster-scoped ``GPUCluster`` resource that the Operator uses to manage DRA components.
+A cluster supports only one ``GPUCluster`` resource, which must be named ``gpu-cluster``.
+The ``GPUCluster`` resource does not manage the NVIDIA GPU driver.
+Use an ``NVIDIADriver`` resource to install a containerized GPU driver or use a driver that is pre-installed on the host.
+
+The Helm commands set the following values:
+
+* ``gpuCluster.deployCR=true`` enables the GPU Operator to install and manage the DRA Driver.
+* ``clusterPolicy.deployCR=false`` prevents creation of the ClusterPolicy resource.
+  The chart fails if you set both ``gpuCluster.deployCR`` and ``clusterPolicy.deployCR`` to ``true``.
+* ``driver.nvidiaDriverCRD.enabled=true`` enables the GPU Operator to install the NVIDIA GPU driver through an ``NVIDIADriver`` resource.
+  This value controls the NVIDIA GPU driver, not the DRA Driver.
+  The Operator-Managed Driver procedure requires this value.
+* ``driver.enabled=false`` uses the NVIDIA GPU driver that is pre-installed on the host.
+  The Pre-Installed Driver procedure uses this value.
 
 #. Add the NVIDIA Helm repository:
 
@@ -256,7 +272,7 @@ The Operator deploys the DRA driver operands in the GPU Operator namespace.
                 --set gpuCluster.deployCR=true \
                 --set driver.nvidiaDriverCRD.enabled=true
 
-         The chart creates the default ``NVIDIADriver`` resource to manage the NVIDIA GPU driver.
+         The chart creates the default ``NVIDIADriver`` resource to manage the NVIDIA GPU driver, not the DRA Driver.
 
       .. tab-item:: Pre-Installed Driver
          :sync: preinstalled
@@ -295,14 +311,14 @@ The following settings provide the primary configuration surface:
      - Description
 
    * - ``draDriver.repository``, ``draDriver.image``, and ``draDriver.version``
-     - Configure the DRA driver container image.
+     - Configure the DRA Driver container image.
 
    * - ``draDriver.imagePullPolicy`` and ``draDriver.imagePullSecrets``
-     - Configure image pulling for the DRA driver containers.
+     - Configure image pulling for the DRA Driver containers.
 
    * - ``draDriver.featureGates``
-     - Enable or disable DRA driver feature gates.
-       The Operator renders the map as the ``FEATURE_GATES`` environment variable for DRA driver containers.
+     - Enable or disable DRA Driver feature gates.
+       The Operator renders the map as the ``FEATURE_GATES`` environment variable for DRA Driver containers.
 
    * - ``draDriver.gpus.kubeletPlugin``
      - Configure environment variables, resource requests and limits, and the gRPC health check for the GPU kubelet-plugin container.
@@ -321,9 +337,9 @@ The following settings provide the primary configuration surface:
 
    * - ``daemonsets``
      - Configure common labels, annotations, and tolerations.
-       ``daemonsets.priorityClassName`` applies to the DRA driver kubelet plugin and ComputeDomain controller.
+       ``daemonsets.priorityClassName`` applies to the DRA Driver kubelet plugin and ComputeDomain controller.
 
-For example, the following values enable a DRA driver feature gate, configure container resources,
+For example, the following values enable a DRA Driver feature gate, configure container resources,
 and enable the default gRPC health checks on their default ports:
 
 .. code-block:: yaml
@@ -396,9 +412,10 @@ During reconciliation, the STATUS column progresses from empty to `notReady` to 
    * ``nvidia-dcgm-exporter-dra`` when DCGM Exporter is enabled
    * ``nvidia-dcgm-dra`` when standalone DCGM is enabled
 
-   The DRA kubelet-plugin DaemonSet runs a GPU container and,
+   The DRA Driver kubelet-plugin DaemonSet runs a GPU container and,
    when ComputeDomain support is enabled, a ComputeDomain container.
-   The DRA validator and enabled telemetry operands run one pod on each GPU node.
+   The DRA validator and enabled telemetry components run one pod on each GPU node.
+   The validator allocates a GPU through a ``ResourceClaim`` and verifies that the device is usable.
 
 #. Verify that the DeviceClasses are available:
 
@@ -418,13 +435,15 @@ During reconciliation, the STATUS column progresses from empty to `notReady` to 
       vfio.gpu.nvidia.com                         2m
 
    The ComputeDomain DeviceClasses are present only when ComputeDomain support is enabled.
+   The ``vfio.gpu.nvidia.com`` DeviceClass requires the alpha ``PassthroughSupport`` feature gate to use VFIO passthrough.
+   This feature gate is disabled by default.
 
 *************************
 Running a Sample Workload
 *************************
 
 Refer to `Request full GPUs <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/guides/gpu-allocation/allocating-gpus/>`__
-in the DRA driver documentation for information about the following workload-related tasks:
+in the DRA Driver documentation for information about the following workload-related tasks:
 
 * Request any GPU
 * Request multiple GPUs in one pod
@@ -438,6 +457,7 @@ Telemetry
 *********
 
 DCGM Exporter is enabled by default with ``GPUCluster`` and uses its embedded host engine.
+Standalone DCGM is disabled by default.
 Set ``dcgm.enabled=true`` to deploy the standalone ``nvidia-dcgm-dra`` host engine instead.
 
 When either ``dcgmExporter.enablePodLabels`` or ``dcgmExporter.enablePodUID`` is enabled,
@@ -451,18 +471,20 @@ This enables pod metadata enrichment for GPUs allocated through DRA.
 Upgrade
 *******
 
-The DRA driver is upgraded as part of the GPU Operator release.
+The DRA Driver is upgraded as part of the GPU Operator release.
 When you upgrade the GPU Operator, preserve ``clusterPolicy.deployCR=false`` and ``gpuCluster.deployCR=true`` in your values.
-You can select a different DRA driver version by setting ``draDriver.version``.
+You can select a different DRA Driver version by setting ``draDriver.version``.
 Refer to :ref:`Upgrading the NVIDIA GPU Operator` for the Operator upgrade procedure and required CRD updates.
 
 During an Operator-managed NVIDIA GPU driver upgrade, pods with allocated ``gpu.nvidia.com`` ResourceClaims are treated as GPU workloads.
-The driver upgrade policy applies to those pods, and the DRA kubelet plugin remains available while claims are unprepared.
+The driver upgrade policy applies to those pods, and the DRA Driver kubelet plugin remains available while claims are unprepared.
 You do not need to configure a separate node label for DRA workload eviction.
 
-This procedure does not migrate a standalone DRA driver Helm release to ``GPUCluster``.
-For a standalone installation, refer to the `upstream DRA driver upgrade guide <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/upgrade/>`__
+This procedure does not migrate a standalone DRA Driver Helm release to ``GPUCluster``.
+For a standalone installation, refer to the `upstream DRA Driver upgrade guide <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/upgrade/>`__
 or select the GPU Operator documentation version that matches the installed release.
+
+.. _dra-driver-uninstall:
 
 *********
 Uninstall
@@ -485,7 +507,7 @@ The chart includes a ``pre-delete`` hook that deletes ``gpu-cluster`` and waits 
 
       release "gpu-operator" uninstalled
 
-The finalizer removes Operator-managed DaemonSets that consume ResourceClaims before the DRA kubelet plugin is removed.
+The finalizer removes Operator-managed DaemonSets that consume ResourceClaims before the DRA Driver kubelet plugin is removed.
 Do not use ``helm uninstall --no-hooks`` while ``gpu-cluster`` exists because Helm can remove the Operator before this teardown completes.
 
 Refer to :doc:`uninstall` for the complete uninstall procedure and CRD cleanup information.
@@ -503,10 +525,10 @@ The following resources are left in the cluster with no controller to reconcile 
 
 * The ``gpu-cluster`` resource, which cannot be deleted because the
   ``gpucluster.nvidia.com/dra-resourceclaim`` finalizer requires the Operator.
-* The DRA driver kubelet plugin, DRA validator, and DCGM Exporter pods.
+* The DRA Driver kubelet plugin, DRA validator, and DCGM Exporter pods.
 * Operator-managed ResourceClaims for the preceding pods.
 
-To recover, remove the finalizer from ``gpu-cluster``, then force-delete the orphaned operands:
+To recover, remove the finalizer from ``gpu-cluster``, then force-delete the remaining managed components:
 
 #. Remove the finalizer from ``gpu-cluster``:
 
@@ -543,18 +565,18 @@ Clean Up ResourceClaims Stuck in ``deleted,allocated,reserved``
 ===============================================================
 
 ResourceClaims in the ``deleted,allocated,reserved`` state indicate that the API server
-accepted a delete request, but the DRA driver kubelet plugin has not completed the
+accepted a delete request, but the DRA Driver kubelet plugin has not completed the
 device _unprepare_ step for the claim.
-This state can persist if the DRA driver kubelet plugin was removed or restarted
+This state can persist if the DRA Driver kubelet plugin was removed or restarted
 before it could unprepare the allocated devices.
 
 Take one of the following actions:
 
-* If the DRA driver kubelet plugin can be restarted, ensure that the
+* If the DRA Driver kubelet plugin can be restarted, ensure that the
   ``nvidia-dra-driver-kubelet-plugin`` pod is running.
   The plugin completes the unprepare step and the ResourceClaims are removed.
 
-* If the DRA driver kubelet plugin cannot be restarted, such as after an
+* If the DRA Driver kubelet plugin cannot be restarted, such as after an
   uninstall that skipped the pre-delete hook, remove the finalizers from
   the affected ResourceClaims:
 

@@ -385,8 +385,10 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``false``
 
    * - ``clusterPolicy.deployCR``
-     - When set to ``true``, the chart creates the ``ClusterPolicy`` resource for the NVIDIA Kubernetes Device Plugin enablement stack.
-       Set this value to ``false`` when using ``gpuCluster.deployCR=true``.
+     - Set to ``true`` to have the GPU Operator allocate GPUs with the NVIDIA Kubernetes Device Plugin.
+       The chart creates the ``ClusterPolicy`` resource for the Device Plugin.
+       Set to ``false`` if you set ``gpuCluster.deployCR=true`` to install the DRA Driver for NVIDIA GPUs.
+       The chart fails if both values are ``true``.
      - ``true``
 
    * - ``cdi.enabled``
@@ -490,6 +492,8 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``driver.nvidiaDriverCRD.enabled``
      - When set to ``true``, the Operator deploys NVIDIA GPU Driver Custom Resource Definition.
+       This value controls the NVIDIA GPU driver, not the DRA Driver for NVIDIA GPUs.
+       If you set ``gpuCluster.deployCR=true`` and the GPU Operator installs the NVIDIA GPU driver, set this value to ``true``.
        Refer to the :doc:`NVIDIA Driver Custom Resource Definition <nvidia-driver-configuration>` page for more information.
      - ``false``
 
@@ -499,17 +503,20 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``nvcr.io/nvidia``
 
    * - ``draDriver.computeDomains.enabled``
-     - When set to ``true``, the ``GPUCluster`` stack deploys the ComputeDomain controller and kubelet plugin.
+     - When set to ``true``, the Operator deploys the ComputeDomain controller and kubelet plugin for a ``GPUCluster`` installation.
        Refer to :doc:`DRA Driver for NVIDIA GPUs <dra-intro-install>` for more information.
      - ``true``
 
    * - ``draDriver.version``
-     - Version of the DRA Driver for NVIDIA GPUs deployed by the ``GPUCluster`` stack.
+     - Version of the DRA Driver for NVIDIA GPUs that the Operator deploys for a ``GPUCluster`` installation.
      - ``v${dra_version}``
 
    * - ``gpuCluster.deployCR``
-     - When set to ``true``, the chart creates the ``GPUCluster`` resource for the DRA enablement stack.
-       Set ``clusterPolicy.deployCR=false`` and refer to :doc:`DRA Driver for NVIDIA GPUs <dra-intro-install>` for the complete installation procedure.
+     - Set to ``true`` to have the GPU Operator install and manage the DRA Driver for NVIDIA GPUs.
+       By default, the GPU Operator does not install the DRA Driver.
+       If you set this value to ``true``, also set ``clusterPolicy.deployCR=false``.
+       If the GPU Operator installs the NVIDIA GPU driver, also set ``driver.nvidiaDriverCRD.enabled=true``.
+       For the Helm commands, refer to :ref:`Install the DRA Driver <dra-driver-install>`.
      - ``false``
 
    * - ``driver.rdma.enabled``
@@ -611,7 +618,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
        Refer to the :doc:`KubeVirt <gpu-operator-kubevirt>` or the :doc:`Kata Containers <deploy-kata-containers>` pages for more information on using KubeVirt or Kata based workloads.
      - ``kubevirt``
    * - ``toolkit.enabled``
-     - By default, the Operator deploys the NVIDIA Container Toolkit (``nvidia-docker2`` stack)
+     - By default, the Operator deploys the NVIDIA Container Toolkit
        as a container on the system. Set this value to ``false`` when using the Operator on systems
        with pre-installed NVIDIA runtimes.
      - ``true``
