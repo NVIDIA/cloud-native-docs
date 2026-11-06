@@ -107,7 +107,7 @@ Known Issues
   When Network Operator sets the label to ``"true"``, the node no longer matches the selector, and GPU Operator stops the GPU driver pod.
   When the label returns to ``"false"``, GPU Operator restores driver ownership and schedules the GPU driver pod on the node.
 
-  Before you begin, configure Network Operator to manage the DOCA-OFED drivers and verify that your deployment meets the :ref:`DMA-BUF prerequisites <Common Prerequisites>`.
+  Before you begin, configure Network Operator to manage the DOCA-OFED drivers and verify that your deployment meets the :ref:`DMA-BUF prerequisites <GPUDirect RDMA Prerequisites>`.
   This workaround leaves the legacy ``nvidia-peermem`` kernel module disabled.
   Log in with cluster administrator privileges and stop GPU workloads before changing driver management.
 
