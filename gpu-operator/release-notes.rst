@@ -257,6 +257,11 @@ Known Issues
               $ oc get pods -n nvidia-gpu-operator -o wide
 
 
+Post-Release Documentation Updates
+----------------------------------
+
+* Added 580.196.07, 595.112.07, and 615.71.10 to the supported driver versions in the :ref:`operator-component-matrix`.
+
 ----
 
 .. _v26.7.1:
@@ -416,6 +421,7 @@ Post-Release Documentation Updates
 ----------------------------------
 
 * Updated :doc:`gpu-operator-rdma` to clarify the DMA-BUF and ``nvidia-peermem`` requirements and installation steps, correct the MacVLAN verification example, and scope the GDS guidance to remote storage over RDMA.
+* Added 580.196.07, 595.112.07, and 615.71.10 to the supported driver versions in the :ref:`operator-component-matrix`.
 
 ----
 
