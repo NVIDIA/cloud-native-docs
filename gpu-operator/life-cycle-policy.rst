@@ -132,6 +132,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
        | `535.309.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-309-01/index.html>`_
        | `535.288.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-288-01/index.html>`_
      - | `615.71.10 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-615-71-10/index.html>`_ |r615|_
+       | `615.71.09 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-615-71-09/index.html>`_ |r615|_
        | `610.57.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-610-57-04/index.html>`_
        | `595.112.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-112-07/index.html>`_
        | `595.91.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-91-07/index.html>`_
@@ -229,8 +230,8 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 .. _r615-requirements:
 
    :sup:`3`
-   NVIDIA GPU Driver 615.71.10 requires NVIDIA Container Toolkit 1.20.1 and NVIDIA MIG Manager 0.15.1.
-   Set the ``toolkit.version=v1.20.1`` and ``migManager.version=v0.15.1`` Helm values when you use this driver with GPU Operator 26.3.3.
+   NVIDIA GPU Drivers 615.71.10 and 615.71.09 require NVIDIA Container Toolkit 1.20.1 and NVIDIA MIG Manager 0.15.1.
+   Set the ``toolkit.version=v1.20.1`` and ``migManager.version=v0.15.1`` Helm values when you use these drivers with GPU Operator 26.3.3.
 
 .. note::
 
