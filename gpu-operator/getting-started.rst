@@ -421,8 +421,10 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``{}``
   
    * - ``dcgmExporter.enabled``
-     - By default, the Operator gathers GPU telemetry in Kubernetes using `DCGM Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html>`_. 
+     - By default, the Operator gathers GPU telemetry in Kubernetes using `DCGM Exporter <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html>`_.
        Set this value to ``false`` to disable it.
+       For all DCGM Exporter values, such as custom metrics files and the ``ServiceMonitor``, refer to
+       `DCGM Exporter Helm Values <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/latest/dcgm-exporter.html#dcgm-exporter-helm-values>`_.
        Available values are ``true`` (default) or ``false``.
      - ``true``
 
