@@ -255,14 +255,13 @@ $ docker run --rm --runtime=nvidia \
     <image> <command>
 ```
 
-Legacy mode limits EGL and Vulkan visibility to the physical GPUs assigned to
-a container when the `graphics` or `display` driver capability is enabled.
-The 1.20.0 release adds the same behavior to CDI and JIT-CDI modes through the
-`update-application-profile` hook. This change provides feature parity across
-the modes.
+When you enable the `graphics` or `display` driver capability in legacy mode, the application profile configures EGL and Vulkan applications to use the physical GPUs assigned to the container.
+In CDI and JIT-CDI modes, the `update-application-profile` hook updates the application profile for the assigned GPUs.
 
-If the application-profile hook conflicts with an application, refer to
-[Disabling Hooks in JIT-CDI Mode](cdi-support.md#disabling-hooks-in-jit-cdi-mode).
+If you use a symbolic link for the application profile path, the hook replaces the symbolic link and leaves the link target unchanged.
+Your container can start even if a read-only filesystem or busy-file error prevents the hook from updating the application profile.
+
+If the hook conflicts with your application, refer to [Disabling Hooks in JIT-CDI Mode](cdi-support.md#disabling-hooks-in-jit-cdi-mode).
 
 ### Constraints
 

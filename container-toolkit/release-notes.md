@@ -8,6 +8,46 @@
 
 This document describes the new features, improvements, fixes and known issues for the NVIDIA Container Toolkit.
 
+## NVIDIA Container Toolkit 1.20.2
+
+This release of the NVIDIA Container Toolkit `v1.20.2` is a bugfix release.
+
+### Fixes and Features
+
+This release includes the following changes:
+
+- Added support for Azure Linux 4.
+  For installation instructions, refer to `Installing With dnf <installing-with-yum-or-dnf>`.
+- Fixed an issue where volume-mount requests could add GPUs to a container in addition to the GPUs selected through CDI.
+  This issue affected configurations with `accept-nvidia-visible-devices-as-volume-mounts` set to `true`.
+  The setting defaults to `false`.
+  For more information, refer to [PR #2184](https://github.com/NVIDIA/nvidia-container-toolkit/pull/2184).
+- Management CDI specifications now include `libnvsdm.so.1` and its dependencies, `libibumad.so.3` and `libibmad.so.5`, when available on the host.
+  Management applications such as NVIDIA Data Center GPU Manager (DCGM) can initialize NVSDM for NVSwitch monitoring on systems that require these libraries.
+  For more information, refer to [PR #2162](https://github.com/NVIDIA/nvidia-container-toolkit/pull/2162).
+- The `disable-device-node-modification` hook now mounts the modified driver parameter file as read-only in the container.
+  The read-only mount prevents writes to the driver parameter file through the bind mount.
+  For more information, refer to [PR #2160](https://github.com/NVIDIA/nvidia-container-toolkit/pull/2160).
+- Commands run through `chroot` in the toolkit container now execute host binaries, such as `modprobe`, so kernel modules and their dependencies load correctly.
+  For more information, refer to [PR #2189](https://github.com/NVIDIA/nvidia-container-toolkit/pull/2189) and [issue #299 in /NVIDIA/k8s-driver-manager](https://github.com/NVIDIA/k8s-driver-manager/issues/299).
+- The `update-application-profile` hook now writes the GPU visibility profile atomically, replacing an existing profile without writing through a symbolic link at the profile path.
+  The hook also ignores busy-file errors, in addition to read-only filesystem errors, so these errors do not prevent container startup.
+  For more information, refer to [PR #2201](https://github.com/NVIDIA/nvidia-container-toolkit/pull/2201).
+
+### Included Packages
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.20.2`
+- `nvidia-container-toolkit-base 1.20.2`
+- `libnvidia-container-tools 1.20.2`
+- `libnvidia-container1 1.20.2`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.20.2`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.20.2-packaging`
+
 ## NVIDIA Container Toolkit 1.20.1
 
 This release of the NVIDIA Container Toolkit `v1.20.1` is a bugfix release.
