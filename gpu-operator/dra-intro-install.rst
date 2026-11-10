@@ -23,6 +23,18 @@ DRA Driver for NVIDIA GPUs
 Dynamic Resource Allocation (DRA) is a Kubernetes API for flexibly requesting, configuring, and sharing specialized devices such as GPUs.
 This page describes how to use the GPU Operator to install and manage DRA Driver for NVIDIA GPUs v${dra_version}.
 
+By default, the GPU Operator does not install the DRA Driver.
+A default installation allocates GPUs with the NVIDIA Kubernetes Device Plugin.
+
+* To opt in, set ``gpuCluster.deployCR=true`` and ``clusterPolicy.deployCR=false`` when you install the GPU Operator.
+  If the GPU Operator also installs the NVIDIA GPU driver, set ``driver.nvidiaDriverCRD.enabled=true``.
+  Refer to :ref:`Install the DRA Driver <dra-driver-install>` for the commands.
+* To opt out, omit ``gpuCluster.deployCR`` or set ``gpuCluster.deployCR=false``.
+  If you upgrade a Device Plugin installation and do not set ``gpuCluster.deployCR=true``, the GPU Operator does not install the DRA Driver.
+* To remove the DRA Driver after you opt in, uninstall the GPU Operator.
+  A Helm upgrade with ``gpuCluster.deployCR=false`` does not remove the DRA Driver.
+  Refer to :ref:`Uninstall the DRA Driver <dra-driver-uninstall>`.
+
 Before using the DRA Driver for NVIDIA GPUs, familiarize yourself with the following documentation:
 
 * `Dynamic Resource Allocation <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/>`_ in the Kubernetes documentation.
@@ -224,12 +236,24 @@ For ComputeDomain support, verify the following additional prerequisites:
      $ systemctl disable --now nvidia-imex.service
      $ systemctl mask nvidia-imex.service
 
+.. _dra-driver-install:
+
 *******
 Install
 *******
 
-The following procedures install the GPU Operator and create the ``gpu-cluster`` resource.
-The Operator deploys the DRA driver operands in the GPU Operator namespace.
+The following procedures install the GPU Operator with the DRA Driver.
+The GPU Operator runs the DRA Driver in the GPU Operator namespace.
+The Helm commands set the following values:
+
+* ``gpuCluster.deployCR=true`` opts in to the DRA Driver.
+* ``clusterPolicy.deployCR=false`` disables the NVIDIA Kubernetes Device Plugin.
+  The chart fails if you set both ``gpuCluster.deployCR`` and ``clusterPolicy.deployCR`` to ``true``.
+* ``driver.nvidiaDriverCRD.enabled=true`` lets the GPU Operator install the NVIDIA GPU driver through an ``NVIDIADriver`` resource.
+  This value controls the NVIDIA GPU driver, not the DRA Driver.
+  The Operator-Managed Driver procedure requires this value.
+* ``driver.enabled=false`` uses the NVIDIA GPU driver that is pre-installed on the host.
+  The Pre-Installed Driver procedure uses this value.
 
 #. Add the NVIDIA Helm repository:
 
@@ -256,7 +280,7 @@ The Operator deploys the DRA driver operands in the GPU Operator namespace.
                 --set gpuCluster.deployCR=true \
                 --set driver.nvidiaDriverCRD.enabled=true
 
-         The chart creates the default ``NVIDIADriver`` resource to manage the NVIDIA GPU driver.
+         The chart creates the default ``NVIDIADriver`` resource to manage the NVIDIA GPU driver, not the DRA Driver.
 
       .. tab-item:: Pre-Installed Driver
          :sync: preinstalled
@@ -463,6 +487,8 @@ You do not need to configure a separate node label for DRA workload eviction.
 This procedure does not migrate a standalone DRA driver Helm release to ``GPUCluster``.
 For a standalone installation, refer to the `upstream DRA driver upgrade guide <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/upgrade/>`__
 or select the GPU Operator documentation version that matches the installed release.
+
+.. _dra-driver-uninstall:
 
 *********
 Uninstall
