@@ -33,6 +33,82 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v26.7.3:
+
+26.7.3
+======
+
+New Features
+------------
+
+* Updated software component versions:
+
+  - NVIDIA Container Toolkit v1.20.2
+  - NVIDIA Device Plugin for Kubernetes v0.20.2
+  - NVIDIA DCGM Exporter v4.7.0-4.9.0
+  - NVIDIA DCGM 4.7.0
+  - Node Feature Discovery v0.20.1
+  - NVIDIA MIG Manager for Kubernetes v0.15.2
+  - NVIDIA GPU Feature Discovery for Kubernetes v0.20.2
+  - NVIDIA KubeVirt GPU Device Plugin v1.6.1
+  - NVIDIA vGPU Device Manager v0.5.2
+  - NVIDIA Kata Sandbox Device Plugin v0.0.6
+
+* Updated the Go toolchain to 1.26.10 and the distroless base image to v4.2.1 to address CVEs.
+
+Improvements
+------------
+
+* The Operator supports the DCGM 4.7 metric names in DCGM Exporter v4.7.0-4.9.0.
+  The default metrics file is ``/etc/dcgm-exporter/default-counters.csv``.
+  (`GPU Operator PR #3110 <https://github.com/NVIDIA/gpu-operator/pull/3110>`__)
+
+* When CDI is enabled, the Operator rejects a device plugin ``DEVICE_LIST_STRATEGY`` environment variable that does not include ``cdi-annotations`` or ``cdi-cri``.
+  The Operator reports the error when reconciling the cluster policy, so you no longer discover the misconfiguration when GPU pods fail to start.
+  (`GPU Operator PR #3081 <https://github.com/NVIDIA/gpu-operator/pull/3081>`__)
+
+Fixed Issues
+------------
+
+* Fixed an issue where upgrading from GPU Operator v26.3.x deleted existing NVIDIA driver daemon sets and removed driver pods from GPU nodes.
+  The Operator now waits until GPU nodes have driver owner labels and then upgrades the driver pods according to the driver upgrade policy.
+  (`GPU Operator PR #3157 <https://github.com/NVIDIA/gpu-operator/pull/3157>`__, `Issue #3155 <https://github.com/NVIDIA/gpu-operator/issues/3155>`__)
+
+* Fixed an issue where container images for the GPU Operator and operands included uncompressed layers.
+  Mirroring the images to Red Hat Quay with ``oc-mirror`` failed in air-gapped environments.
+  (`Issue #3166 <https://github.com/NVIDIA/gpu-operator/issues/3166>`__)
+
+* Fixed an issue where an ``NVIDIADriver`` resource with ``kernelModuleType: auto`` failed validation when GPUDirect Storage was enabled.
+  (`GPU Operator PR #3115 <https://github.com/NVIDIA/gpu-operator/pull/3115>`__, `Issue #3114 <https://github.com/NVIDIA/gpu-operator/issues/3114>`__)
+
+* Fixed an issue where driver pods on RHEL hosts did not mount the host subscription files when you configured a custom driver repository with ``repoConfig``.
+  Driver pods also start when subscription paths are missing on RHEL, SLES, and SL Micro hosts.
+  (`GPU Operator PR #3109 <https://github.com/NVIDIA/gpu-operator/pull/3109>`__, `Issue #2817 <https://github.com/NVIDIA/gpu-operator/issues/2817>`__)
+
+* Fixed an issue where container annotations from the NVIDIA Device Plugin did not reach the container runtime when CDI was enabled.
+  The Operator now configures the CDI annotation prefixes in the NVIDIA Container Toolkit container.
+  (`GPU Operator PR #3088 <https://github.com/NVIDIA/gpu-operator/pull/3088>`__)
+
+* Fixed an issue where operands could start while the NVIDIA kernel module was loading or unloading.
+  Operands now wait until the kernel module finishes initializing.
+  (`GPU Operator PR #2959 <https://github.com/NVIDIA/gpu-operator/pull/2959>`__)
+
+Known Issues
+------------
+
+* The default values use the same driver and driver manager container versions as the previous releases.
+  These defaults prevent a disruptive driver upgrade.
+  However, the following deployments need NVIDIA Driver Manager for Kubernetes v0.12.2:
+
+  - Red Hat OpenShift Container Platform in an air-gapped environment.
+  - Clusters that use the DRA Driver for NVIDIA GPUs.
+  - Nodes configured for GPU passthrough with ``vfio-pci``.
+
+  Upgrading the driver manager triggers a :ref:`driver upgrade <gpu-driver-upgrades>` on each node.
+  To upgrade the driver manager, specify ``--set driver.manager.version=v0.12.2`` with Helm, or set ``spec.driver.manager.version`` to ``v0.12.2`` in the cluster policy.
+
+----
+
 .. _v26.7.2:
 
 26.7.2
