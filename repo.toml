@@ -176,7 +176,7 @@ docs_root = "${root}/gpu-operator"
 project = "gpu-operator"
 name = "NVIDIA GPU Operator"
 version = "26.7"  # Update repo_docs.projects.openshift.version to match latest patch version maj.min.patch
-source_substitutions = { minor_version = "26.7", version = "v26.7.2", recommended = "595.91.07", dra_version = "0.5.1", kata_version = "4.0.0" }
+source_substitutions = { minor_version = "26.7", version = "v26.7.3", recommended = "595.91.07", dra_version = "0.5.1", kata_version = "4.0.0" }
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "life-cycle-policy.rst",
@@ -215,7 +215,7 @@ docs_root = "${root}/openshift"
 project = "gpu-operator-openshift"
 name = "NVIDIA GPU Operator on Red Hat OpenShift Container Platform"
 version = "26.7"  # Check that this value matches maj.min version of repo_docs.projects.gpu-operator.version
-source_substitutions = { version = "26.7" }  # Keep in sync with the version value above
+source_substitutions = { version = "26.7", recommended = "595.91.07" }  # Keep in sync with the version value above
 copyright_start = 2020
 sphinx_exclude_patterns = [
   "get-entitlement.rst",

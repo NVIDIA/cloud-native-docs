@@ -334,6 +334,7 @@ The following table describes some of the fields in the custom resource.
 
    * - ``gds.enabled``
      - Specifies whether to enable GPUDirect Storage.
+       GDS is not supported with precompiled drivers or with ``kernelModuleType: proprietary``.
      - ``false``
 
    * - ``image``
