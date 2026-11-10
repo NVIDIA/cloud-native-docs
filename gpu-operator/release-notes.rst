@@ -175,7 +175,7 @@ Known Issues
   - Install the DOCA-OFED driver on the host and not use a containerized driver.
   - Use the _inbox_ drivers provided by the operating system.
   - These alternatives are not applicable to OpenShift Container Platform.
-    
+
   If neither of the preceding alternatives are viable, use this workaround.
 
   As a workaround, use GPU Operator v26.7.2 or later and configure a non-default ``NVIDIADriver`` resource with the ``network.nvidia.com/operator.mofed.wait`` node label in its selector.
