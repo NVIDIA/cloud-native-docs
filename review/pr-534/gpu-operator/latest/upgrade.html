@@ -80,7 +80,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Nov 10, 2026"/>
+    <meta name="docbuild:last-update" content="Nov 13, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -466,7 +466,26 @@ label the namespace for the Operator to set the enforcement policy to privileged
 </pre></div>
 </div>
 </li>
+<li><p>If CDI is enabled, review any <code class="docutils literal notranslate"><span class="pre">DEVICE_LIST_STRATEGY</span></code> override in <code class="docutils literal notranslate"><span class="pre">devicePlugin.env</span></code> before upgrading.
+Remove legacy overrides to use the Operator’s default CDI strategies, or explicitly set the value to <code class="docutils literal notranslate"><span class="pre">cdi-cri,cdi-annotations</span></code>.
+The Operator reports an error during cluster policy reconciliation if the override includes neither CDI strategy.
+Refer to <a class="reference internal" href="cdi.html"><span class="doc">Container Device Interface (CDI) and Node Resource Interface (NRI) Plugin Support</span></a> for more information.</p></li>
+<li><p>Changing the Driver Manager image triggers a <a class="reference internal" href="gpu-driver-upgrades.html#gpu-driver-upgrades"><span class="std std-ref">driver upgrade</span></a> and can evict GPU workloads even when the NVIDIA driver version is unchanged.
+Review the target release’s known issues in the <a class="reference internal" href="release-notes.html"><span class="doc">Release Notes</span></a> before overriding the image.</p></li>
 </ul>
+</section>
+<section id="dcgm-and-dcgm-exporter-versions">
+<span id="upgrading-dcgm-and-exporter"></span><h2>DCGM and DCGM Exporter Versions<a class="headerlink" href="#dcgm-and-dcgm-exporter-versions" title="Permalink to this headline">#</a></h2>
+<p>Refer to the <a class="reference internal" href="platform-support.html#operator-component-matrix"><span class="std std-ref">GPU Operator Component Matrix</span></a> for the default DCGM and DCGM Exporter versions.
+If you override <code class="docutils literal notranslate"><span class="pre">dcgm.version</span></code> or <code class="docutils literal notranslate"><span class="pre">dcgmExporter.version</span></code>, select compatible versions and upgrade both images together.
+DCGM Exporter 4.9.0 requires a DCGM 4.7 or later host engine and cannot start against a standalone DCGM 4.6.x host engine.
+This requirement applies when <code class="docutils literal notranslate"><span class="pre">dcgm.enabled=true</span></code>, including the default OpenShift configuration, or when the exporter connects to a host engine installed on the node.
+When upgrading a standalone DCGM deployment, the exporter can restart during the transition until the host engine has been upgraded.</p>
+<p>DCGM Exporter renames the driver-version label from <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DRIVER_VERSION</span></code> to <code class="docutils literal notranslate"><span class="pre">DCGM_FI_SYSTEM_DRIVER_VERSION</span></code>.
+Update dashboards, alerts, and queries that reference the previous label name; filters using that name can return no data after upgrading.</p>
+<p>If you roll back these overrides, roll back both images together.
+When rolling back the Operator, also restore compatible DCGM and DCGM Exporter versions.
+Otherwise, OpenShift dashboards and alerts can lose GPU metrics because the older monitoring rules do not recognize the renamed metrics.</p>
 </section>
 <section id="using-helm">
 <h2>Using Helm<a class="headerlink" href="#using-helm" title="Permalink to this headline">#</a></h2>
@@ -697,6 +716,7 @@ Refer to <a class="reference internal" href="gpu-driver-upgrades.html#gpu-driver
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prerequisites">Prerequisites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dcgm-and-dcgm-exporter-versions">DCGM and DCGM Exporter Versions</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#using-helm">Using Helm</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-1-manually-upgrading-crds">Option 1: Manually Upgrading CRDs</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#option-2-automatically-upgrading-crds-using-a-helm-hook">Option 2: Automatically Upgrading CRDs Using a Helm Hook</a></li>
