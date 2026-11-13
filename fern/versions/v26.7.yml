@@ -1,0 +1,189 @@
+tabs:
+  gpu-operator:
+    display-name: GPU Operator
+  openshift:
+    display-name: OpenShift
+  partner-validated:
+    display-name: Partner-Validated
+navigation:
+- tab: gpu-operator
+  layout:
+  - section: NVIDIA GPU Operator
+    contents:
+    - page: About the Operator
+      path: ../pages/gpu-operator/overview.mdx
+      slug: overview
+    - page: Install
+      path: ../pages/gpu-operator/getting-started.mdx
+      slug: getting-started
+    - page: Upgrade
+      path: ../pages/gpu-operator/upgrade.mdx
+      slug: upgrade
+    - page: Uninstall
+      path: ../pages/gpu-operator/uninstall.mdx
+      slug: uninstall
+    - page: Platform Support
+      path: ../pages/gpu-operator/platform-support.mdx
+      slug: platform-support
+    - page: Release Notes
+      path: ../pages/gpu-operator/release-notes.mdx
+      slug: release-notes
+    - page: Troubleshooting
+      path: ../pages/gpu-operator/troubleshooting.mdx
+      slug: troubleshooting
+    - page: GPU Driver Upgrades
+      path: ../pages/gpu-operator/gpu-driver-upgrades.mdx
+      slug: gpu-driver-upgrades
+    - page: Using NVIDIA vGPU
+      path: ../pages/gpu-operator/install-gpu-operator-vgpu.mdx
+      slug: install-gpu-operator-vgpu
+    - page: NVIDIA AI Enterprise
+      path: ../pages/gpu-operator/install-gpu-operator-nvaie.mdx
+      slug: install-gpu-operator-nvaie
+    - page: Security Considerations
+      path: ../pages/gpu-operator/security.mdx
+      slug: security
+  - section: Advanced Operator Configuration
+    contents:
+    - page: DRA Driver for NVIDIA GPUs
+      path: ../pages/gpu-operator/dra-intro-install.mdx
+      slug: dra-intro-install
+    - page: Multi-Instance GPU (MIG)
+      path: ../pages/gpu-operator/gpu-operator-mig.mdx
+      slug: gpu-operator-mig
+    - page: Time-Slicing GPUs
+      path: ../pages/gpu-operator/gpu-sharing.mdx
+      slug: gpu-sharing
+    - page: GPUDirect RDMA and GPUDirect Storage
+      path: ../pages/gpu-operator/gpu-operator-rdma.mdx
+      slug: gpu-operator-rdma
+    - page: Outdated Kernels
+      path: ../pages/gpu-operator/install-gpu-operator-outdated-kernels.mdx
+      slug: install-gpu-operator-outdated-kernels
+    - page: Custom GPU Driver Parameters
+      path: ../pages/gpu-operator/custom-driver-params.mdx
+      slug: custom-driver-params
+    - page: Precompiled Driver Containers
+      path: ../pages/gpu-operator/precompiled-drivers.mdx
+      slug: precompiled-drivers
+    - page: NVIDIA Driver CRD
+      path: ../pages/gpu-operator/nvidia-driver-configuration.mdx
+      slug: nvidia-driver-configuration
+    - page: CDI and NRI Support
+      path: ../pages/gpu-operator/cdi.mdx
+      slug: cdi
+  - section: Sandboxed Workloads
+    contents:
+    - page: KubeVirt GPU Passthrough and vGPU
+      path: ../pages/gpu-operator/gpu-operator-kubevirt.mdx
+      slug: gpu-operator-kubevirt
+    - page: KubeVirt with DRA
+      path: ../pages/gpu-operator/gpu-operator-kubevirt-dra.mdx
+      slug: gpu-operator-kubevirt-dra
+    - page: Kata Containers
+      path: ../pages/gpu-operator/deploy-kata-containers.mdx
+      slug: deploy-kata-containers
+    - page: Confidential Containers
+      path: ../pages/gpu-operator/confidential-containers-deploy.mdx
+      slug: confidential-containers-deploy
+  - section: Specialized Networks
+    contents:
+    - page: HTTP Proxy
+      path: ../pages/gpu-operator/install-gpu-operator-proxy.mdx
+      slug: install-gpu-operator-proxy
+    - page: Air-Gapped Network
+      path: ../pages/gpu-operator/install-gpu-operator-air-gapped.mdx
+      slug: install-gpu-operator-air-gapped
+    - page: Service Mesh
+      path: ../pages/gpu-operator/install-gpu-operator-service-mesh.mdx
+      slug: install-gpu-operator-service-mesh
+    - page: IPv6 Networks
+      path: ../pages/gpu-operator/install-gpu-operator-ipv6.mdx
+      slug: install-gpu-operator-ipv6
+  - section: Platform-Specific Configurations
+    contents:
+    - page: Amazon EKS
+      path: ../pages/gpu-operator/amazon-eks.mdx
+      slug: amazon-eks
+    - page: Azure AKS
+      path: ../pages/gpu-operator/microsoft-aks.mdx
+      slug: microsoft-aks
+    - page: Google GKE
+      path: ../pages/gpu-operator/google-gke.mdx
+      slug: google-gke
+    - page: Google Anthos
+      path: ../pages/gpu-operator/anthos-guide.mdx
+      slug: anthos-guide
+- tab: openshift
+  layout:
+  - page: Introduction
+    path: ../pages/openshift/introduction.mdx
+    slug: introduction
+  - page: Prerequisites
+    path: ../pages/openshift/prerequisites.mdx
+    slug: prerequisites
+  - page: Installation and Upgrade Overview
+    path: ../pages/openshift/steps-overview.mdx
+    slug: steps-overview
+  - page: NFD Operator Installation
+    path: ../pages/openshift/install-nfd.mdx
+    slug: install-nfd
+  - page: GPU Operator Installation
+    path: ../pages/openshift/install-gpu-ocp.mdx
+    slug: install-gpu-ocp
+  - page: Installing the NVIDIA GPU Operator with DRA on OpenShift
+    path: ../pages/openshift/dra-gpu-ocp.mdx
+    slug: dra-gpu-ocp
+  - page: NVIDIA AI Enterprise with OpenShift
+    path: ../pages/openshift/nvaie-with-ocp.mdx
+    slug: nvaie-with-ocp
+  - page: MIG Support in OpenShift Container Platform
+    path: ../pages/openshift/mig-ocp.mdx
+    slug: mig-ocp
+  - page: Cleanup
+    path: ../pages/openshift/clean-up.mdx
+    slug: clean-up
+  - page: Deploy GPU Operators in a disconnected or airgapped environment
+    path: ../pages/openshift/mirror-gpu-ocp-disconnected.mdx
+    slug: mirror-gpu-ocp-disconnected
+  - page: Deploy GPU Operator in an IPv6 Network
+    path: ../pages/openshift/deploy-gpu-ocp-ipv6.mdx
+    slug: deploy-gpu-ocp-ipv6
+  - page: Red Hat Device Edge
+    path: ../pages/openshift/nvidia-gpu-with-device-edge.mdx
+    slug: nvidia-gpu-with-device-edge
+  - page: Enabling the GPU Monitoring Dashboard
+    path: ../pages/openshift/enable-gpu-monitoring-dashboard.mdx
+    slug: enable-gpu-monitoring-dashboard
+  - page: Time-slicing NVIDIA GPUs in OpenShift
+    path: ../pages/openshift/time-slicing-gpus-in-openshift.mdx
+    slug: time-slicing-gpus-in-openshift
+  - page: NVIDIA GPU Operator with OpenShift Virtualization
+    path: ../pages/openshift/openshift-virtualization.mdx
+    slug: openshift-virtualization
+  - page: Precompiled Drivers for the NVIDIA GPU Operator for RHCOS
+    path: ../pages/openshift/gpu-operator-with-precompiled-drivers.mdx
+    slug: gpu-operator-with-precompiled-drivers
+  - page: Troubleshooting
+    path: ../pages/openshift/troubleshooting-gpu-ocp.mdx
+    slug: troubleshooting-gpu-ocp
+  - page: Appendix
+    path: ../pages/openshift/appendix-ocp.mdx
+    slug: appendix-ocp
+- tab: partner-validated
+  layout:
+  - page: About Partner-Validated Configurations
+    path: ../pages/partner-validated/partner-validated.mdx
+    slug: partner-validated
+  - page: Mirantis k0rdent with the NVIDIA GPU Operator
+    path: ../pages/partner-validated/k0rdent.mdx
+    slug: k0rdent
+  - page: Mirantis Kubernetes Engine with the NVIDIA GPU Operator
+    path: ../pages/partner-validated/mirantis-mke.mdx
+    slug: mirantis-mke
+  - page: SUSE Rancher Kubernetes Engine 2 with the NVIDIA GPU Operator
+    path: ../pages/partner-validated/suse-rke2.mdx
+    slug: suse-rke2
+  - page: Rafay Platform with the NVIDIA GPU Operator
+    path: ../pages/partner-validated/rafay.mdx
+    slug: rafay
