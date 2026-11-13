@@ -3,6 +3,8 @@ name: "Preview Fern Docs: Delete"
 on:  # zizmor: ignore[dangerous-triggers] -- no PR code is checked out or run
   pull_request_target:
     types: [closed]
+    paths:
+      - 'fern/**'
 
 permissions: {}
 
