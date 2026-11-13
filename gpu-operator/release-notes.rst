@@ -38,21 +38,22 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 26.7.3
 ======
 
+Breaking Changes
+----------------
+
+* DCGM Exporter 4.9.0 renames the driver-version label from ``DCGM_FI_DRIVER_VERSION`` to ``DCGM_FI_SYSTEM_DRIVER_VERSION``.
+  Update dashboards, alerts, and queries that reference the previous label name.
+
 New Features
 ------------
 
 * Updated software component versions:
 
   - NVIDIA Container Toolkit v1.20.2
-  - NVIDIA Device Plugin for Kubernetes v0.20.2
   - NVIDIA DCGM Exporter v4.7.0-4.9.0
   - NVIDIA DCGM 4.7.0
   - Node Feature Discovery v0.20.1
-  - NVIDIA MIG Manager for Kubernetes v0.15.2
-  - NVIDIA GPU Feature Discovery for Kubernetes v0.20.2
-  - NVIDIA KubeVirt GPU Device Plugin v1.6.1
-  - NVIDIA vGPU Device Manager v0.5.2
-  - NVIDIA Kata Sandbox Device Plugin v0.0.6
+  - NVIDIA Confidential Computing Manager v0.4.5
 
 * The Operator supports the DCGM 4.7 metric names in DCGM Exporter v4.7.0-4.9.0.
   The default metrics file is ``/etc/dcgm-exporter/default-counters.csv``.
@@ -99,6 +100,8 @@ Fixed Issues
 Known Issues
 ------------
 
+.. _v26.7.3-driver-manager-override:
+
 * The default values use the same driver and driver manager container versions as the previous releases.
   These defaults prevent a disruptive driver upgrade.
   However, the following deployments need NVIDIA Driver Manager for Kubernetes v0.12.2:
@@ -113,6 +116,16 @@ Known Issues
 
 * On systems with NVLink 5 or later, GPU driver pods can prevent containerized DOCA-OFED updates from completing.
   Refer to the :ref:`v26.7.2-known-issues` for details and the workaround.
+
+* On NVIDIA B200 systems running OpenShift with standalone DCGM 4.7.0, DCGM Exporter 4.9.0 can enter ``CrashLoopBackOff`` when a custom metrics CSV includes ``DCGM_FI_PROF_NVLINK_TX_BYTES``.
+  The exporter fails to initialize the NVLink collector and reports ``This request is serviced by a module of DCGM that is not currently loaded``.
+  GPU metrics are unavailable while the exporter repeatedly restarts.
+  There is currently no workaround.
+
+* On OpenShift, enabling the NRI plugin through a cluster policy update before the NVIDIA driver and NVIDIA Container Toolkit finish initializing after a node reboot can leave standalone DCGM running without GPU access.
+  DCGM Exporter then enters ``CrashLoopBackOff``, and GPU metrics remain unavailable.
+  To work around this issue, use NVIDIA Driver Manager for Kubernetes v0.12.2.
+  Refer to the :ref:`Driver Manager image override instructions <v26.7.3-driver-manager-override>` for the settings and the driver-upgrade consequence.
 
 ----
 

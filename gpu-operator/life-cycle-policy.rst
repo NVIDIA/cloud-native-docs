@@ -130,7 +130,7 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    * - NVIDIA Device Plugin for Kubernetes
      - `0.20.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
      - :cspan:`1` `0.20.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
-     - `0.20.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.20.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - DRA Driver for NVIDIA GPUs
      - :cspan:`1` `v0.5.0 <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/releases/tag/v0.5.0>`__
@@ -149,12 +149,12 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
        | for Kubernetes
      - `0.20.0 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
      - :cspan:`1` `0.20.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
-     - `0.20.2 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
+     - `0.20.1 <https://github.com/NVIDIA/k8s-device-plugin/releases>`__
 
    * - NVIDIA MIG Manager for Kubernetes
      - `0.15.0 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
      - :cspan:`1` `0.15.1 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
-     - `0.15.2 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
+     - `0.15.1 <https://github.com/NVIDIA/mig-parted/blob/main/CHANGELOG.md>`__
 
    * - DCGM
      - `4.6.0-1 <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/changelog.html>`__
@@ -169,12 +169,12 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
 
    * - NVIDIA KubeVirt GPU Device Plugin
      - :cspan:`2` `v1.6.0 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`__
-     - `v1.6.1 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`__
+     - `v1.6.0 <https://github.com/NVIDIA/kubevirt-gpu-device-plugin>`__
 
    * - NVIDIA vGPU Device Manager
      - `v0.5.0 <https://github.com/NVIDIA/vgpu-device-manager>`__
      - :cspan:`1` `v0.5.1 <https://github.com/NVIDIA/vgpu-device-manager>`__
-     - `v0.5.2 <https://github.com/NVIDIA/vgpu-device-manager>`__
+     - `v0.5.1 <https://github.com/NVIDIA/vgpu-device-manager>`__
 
    * - NVIDIA GDS Driver |gds|_
      - :cspan:`3` `2.29.4 <https://github.com/NVIDIA/gds-nvidia-fs/releases>`__
@@ -182,14 +182,15 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
    * - | NVIDIA Confidential Computing
        | Manager for Kubernetes
      - `v0.4.3 <https://github.com/NVIDIA/k8s-cc-manager/releases>`__
-     - :cspan:`2` `v0.4.4 <https://github.com/NVIDIA/k8s-cc-manager/releases>`__
+     - :cspan:`1` `v0.4.4 <https://github.com/NVIDIA/k8s-cc-manager/releases>`__
+     - `v0.4.5 <https://github.com/NVIDIA/k8s-cc-manager/releases>`__
 
    * - NVIDIA GDRCopy Driver
      - :cspan:`3` `v2.6 <https://github.com/NVIDIA/gdrcopy/releases>`__
 
    * - NVIDIA Kata Sandbox Device Plugin
      - :cspan:`2` `v0.0.5 <https://github.com/NVIDIA/sandbox-device-plugin/releases>`__
-     - `v0.0.6 <https://github.com/NVIDIA/sandbox-device-plugin/releases>`__
+     - `v0.0.5 <https://github.com/NVIDIA/sandbox-device-plugin/releases>`__
 
 .. _gds-open-kernel:
 

@@ -53,6 +53,9 @@ DCGM Exporter 4.9.0 requires a DCGM 4.7 or later host engine and cannot start ag
 This requirement applies when ``dcgm.enabled=true``, including the default OpenShift configuration, or when the exporter connects to a host engine installed on the node.
 When upgrading a standalone DCGM deployment, the exporter can restart during the transition until the host engine has been upgraded.
 
+DCGM Exporter renames the driver-version label from ``DCGM_FI_DRIVER_VERSION`` to ``DCGM_FI_SYSTEM_DRIVER_VERSION``.
+Update dashboards, alerts, and queries that reference the previous label name; filters using that name can return no data after upgrading.
+
 If you roll back these overrides, roll back both images together.
 When rolling back the Operator, also restore compatible DCGM and DCGM Exporter versions.
 Otherwise, OpenShift dashboards and alerts can lose GPU metrics because the older monitoring rules do not recognize the renamed metrics.
