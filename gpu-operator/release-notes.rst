@@ -54,13 +54,10 @@ New Features
   - NVIDIA vGPU Device Manager v0.5.2
   - NVIDIA Kata Sandbox Device Plugin v0.0.6
 
-* Updated the Go toolchain to 1.26.10 and the distroless base image to v4.2.1 to address CVEs.
-
-Improvements
-------------
-
 * The Operator supports the DCGM 4.7 metric names in DCGM Exporter v4.7.0-4.9.0.
   The default metrics file is ``/etc/dcgm-exporter/default-counters.csv``.
+  On OpenShift, the Operator's GPU monitoring rules support both the previous and renamed metrics.
+  Existing metric names, values, and units are preserved for dashboards and alerts.
   (`GPU Operator PR #3110 <https://github.com/NVIDIA/gpu-operator/pull/3110>`__)
 
 * When CDI is enabled, the Operator rejects a device plugin ``DEVICE_LIST_STRATEGY`` environment variable that does not include ``cdi-annotations`` or ``cdi-cri``.
@@ -74,9 +71,11 @@ Fixed Issues
   The Operator now waits until GPU nodes have driver owner labels and then upgrades the driver pods according to the driver upgrade policy.
   (`GPU Operator PR #3157 <https://github.com/NVIDIA/gpu-operator/pull/3157>`__, `Issue #3155 <https://github.com/NVIDIA/gpu-operator/issues/3155>`__)
 
-* Fixed an issue where container images for the GPU Operator and operands included uncompressed layers.
-  Mirroring the images to Red Hat Quay with ``oc-mirror`` failed in air-gapped environments.
-  (`Issue #3166 <https://github.com/NVIDIA/gpu-operator/issues/3166>`__)
+* Fixed an issue where host commands ran the container BusyBox implementation instead of the host binary.
+  This issue prevented the ``modprobe`` command from loading kernel-module soft dependencies.
+  Using the host binary ensures that dependencies, such as ``vfio_iommu_type1``, are loaded.
+  The specified module is required for KubeVirt GPU passthrough.
+  (`GPU Operator PR #3138 <https://github.com/NVIDIA/gpu-operator/pull/3138>`__)
 
 * Fixed an issue where an ``NVIDIADriver`` resource with ``kernelModuleType: auto`` failed validation when GPUDirect Storage was enabled.
   (`GPU Operator PR #3115 <https://github.com/NVIDIA/gpu-operator/pull/3115>`__, `Issue #3114 <https://github.com/NVIDIA/gpu-operator/issues/3114>`__)
@@ -93,6 +92,10 @@ Fixed Issues
   Operands now wait until the kernel module finishes initializing.
   (`GPU Operator PR #2959 <https://github.com/NVIDIA/gpu-operator/pull/2959>`__)
 
+* Fixed an issue where DCGM Exporter could restart before completing initialization on nodes with many GPUs or large metrics configurations.
+  The startup probe waits up to five minutes for initialization to complete before liveness checks begin.
+  (`GPU Operator PR #3158 <https://github.com/NVIDIA/gpu-operator/pull/3158>`__)
+
 Known Issues
 ------------
 
@@ -100,12 +103,16 @@ Known Issues
   These defaults prevent a disruptive driver upgrade.
   However, the following deployments need NVIDIA Driver Manager for Kubernetes v0.12.2:
 
-  - Red Hat OpenShift Container Platform in an air-gapped environment.
+  - Red Hat OpenShift Container Platform in an air-gapped environment, to obtain the fix for uncompressed image layers that can prevent mirroring to Red Hat Quay with ``oc-mirror``.
+    Refer to `Issue #3166 <https://github.com/NVIDIA/gpu-operator/issues/3166>`__.
   - Clusters that use the DRA Driver for NVIDIA GPUs.
   - Nodes configured for GPU passthrough with ``vfio-pci``.
 
-  Upgrading the driver manager triggers a :ref:`driver upgrade <gpu-driver-upgrades>` on each node.
   To upgrade the driver manager, specify ``--set driver.manager.version=v0.12.2`` with Helm, or set ``spec.driver.manager.version`` to ``v0.12.2`` in the cluster policy.
+  Changing the driver manager image triggers a :ref:`driver upgrade <gpu-driver-upgrades>` on each node and can evict GPU workloads even when the NVIDIA driver version is unchanged.
+
+* On systems with NVLink 5 or later, GPU driver pods can prevent containerized DOCA-OFED updates from completing.
+  Refer to the :ref:`v26.7.2-known-issues` for details and the workaround.
 
 ----
 
@@ -160,6 +167,8 @@ Fixed Issues
 * Fixed an issue where Operator Lifecycle Manager (OLM) upgrades could fail with ``spec.default: Required value`` when validating existing ``NVIDIADriver`` resources.
   The ``spec.default`` and ``spec.driverType`` fields are now optional, with defaults of ``false`` and ``gpu``, respectively.
   (`GPU Operator PR #3046 <https://github.com/NVIDIA/gpu-operator/pull/3046>`__)
+
+.. _v26.7.2-known-issues:
 
 Known Issues
 ------------
