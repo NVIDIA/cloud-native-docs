@@ -79,7 +79,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Nov 13, 2026"/>
+    <meta name="docbuild:last-update" content="Nov 14, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -468,8 +468,11 @@
 <section id="breaking-changes">
 <h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Permalink to this headline">#</a></h3>
 <ul class="simple">
-<li><p>DCGM Exporter 4.9.0 renames the driver-version label from <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DRIVER_VERSION</span></code> to <code class="docutils literal notranslate"><span class="pre">DCGM_FI_SYSTEM_DRIVER_VERSION</span></code>.
-Update dashboards, alerts, and queries that reference the previous label name.</p></li>
+<li><p>DCGM Exporter 4.9.0 renames the default metrics to the DCGM 4.7 field names, and 11 of the renamed metrics change units.
+For example, <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL</span></code> (percent) becomes <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_GPU_UTIL_RATIO</span></code> (0 to 1), and <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_FB_USED</span></code> (MiB) becomes <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DEV_FB_USED_BYTES</span></code> (bytes).
+The driver-version label on every metric changes from <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DRIVER_VERSION</span></code> to <code class="docutils literal notranslate"><span class="pre">DCGM_FI_SYSTEM_DRIVER_VERSION</span></code>.
+Update dashboards, alerts, and queries that reference the previous metric or label names.
+Refer to the <a class="reference external" href="https://github.com/NVIDIA/dcgm-exporter/releases/tag/4.9.0">DCGM Exporter 4.9.0 release notes</a> for the complete list.</p></li>
 </ul>
 </section>
 <section id="new-features">
@@ -481,13 +484,13 @@ Update dashboards, alerts, and queries that reference the previous label name.</
 <li><p>NVIDIA DCGM Exporter v4.7.0-4.9.0</p></li>
 <li><p>NVIDIA DCGM 4.7.0</p></li>
 <li><p>Node Feature Discovery v0.20.1</p></li>
-<li><p>NVIDIA Confidential Computing Manager v0.4.5</p></li>
+<li><p>NVIDIA Confidential Computing Manager for Kubernetes v0.4.5</p></li>
 </ul>
 </li>
 <li><p>The Operator supports the DCGM 4.7 metric names in DCGM Exporter v4.7.0-4.9.0.
 The default metrics file is <code class="docutils literal notranslate"><span class="pre">/etc/dcgm-exporter/default-counters.csv</span></code>.
 On OpenShift, the Operator’s GPU monitoring rules support both the previous and renamed metrics.
-Existing metric names, values, and units are preserved for dashboards and alerts.
+The recorded <code class="docutils literal notranslate"><span class="pre">accelerator_*</span></code> metric names, values, and units are preserved for dashboards and alerts.
 (<a class="reference external" href="https://github.com/NVIDIA/gpu-operator/pull/3110">GPU Operator PR #3110</a>)</p></li>
 <li><p>When CDI is enabled, the Operator rejects a device plugin <code class="docutils literal notranslate"><span class="pre">DEVICE_LIST_STRATEGY</span></code> environment variable that does not include <code class="docutils literal notranslate"><span class="pre">cdi-annotations</span></code> or <code class="docutils literal notranslate"><span class="pre">cdi-cri</span></code>.
 The Operator reports the error when reconciling the cluster policy, so you no longer discover the misconfiguration when GPU pods fail to start.
@@ -541,7 +544,7 @@ Refer to the <a class="reference internal" href="#v26-7-2-known-issues"><span cl
 <li><p>On NVIDIA B200 systems running OpenShift with standalone DCGM 4.7.0, DCGM Exporter 4.9.0 can enter <code class="docutils literal notranslate"><span class="pre">CrashLoopBackOff</span></code> when a custom metrics CSV includes <code class="docutils literal notranslate"><span class="pre">DCGM_FI_PROF_NVLINK_TX_BYTES</span></code>.
 The exporter fails to initialize the NVLink collector and reports <code class="docutils literal notranslate"><span class="pre">This</span> <span class="pre">request</span> <span class="pre">is</span> <span class="pre">serviced</span> <span class="pre">by</span> <span class="pre">a</span> <span class="pre">module</span> <span class="pre">of</span> <span class="pre">DCGM</span> <span class="pre">that</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">currently</span> <span class="pre">loaded</span></code>.
 GPU metrics are unavailable while the exporter repeatedly restarts.
-There is currently no workaround.</p></li>
+Do not add <code class="docutils literal notranslate"><span class="pre">DCGM_FI_PROF_NVLINK_TX_BYTES</span></code> to a custom metrics file.</p></li>
 <li><p>On OpenShift, enabling the NRI plugin through a cluster policy update before the NVIDIA driver and NVIDIA Container Toolkit finish initializing after a node reboot can leave standalone DCGM running without GPU access.
 DCGM Exporter then enters <code class="docutils literal notranslate"><span class="pre">CrashLoopBackOff</span></code>, and GPU metrics remain unavailable.
 To work around this issue, use NVIDIA Driver Manager for Kubernetes v0.12.2.
