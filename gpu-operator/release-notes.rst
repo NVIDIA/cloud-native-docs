@@ -41,8 +41,11 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 Breaking Changes
 ----------------
 
-* DCGM Exporter 4.9.0 renames the driver-version label from ``DCGM_FI_DRIVER_VERSION`` to ``DCGM_FI_SYSTEM_DRIVER_VERSION``.
-  Update dashboards, alerts, and queries that reference the previous label name.
+* DCGM Exporter 4.9.0 renames the default metrics to the DCGM 4.7 field names, and 11 of the renamed metrics change units.
+  For example, ``DCGM_FI_DEV_GPU_UTIL`` (percent) becomes ``DCGM_FI_DEV_GPU_UTIL_RATIO`` (0 to 1), and ``DCGM_FI_DEV_FB_USED`` (MiB) becomes ``DCGM_FI_DEV_FB_USED_BYTES`` (bytes).
+  The driver-version label on every metric changes from ``DCGM_FI_DRIVER_VERSION`` to ``DCGM_FI_SYSTEM_DRIVER_VERSION``.
+  Update dashboards, alerts, and queries that reference the previous metric or label names.
+  Refer to the `DCGM Exporter 4.9.0 release notes <https://github.com/NVIDIA/dcgm-exporter/releases/tag/4.9.0>`__ for the complete list.
 
 New Features
 ------------
@@ -53,12 +56,12 @@ New Features
   - NVIDIA DCGM Exporter v4.7.0-4.9.0
   - NVIDIA DCGM 4.7.0
   - Node Feature Discovery v0.20.1
-  - NVIDIA Confidential Computing Manager v0.4.5
+  - NVIDIA Confidential Computing Manager for Kubernetes v0.4.5
 
 * The Operator supports the DCGM 4.7 metric names in DCGM Exporter v4.7.0-4.9.0.
   The default metrics file is ``/etc/dcgm-exporter/default-counters.csv``.
   On OpenShift, the Operator's GPU monitoring rules support both the previous and renamed metrics.
-  Existing metric names, values, and units are preserved for dashboards and alerts.
+  The recorded ``accelerator_*`` metric names, values, and units are preserved for dashboards and alerts.
   (`GPU Operator PR #3110 <https://github.com/NVIDIA/gpu-operator/pull/3110>`__)
 
 * When CDI is enabled, the Operator rejects a device plugin ``DEVICE_LIST_STRATEGY`` environment variable that does not include ``cdi-annotations`` or ``cdi-cri``.
@@ -120,7 +123,7 @@ Known Issues
 * On NVIDIA B200 systems running OpenShift with standalone DCGM 4.7.0, DCGM Exporter 4.9.0 can enter ``CrashLoopBackOff`` when a custom metrics CSV includes ``DCGM_FI_PROF_NVLINK_TX_BYTES``.
   The exporter fails to initialize the NVLink collector and reports ``This request is serviced by a module of DCGM that is not currently loaded``.
   GPU metrics are unavailable while the exporter repeatedly restarts.
-  There is currently no workaround.
+  Do not add ``DCGM_FI_PROF_NVLINK_TX_BYTES`` to a custom metrics file.
 
 * On OpenShift, enabling the NRI plugin through a cluster policy update before the NVIDIA driver and NVIDIA Container Toolkit finish initializing after a node reboot can leave standalone DCGM running without GPU access.
   DCGM Exporter then enters ``CrashLoopBackOff``, and GPU metrics remain unavailable.
