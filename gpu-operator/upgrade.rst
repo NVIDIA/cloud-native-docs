@@ -33,6 +33,33 @@ Prerequisites
 
      $ kubectl label --overwrite ns gpu-operator pod-security.kubernetes.io/enforce=privileged
 
+- If CDI is enabled, review any ``DEVICE_LIST_STRATEGY`` override in ``devicePlugin.env`` before upgrading.
+  Remove legacy overrides to use the Operator's default CDI strategies, or explicitly set the value to ``cdi-cri,cdi-annotations``.
+  The Operator reports an error during cluster policy reconciliation if the override includes neither CDI strategy.
+  Refer to :doc:`cdi` for more information.
+
+- Changing the Driver Manager image triggers a :ref:`driver upgrade <gpu-driver-upgrades>` and can evict GPU workloads even when the NVIDIA driver version is unchanged.
+  Review the target release's known issues in the :doc:`release-notes` before overriding the image.
+
+.. _upgrading-dcgm-and-exporter:
+
+*******************************
+DCGM and DCGM Exporter Versions
+*******************************
+
+Refer to the :ref:`operator-component-matrix` for the default DCGM and DCGM Exporter versions.
+If you override ``dcgm.version`` or ``dcgmExporter.version``, select compatible versions and upgrade both images together.
+DCGM Exporter 4.9.0 requires a DCGM 4.7 or later host engine and cannot start against a standalone DCGM 4.6.x host engine.
+This requirement applies when ``dcgm.enabled=true``, including the default OpenShift configuration, or when the exporter connects to a host engine installed on the node.
+When upgrading a standalone DCGM deployment, the exporter can restart during the transition until the host engine has been upgraded.
+
+DCGM Exporter renames the driver-version label from ``DCGM_FI_DRIVER_VERSION`` to ``DCGM_FI_SYSTEM_DRIVER_VERSION``.
+Update dashboards, alerts, and queries that reference the previous label name; filters using that name can return no data after upgrading.
+
+If you roll back these overrides, roll back both images together.
+When rolling back the Operator, also restore compatible DCGM and DCGM Exporter versions.
+Otherwise, OpenShift dashboards and alerts can lose GPU metrics because the older monitoring rules do not recognize the renamed metrics.
+
 
 **********
 Using Helm

@@ -33,6 +33,105 @@ Refer to the :ref:`GPU Operator Component Matrix` for a list of software compone
 
 ----
 
+.. _v26.7.3:
+
+26.7.3
+======
+
+Breaking Changes
+----------------
+
+* DCGM Exporter 4.9.0 renames the default metrics to the DCGM 4.7 field names, and 11 of the renamed metrics change units.
+  For example, ``DCGM_FI_DEV_GPU_UTIL`` (percent) becomes ``DCGM_FI_DEV_GPU_UTIL_RATIO`` (0 to 1), and ``DCGM_FI_DEV_FB_USED`` (MiB) becomes ``DCGM_FI_DEV_FB_USED_BYTES`` (bytes).
+  The driver-version label on every metric changes from ``DCGM_FI_DRIVER_VERSION`` to ``DCGM_FI_SYSTEM_DRIVER_VERSION``.
+  Update dashboards, alerts, and queries that reference the previous metric or label names.
+  Refer to the `DCGM Exporter 4.9.0 release notes <https://github.com/NVIDIA/dcgm-exporter/releases/tag/4.9.0>`__ for the complete list.
+
+New Features
+------------
+
+* Updated software component versions:
+
+  - NVIDIA Container Toolkit v1.20.2
+  - NVIDIA DCGM Exporter v4.7.0-4.9.0
+  - NVIDIA DCGM 4.7.0
+  - Node Feature Discovery v0.20.1
+  - NVIDIA Confidential Computing Manager for Kubernetes v0.4.5
+
+* The Operator supports the DCGM 4.7 metric names in DCGM Exporter v4.7.0-4.9.0.
+  The default metrics file is ``/etc/dcgm-exporter/default-counters.csv``.
+  On OpenShift, the Operator's GPU monitoring rules support both the previous and renamed metrics.
+  The recorded ``accelerator_*`` metric names, values, and units are preserved for dashboards and alerts.
+  (`GPU Operator PR #3110 <https://github.com/NVIDIA/gpu-operator/pull/3110>`__)
+
+* When CDI is enabled, the Operator rejects a device plugin ``DEVICE_LIST_STRATEGY`` environment variable that does not include ``cdi-annotations`` or ``cdi-cri``.
+  The Operator reports the error when reconciling the cluster policy, so you no longer discover the misconfiguration when GPU pods fail to start.
+  (`GPU Operator PR #3081 <https://github.com/NVIDIA/gpu-operator/pull/3081>`__)
+
+Fixed Issues
+------------
+
+* Fixed an issue where upgrading from GPU Operator v26.3.x deleted existing NVIDIA driver daemon sets and removed driver pods from GPU nodes.
+  The Operator now waits until GPU nodes have driver owner labels and then upgrades the driver pods according to the driver upgrade policy.
+  (`GPU Operator PR #3157 <https://github.com/NVIDIA/gpu-operator/pull/3157>`__, `Issue #3155 <https://github.com/NVIDIA/gpu-operator/issues/3155>`__)
+
+* Fixed an issue where host commands ran the container BusyBox implementation instead of the host binary.
+  This issue prevented the ``modprobe`` command from loading kernel-module soft dependencies.
+  Using the host binary ensures that dependencies, such as ``vfio_iommu_type1``, are loaded.
+  The specified module is required for KubeVirt GPU passthrough.
+  (`GPU Operator PR #3138 <https://github.com/NVIDIA/gpu-operator/pull/3138>`__)
+
+* Fixed an issue where an ``NVIDIADriver`` resource with ``kernelModuleType: auto`` failed validation when GPUDirect Storage was enabled.
+  (`GPU Operator PR #3115 <https://github.com/NVIDIA/gpu-operator/pull/3115>`__, `Issue #3114 <https://github.com/NVIDIA/gpu-operator/issues/3114>`__)
+
+* Fixed an issue where driver pods on RHEL hosts did not mount the host subscription files when you configured a custom driver repository with ``repoConfig``.
+  Driver pods also start when subscription paths are missing on RHEL, SLES, and SL Micro hosts.
+  (`GPU Operator PR #3109 <https://github.com/NVIDIA/gpu-operator/pull/3109>`__, `Issue #2817 <https://github.com/NVIDIA/gpu-operator/issues/2817>`__)
+
+* Fixed an issue where container annotations from the NVIDIA Device Plugin did not reach the container runtime when CDI was enabled.
+  The Operator now configures the CDI annotation prefixes in the NVIDIA Container Toolkit container.
+  (`GPU Operator PR #3088 <https://github.com/NVIDIA/gpu-operator/pull/3088>`__)
+
+* Fixed an issue where operands could start while the NVIDIA kernel module was loading or unloading.
+  Operands now wait until the kernel module finishes initializing.
+  (`GPU Operator PR #2959 <https://github.com/NVIDIA/gpu-operator/pull/2959>`__)
+
+* Fixed an issue where DCGM Exporter could restart before completing initialization on nodes with many GPUs or large metrics configurations.
+  The startup probe waits up to five minutes for initialization to complete before liveness checks begin.
+  (`GPU Operator PR #3158 <https://github.com/NVIDIA/gpu-operator/pull/3158>`__)
+
+Known Issues
+------------
+
+.. _v26.7.3-driver-manager-override:
+
+* The default values use the same driver and driver manager container versions as the previous releases.
+  These defaults prevent a disruptive driver upgrade.
+  However, the following deployments need NVIDIA Driver Manager for Kubernetes v0.12.2:
+
+  - Red Hat OpenShift Container Platform in an air-gapped environment, to obtain the fix for uncompressed image layers that can prevent mirroring to Red Hat Quay with ``oc-mirror``.
+    Refer to `Issue #3166 <https://github.com/NVIDIA/gpu-operator/issues/3166>`__.
+  - Clusters that use the DRA Driver for NVIDIA GPUs.
+  - Nodes configured for GPU passthrough with ``vfio-pci``.
+
+  To upgrade the driver manager, specify ``--set driver.manager.version=v0.12.2`` with Helm, or set ``spec.driver.manager.version`` to ``v0.12.2`` in the cluster policy.
+  Changing the driver manager image triggers a :ref:`driver upgrade <gpu-driver-upgrades>` on each node and can evict GPU workloads even when the NVIDIA driver version is unchanged.
+
+* On systems with NVLink 5 or later, GPU driver pods can prevent containerized DOCA-OFED updates from completing.
+  Refer to the :ref:`v26.7.2-known-issues` for details and the workaround.
+
+* On NVIDIA B200 systems running OpenShift with standalone DCGM 4.7.0, DCGM Exporter 4.9.0 can enter ``CrashLoopBackOff`` when a custom metrics CSV includes ``DCGM_FI_PROF_NVLINK_TX_BYTES``.
+  The exporter fails to initialize the NVLink collector and reports ``This request is serviced by a module of DCGM that is not currently loaded``.
+  GPU metrics are unavailable while the exporter repeatedly restarts.
+  Do not add ``DCGM_FI_PROF_NVLINK_TX_BYTES`` to a custom metrics file.
+
+* On OpenShift, enabling the NRI plugin through a cluster policy update before the NVIDIA driver and NVIDIA Container Toolkit finish initializing after a node reboot can leave standalone DCGM running without GPU access.
+  DCGM Exporter then enters ``CrashLoopBackOff``, and GPU metrics remain unavailable.
+  To work around this issue, use NVIDIA Driver Manager for Kubernetes v0.12.2.
+  Refer to the :ref:`Driver Manager image override instructions <v26.7.3-driver-manager-override>` for the settings and the driver-upgrade consequence.
+
+----
+
 .. _v26.7.2:
 
 26.7.2
@@ -85,6 +184,8 @@ Fixed Issues
   The ``spec.default`` and ``spec.driverType`` fields are now optional, with defaults of ``false`` and ``gpu``, respectively.
   (`GPU Operator PR #3046 <https://github.com/NVIDIA/gpu-operator/pull/3046>`__)
 
+.. _v26.7.2-known-issues:
+
 Known Issues
 ------------
 
@@ -99,7 +200,7 @@ Known Issues
   - Install the DOCA-OFED driver on the host and not use a containerized driver.
   - Use the _inbox_ drivers provided by the operating system.
   - These alternatives are not applicable to OpenShift Container Platform.
-    
+
   If neither of the preceding alternatives are viable, use this workaround.
 
   As a workaround, use GPU Operator v26.7.2 or later and configure a non-default ``NVIDIADriver`` resource with the ``network.nvidia.com/operator.mofed.wait`` node label in its selector.
