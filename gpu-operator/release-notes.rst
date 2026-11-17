@@ -118,14 +118,14 @@ Known Issues
 
 * The default values use the same driver and driver manager container versions as the previous releases.
   These defaults prevent a disruptive driver upgrade.
-  However, the following deployments need NVIDIA Driver Manager for Kubernetes v0.12.2:
+  However, the following deployments need NVIDIA Driver Manager for Kubernetes v0.13.0:
 
   - Red Hat OpenShift Container Platform in an air-gapped environment, to obtain the fix for uncompressed image layers that can prevent mirroring to Red Hat Quay with ``oc-mirror``.
     Refer to `Issue #3166 <https://github.com/NVIDIA/gpu-operator/issues/3166>`__.
   - Clusters that use the DRA Driver for NVIDIA GPUs.
   - Nodes configured for GPU passthrough with ``vfio-pci``.
 
-  To upgrade the driver manager, specify ``--set driver.manager.version=v0.12.2`` with Helm, or set ``spec.driver.manager.version`` to ``v0.12.2`` in the cluster policy.
+  To upgrade the driver manager, specify ``--set driver.manager.version=v0.13.0`` with Helm, or set ``spec.driver.manager.version`` to ``v0.13.0`` in the cluster policy.
   Changing the driver manager image triggers a :ref:`driver upgrade <gpu-driver-upgrades>` on each node and can evict GPU workloads even when the NVIDIA driver version is unchanged.
 
 * On systems with NVLink 5 or later, GPU driver pods can prevent containerized DOCA-OFED updates from completing.
@@ -138,12 +138,12 @@ Known Issues
 
 * On OpenShift, enabling the NRI plugin through a cluster policy update before the NVIDIA driver and NVIDIA Container Toolkit finish initializing after a node reboot can leave standalone DCGM running without GPU access.
   DCGM Exporter then enters ``CrashLoopBackOff``, and GPU metrics remain unavailable.
-  To work around this issue, use NVIDIA Driver Manager for Kubernetes v0.12.2.
+  To work around this issue, use NVIDIA Driver Manager for Kubernetes v0.13.0.
   Refer to the :ref:`Driver Manager image override instructions <v26.7.3-driver-manager-override>` for the settings and the driver-upgrade consequence.
 
 * Clusters that use the DRA Driver for NVIDIA GPUs have the following known issues:
 
-  - The DRA driver needs NVIDIA Driver Manager for Kubernetes v0.12.2.
+  - The DRA driver needs NVIDIA Driver Manager for Kubernetes v0.13.0.
     Refer to the :ref:`Driver Manager image override instructions <v26.7.3-driver-manager-override>`.
   - On NVIDIA Ampere GPUs, such as A100 and A30, with MIG mode and the ``DynamicMIG`` feature gate enabled, the DRA validator and DCGM Exporter pods remain pending.
     Ampere GPUs cannot change MIG mode without a GPU reset, so the DRA driver does not publish the full GPU that these pods request.
