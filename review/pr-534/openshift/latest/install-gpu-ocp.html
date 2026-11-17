@@ -600,26 +600,13 @@ when using <strong>NVIDIA vGPU</strong>. Refer to the appropriate sections below
 <p class="admonition-title">Note</p>
 <p>You can use this screen to customize the ClusterPolicy. However, the default values are sufficient to get the GPU configured and running in most cases.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For OpenShift 4.12 with GPU Operator 25.3.1 or later, you must expand the <strong>Driver</strong> section and set the following fields:</p>
+</li>
+<li><p>Expand the <strong>Driver</strong> section and set the following fields:</p>
 <ul class="simple">
-<li><p><strong>version</strong>: 570.172.08 (or another supported version)</p></li>
-<li><p><strong>image</strong>: driver (or another supported image)</p></li>
-<li><p><strong>repository</strong>: nvcr.io/nvidia (or another supported repository)</p></li>
+<li><p><strong>repository</strong>: <code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia</span></code></p></li>
+<li><p><strong>image</strong>: <code class="docutils literal notranslate"><span class="pre">driver</span></code></p></li>
+<li><p><strong>version</strong>: <code class="docutils literal notranslate"><span class="pre">${recommended}</span></code></p></li>
 </ul>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For OpenShift 5.0, you must expand the <strong>Driver</strong> section and set the following fields:</p>
-<ul class="simple">
-<li><p><strong>repository</strong>: nvcr.io/nvidia</p></li>
-<li><p><strong>image</strong>: driver</p></li>
-<li><p><strong>version</strong>: ${recommended}</p></li>
-</ul>
-<p>Specify the driver version without an operating system suffix.
-The Operator selects the driver image that matches the operating system of each node, such as RHCOS 9 or RHCOS 10.</p>
-</div>
 </li>
 <li><p>Click <strong>Create</strong>.</p>
 <p>At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.</p>
@@ -632,7 +619,7 @@ The Operator selects the driver image that matches the operating system of each 
 <section id="create-the-cluster-policy-using-the-cli">
 <span id="verify-gpu-operator-install-ocp"></span><h3>Create the cluster policy using the CLI<a class="headerlink" href="#create-the-cluster-policy-using-the-cli" title="Permalink to this headline">#</a></h3>
 <ol class="arabic">
-<li><p>Create the ClusterPolicy:</p>
+<li><p>Create the ClusterPolicy file:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc get csv -n nvidia-gpu-operator <span class="nv">$STARTING_CSV</span> -o <span class="nv">jsonpath</span><span class="o">=</span><span class="s1">&#39;{.metadata.annotations.alm-examples}&#39;</span> <span class="p">|</span> jq -r <span class="s1">&#39;map(select(.kind == &quot;ClusterPolicy&quot;)) | .[0]&#39;</span> &gt; clusterpolicy.json
 </pre></div>
 </div>
@@ -640,30 +627,17 @@ The Operator selects the driver image that matches the operating system of each 
 <p class="admonition-title">Note</p>
 <p>$STARTING_CSV is the value of the <code class="docutils literal notranslate"><span class="pre">startingCSV</span></code> field in the <code class="docutils literal notranslate"><span class="pre">Subscription</span></code> CR sample created in the <a class="reference internal" href="#install-gpu-ocp"><span class="std std-ref">Installing the NVIDIA GPU Operator using the CLI</span></a> section.</p>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For OpenShift 4.12 with GPU Operator 25.3.1 or later, modify the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file to specify <code class="docutils literal notranslate"><span class="pre">driver.licensingConfig</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.image</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.version</span></code>, and <code class="docutils literal notranslate"><span class="pre">driver.imagePullSecrets</span></code> (optional). The following snippet is shown as an example. Change values accordingly. Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/release-notes.html#operator-release-notes" title="(in NVIDIA GPU Operator)"><span>Release Notes</span></a> for recommended driver versions.</p>
-</div>
+</li>
+<li><p>Set the driver fields in the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;driver&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">     </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nvcr.io/nvidia&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">     </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;driver&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">     </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;570.172.08&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nvcr.io/nvidia&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;driver&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${recommended}&quot;</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For OpenShift 5.0, modify the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file to specify <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.image</span></code>, and <code class="docutils literal notranslate"><span class="pre">driver.version</span></code>.
-Specify the driver version without an operating system suffix.
-The Operator selects the driver image that matches the operating system of each node, such as RHCOS 9 or RHCOS 10.</p>
-</div>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;driver&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">     </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nvcr.io/nvidia&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">     </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;driver&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">     </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${recommended}&quot;</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</pre></div>
-</div>
+</li>
+<li><p>Create the ClusterPolicy:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f clusterpolicy.json
 </pre></div>
 </div>

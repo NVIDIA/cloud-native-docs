@@ -494,8 +494,7 @@ Refer to the <a class="reference external" href="https://github.com/NVIDIA/dcgm-
 </ul>
 </li>
 <li><p>Added support for Red Hat OpenShift Container Platform 5.0.
-On OpenShift 5.0, set <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.image</span></code>, and <code class="docutils literal notranslate"><span class="pre">driver.version</span></code> in the cluster policy, and specify the driver version without an operating system suffix.
-The Operator selects the driver image that matches the operating system of each node, such as RHCOS 9 or RHCOS 10.
+Administrators must specify the driver repository, image, and version in the cluster policy.
 Refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/cloud-native/openshift/latest/install-gpu-ocp.html#create-cluster-policy" title="(in NVIDIA GPU Operator on Red Hat OpenShift Container Platform)"><span>Create the ClusterPolicy instance</span></a>.</p></li>
 <li><p>The Operator supports the DCGM 4.7 metric names in DCGM Exporter v4.7.0-4.9.0.
 The default metrics file is <code class="docutils literal notranslate"><span class="pre">/etc/dcgm-exporter/default-counters.csv</span></code>.
