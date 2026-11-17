@@ -207,15 +207,15 @@ Create the cluster policy using the web console
 
    .. note:: You can use this screen to customize the ClusterPolicy. However, the default values are sufficient to get the GPU configured and running in most cases.
 
-   .. note:: For OpenShift 4.12 with GPU Operator 25.3.1 or later, you must expand the **Driver** section and set the following fields:
+#. Expand the **Driver** section and set the following fields:
 
-      - **version**: 570.172.08 (or another supported version)
-      - **image**: driver (or another supported image)
-      - **repository**: nvcr.io/nvidia (or another supported repository)
+   - **repository**: ``nvcr.io/nvidia``
+   - **image**: ``driver``
+   - **version**: ``${recommended}``
 
 #. Click **Create**.
 
-   At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.
+   At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.
 
 #. The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
 
@@ -226,7 +226,7 @@ Create the cluster policy using the web console
 Create the cluster policy using the CLI
 =======================================
 
-#. Create the ClusterPolicy:
+#. Create the ClusterPolicy file:
 
    .. code-block:: console
 
@@ -234,15 +234,17 @@ Create the cluster policy using the CLI
 
    .. note:: $STARTING_CSV is the value of the ``startingCSV`` field in the ``Subscription`` CR sample created in the :ref:`install-gpu-ocp` section.
 
-   .. note:: For OpenShift 4.12 with GPU Operator 25.3.1 or later, modify the ``clusterpolicy.json`` file to specify ``driver.licensingConfig``, ``driver.repository``, ``driver.image``, ``driver.version``, and ``driver.imagePullSecrets`` (optional). The following snippet is shown as an example. Change values accordingly. Refer to :ref:`operator-release-notes` for recommended driver versions.
+#. Set the driver fields in the ``clusterpolicy.json`` file:
 
    .. code-block:: json
 
-         "driver": {
-              "repository": "nvcr.io/nvidia",
-              "image": "driver",
-              "version": "570.172.08"
-         }
+      "driver": {
+          "repository": "nvcr.io/nvidia",
+          "image": "driver",
+          "version": "${recommended}"
+      }
+
+#. Create the ClusterPolicy:
 
    .. code-block:: console
 
@@ -309,7 +311,7 @@ Create the cluster policy using the web console
 
 #. Click **Create**.
 
-   At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.
+   At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.
 
 #. The status of the newly deployed ClusterPolicy *gpu-cluster-policy* for the NVIDIA GPU Operator changes to ``State:ready`` when the installation succeeds.
 

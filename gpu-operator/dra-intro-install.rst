@@ -148,6 +148,9 @@ Consider the following limitations before selecting DRA driver v${dra_version}:
 * Kubernetes does not support preemption for DRA resources.
   Injecting DRA-allocated devices requires a preconfigured CDI-compatible container runtime.
   The managed ``gpu.nvidia.com`` ``DeviceClass`` does not set ``spec.extendedResourceName`` to ``nvidia.com/gpu``.
+* On NVIDIA Ampere GPUs, such as A100 and A30, with MIG mode enabled and the ``DynamicMIG`` feature gate enabled, the DRA validator and DCGM Exporter pods remain pending.
+  Ampere GPUs cannot change MIG mode without a GPU reset, so the DRA driver does not publish the full GPU that these pods request.
+  Refer to `Issue #1580 <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/issues/1580>`__.
 
 ********
 Overview

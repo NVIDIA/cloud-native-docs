@@ -345,7 +345,7 @@ Bare Metal / Virtual Machines with GPU Passthrough and NVIDIA vGPU
 
     * - Red Hat Core OS
       -
-      - | 4.18---4.22
+      - | 4.18---4.22, 5.0
       -
       -
       -
