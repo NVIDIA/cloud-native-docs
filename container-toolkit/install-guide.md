@@ -78,7 +78,9 @@ where `systemd` cgroup drivers are used that cause containers to lose access to 
 
 (installing-with-yum-or-dnf)=
 
-### With `dnf`: RHEL/CentOS, Fedora, Amazon Linux
+(with-dnf-rhel-centos-fedora-amazon-linux)=
+
+### With `dnf`: RHEL/CentOS, Fedora, Amazon Linux, Azure Linux
 
 
    ```{note}

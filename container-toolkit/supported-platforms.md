@@ -12,6 +12,7 @@ Recent NVIDIA Container Toolkit releases are tested and expected to work on thes
 | ------------------------ | -------------- | ------- | ------------------------ |
 | Amazon Linux 2023        | X              |         | X {sup}`2`               |
 | Amazon Linux 2           | X              |         | X                        |
+| Azure Linux 4            | X              |         | X                        |
 | Open Suse/SLES 15.x      | X              |         |                          |
 | Debian Linux 11          | X              |         |                          |
 | CentOS 8                 | X              | X       | X                        |

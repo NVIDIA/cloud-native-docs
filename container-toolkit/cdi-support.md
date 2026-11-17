@@ -220,6 +220,11 @@ Using CDI to inject NVIDIA devices can conflict with using the NVIDIA Container 
 This means that if a `/usr/share/containers/oci/hooks.d/oci-nvidia-hook.json` file exists, delete it
 or ensure that you do not run containers with the `NVIDIA_VISIBLE_DEVICES` environment variable set.
 
+Generated CDI specifications include a `void` volume mount.
+When you set `accept-nvidia-visible-devices-as-volume-mounts` to `true`, the `void` mount prevents the NVIDIA Container Runtime from injecting additional devices through volume-mount requests.
+The setting defaults to `false`.
+Regenerate an existing specification by following [Manual CDI Specification Generation](#manual-cdi-specification-generation) to include the `void` mount.
+
 The use of the CDI specification depends on the CDI-enabled container engine or CLI that you use.
 In the case of `podman`, for example, releases as of `v4.1.0` include support for specifying CDI devices in the `--device` argument.
 Assuming that you generated a CDI specification as in the preceding section, running a container with access to all NVIDIA GPUs requires the following command:
