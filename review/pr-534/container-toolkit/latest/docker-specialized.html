@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.20.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.20.2';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -654,13 +654,11 @@ utility driver components available to the container:</p>
     &lt;image&gt; &lt;command&gt;
 </pre></div>
 </div>
-<p>Legacy mode limits EGL and Vulkan visibility to the physical GPUs assigned to
-a container when the <code class="docutils literal notranslate"><span class="pre">graphics</span></code> or <code class="docutils literal notranslate"><span class="pre">display</span></code> driver capability is enabled.
-The 1.20.0 release adds the same behavior to CDI and JIT-CDI modes through the
-<code class="docutils literal notranslate"><span class="pre">update-application-profile</span></code> hook. This change provides feature parity across
-the modes.</p>
-<p>If the application-profile hook conflicts with an application, refer to
-<a class="reference internal" href="cdi-support.html#disabling-hooks-in-jit-cdi-mode"><span class="std std-doc">Disabling Hooks in JIT-CDI Mode</span></a>.</p>
+<p>When you enable the <code class="docutils literal notranslate"><span class="pre">graphics</span></code> or <code class="docutils literal notranslate"><span class="pre">display</span></code> driver capability in legacy mode, the application profile configures EGL and Vulkan applications to use the physical GPUs assigned to the container.
+In CDI and JIT-CDI modes, the <code class="docutils literal notranslate"><span class="pre">update-application-profile</span></code> hook updates the application profile for the assigned GPUs.</p>
+<p>If you use a symbolic link for the application profile path, the hook replaces the symbolic link and leaves the link target unchanged.
+Your container can start even if a read-only filesystem or busy-file error prevents the hook from updating the application profile.</p>
+<p>If the hook conflicts with your application, refer to <a class="reference internal" href="cdi-support.html#disabling-hooks-in-jit-cdi-mode"><span class="std std-doc">Disabling Hooks in JIT-CDI Mode</span></a>.</p>
 </section>
 <section id="constraints">
 <h3>Constraints<a class="headerlink" href="#constraints" title="Permalink to this headline">#</a></h3>
