@@ -609,9 +609,20 @@ when using <strong>NVIDIA vGPU</strong>. Refer to the appropriate sections below
 <li><p><strong>repository</strong>: nvcr.io/nvidia (or another supported repository)</p></li>
 </ul>
 </div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For OpenShift 5.0, you must expand the <strong>Driver</strong> section and set the following fields:</p>
+<ul class="simple">
+<li><p><strong>repository</strong>: nvcr.io/nvidia</p></li>
+<li><p><strong>image</strong>: driver</p></li>
+<li><p><strong>version</strong>: ${recommended}</p></li>
+</ul>
+<p>Specify the driver version without an operating system suffix.
+The Operator selects the driver image that matches the operating system of each node, such as RHCOS 9 or RHCOS 10.</p>
+</div>
 </li>
 <li><p>Click <strong>Create</strong>.</p>
-<p>At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.</p>
+<p>At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.</p>
 </li>
 <li><p>The status of the newly deployed ClusterPolicy <em>gpu-cluster-policy</em> for the NVIDIA GPU Operator changes to <code class="docutils literal notranslate"><span class="pre">State:ready</span></code> when the installation succeeds.</p>
 <img alt="_images/cluster-policy-state-ready.png" src="_images/cluster-policy-state-ready.png" />
@@ -637,6 +648,19 @@ when using <strong>NVIDIA vGPU</strong>. Refer to the appropriate sections below
 <span class="w">     </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nvcr.io/nvidia&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">     </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;driver&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">     </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;570.172.08&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For OpenShift 5.0, modify the <code class="docutils literal notranslate"><span class="pre">clusterpolicy.json</span></code> file to specify <code class="docutils literal notranslate"><span class="pre">driver.repository</span></code>, <code class="docutils literal notranslate"><span class="pre">driver.image</span></code>, and <code class="docutils literal notranslate"><span class="pre">driver.version</span></code>.
+Specify the driver version without an operating system suffix.
+The Operator selects the driver image that matches the operating system of each node, such as RHCOS 9 or RHCOS 10.</p>
+</div>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="nt">&quot;driver&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">     </span><span class="nt">&quot;repository&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;nvcr.io/nvidia&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">     </span><span class="nt">&quot;image&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;driver&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">     </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;${recommended}&quot;</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 </pre></div>
 </div>
@@ -700,7 +724,7 @@ If the registry is not public, specify the <code class="docutils literal notrans
 </ul>
 </li>
 <li><p>Click <strong>Create</strong>.</p>
-<p>At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift 4 cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.</p>
+<p>At this point, the GPU Operator proceeds and installs all the required components to set up the NVIDIA GPUs in the OpenShift cluster. Wait at least 10 to 20 minutes before troubleshooting because this process can take some time to finish.</p>
 </li>
 <li><p>The status of the newly deployed ClusterPolicy <em>gpu-cluster-policy</em> for the NVIDIA GPU Operator changes to <code class="docutils literal notranslate"><span class="pre">State:ready</span></code> when the installation succeeds.</p>
 <img alt="_images/cluster-policy-state-ready.png" src="_images/cluster-policy-state-ready.png" />
