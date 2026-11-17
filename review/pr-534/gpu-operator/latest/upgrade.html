@@ -480,7 +480,7 @@ Review the target release’s known issues in the <a class="reference internal" 
 If you override <code class="docutils literal notranslate"><span class="pre">dcgm.version</span></code> or <code class="docutils literal notranslate"><span class="pre">dcgmExporter.version</span></code>, select compatible versions and upgrade both images together.
 DCGM Exporter 4.9.0 requires a DCGM 4.7 or later host engine and cannot start against a standalone DCGM 4.6.x host engine.
 This requirement applies when <code class="docutils literal notranslate"><span class="pre">dcgm.enabled=true</span></code>, including the default OpenShift configuration, or when the exporter connects to a host engine installed on the node.
-When upgrading a standalone DCGM deployment, the exporter can restart during the transition until the host engine has been upgraded.</p>
+When upgrading a standalone DCGM deployment, the exporter can restart during the transition until you upgrade the host engine.</p>
 <p>DCGM Exporter renames the driver-version label from <code class="docutils literal notranslate"><span class="pre">DCGM_FI_DRIVER_VERSION</span></code> to <code class="docutils literal notranslate"><span class="pre">DCGM_FI_SYSTEM_DRIVER_VERSION</span></code>.
 Update dashboards, alerts, and queries that reference the previous label name; filters using that name can return no data after upgrading.</p>
 <p>If you roll back these overrides, roll back both images together.
