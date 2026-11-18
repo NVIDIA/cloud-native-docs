@@ -20,39 +20,27 @@
 About GPU Telemetry
 ###################
 
-Monitoring stacks usually consist of a collector, a time-series database to store metrics and a visualization layer.
-A popular open-source stack is `Prometheus <https://prometheus.io/>`_ used along with `Grafana <https://grafana.com/>`_ as
-the visualization tool to create rich dashboards. Prometheus also includes an `Alertmanager <https://github.com/prometheus/alertmanager>`_,
-to create and manage alerts. Prometheus is deployed along with `kube-state-metrics <https://github.com/kubernetes/kube-state-metrics>`_ and
-`node_exporter <https://github.com/prometheus/node_exporter>`_ to expose cluster-level metrics for Kubernetes API objects and node-level
-metrics such as CPU utilization.
+The NVIDIA GPU Operator deploys NVIDIA DCGM Exporter on every GPU node by default.
+DCGM Exporter reads GPU metrics from `NVIDIA DCGM <https://developer.nvidia.com/dcgm>`__
+and exposes them for `Prometheus <https://prometheus.io/>`__.
+You can view the metrics in Grafana or, on Red Hat OpenShift, in the web console.
 
+This documentation covers what the GPU Operator does for GPU telemetry:
 
-To gather GPU telemetry in Kubernetes, its recommended to use DCGM Exporter.  DCGM Exporter, based on `DCGM <https://developer.nvidia.com/dcgm>`_ exposes
-GPU metrics for Prometheus and can be visualized using Grafana.  DCGM Exporter is architected to take advantage of
-``KubeletPodResources`` `API <https://kubernetes.io/docs/reference/command-line-tools-reference/feature-gates/>`_ and exposes GPU metrics in a format that can be
-scraped by Prometheus. A ``ServiceMonitor`` is also included to expose endpoints.
+* :doc:`dcgm-exporter` describes the resources that the Operator creates,
+  the Operator values for DCGM Exporter, custom metrics files, Prometheus scraping, and a separate DCGM host engine.
+* :external+ocp:doc:`enable-gpu-monitoring-dashboard` describes the GPU dashboard in the OpenShift web console.
 
-.. note::
-   DCGM and DCGM Exporter are deployed by default with the `NVIDIA GPU Operator <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/>`_.
+For DCGM Exporter itself, such as standalone and Helm installs, the configuration file, command-line options,
+and the list of metrics, refer to the
+`DCGM Exporter documentation <https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html>`__.
 
-
-*************************
-Benefits of GPU Telemetry
-*************************
-
-Understanding GPU usage provides important insights for IT administrators managing a data center.
-Trends in GPU metrics correlate with workload behavior and make it possible to optimize resource allocation,
-diagnose anomalies, and increase overall data center efficiency. 
-As GPUs become more mainstream, users would like to get access to GPU metrics to monitor GPU resources, just
-like they do today for CPUs.
-
-*************************
+***********
 Quick Links
-*************************
+***********
 
-* `DCGM Exporter GitHub repository <https://github.com/NVIDIA/dcgm-exporter>`_
-* `DCGM Documentation <https://docs.nvidia.com/datacenter/dcgm/latest/>`_
-* `DCGM Exporter Documentation <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/dcgm-exporter.html>`_
-* `Integrating GPU Telemetry into Kubernetes <https://docs.nvidia.com/datacenter/cloud-native/gpu-telemetry/integrating-telemetry-kubernetes.html>`_
-* `NVIDIA GPU Operator Documentation <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/>`_
+* `NVIDIA GPU Operator documentation <https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/>`__
+* `DCGM Exporter documentation <https://docs.nvidia.com/datacenter/dcgm/latest/installation/install-dcgm-exporter.html>`__
+* `DCGM Exporter release notes <https://docs.nvidia.com/datacenter/dcgm/latest/release-notes/dcgm-exporter.html>`__
+* `DCGM Exporter GitHub repository <https://github.com/NVIDIA/dcgm-exporter>`__
+* `DCGM documentation <https://docs.nvidia.com/datacenter/dcgm/latest/>`__
