@@ -9,6 +9,10 @@ Troubleshooting
 
 This section includes errors that users might encounter when performing various checks during installation of the **NVIDIA GPU Operator** on the OpenShift Container Platform cluster.
 
+.. note::
+
+   If you deploy the GPU Operator in a disconnected or airgapped environment and mirroring an image fails, refer to :doc:`known-issues`.
+
 Node Feature Discovery checks
 -----------------------------------
 
