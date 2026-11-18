@@ -385,8 +385,10 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``false``
 
    * - ``clusterPolicy.deployCR``
-     - When set to ``true``, the chart creates the ``ClusterPolicy`` resource for the NVIDIA Kubernetes Device Plugin enablement stack.
-       Set this value to ``false`` when using ``gpuCluster.deployCR=true``.
+     - Set to ``true`` to have the GPU Operator allocate GPUs with the NVIDIA Kubernetes Device Plugin.
+       The chart creates the ``ClusterPolicy`` resource for the Device Plugin.
+       Set to ``false`` if you set ``gpuCluster.deployCR=true`` to install the DRA Driver for NVIDIA GPUs.
+       The chart fails if both values are ``true``.
      - ``true``
 
    * - ``cdi.enabled``
@@ -490,6 +492,8 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
 
    * - ``driver.nvidiaDriverCRD.enabled``
      - When set to ``true``, the Operator deploys NVIDIA GPU Driver Custom Resource Definition.
+       This value controls the NVIDIA GPU driver, not the DRA Driver for NVIDIA GPUs.
+       If you set ``gpuCluster.deployCR=true`` and the GPU Operator installs the NVIDIA GPU driver, set this value to ``true``.
        Refer to the :doc:`NVIDIA Driver Custom Resource Definition <nvidia-driver-configuration>` page for more information.
      - ``false``
 
@@ -508,8 +512,11 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``v${dra_version}``
 
    * - ``gpuCluster.deployCR``
-     - When set to ``true``, the chart creates the ``GPUCluster`` resource for the DRA enablement stack.
-       Set ``clusterPolicy.deployCR=false`` and refer to :doc:`DRA Driver for NVIDIA GPUs <dra-intro-install>` for the complete installation procedure.
+     - Set to ``true`` to have the GPU Operator install and manage the DRA Driver for NVIDIA GPUs.
+       By default, the GPU Operator does not install the DRA Driver.
+       If you set this value to ``true``, also set ``clusterPolicy.deployCR=false``.
+       If the GPU Operator installs the NVIDIA GPU driver, also set ``driver.nvidiaDriverCRD.enabled=true``.
+       For the Helm commands, refer to :ref:`Install the DRA Driver <dra-driver-install>`.
      - ``false``
 
    * - ``driver.rdma.enabled``
