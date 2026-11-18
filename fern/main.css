@@ -1,0 +1,73 @@
+/* Larger type across the site: body copy and sidebar. */
+
+.fern-prose,
+.prose {
+    font-size: 1.0625rem !important; /* 17px */
+    line-height: 1.7 !important;
+}
+
+.fern-sidebar-link,
+.fern-sidebar-heading {
+    font-size: 0.9375rem !important; /* 15px */
+}
+
+
+/* Landing page (pages/overview/index.mdx, layout: custom). */
+
+.cc-landing {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 0 1.5rem 4rem;
+}
+
+.cc-hero {
+    padding: 4rem 0 2.5rem;
+    text-align: center;
+}
+
+.cc-eyebrow {
+    margin: 0 0 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #76B900;
+}
+
+.cc-hero h1 {
+    margin: 0;
+    font-size: clamp(1.875rem, 3.5vw, 2.5rem);
+    line-height: 1.2;
+    font-weight: 600;
+}
+
+.cc-lede {
+    max-width: 640px;
+    margin: 1rem auto 0;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    opacity: 0.75;
+}
+
+.cc-products {
+    margin-bottom: 3.5rem;
+}
+
+.cc-products .fern-card {
+    padding: 1.5rem;
+    transition: transform 120ms ease, border-color 120ms ease;
+}
+
+.cc-products .fern-card:hover {
+    transform: translateY(-3px);
+    border-color: #76B900;
+}
+
+.cc-landing h2 {
+    margin: 2.5rem 0 1rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.7;
+}

@@ -47,3 +47,8 @@ Refer to the MKE product documentation for information about working with MKE.
          $ checkmodule -m -M -o nvidia-container-microshift.mod nvidia-container-microshift.te
       2023/06/22 14:25:38 Retreiving plugins.
 * Restored Azure Kubernetes Service (AKS) to the :ref:`cloud service providers <cloud-service-providers>` table.
+    - page: Azure AKS
+## About MKE with the GPU Operator
+## Approaches for Working with Azure AKS
+## Verifying MKE with the GPU Operator
+title: "Azure AKS"
