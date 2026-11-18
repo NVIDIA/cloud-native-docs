@@ -9,67 +9,119 @@
 Known Issues
 #####################################
 
-This page describes known issues that are specific to running and mirroring the NVIDIA GPU Operator on Red Hat OpenShift Container Platform.
+The following issues apply to NVIDIA GPU Operator 26.7.x on Red Hat OpenShift Container Platform.
 
-***************************************************************
-Disconnected mirroring fails for some GPU Operator images
-***************************************************************
+.. _openshift-known-issues-oc-mirror-quay:
 
-Starting with NVIDIA GPU Operator ``v26.7.0``, some published container images had inconsistent manifests.
-An image manifest can be inconsistent in two ways:
+*********************************************************************
+``oc-mirror`` fails to mirror the GPU Operator bundle to Red Hat Quay
+*********************************************************************
 
-* A layer is uncompressed instead of gzip-compressed.
-* The top-level manifest is an OCI image index, but the per-architecture manifests that it references use the older Docker Schema2 media type instead of the matching OCI media type.
+When ``oc-mirror`` mirrors the GPU Operator catalog to a Red Hat Quay registry, copying three images in the Operator bundle fails with the following error:
 
-Registries such as Quay validate that a manifest index and its child manifests use a consistent media type.
-When an image has one of these inconsistencies, ``oc-mirror`` and ``skopeo`` cannot mirror the image without converting its manifest, which would change the image digest.
-Because digest preservation is required for Operator bundles and related images, the mirroring tools refuse to perform this conversion and the mirroring step fails.
+.. code-block:: output
 
-The failure looks similar to the following:
-
-.. code-block:: console
-
+   [ERROR] : [Worker] error mirroring image docker://nvcr.io/nvidia/cloud-native/<image>@sha256:...
    error: Manifest list must be converted to type "application/vnd.docker.distribution.manifest.list.v2+json"
    to be written to destination, but we cannot modify it: "Instructed to preserve digests"
 
-Check whether an image is affected
-======================================
+``oc-mirror`` then omits the GPU Operator bundle from the mirror because one of the related images in the bundle failed to mirror.
+The mirrored catalog does not contain an installable GPU Operator.
 
-Use ``skopeo`` to inspect the top-level manifest type of an image:
+Clusters that use the DRA Driver for NVIDIA GPUs have no workaround.
+The procedure on this page blocks the DRA driver image, so the DRA driver pods cannot start in the disconnected cluster.
 
-.. code-block:: console
+Affected images
+===============
 
-   $ skopeo inspect --raw docker://<image-reference> | jq -r .mediaType
+The GPU Operator bundle lists the following images that fail to mirror to Red Hat Quay:
 
-If the result is ``application/vnd.oci.image.index.v1+json``, inspect each per-architecture manifest that the index references:
+* ``nvcr.io/nvidia/cloud-native/k8s-driver-manager:v0.12.1``
+* ``nvcr.io/nvidia/dra-driver-nvidia-gpu:v0.5.1``
+* ``nvcr.io/nvidia/cloud-native/gdrdrv``
 
-.. code-block:: console
+Mirror the Operator bundle
+==========================
 
-   $ skopeo inspect --raw docker://<image-reference> | jq '.manifests[] | {platform, mediaType, digest}'
+The procedure blocks the affected images and adds the replacement driver manager image.
 
-If any of the returned ``mediaType`` values is ``application/vnd.docker.distribution.manifest.v2+json``, the index and its children are inconsistent.
-To check for uncompressed layers, inspect the referenced manifest directly:
+#. Add the ``blockedImages`` and ``additionalImages`` entries to the ``mirror`` section of the ``ImageSetConfiguration`` file:
 
-.. code-block:: console
+   .. code-block:: yaml
+      :emphasize-lines: 8-13
 
-   $ skopeo inspect --raw docker://<image-reference>@<manifest-digest> | jq -r '.layers[].mediaType'
+      apiVersion: mirror.openshift.io/v2alpha1
+      kind: ImageSetConfiguration
+      mirror:
+        operators:
+        - catalog: registry.redhat.io/redhat/certified-operator-index:v<ocp-version>
+          packages:
+          - name: gpu-operator-certified
+        additionalImages:
+        - name: nvcr.io/nvidia/cloud-native/k8s-driver-manager:v0.13.0@sha256:c48dd0248777af64a4c1059982eafc5b0fc28ec2d98995c407af2b1bd8449fc3
+        blockedImages:
+        - name: 'nvcr[.]io/nvidia/cloud-native/k8s-driver-manager.*@sha256:37e6bf0cf02b5888288a173353b858da8823cc9f9fb9c6e8d6d1e2cf5bfb16c8'
+        - name: 'nvcr[.]io/nvidia/dra-driver-nvidia-gpu.*@sha256:ae591dbc8e630b49181b40dfddf8f0a3f0890b883acb7b2b420f5b207fda253e'
+        - name: 'nvcr[.]io/nvidia/cloud-native/gdrdrv@sha256:eef1b6663d78555f0e5c49c156196b67e8a3008bc22aaa02b03dad53887ee0f1'
 
-A layer is uncompressed if its media type does not end in ``gzip`` or ``zstd``, for example ``application/vnd.oci.image.layer.v1.tar``.
+   .. tip::
 
-Status
-======================================
+      If the mirror registry is Project Quay 3.17.3, remove the ``gdrdrv`` entry from ``blockedImages``.
 
-NVIDIA GPU Operator ``v26.7.3`` fixes this issue for the GPU Operator image and its core related images, including the NVIDIA Container Toolkit, the NVIDIA Kubernetes Device Plugin, and the NVIDIA MIG Manager.
+#. Rerun the ``oc-mirror`` command with the updated ``ImageSetConfiguration`` file.
 
-A small number of other related images referenced by the Operator bundle, such as the NVIDIA Driver Manager, GDRCopy, and the DRA driver for NVIDIA GPUs, keep their existing pinned versions in ``v26.7.3`` to avoid triggering a driver DaemonSet rollout during a patch upgrade.
-Refer to `NVIDIA/gpu-operator#3166 <https://github.com/NVIDIA/gpu-operator/issues/3166>`_ for the current status of each affected image and for links to the corrected replacement images as they become available.
+#. Apply the generated ``ImageDigestMirrorSet`` and ``CatalogSource`` resources from the ``working-dir/cluster-resources`` directory:
 
-Workaround for affected images
-======================================
+   .. code-block:: console
 
-If you deploy the GPU Operator in a disconnected or airgapped environment and mirroring fails for one of the images described in `NVIDIA/gpu-operator#3166 <https://github.com/NVIDIA/gpu-operator/issues/3166>`_, do the following:
+      $ oc apply -f <workspace>/working-dir/cluster-resources/idms-oc-mirror.yaml
+      $ oc apply -f <workspace>/working-dir/cluster-resources/cs-<catalog>.yaml
 
-#. Add the corrected replacement image to your ``ImageSetConfiguration`` so that ``oc-mirror`` mirrors it to your registry.
-#. Override the corresponding image reference, by digest, in ``ClusterPolicy``, ``NVIDIADriver``, or the relevant ``gpu-operator`` deployment environment variable, so that the cluster pulls the mirrored replacement image.
+#. Install the GPU Operator from the mirrored catalog.
 
-A runtime image override alone does not resolve a mirroring failure, because ``oc-mirror`` mirrors the images listed in the Operator bundle, not the images that a cluster is configured to run.
+#. Specify the replacement driver manager image by digest in the ``ClusterPolicy`` resource.
+   The ``ImageDigestMirrorSet`` resource from ``oc-mirror`` redirects pulls by digest to the mirror registry.
+
+   .. code-block:: yaml
+
+      spec:
+        driver:
+          manager:
+            repository: nvcr.io/nvidia/cloud-native
+            image: k8s-driver-manager
+            version: sha256:c48dd0248777af64a4c1059982eafc5b0fc28ec2d98995c407af2b1bd8449fc3
+
+   If the cluster runs the NVIDIA vGPU Manager or the NVIDIA VFIO Manager, set the same ``repository``, ``image``, and ``version`` values in ``spec.vgpuManager.driverManager``, ``spec.vfioManager``, and ``spec.vfioManager.driverManager``.
+   If the cluster uses ``NVIDIADriver`` resources, set the same values in ``spec.manager`` of each ``NVIDIADriver`` resource.
+
+   Changing the driver manager image on a running cluster triggers a driver upgrade on each node and can evict GPU workloads.
+   Refer to :external+gpuop:ref:`changing the driver manager image <v26.7.3-driver-manager-override>` in the GPU Operator release notes.
+
+Check an image for manifest problems
+====================================
+
+To check an image that fails to mirror, use ``skopeo`` to inspect the image manifests.
+
+#. Display the media type of the top-level manifest:
+
+   .. code-block:: console
+
+      $ skopeo inspect --raw docker://<image-reference> | jq -r .mediaType
+
+#. If the media type is ``application/vnd.oci.image.index.v1+json``, display the media types of the per-architecture manifests:
+
+   .. code-block:: console
+
+      $ skopeo inspect --raw docker://<image-reference> | jq '.manifests[] | {platform, mediaType, digest}'
+
+   A per-architecture media type of ``application/vnd.docker.distribution.manifest.v2+json`` does not match the OCI image index.
+
+#. Display the layer media types of a per-architecture manifest:
+
+   .. code-block:: console
+
+      $ skopeo inspect --raw docker://<image-reference>@<manifest-digest> | jq -r '.layers[].mediaType'
+
+   A layer media type that does not end in ``gzip`` or ``zstd``, such as ``application/vnd.oci.image.layer.v1.tar``, identifies an uncompressed layer.
+
+To report an affected image that this page does not list, add the image reference and the ``oc-mirror`` error output to `NVIDIA/gpu-operator#3166 <https://github.com/NVIDIA/gpu-operator/issues/3166>`_.
