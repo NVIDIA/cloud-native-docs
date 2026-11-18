@@ -1,0 +1,35 @@
+instances:
+- url: nvidia.docs.buildwithfern.com/gpu-operator-b
+title: NVIDIA GPU Operator
+layout:
+  searchbar-placement: header
+  page-width: 1376px
+  sidebar-width: 248px
+  content-width: 812px
+  tabs-placement: header
+  hide-feedback: true
+colors:
+  accentPrimary:
+    dark: '#76B900'
+    light: '#245501'
+logo:
+  dark: ./assets/NVIDIA_dark.svg
+  light: ./assets/NVIDIA_light.svg
+  height: 20
+  right-text: GPU Operator
+favicon: ./assets/NVIDIA_symbol.svg
+css:
+- ./main.css
+navbar-links:
+- type: github
+  value: https://github.com/NVIDIA/gpu-operator
+versions:
+- display-name: '26.7'
+  path: ./versions/v26.7.yml
+  slug: '26.7'
+- display-name: '26.3'
+  path: ./versions/v26.7.yml
+  slug: '26.3'
+- display-name: '25.10'
+  path: ./versions/v26.7.yml
+  slug: '25.10'
