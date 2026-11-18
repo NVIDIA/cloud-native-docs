@@ -120,8 +120,6 @@ Known Issues
   These defaults prevent a disruptive driver upgrade.
   However, the following deployments need NVIDIA Driver Manager for Kubernetes v0.13.0:
 
-  - Red Hat OpenShift Container Platform in an air-gapped environment, to obtain the fix for uncompressed image layers that can prevent mirroring to Red Hat Quay with ``oc-mirror``.
-    Refer to `Issue #3166 <https://github.com/NVIDIA/gpu-operator/issues/3166>`__.
   - Clusters that use the DRA Driver for NVIDIA GPUs.
   - Nodes configured for GPU passthrough with ``vfio-pci``.
 
@@ -148,6 +146,16 @@ Known Issues
   - On NVIDIA Ampere GPUs, such as A100 and A30, with MIG mode and the ``DynamicMIG`` feature gate enabled, the DRA validator and DCGM Exporter pods remain pending.
     Ampere GPUs cannot change MIG mode without a GPU reset, so the DRA driver does not publish the full GPU that these pods request.
     Refer to `Issue #1580 <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/issues/1580>`__.
+
+* For air-gapped or disconnected deployments, use Red Hat Quay 3.17.3 or later to mirror GPU Operator images with ``oc-mirror``.
+  Quay 3.17.3 successfully mirrors the other tested images; older Quay versions can fail to mirror additional images.
+  The ``dra-driver-nvidia-gpu:v0.5.1`` image, retained in the default OLM bundle, fails to mirror even with Quay 3.17.3.
+  No fixed DRA driver image is available.
+
+  If you do not use the DRA driver, add its original digest-pinned image reference from the bundle's ``relatedImages`` to ``mirror.blockedImages`` in your ``ImageSetConfiguration``.
+  If you use the DRA driver, no workaround is currently available for this mirroring failure.
+
+  Refer to `Issue #3166 <https://github.com/NVIDIA/gpu-operator/issues/3166>`__.
 
 Post-Release Documentation Updates
 ----------------------------------
