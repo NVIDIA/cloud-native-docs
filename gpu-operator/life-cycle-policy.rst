@@ -131,7 +131,8 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
        | `570.211.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-211-01/index.html>`_
        | `535.309.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-309-01/index.html>`_
        | `535.288.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-288-01/index.html>`_
-     - | `615.71.10 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-615-71-10/index.html>`_ (**R**) |r615|_
+     - | `620.70.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-620-70-06/index.html>`_ (**R**)
+       | `615.71.10 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-615-71-10/index.html>`_ |r615|_
        | `615.71.09 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-615-71-09/index.html>`_ |r615|_
        | `610.57.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-610-57-04/index.html>`_
        | `595.112.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-112-07/index.html>`_
