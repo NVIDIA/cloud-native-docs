@@ -656,6 +656,11 @@ You can mirror the Operator content of a Red Hat-provided catalog, or a custom c
 container image registry using the ``oc-mirror`` commands.
 The target registry must support `Docker v2-2 <https://docs.docker.com/registry/spec/manifest-v2-2/>`_. For a cluster on a restricted network, this registry can be one that the cluster has network access to, such as a mirror registry created during a restricted network cluster installation.
 
+.. note::
+
+   Some GPU Operator related images have known container image manifest issues that can cause mirroring to fail.
+   Refer to :doc:`known-issues` for how to identify an affected image and for the current workaround.
+
 The ``oc-mirror`` commands also automatically mirrors the index
 image specified during the mirroring process, whether it be a Red Hat-provided index image or
 your own custom-built index image, to the target registry.

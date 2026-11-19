@@ -16,6 +16,7 @@ NVIDIA GPU Operator on Red Hat OpenShift Container Platform
    clean-up.rst
    mirror-gpu-ocp-disconnected.rst
    deploy-gpu-ocp-ipv6.rst
+   known-issues.rst
    enable-gpu-monitoring-dashboard.rst
    time-slicing-gpus-in-openshift.rst
    openshift-virtualization.rst
