@@ -88,6 +88,27 @@ Limitations and Restrictions
 * NVIDIA supports the Operator and Kata Containers with the containerd runtime only.
 
 
+********************************
+OpenShift Container Platform
+********************************
+
+Red Hat OpenShift Container Platform uses CRI-O and manages Kata Containers through
+the Red Hat OpenShift Sandboxed Containers Operator. The procedure on this page uses
+the ``kata-deploy`` Helm chart and is intended for containerd-based Kubernetes
+clusters; do not use it to install Kata Containers on OpenShift.
+
+For OpenShift deployments, install the Red Hat OpenShift Sandboxed Containers
+Operator by following the `Red Hat documentation <https://docs.redhat.com/en/documentation/openshift_container_platform/latest/html/sandboxed_containers/>`__.
+Then install the NVIDIA GPU Operator by following
+:doc:`the OpenShift installation guide <../openshift/install-gpu-ocp>`.
+
+.. note::
+
+   The GPU Operator provides Technology Preview support for Red Hat OpenShift
+   Sandboxed Containers v1.12. Verify the supported OpenShift and GPU Operator
+   versions before deploying this configuration.
+
+
 .. _kata-containers-cluster-topology-considerations:
 
 *******************************
