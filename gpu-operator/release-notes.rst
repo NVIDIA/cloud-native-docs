@@ -149,6 +149,11 @@ Known Issues
     Ampere GPUs cannot change MIG mode without a GPU reset, so the DRA driver does not publish the full GPU that these pods request.
     Refer to `Issue #1580 <https://github.com/kubernetes-sigs/dra-driver-nvidia-gpu/issues/1580>`__.
 
+Post-Release Documentation Updates
+----------------------------------
+
+* Added 620.70.06 to the supported driver versions in the :ref:`operator-component-matrix`.
+
 ----
 
 .. _v26.7.2:
