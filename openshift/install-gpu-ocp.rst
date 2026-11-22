@@ -193,6 +193,11 @@ When you install the **NVIDIA GPU Operator** in the OpenShift Container Platform
 
 .. note:: If you create a ClusterPolicy that contains an empty specification such as ``spec{}``, the ClusterPolicy fails to deploy.
 
+You must set the driver version when you create the cluster policy on a newly installed OpenShift Container Platform 5.0 cluster.
+Newly installed clusters use RHCOS 10 nodes, and the default driver image does not work on these nodes.
+A cluster that you upgraded from OpenShift 4.x keeps RHCOS 9 nodes and is not affected.
+Refer to :ref:`openshift-known-issues-ocp5-default-driver`.
+
 As a cluster administrator, you can create a ClusterPolicy using the OpenShift Container Platform CLI or the web console. Also, these steps differ
 when using **NVIDIA vGPU**. Refer to the appropriate sections below.
 
