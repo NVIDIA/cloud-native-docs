@@ -50,13 +50,13 @@ Prerequisites
           && chmod 700 get_helm.sh \
           && ./get_helm.sh
 
-#. If you are planning to use ClusterPolicy for driver configuration, all worker nodes or node groups to run GPU workloads in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
+#. If you are planning to use a ``ClusterPolicy`` resource for driver configuration, all worker nodes or node groups to run GPU workloads in the Kubernetes cluster must run the same operating system version to use the NVIDIA GPU Driver container.
    Alternatively, if you pre-install the NVIDIA GPU Driver on the nodes, then you can run different operating systems.
 
    For worker nodes or node groups that run CPU workloads only, the nodes can run any operating system because
    the GPU Operator does not perform any configuration or management of nodes for CPU-only workloads.
 
-   If you are planning to use NVIDIA GPU Driver Custom Resource Definition, you can use a mix of operating system versions on CPU and GPU nodes. Refer to the :doc:`NVIDIA Driver Custom Resource Definition <nvidia-driver-configuration>` page for more information.
+   If you are planning to use the NVIDIA GPU driver custom resource definition, you can use a mix of operating system versions on CPU and GPU nodes. Refer to the :doc:`NVIDIA Driver Custom Resource Definition <nvidia-driver-configuration>` page for more information.
 
 #. Nodes must be configured with a container engine such as CRI-O or containerd.
 
@@ -192,7 +192,7 @@ running workloads.
    The above output is for a default install.
    If you installed the Operator with custom configuration, you may see different pods.
 
-#. Verify the ``ClusterPolicy`` is in the ``ready`` state:
+#. Verify the ``ClusterPolicy`` resource is in the ``ready`` state:
 
    .. code-block:: console
 
@@ -438,22 +438,22 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``false``
 
    * - ``dcgmExporter.annotations``
-     - Map of custom annotations to add to the DCGM Exporter DaemonSet.
+     - Map of custom annotations to add to the DCGM Exporter daemon set.
      - ``{}``
 
    * - ``dcgmExporter.enablePodLabels``
      - When set to ``true``, Kubernetes pod labels are added as Prometheus label dimensions on the GPU metrics.
-       Enabling this option causes the Operator to provision a cluster-scoped ClusterRole and ClusterRoleBinding
+       Enabling this option causes the Operator to provision a cluster role and cluster role binding
        (``nvidia-dcgm-exporter-read-pods``) that grants the DCGM Exporter service account ``get``, ``list``, and ``watch`` access to pods.
-       For a ``GPUCluster`` installation, enabling this option also enables DRA attribution and grants read access to ``ResourceSlice`` objects.
+       For an installation with a ``GPUCluster`` resource, enabling this option also enables DRA attribution and grants read access to ``ResourceSlice`` objects.
        Use ``dcgmExporter.podLabelAllowlistRegex`` to limit which labels are emitted.
      - ``false``
 
    * - ``dcgmExporter.enablePodUID``
      - When set to ``true``, the Kubernetes pod UID is added as a Prometheus label dimension on the GPU metrics.
-       Like ``dcgmExporter.enablePodLabels``, this provisions a cluster-scoped ClusterRole and ClusterRoleBinding that grants the DCGM Exporter
+       Like ``dcgmExporter.enablePodLabels``, this provisions a cluster role and cluster role binding that grants the DCGM Exporter
        service account ``get``, ``list``, and ``watch`` access to pods.
-       For a ``GPUCluster`` installation, enabling this option also enables DRA attribution and grants read access to ``ResourceSlice`` objects.
+       For an installation with a ``GPUCluster`` resource, enabling this option also enables DRA attribution and grants read access to ``ResourceSlice`` objects.
      - ``false``
 
    * - ``dcgmExporter.podLabelAllowlistRegex``
@@ -491,7 +491,7 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``auto``
 
    * - ``driver.nvidiaDriverCRD.enabled``
-     - When set to ``true``, the Operator deploys NVIDIA GPU Driver Custom Resource Definition.
+     - When set to ``true``, the Operator deploys the NVIDIA GPU driver custom resource definition.
        This value controls the NVIDIA GPU driver, not the DRA Driver for NVIDIA GPUs.
        If you set ``gpuCluster.deployCR=true`` and the GPU Operator installs the NVIDIA GPU driver, set this value to ``true``.
        Refer to the :doc:`NVIDIA Driver Custom Resource Definition <nvidia-driver-configuration>` page for more information.
@@ -503,12 +503,12 @@ To view all the options, run ``helm show values nvidia/gpu-operator``.
      - ``nvcr.io/nvidia``
 
    * - ``draDriver.computeDomains.enabled``
-     - When set to ``true``, the Operator deploys the ComputeDomain controller and kubelet plugin for a ``GPUCluster`` installation.
+     - When set to ``true``, the Operator deploys the ComputeDomain controller and kubelet plugin for an installation with a ``GPUCluster`` resource.
        Refer to :doc:`DRA Driver for NVIDIA GPUs <dra-intro-install>` for more information.
      - ``true``
 
    * - ``draDriver.version``
-     - Version of the DRA Driver for NVIDIA GPUs that the Operator deploys for a ``GPUCluster`` installation.
+     - Version of the DRA Driver for NVIDIA GPUs that the Operator deploys for an installation with a ``GPUCluster`` resource.
      - ``v${dra_version}``
 
    * - ``gpuCluster.deployCR``
@@ -872,7 +872,7 @@ MicroK8s
 ========
 
 
-For MicroK8s, set the following in the ``ClusterPolicy``.
+For MicroK8s, set the following in the ``ClusterPolicy`` resource.
 
 .. code-block:: yaml
 
@@ -931,6 +931,6 @@ After verifying the installation, you can configure the GPU Operator for your wo
 - :doc:`gpu-operator-mig` — Configure Multi-Instance GPU (MIG) partitioning on supported GPUs.
 - :doc:`gpu-operator-rdma` — Enable GPUDirect RDMA for high-performance networking.
 - :doc:`dra-intro-install` — Allocate GPUs by using Kubernetes Dynamic Resource Allocation (DRA).
-- :doc:`nvidia-driver-configuration` — Use the NVIDIA GPU Driver Custom Resource Definition to manage drivers per node.
+- :doc:`nvidia-driver-configuration` — Use the NVIDIA GPU driver custom resource definition to manage drivers per node.
 - :doc:`precompiled-drivers` — Speed up driver deployments with precompiled kernel modules.
 - :doc:`cdi` — Learn about Container Device Interface (CDI) and NRI Plugin mode.

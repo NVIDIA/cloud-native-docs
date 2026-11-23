@@ -51,8 +51,8 @@ The following table compares the GPU allocation capabilities of the two mechanis
    :widths: 23 38 39
 
    * - Capability
-     - DRA with ``GPUCluster``
-     - Device Plugin with ``ClusterPolicy``
+     - DRA with a ``GPUCluster`` resource
+     - Device Plugin with a ``ClusterPolicy`` resource
 
    * - API and Device Selection
      - Uses DRA API to select GPUs by attributes---model, architecture, memory, compute capability, UUID, addressing mode, PCI/topology information---using CEL expressions.
@@ -68,7 +68,7 @@ The following table compares the GPU allocation capabilities of the two mechanis
        MIG Manager configures MIG geometry before allocation.
 
    * - GPU Sharing
-     - Alpha ``ConsumableShares`` feature gate implements Kubernetes consumable capacity for scheduler-accounted sharing among independent ``ResourceClaim`` objects for full GPUs and MIG devices.
+     - Alpha ``ConsumableShares`` feature gate implements Kubernetes consumable capacity for scheduler-accounted sharing among independent resource claims for full GPUs and MIG devices.
        The driver also supports time-slicing through a shared DRA claim.
        Custom time-slice intervals require the Alpha ``TimeSlicingSettings`` feature gate.
        MPS requires the Alpha ``MPSSupport`` gate.
@@ -88,7 +88,7 @@ The following table compares the GPU allocation capabilities of the two mechanis
      - Supports multiple device injection strategies.
 
    * - Components Managed by the Operator
-     - With ``GPUCluster``, the Operator manages:
+     - With a ``GPUCluster`` resource, the Operator manages:
 
        * DRA Driver kubelet plugin
        * ComputeDomain controller and kubelet plugin, when enabled
@@ -96,7 +96,7 @@ The following table compares the GPU allocation capabilities of the two mechanis
        * DCGM Exporter, when enabled
        * Standalone NVIDIA Data Center GPU Manager (DCGM), when enabled
 
-     - With ``ClusterPolicy``, the Operator manages:
+     - With a ``ClusterPolicy`` resource, the Operator manages:
 
        * NVIDIA Container Toolkit
        * GPU Feature Discovery
@@ -107,7 +107,7 @@ The following table compares the GPU allocation capabilities of the two mechanis
        * NVIDIA vGPU Manager
 
    * - Kubernetes Scheduling
-     - Allocation through a ``ResourceClaim``, which can be referenced by multiple containers or Pods.
+     - Allocation through a resource claim, which can be referenced by multiple containers or pods.
      - Allocation through the resource limits specified for the container.
 
 DRA Driver Feature Maturity
@@ -157,7 +157,7 @@ Consider the following limitations before selecting DRA Driver v${dra_version}:
   The gRPC health probe reports kubelet plugin availability, and DCGM provides telemetry.
   Neither provides DRA allocation health status.
 * Consumable capacity is available through the alpha ``ConsumableShares`` feature gate, which is disabled by default.
-  When enabled, the feature provides scheduler-accounted capacity sharing among independent ``ResourceClaim`` objects for full GPUs and MIG devices.
+  When enabled, the feature provides scheduler-accounted capacity sharing among independent resource claims for full GPUs and MIG devices.
   Kubernetes v1.34 and v1.35 require enabling the ``DRAConsumableCapacity`` feature gate.
   Kubernetes v1.36 and later enable the feature by default.
   You must also set the ``CONSUMABLE_SHARES`` environment variable for the DRA Driver kubelet plugin to ``memory``, ``unlimited``, or a positive integer.
@@ -168,25 +168,30 @@ Consider the following limitations before selecting DRA Driver v${dra_version}:
   ``PassthroughSupport`` conflicts with ``NVMLDeviceHealthCheck``, and ``DeviceMetadata`` requires ``PassthroughSupport``.
 * Kubernetes does not support preemption for DRA resources.
   Injecting DRA-allocated devices requires a preconfigured CDI-compatible container runtime.
-  The managed ``gpu.nvidia.com`` ``DeviceClass`` does not set ``spec.extendedResourceName`` to ``nvidia.com/gpu``.
+  The managed ``gpu.nvidia.com`` device class does not set ``spec.extendedResourceName`` to ``nvidia.com/gpu``.
 
 ************************
 Installation Limitations
 ************************
 
 * Use this workflow for a new installation.
-  An in-place migration from a standalone DRA Driver Helm release or from ``ClusterPolicy`` to ``GPUCluster`` is not supported.
-* ``GPUCluster`` does not expose the controller affinity, priority class, toleration,
+  An in-place migration from a standalone DRA Driver Helm release or from a ``ClusterPolicy`` resource to a ``GPUCluster`` resource is not supported.
+* The ``GPUCluster`` resource does not expose the controller affinity, priority class, toleration,
   and kubelet-plugin node selector overrides that were used by the previous standalone DRA Driver procedure for Google Kubernetes Engine (GKE).
   This page does not provide a managed DRA installation procedure for GKE.
 
-*************
+.. _dra-driver-install:
+
+*******
+Install
+*******
+
 Prerequisites
-*************
+=============
 
 In addition to ensuring that your GPUs and cluster align with the :ref:`GPU Operator support matrix <operator-platform-support>`, verify the following prerequisites:
 
-* Kubernetes v1.34.2 or later with a ``resource.k8s.io`` ``DeviceClass`` API available.
+* Kubernetes v1.34.2 or later with the ``DeviceClass`` resource available in the ``resource.k8s.io`` API group.
 * NVIDIA GPU driver version 580 or later.
   The Operator can install the driver or you can use a pre-installed driver.
 * A container runtime that supports CDI and is configured to use CDI for injecting DRA-allocated devices.
@@ -196,15 +201,15 @@ In addition to ensuring that your GPUs and cluster align with the :ref:`GPU Oper
 
      $ kubectl get clusterpolicy
 
-  If a ``ClusterPolicy`` exists, use a new cluster for the ``GPUCluster`` workflow.
+  If a ``ClusterPolicy`` resource exists, use a new cluster for the DRA workflow.
 
 .. note::
 
    To use an extended-resource request with the DRA Driver, enable the
    `DRAExtendedResource <https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/#extended-resource>`_ feature gate.
    This feature gate is enabled by default in Kubernetes v1.36.0 and later.
-   Request ``deviceclass.resource.kubernetes.io/gpu.nvidia.com`` to use the managed ``gpu.nvidia.com`` ``DeviceClass``.
-   The legacy name ``nvidia.com/gpu`` requires a separate ``DeviceClass`` that sets ``spec.extendedResourceName`` to that value.
+   Request ``deviceclass.resource.kubernetes.io/gpu.nvidia.com`` to use the managed ``gpu.nvidia.com`` device class.
+   The legacy name ``nvidia.com/gpu`` requires a separate device class that sets ``spec.extendedResourceName`` to that value.
 
 .. _computedomain-prereqs:
 
@@ -223,11 +228,8 @@ For ComputeDomain support, verify the following additional prerequisites:
        $ systemctl disable --now nvidia-imex.service
        $ systemctl mask nvidia-imex.service
 
-.. _dra-driver-install:
-
-*******
-Install
-*******
+Procedure
+=========
 
 The following procedures install the GPU Operator with the DRA Driver.
 The GPU Operator runs the DRA Driver in the GPU Operator namespace.
@@ -239,7 +241,7 @@ Use an ``NVIDIADriver`` resource to install a containerized GPU driver or use a 
 The Helm commands set the following values:
 
 * ``gpuCluster.deployCR=true`` enables the GPU Operator to install and manage the DRA Driver.
-* ``clusterPolicy.deployCR=false`` prevents creation of the ClusterPolicy resource.
+* ``clusterPolicy.deployCR=false`` prevents creation of the ``ClusterPolicy`` resource.
   The chart fails if you set both ``gpuCluster.deployCR`` and ``clusterPolicy.deployCR`` to ``true``.
 * ``driver.nvidiaDriverCRD.enabled=true`` enables the GPU Operator to install the NVIDIA GPU driver through an ``NVIDIADriver`` resource.
   This value controls the NVIDIA GPU driver, not the DRA Driver.
@@ -412,12 +414,12 @@ During reconciliation, the STATUS column progresses from empty to `notReady` to 
    * ``nvidia-dcgm-exporter-dra`` when DCGM Exporter is enabled
    * ``nvidia-dcgm-dra`` when standalone DCGM is enabled
 
-   The DRA Driver kubelet-plugin DaemonSet runs a GPU container and,
+   The DRA Driver kubelet-plugin daemon set runs a GPU container and,
    when ComputeDomain support is enabled, a ComputeDomain container.
    The DRA validator and enabled telemetry components run one pod on each GPU node.
-   The validator allocates a GPU through a ``ResourceClaim`` and verifies that the device is usable.
+   The validator allocates a GPU through a resource claim and verifies that the device is usable.
 
-#. Verify that the DeviceClasses are available:
+#. Verify that the device classes are available:
 
    .. code-block:: console
 
@@ -434,8 +436,8 @@ During reconciliation, the STATUS column progresses from empty to `notReady` to 
       mig.nvidia.com                              2m
       vfio.gpu.nvidia.com                         2m
 
-   The ComputeDomain DeviceClasses are present only when ComputeDomain support is enabled.
-   The ``vfio.gpu.nvidia.com`` DeviceClass requires the alpha ``PassthroughSupport`` feature gate to use VFIO passthrough.
+   The ComputeDomain device classes are present only when ComputeDomain support is enabled.
+   The ``vfio.gpu.nvidia.com`` device class requires the alpha ``PassthroughSupport`` feature gate to use VFIO passthrough.
    This feature gate is disabled by default.
 
 *************************
@@ -456,12 +458,12 @@ in the DRA Driver documentation for information about the following workload-rel
 Telemetry
 *********
 
-DCGM Exporter is enabled by default with ``GPUCluster`` and uses its embedded host engine.
+DCGM Exporter is enabled by default with a ``GPUCluster`` resource and uses its embedded host engine.
 Standalone DCGM is disabled by default.
 Set ``dcgm.enabled=true`` to deploy the standalone ``nvidia-dcgm-dra`` host engine instead.
 
 When either ``dcgmExporter.enablePodLabels`` or ``dcgmExporter.enablePodUID`` is enabled,
-the Operator enables DRA ``ResourceSlice`` attribution in DCGM Exporter and grants the exporter read access to ``ResourceSlice`` objects.
+the Operator enables DRA resource slice attribution in DCGM Exporter and grants the exporter read access to ``ResourceSlice`` objects.
 This enables pod metadata enrichment for GPUs allocated through DRA.
 
 .. _dra-driver-upgrade:
@@ -476,11 +478,11 @@ When you upgrade the GPU Operator, preserve ``clusterPolicy.deployCR=false`` and
 You can select a different DRA Driver version by setting ``draDriver.version``.
 Refer to :ref:`Upgrading the NVIDIA GPU Operator` for the Operator upgrade procedure and required CRD updates.
 
-During an Operator-managed NVIDIA GPU driver upgrade, pods with allocated ``gpu.nvidia.com`` ResourceClaims are treated as GPU workloads.
+During an Operator-managed NVIDIA GPU driver upgrade, pods with allocated ``gpu.nvidia.com`` resource claims are treated as GPU workloads.
 The driver upgrade policy applies to those pods, and the DRA Driver kubelet plugin remains available while claims are unprepared.
 You do not need to configure a separate node label for DRA workload eviction.
 
-This procedure does not migrate a standalone DRA Driver Helm release to ``GPUCluster``.
+This procedure does not migrate a standalone DRA Driver Helm release to a ``GPUCluster`` resource.
 For a standalone installation, refer to the `upstream DRA Driver upgrade guide <https://dra-driver-nvidia-gpu.sigs.k8s.io/docs/upgrade/>`__
 or select the GPU Operator documentation version that matches the installed release.
 
@@ -490,11 +492,11 @@ or select the GPU Operator documentation version that matches the installed rele
 Uninstall
 *********
 
-Before uninstalling the GPU Operator, delete user workloads and user-created ResourceClaims for GPUs
+Before uninstalling the GPU Operator, delete user workloads and user-created resource claims for GPUs
 and verify that the workload pods terminate and the claims are unprepared.
 Afterward, uninstall the GPU Operator by using Helm.
 
-The chart includes a ``pre-delete`` hook that deletes ``gpu-cluster`` and waits for the GPUCluster finalizer to perform ordered teardown.
+The chart includes a ``pre-delete`` hook that deletes ``gpu-cluster`` and waits for the ``GPUCluster`` resource finalizer to perform ordered teardown.
 
 .. tip:: The uninstall command output can report that the ``gpu-cluster`` resource was kept.
 
@@ -507,7 +509,7 @@ The chart includes a ``pre-delete`` hook that deletes ``gpu-cluster`` and waits 
 
       release "gpu-operator" uninstalled
 
-The finalizer removes Operator-managed DaemonSets that consume ResourceClaims before the DRA Driver kubelet plugin is removed.
+The finalizer removes Operator-managed daemon sets that consume resource claims before the DRA Driver kubelet plugin is removed.
 Do not use ``helm uninstall --no-hooks`` while ``gpu-cluster`` exists because Helm can remove the Operator before this teardown completes.
 
 Refer to :doc:`uninstall` for the complete uninstall procedure and CRD cleanup information.
@@ -526,7 +528,7 @@ The following resources are left in the cluster with no controller to reconcile 
 * The ``gpu-cluster`` resource, which cannot be deleted because the
   ``gpucluster.nvidia.com/dra-resourceclaim`` finalizer requires the Operator.
 * The DRA Driver kubelet plugin, DRA validator, and DCGM Exporter pods.
-* Operator-managed ResourceClaims for the preceding pods.
+* Operator-managed resource claims for the preceding pods.
 
 To recover, remove the finalizer from ``gpu-cluster``, then force-delete the remaining managed components:
 
@@ -537,7 +539,7 @@ To recover, remove the finalizer from ``gpu-cluster``, then force-delete the rem
       $ kubectl patch gpucluster gpu-cluster --type=json \
           -p='[{"op":"remove","path":"/metadata/finalizers"}]'
 
-#. Remove finalizers from the orphaned ResourceClaims in the GPU Operator namespace:
+#. Remove finalizers from the orphaned resource claims in the GPU Operator namespace:
 
    .. code-block:: console
 
@@ -561,10 +563,10 @@ To recover, remove the finalizer from ``gpu-cluster``, then force-delete the rem
 To avoid this recovery path, run ``helm uninstall`` without ``--no-hooks`` so that the
 ``pre-delete`` hook can complete ordered teardown.
 
-Clean Up ResourceClaims Stuck in ``deleted,allocated,reserved``
-===============================================================
+Clean Up Resource Claims Stuck in ``deleted,allocated,reserved``
+================================================================
 
-ResourceClaims in the ``deleted,allocated,reserved`` state indicate that the API server
+resource claims in the ``deleted,allocated,reserved`` state indicate that the API server
 accepted a delete request, but the DRA Driver kubelet plugin has not completed the
 device _unprepare_ step for the claim.
 This state can persist if the DRA Driver kubelet plugin was removed or restarted
@@ -574,11 +576,11 @@ Take one of the following actions:
 
 * If the DRA Driver kubelet plugin can be restarted, ensure that the
   ``nvidia-dra-driver-kubelet-plugin`` pod is running.
-  The plugin completes the unprepare step and the ResourceClaims are removed.
+  The plugin completes the unprepare step and the resource claims are removed.
 
 * If the DRA Driver kubelet plugin cannot be restarted, such as after an
   uninstall that skipped the pre-delete hook, remove the finalizers from
-  the affected ResourceClaims:
+  the affected resource claims:
 
   .. code-block:: console
 
