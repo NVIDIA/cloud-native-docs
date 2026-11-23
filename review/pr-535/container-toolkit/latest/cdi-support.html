@@ -58,7 +58,7 @@
     <script>
         DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.20.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '1.20.2';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             false;
         </script>
@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Nov 10, 2026"/>
+    <meta name="docbuild:last-update" content="Nov 23, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -607,6 +607,10 @@ to EGL and Vulkan applications than the container requested.</p>
 <p>Using CDI to inject NVIDIA devices can conflict with using the NVIDIA Container Runtime hook.
 This means that if a <code class="docutils literal notranslate"><span class="pre">/usr/share/containers/oci/hooks.d/oci-nvidia-hook.json</span></code> file exists, delete it
 or ensure that you do not run containers with the <code class="docutils literal notranslate"><span class="pre">NVIDIA_VISIBLE_DEVICES</span></code> environment variable set.</p>
+<p>Generated CDI specifications include a <code class="docutils literal notranslate"><span class="pre">void</span></code> volume mount.
+When you set <code class="docutils literal notranslate"><span class="pre">accept-nvidia-visible-devices-as-volume-mounts</span></code> to <code class="docutils literal notranslate"><span class="pre">true</span></code>, the <code class="docutils literal notranslate"><span class="pre">void</span></code> mount prevents the NVIDIA Container Runtime from injecting additional devices through volume-mount requests.
+The setting defaults to <code class="docutils literal notranslate"><span class="pre">false</span></code>.
+Regenerate an existing specification by following <a class="reference internal" href="#manual-cdi-specification-generation"><span class="std std-doc">Manual CDI Specification Generation</span></a> to include the <code class="docutils literal notranslate"><span class="pre">void</span></code> mount.</p>
 <p>The use of the CDI specification depends on the CDI-enabled container engine or CLI that you use.
 In the case of <code class="docutils literal notranslate"><span class="pre">podman</span></code>, for example, releases as of <code class="docutils literal notranslate"><span class="pre">v4.1.0</span></code> include support for specifying CDI devices in the <code class="docutils literal notranslate"><span class="pre">--device</span></code> argument.
 Assuming that you generated a CDI specification as in the preceding section, running a container with access to all NVIDIA GPUs requires the following command:</p>

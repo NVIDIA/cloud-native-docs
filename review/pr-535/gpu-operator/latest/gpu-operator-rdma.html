@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Nov 10, 2026"/>
+    <meta name="docbuild:last-update" content="Nov 23, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -570,7 +570,7 @@ refer to <a class="reference external" href="https://docs.nvidia.com/datacenter/
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.7.2
+     --version<span class="o">=</span>v26.7.3
 </pre></div>
 </div>
 <p>To use the legacy <code class="docutils literal notranslate"><span class="pre">nvidia-peermem</span></code> kernel module, add <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">driver.rdma.enabled=true</span></code> to the command.
@@ -860,7 +860,7 @@ Install the GPU Operator with GDS enabled:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>helm install --wait --generate-name <span class="se">\</span>
      -n gpu-operator --create-namespace <span class="se">\</span>
      nvidia/gpu-operator <span class="se">\</span>
-     --version<span class="o">=</span>v26.7.2 <span class="se">\</span>
+     --version<span class="o">=</span>v26.7.3 <span class="se">\</span>
      --set gds.enabled<span class="o">=</span><span class="nb">true</span>
 </pre></div>
 </div>

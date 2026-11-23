@@ -77,7 +77,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="None"/>
   <meta name="docsearch:version" content="" />
-    <meta name="docbuild:last-update" content="Nov 10, 2026"/>
+    <meta name="docbuild:last-update" content="Nov 23, 2026"/>
   
     
     <script src="_static/searchtools.js"></script>
@@ -365,6 +365,7 @@
 <li class="toctree-l1"><a class="reference internal" href="clean-up.html">Cleanup</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Deploy GPU Operators in a disconnected or airgapped environment</a></li>
 <li class="toctree-l1"><a class="reference internal" href="deploy-gpu-ocp-ipv6.html">Deploy GPU Operator in an IPv6 Network</a></li>
+<li class="toctree-l1"><a class="reference internal" href="known-issues.html">Known Issues</a></li>
 <li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html">Enabling the GPU Monitoring Dashboard</a></li>
 
 <li class="toctree-l1"><a class="reference internal" href="time-slicing-gpus-in-openshift.html">Time-slicing NVIDIA GPUs in OpenShift</a></li>
@@ -1014,6 +1015,11 @@ Ensure that your hostname is in DNS and that it resolves to the expected IP addr
 <p>You can mirror the Operator content of a Red Hat-provided catalog, or a custom catalog, into a
 container image registry using the <code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> commands.
 The target registry must support <a class="reference external" href="https://docs.docker.com/registry/spec/manifest-v2-2/">Docker v2-2</a>. For a cluster on a restricted network, this registry can be one that the cluster has network access to, such as a mirror registry created during a restricted network cluster installation.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Some GPU Operator related images have known container image manifest issues that can cause mirroring to fail.
+Refer to <a class="reference internal" href="known-issues.html"><span class="doc">Known Issues</span></a> for how to identify an affected image and for the current workaround.</p>
+</div>
 <p>The <code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> commands also automatically mirrors the index
 image specified during the mirroring process, whether it be a Red Hat-provided index image or
 your own custom-built index image, to the target registry.
