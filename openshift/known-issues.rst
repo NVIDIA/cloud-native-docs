@@ -1,4 +1,4 @@
-.. Date: November 18 2026
+.. Date: November 22 2026
 .. Author: nbugrovs
 
 .. headings are # * - =
@@ -118,3 +118,49 @@ To check an image that fails to mirror, use ``skopeo`` to inspect the image mani
    The Docker Image Manifest V2, Schema 2 specification defines no uncompressed layer media type, so registries reject it.
 
 To report an affected image that this page does not list, add the image reference and the ``oc-mirror`` error output to `NVIDIA/gpu-operator#3166 <https://github.com/NVIDIA/gpu-operator/issues/3166>`_.
+
+.. _openshift-known-issues-ocp5-default-driver:
+
+*********************************************************************************************
+Default driver container fails on newly installed OpenShift Container Platform 5.0 clusters
+*********************************************************************************************
+
+When you install the GPU Operator with the default cluster policy on a newly installed OpenShift Container Platform 5.0 cluster, the ``nvidia-driver-daemonset`` pods fail on the GPU nodes.
+
+Newly installed clusters use RHCOS 10 nodes. A cluster that you upgraded from OpenShift 4.x keeps RHCOS 9 nodes and is not affected.
+
+The GPU Operator bundle pins the default driver container image by digest. The image is based on RHEL 9. The Operator uses a digest-pinned driver image as-is, without per-node operating system tag resolution. The RHEL 9 driver container therefore runs on RHCOS 10 nodes and fails to load kernel modules.
+
+Specify the driver version in the cluster policy
+================================================
+
+#. Set ``spec.driver.version`` in the cluster policy to a floating driver version, such as ``${recommended}``. The Operator resolves the operating-system tag for each node and deploys ``${recommended}-rhel10`` on RHCOS 10 nodes:
+
+   .. code-block:: yaml
+
+      driver:
+        repository: nvcr.io/nvidia
+        image: driver
+        version: "${recommended}"
+
+   Alternatively, set the field to the RHEL 10 driver image digest for driver version ``${recommended}``:
+
+   .. code-block:: yaml
+
+      driver:
+        repository: nvcr.io/nvidia
+        image: driver
+        version: "sha256:52b984c00817b08dcf5a0ed50dbba7b9f4d779614bde486a3483a4fb61dea3e5"
+
+#. Verify that the driver daemon set uses the RHEL 10 image:
+
+   .. code-block:: console
+
+      $ oc -n nvidia-gpu-operator get ds -o custom-columns=NAME:.metadata.name,IMAGE:.spec.template.spec.containers[0].image
+
+   *Partial Output*
+
+   .. code-block:: console
+
+      NAME                                       IMAGE
+      nvidia-driver-daemonset-10.2.20261015-0    nvcr.io/nvidia/driver:${recommended}-rhel10
