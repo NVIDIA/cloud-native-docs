@@ -127,7 +127,7 @@ Known Issues
   Changing the driver manager image triggers a :ref:`driver upgrade <gpu-driver-upgrades>` on each node and can evict GPU workloads even when the NVIDIA driver version is unchanged.
 
 * NVIDIA Container Toolkit v1.20.2 adds a ``void`` volume mount of ``/dev/null`` to the generated CDI specification.
-  Pods that set ``spec.hostUsers: false`` and use the NVIDIA Container Runtime fail to start with an error such as the following example:
+  Pods that set ``spec.hostUsers: false`` and receive GPUs through CDI fail to start with an error such as the following example:
 
   .. code-block:: console
 
