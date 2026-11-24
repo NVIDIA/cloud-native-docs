@@ -131,15 +131,18 @@ Refer to :ref:`Upgrading the NVIDIA GPU Operator` for more information.
        | `570.211.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-570-211-01/index.html>`_
        | `535.309.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-309-01/index.html>`_
        | `535.288.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-535-288-01/index.html>`_
-     - | `620.70.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-620-70-06/index.html>`_ (**R**)
+     - | `620.70.10 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-620-70-10/index.html>`_ (**R**)
+       | `620.70.06 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-620-70-06/index.html>`_
        | `615.71.10 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-615-71-10/index.html>`_ |r615|_
        | `615.71.09 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-615-71-09/index.html>`_ |r615|_
        | `610.57.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-610-57-04/index.html>`_
+       | `595.112.13 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-112-13/index.html>`_
        | `595.112.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-112-07/index.html>`_
        | `595.91.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-91-07/index.html>`_
        | `595.71.05 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-71-05/index.html>`_
        | `595.58.03 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-595-58-03/index.html>`_
        | `590.48.01 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-590-48-01/index.html>`_
+       | `580.196.11 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-196-11/index.html>`_
        | `580.196.07 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-196-07/index.html>`_
        | `580.178.04 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-173-02/index.html>`_
        | `580.173.02 <https://docs.nvidia.com/datacenter/tesla/tesla-release-notes-580-173-02/index.html>`_
