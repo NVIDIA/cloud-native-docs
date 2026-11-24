@@ -117,6 +117,7 @@ Post-Release Documentation Updates
 * Added 580.196.07, 595.112.07, and 615.71.10 to the supported driver versions in the :ref:`operator-component-matrix`.
   NVIDIA GPU Driver 615.71.10 requires NVIDIA Container Toolkit 1.20.1 and NVIDIA MIG Manager 0.15.1.
 * Added 620.70.06 to the supported driver versions in the :ref:`operator-component-matrix`.
+* Added 580.196.11, 595.112.13, and 620.70.10 to the supported driver versions in the :ref:`operator-component-matrix`.
 
 ----
 
