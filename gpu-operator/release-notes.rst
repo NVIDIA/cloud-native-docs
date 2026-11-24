@@ -126,6 +126,17 @@ Known Issues
   To upgrade the driver manager, specify ``--set driver.manager.version=v0.13.0`` with Helm, or set ``spec.driver.manager.version`` to ``v0.13.0`` in the cluster policy.
   Changing the driver manager image triggers a :ref:`driver upgrade <gpu-driver-upgrades>` on each node and can evict GPU workloads even when the NVIDIA driver version is unchanged.
 
+* NVIDIA Container Toolkit v1.20.2 adds a ``void`` volume mount of ``/dev/null`` to the generated CDI specification.
+  Pods that set ``spec.hostUsers: false`` and receive GPUs through CDI fail to start with an error such as the following example:
+
+  .. code-block:: console
+
+    failed to set MOUNT_ATTR_IDMAP on /dev/null: invalid argument
+
+  To work around this issue, use NVIDIA Container Toolkit v1.20.3.
+  Specify ``--set toolkit.version=v1.20.3`` with Helm, or set ``spec.toolkit.version`` to ``v1.20.3`` in the cluster policy.
+  Refer to `NVIDIA Container Toolkit issue #2226 <https://github.com/NVIDIA/nvidia-container-toolkit/issues/2226>`__.
+
 * On systems with NVLink 5 or later, GPU driver pods can prevent containerized DOCA-OFED updates from completing.
   Refer to the :ref:`v26.7.2-known-issues` for details and the workaround.
 
