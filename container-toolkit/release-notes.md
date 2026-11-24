@@ -8,6 +8,36 @@
 
 This document describes the new features, improvements, fixes and known issues for the NVIDIA Container Toolkit.
 
+## NVIDIA Container Toolkit 1.20.3
+
+This release of the NVIDIA Container Toolkit `v1.20.3` is a bugfix release.
+
+### Fixes and Features
+
+This release includes the following changes:
+
+- Fixed an issue where containers in a user namespace failed to start when CDI was used.
+  Kubernetes pods that set `hostUsers: false` are an example of containers in a user namespace.
+  The containers failed with an error such as `failed to set MOUNT_ATTR_IDMAP on /dev/null: invalid argument`.
+  Generated CDI specifications no longer include the `/dev/null` volume mount that caused the error.
+  The NVIDIA Container Runtime still prevents volume-mount device requests from adding GPUs in addition to the GPUs that CDI selects.
+  If you generated a CDI specification manually, regenerate the specification after you upgrade.
+  For more information, refer to [PR #2236](https://github.com/NVIDIA/nvidia-container-toolkit/pull/2236) and [issue #2226](https://github.com/NVIDIA/nvidia-container-toolkit/issues/2226).
+
+### Included Packages
+
+The following packages are included:
+
+- `nvidia-container-toolkit 1.20.3`
+- `nvidia-container-toolkit-base 1.20.3`
+- `libnvidia-container-tools 1.20.3`
+- `libnvidia-container1 1.20.3`
+
+The following `container-toolkit` containers are included:
+
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.20.3`
+- `nvcr.io/nvidia/k8s/container-toolkit:v1.20.3-packaging`
+
 ## NVIDIA Container Toolkit 1.20.2
 
 This release of the NVIDIA Container Toolkit `v1.20.2` is a bugfix release.
