@@ -548,7 +548,7 @@ However, the following deployments need NVIDIA Driver Manager for Kubernetes v0.
 Changing the driver manager image triggers a <a class="reference internal" href="gpu-driver-upgrades.html#gpu-driver-upgrades"><span class="std std-ref">driver upgrade</span></a> on each node and can evict GPU workloads even when the NVIDIA driver version is unchanged.</p>
 </li>
 <li><p>NVIDIA Container Toolkit v1.20.2 adds a <code class="docutils literal notranslate"><span class="pre">void</span></code> volume mount of <code class="docutils literal notranslate"><span class="pre">/dev/null</span></code> to the generated CDI specification.
-Pods that set <code class="docutils literal notranslate"><span class="pre">spec.hostUsers:</span> <span class="pre">false</span></code> and use the NVIDIA Container Runtime fail to start with an error such as the following example:</p>
+Pods that set <code class="docutils literal notranslate"><span class="pre">spec.hostUsers:</span> <span class="pre">false</span></code> and receive GPUs through CDI fail to start with an error such as the following example:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">failed to set MOUNT_ATTR_IDMAP on /dev/null: invalid argument</span>
 </pre></div>
 </div>
