@@ -154,6 +154,7 @@ Post-Release Documentation Updates
 ----------------------------------
 
 * Added 620.70.06 to the supported driver versions in the :ref:`operator-component-matrix`.
+* Added 580.196.11, 595.112.13, and 620.70.10 to the supported driver versions in the :ref:`operator-component-matrix`.
 * Added containerd 2.4 to the :ref:`supported-container-runtimes`.
 
 ----
