@@ -23,8 +23,6 @@
 
    about-telemetry
    dcgm-exporter
-   integrating-telemetry-kubernetes
-   kube-prometheus
 
 
 .. include:: about-telemetry.rst
