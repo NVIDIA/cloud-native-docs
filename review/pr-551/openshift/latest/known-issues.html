@@ -1,0 +1,721 @@
+
+
+
+<!DOCTYPE html>
+
+
+<html data-content_root="" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Known Issues &#8212; NVIDIA GPU Operator on Red Hat OpenShift Container Platform</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/nvidia-sphinx-theme.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.4cbf315f70debaebd550c87a6162cf0f.min.css" />
+    <link rel="stylesheet" type="text/css" href="_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+
+
+
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/mermaid-init.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script src="_static/design-tabs.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'known-issues';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../versions1.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '26.7';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <script src="_static/version.js"></script>
+    <script src="_static/social-media.js"></script>
+
+    <link rel="shortcut icon" href="_static/favicon.ico"/>
+
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Enabling the GPU Monitoring Dashboard" href="enable-gpu-monitoring-dashboard.html" />
+    <link rel="prev" title="Deploy GPU Operator in an IPv6 Network" href="deploy-gpu-ocp-ipv6.html" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="None"/>
+  <meta name="docsearch:version" content="" />
+    <meta name="docbuild:last-update" content="Nov 25, 2026"/>
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+
+
+
+  <script src="https://assets.adobedtm.com/5d4962a43b79/c1061d2c5e7b/launch-191c2462b890.min.js" ></script>
+  
+
+
+  </head>
+
+  <body data-default-mode="">
+
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/nvidia-logo-horiz-rgb-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+    <img src="_static/nvidia-logo-horiz-rgb-wht-for-screen.svg" class="logo__image only-dark pst-js-only" alt="NVIDIA GPU Operator on Red Hat OpenShift Container Platform - Home"/>
+  
+  
+    <p class="title logo__title">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</p>
+  
+</a>
+
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+
+
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+
+
+<nav class="bd-docs-nav bd-links"
+     aria-label="Table of Contents">
+  <p class="bd-links__title" role="heading" aria-level="1">Table of Contents</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prerequisites.html">Prerequisites</a></li>
+<li class="toctree-l1"><a class="reference internal" href="steps-overview.html">Installation and Upgrade Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-nfd.html">NFD Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="install-gpu-ocp.html">GPU Operator Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dra-gpu-ocp.html">Installing the NVIDIA GPU Operator with DRA on OpenShift</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="nvaie-with-ocp.html">NVIDIA AI Enterprise with OpenShift</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install-gpu-operator-gov-ready-openshift.html">Government Ready</a></li>
+</ul><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="mig-ocp.html">MIG Support in OpenShift Container Platform</a></li>
+<li class="toctree-l1"><a class="reference internal" href="clean-up.html">Cleanup</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mirror-gpu-ocp-disconnected.html">Deploy GPU Operators in a disconnected or airgapped environment</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deploy-gpu-ocp-ipv6.html">Deploy GPU Operator in an IPv6 Network</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Known Issues</a></li>
+<li class="toctree-l1"><a class="reference internal" href="enable-gpu-monitoring-dashboard.html">Enabling the GPU Monitoring Dashboard</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="time-slicing-gpus-in-openshift.html">Time-slicing NVIDIA GPUs in OpenShift</a></li>
+<li class="toctree-l1"><a class="reference internal" href="openshift-virtualization.html">NVIDIA GPU Operator with OpenShift Virtualization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="gpu-operator-with-precompiled-drivers.html">Precompiled Drivers for the NVIDIA GPU Operator for RHCOS</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting-gpu-ocp.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="appendix-ocp.html">Appendix</a></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="https://docs.nvidia.com">NVIDIA Docs Hub</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="https://docs.nvidia.com/datacenter/cloud-native">Cloud Native Technologies</a>
+    </li>
+    <li class="breadcrumb-item">
+      <a href="index.html">NVIDIA GPU Operator on Red Hat OpenShift Container Platform</a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Known Issues</li>
+  </ul>
+</nav></div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="known-issues">
+<span id="openshift-known-issues"></span><h1>Known Issues<a class="headerlink" href="#known-issues" title="Permalink to this headline">#</a></h1>
+<p>The following issues apply to NVIDIA GPU Operator 26.7.x on Red Hat OpenShift Container Platform.</p>
+<section id="oc-mirror-fails-to-mirror-the-gpu-operator-bundle-to-red-hat-quay">
+<span id="openshift-known-issues-oc-mirror-quay"></span><h2><code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> fails to mirror the GPU Operator bundle to Red Hat Quay<a class="headerlink" href="#oc-mirror-fails-to-mirror-the-gpu-operator-bundle-to-red-hat-quay" title="Permalink to this headline">#</a></h2>
+<p>When <code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> mirrors the GPU Operator catalog to a Red Hat Quay registry, copying two images in the Operator bundle fails with the following error:</p>
+<div class="highlight-output notranslate"><div class="highlight"><pre><span></span><span class="go">[ERROR] : [Worker] error mirroring image docker://nvcr.io/nvidia/cloud-native/&lt;image&gt;@sha256:...</span>
+<span class="go">error: Manifest list must be converted to type &quot;application/vnd.docker.distribution.manifest.list.v2+json&quot;</span>
+<span class="go">to be written to destination, but we cannot modify it: &quot;Instructed to preserve digests&quot;</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> then omits the GPU Operator bundle from the mirror because one of the related images in the bundle failed to mirror.
+The mirrored catalog does not contain an installable GPU Operator.</p>
+<p>Two different manifest inconsistencies cause this failure:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">dra-driver-nvidia-gpu</span></code> uses the Docker Schema2 manifest format with an uncompressed layer.
+The Docker Schema2 specification defines no uncompressed layer media type, so every Red Hat Quay version rejects it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gdrdrv</span></code>’s OCI image index references Docker Schema2 child manifests.
+Red Hat Quay releases before 3.16.7 and 3.17.0 reject this combination.
+Red Hat Quay 3.17.0 introduced a fix for this as <a class="reference external" href="https://issues.redhat.com/browse/PROJQUAY-11689">PROJQUAY-11689</a>, documented in the <a class="reference external" href="https://docs.redhat.com/en/documentation/red_hat_quay/3.17/html/red_hat_quay_release_notes/release-notes-317">Red Hat Quay 3.17 release notes</a>.
+Red Hat Quay 3.16.7 backports the same fix as <a class="reference external" href="https://issues.redhat.com/browse/PROJQUAY-11694">PROJQUAY-11694</a>.
+No earlier release line, including 3.15 and 3.14, received this backport.</p></li>
+</ul>
+<p>Clusters that use the DRA Driver for NVIDIA GPUs have no workaround, because every Red Hat Quay version rejects the uncompressed layer in <code class="docutils literal notranslate"><span class="pre">dra-driver-nvidia-gpu</span></code>.
+The procedure on this page blocks the DRA driver image, so the DRA driver pods cannot start in the disconnected cluster.</p>
+<section id="affected-images">
+<h3>Affected images<a class="headerlink" href="#affected-images" title="Permalink to this headline">#</a></h3>
+<p>The GPU Operator bundle lists the following images that fail to mirror to Red Hat Quay:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/dra-driver-nvidia-gpu:v0.5.1</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">nvcr.io/nvidia/cloud-native/gdrdrv:v2.6-rhel9.6</span></code></p></li>
+</ul>
+</section>
+<section id="mirror-the-operator-bundle">
+<h3>Mirror the Operator bundle<a class="headerlink" href="#mirror-the-operator-bundle" title="Permalink to this headline">#</a></h3>
+<p>The procedure blocks the two affected images so that <code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> mirrors the rest of the GPU Operator bundle.</p>
+<ol class="arabic">
+<li><p>Add the <code class="docutils literal notranslate"><span class="pre">blockedImages</span></code> entries to the <code class="docutils literal notranslate"><span class="pre">mirror</span></code> section of the <code class="docutils literal notranslate"><span class="pre">ImageSetConfiguration</span></code> file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">mirror.openshift.io/v2alpha1</span><span class="w"></span>
+<span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ImageSetConfiguration</span><span class="w"></span>
+<span class="nt">mirror</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">operators</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">catalog</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">registry.redhat.io/redhat/certified-operator-index:v&lt;ocp-version&gt;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">packages</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gpu-operator-certified</span><span class="w"></span>
+<span class="hll"><span class="w">  </span><span class="nt">blockedImages</span><span class="p">:</span><span class="w"></span>
+</span><span class="hll"><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;nvcr[.]io/nvidia/dra-driver-nvidia-gpu.*@sha256:ae591dbc8e630b49181b40dfddf8f0a3f0890b883acb7b2b420f5b207fda253e&#39;</span><span class="w"></span>
+</span><span class="hll"><span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;nvcr[.]io/nvidia/cloud-native/gdrdrv@sha256:eef1b6663d78555f0e5c49c156196b67e8a3008bc22aaa02b03dad53887ee0f1&#39;</span><span class="w"></span>
+</span></pre></div>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If the mirror registry runs Red Hat Quay 3.16.7, 3.17.0, or later, remove the <code class="docutils literal notranslate"><span class="pre">gdrdrv</span></code> entry from <code class="docutils literal notranslate"><span class="pre">blockedImages</span></code>.</p>
+</div>
+</li>
+<li><p>Rerun the <code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> command with the updated <code class="docutils literal notranslate"><span class="pre">ImageSetConfiguration</span></code> file.</p></li>
+<li><p>Apply the generated <code class="docutils literal notranslate"><span class="pre">ImageDigestMirrorSet</span></code> and <code class="docutils literal notranslate"><span class="pre">CatalogSource</span></code> resources from the <code class="docutils literal notranslate"><span class="pre">working-dir/cluster-resources</span></code> directory:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc apply -f &lt;workspace&gt;/working-dir/cluster-resources/idms-oc-mirror.yaml
+<span class="gp">$ </span>oc apply -f &lt;workspace&gt;/working-dir/cluster-resources/cs-&lt;catalog&gt;.yaml
+</pre></div>
+</div>
+</li>
+<li><p>Install the GPU Operator from the mirrored catalog.</p></li>
+</ol>
+</section>
+<section id="check-an-image-for-manifest-problems">
+<h3>Check an image for manifest problems<a class="headerlink" href="#check-an-image-for-manifest-problems" title="Permalink to this headline">#</a></h3>
+<p>To check an image that fails to mirror, use <code class="docutils literal notranslate"><span class="pre">skopeo</span></code> to inspect the image manifests.</p>
+<ol class="arabic">
+<li><p>Display the media type of the top-level manifest:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>skopeo inspect --raw docker://&lt;image-reference&gt; <span class="p">|</span> jq -r .mediaType
+</pre></div>
+</div>
+</li>
+<li><p>If the media type is <code class="docutils literal notranslate"><span class="pre">application/vnd.oci.image.index.v1+json</span></code>, display the media types of the per-architecture manifests:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>skopeo inspect --raw docker://&lt;image-reference&gt; <span class="p">|</span> jq <span class="s1">&#39;.manifests[] | {platform, mediaType, digest}&#39;</span>
+</pre></div>
+</div>
+<p>A per-architecture media type of <code class="docutils literal notranslate"><span class="pre">application/vnd.docker.distribution.manifest.v2+json</span></code> does not match the OCI image index.</p>
+</li>
+<li><p>Display the layer media types of a per-architecture manifest:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>skopeo inspect --raw docker://&lt;image-reference&gt;@&lt;manifest-digest&gt; <span class="p">|</span> jq -r <span class="s1">&#39;.layers[].mediaType&#39;</span>
+</pre></div>
+</div>
+<p>A layer media type that does not end in <code class="docutils literal notranslate"><span class="pre">gzip</span></code> or <code class="docutils literal notranslate"><span class="pre">zstd</span></code>, such as <code class="docutils literal notranslate"><span class="pre">application/vnd.oci.image.layer.v1.tar</span></code>, identifies an uncompressed layer.</p>
+<p>An uncompressed layer under an OCI image manifest, <code class="docutils literal notranslate"><span class="pre">application/vnd.oci.image.layer.v1.tar</span></code>, mirrors without a problem.
+The OCI Image Specification defines this media type.
+An uncompressed layer under a Docker Schema2 manifest, <code class="docutils literal notranslate"><span class="pre">application/vnd.docker.image.rootfs.diff.tar</span></code>, does not mirror.
+The Docker Image Manifest V2, Schema 2 specification defines no uncompressed layer media type, so registries reject it.</p>
+</li>
+</ol>
+<p>To report an affected image that this page does not list, add the image reference and the <code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> error output to <a class="reference external" href="https://github.com/NVIDIA/gpu-operator/issues/3166">NVIDIA/gpu-operator#3166</a>.</p>
+</section>
+</section>
+<section id="default-driver-container-fails-on-newly-installed-openshift-container-platform-5-0-clusters">
+<span id="openshift-known-issues-ocp5-default-driver"></span><h2>Default driver container fails on newly installed OpenShift Container Platform 5.0 clusters<a class="headerlink" href="#default-driver-container-fails-on-newly-installed-openshift-container-platform-5-0-clusters" title="Permalink to this headline">#</a></h2>
+<p>When you install the GPU Operator with the default cluster policy on a newly installed OpenShift Container Platform 5.0 cluster, the <code class="docutils literal notranslate"><span class="pre">nvidia-driver-daemonset</span></code> pods fail on the GPU nodes.</p>
+<p>Newly installed clusters use RHCOS 10 nodes. A cluster that you upgraded from OpenShift 4.x keeps RHCOS 9 nodes and is not affected.</p>
+<p>The GPU Operator bundle pins the default driver container image by digest. The image is based on RHEL 9. The Operator uses a digest-pinned driver image as-is, without per-node operating system tag resolution. The RHEL 9 driver container therefore runs on RHCOS 10 nodes and fails to load kernel modules.</p>
+<section id="specify-the-driver-version-in-the-cluster-policy">
+<h3>Specify the driver version in the cluster policy<a class="headerlink" href="#specify-the-driver-version-in-the-cluster-policy" title="Permalink to this headline">#</a></h3>
+<ol class="arabic">
+<li><p>Set <code class="docutils literal notranslate"><span class="pre">spec.driver.version</span></code> in the cluster policy to a floating driver version, such as <code class="docutils literal notranslate"><span class="pre">595.91.07</span></code>. The Operator resolves the operating-system tag for each node and deploys <code class="docutils literal notranslate"><span class="pre">595.91.07-rhel10</span></code> on RHCOS 10 nodes:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;595.91.07&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+<p>Alternatively, set the field to the RHEL 10 driver image digest for driver version <code class="docutils literal notranslate"><span class="pre">595.91.07</span></code>:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">driver</span><span class="p">:</span><span class="w"></span>
+<span class="w">  </span><span class="nt">repository</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">nvcr.io/nvidia</span><span class="w"></span>
+<span class="w">  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">driver</span><span class="w"></span>
+<span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;sha256:52b984c00817b08dcf5a0ed50dbba7b9f4d779614bde486a3483a4fb61dea3e5&quot;</span><span class="w"></span>
+</pre></div>
+</div>
+</li>
+<li><p>Verify that the driver daemon set uses the RHEL 10 image:</p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="gp">$ </span>oc -n nvidia-gpu-operator get ds -o custom-columns<span class="o">=</span>NAME:.metadata.name,IMAGE:.spec.template.spec.containers<span class="o">[</span><span class="m">0</span><span class="o">]</span>.image
+</pre></div>
+</div>
+<p><em>Partial Output</em></p>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">NAME                                       IMAGE</span>
+<span class="go">nvidia-driver-daemonset-10.2.20261015-0    nvcr.io/nvidia/driver:595.91.07-rhel10</span>
+</pre></div>
+</div>
+</li>
+</ol>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="deploy-gpu-ocp-ipv6.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Deploy GPU Operator in an IPv6 Network</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="enable-gpu-monitoring-dashboard.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Enabling the GPU Monitoring Dashboard</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+
+
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#oc-mirror-fails-to-mirror-the-gpu-operator-bundle-to-red-hat-quay"><code class="docutils literal notranslate"><span class="pre">oc-mirror</span></code> fails to mirror the GPU Operator bundle to Red Hat Quay</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#affected-images">Affected images</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mirror-the-operator-bundle">Mirror the Operator bundle</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#check-an-image-for-manifest-problems">Check an image for manifest problems</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#default-driver-container-fails-on-newly-installed-openshift-container-platform-5-0-clusters">Default driver container fails on newly installed OpenShift Container Platform 5.0 clusters</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#specify-the-driver-version-in-the-cluster-policy">Specify the driver version in the cluster policy</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+
+
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+<a class="footer-brand logo" href="https://www.nvidia.com">
+  <img src="_static/nvidia-logo-horiz-rgb-1c-blk-for-screen.svg" class="logo__image only-light" alt="NVIDIA"/>
+  <img src="_static/nvidia-logo-horiz-rgb-1c-wht-for-screen.svg" class="logo__image only-dark" alt="NVIDIA"/>
+</a></div>
+      
+        <div class="footer-item">
+
+<div class="footer-links">
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-policy/">Privacy Policy</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/privacy-center/">Your Privacy Choices</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/terms-of-service/">Terms of Service</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/accessibility/">Accessibility</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/about-nvidia/company-policies/">Corporate Policies</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/product-security/">Product Security</a>
+   | 
+  
+  
+  
+  <a class="external" href="https://www.nvidia.com/en-us/contact/">Contact</a>
+  
+  
+  
+</div>
+</div>
+      
+        <div class="footer-item">
+
+
+
+
+  <p class="copyright">
+    
+      Copyright © 2020-2026, NVIDIA Corporation.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+</div>
+
+  </footer>
+
+  <script type="text/javascript">if (typeof _satellite !== "undefined") {_satellite.pageBottom();}</script>
+  
+
+
+  </body>
+</html>
