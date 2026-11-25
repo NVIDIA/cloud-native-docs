@@ -145,6 +145,15 @@ Consider the following limitations before selecting DRA driver v${dra_version}:
 * Alpha feature gates have compatibility constraints.
   ``DynamicMIG`` conflicts with ``PassthroughSupport``, ``NVMLDeviceHealthCheck``, and ``MPSSupport``.
   ``PassthroughSupport`` conflicts with ``NVMLDeviceHealthCheck``, and ``DeviceMetadata`` requires ``PassthroughSupport``.
+* The DRA validator and DCGM Exporter use admin-access claims on the ``gpu.nvidia.com`` device class, and the DRA driver allows admin access only on full GPUs.
+  The DRA driver does not publish the full GPU in the following cases:
+
+  * MIG mode is enabled and ``DynamicMIG`` is disabled, on any GPU architecture.
+  * MIG mode is enabled and ``DynamicMIG`` is enabled on an Ampere GPU, such as A100 or A30.
+
+  On a node where the DRA driver publishes no full GPU, the DRA validator and DCGM Exporter pods remain in the ``Pending`` state.
+  MIG workloads on the node are not affected.
+
 * Kubernetes does not support preemption for DRA resources.
   Injecting DRA-allocated devices requires a preconfigured CDI-compatible container runtime.
   The managed ``gpu.nvidia.com`` ``DeviceClass`` does not set ``spec.extendedResourceName`` to ``nvidia.com/gpu``.
